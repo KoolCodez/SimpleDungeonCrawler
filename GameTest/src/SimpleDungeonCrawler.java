@@ -19,7 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
 
-public class GameTest {
+public class SimpleDungeonCrawler {
 	public static boolean end;
 	public static final String S_PRESSED = "S";
 	public static Polygon character;
@@ -156,11 +156,11 @@ public class GameTest {
 		int[] xPoints = new int[n];
 		int[] yPoints = new int[n];
 		xPoints[0] = 250;
-		yPoints[0] = 490;
-		xPoints[1] = 200;
-		yPoints[1] = 450;
-		xPoints[2] = 300;
-		yPoints[2] = 450;
+		yPoints[0] = 495;
+		xPoints[1] = 225;
+		yPoints[1] = 475;
+		xPoints[2] = 275;
+		yPoints[2] = 475;
 		Polygon downArrow = new Polygon(xPoints, yPoints, n);
 		g.drawPolygon(downArrow);
 	}
