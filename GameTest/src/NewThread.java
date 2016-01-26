@@ -9,18 +9,18 @@ public class NewThread extends Thread {
 		try {
 			while (KeyPress.keyIsPressed) {
 				if (keyType.equals("a")) {
-					GameTest.movePlayer("left");
+					SimpleDungeonCrawler.movePlayer("left");
 				}
 				if (keyType.equals("d")) {
-					GameTest.movePlayer("right");
+					SimpleDungeonCrawler.movePlayer("right");
 				}
 				if (keyType.equals("w")) {
-					GameTest.movePlayer("up");
+					SimpleDungeonCrawler.movePlayer("up");
 				}
 				if (keyType.equals("s")) {
-					GameTest.movePlayer("down");
+					SimpleDungeonCrawler.movePlayer("down");
 				}
-				Thread.sleep(200);
+				Thread.sleep(100);
 			}
 
 		} catch (InterruptedException e) {

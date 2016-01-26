@@ -48,33 +48,39 @@ public class SimpleDungeonCrawler {
 		}
 	}
 	
+	public static void refreshBoard() {
+		blankRoom();
+		
+	}
+	
 	public static void drawPlayer() {
 		int[] xPoints = new int[3];
 		int[] yPoints = new int[3];
-		xPoints[0] = 0;
-		yPoints[0] = 0;
-		xPoints[1] = 10;
-		yPoints[1] = 0;
-		xPoints[2] = 0;
-		yPoints[2] = 10;
+		xPoints[0] = playerLoc.x;
+		yPoints[0] = playerLoc.y;
+		xPoints[1] = playerLoc.x + 10;
+		yPoints[1] = playerLoc.y;
+		xPoints[2] = playerLoc.x;
+		yPoints[2] = playerLoc.y + 10;
 		character = new Polygon(xPoints, yPoints, 3);
+		blankRoom();
 		g.drawPolygon(character);
 	}
 	
 	public static void movePlayer(String direction) {
 		if (direction.equals("left") && playerLoc.x >= 5) { 
-			character.translate(-5, 0);
+			playerLoc.x -= 5;
 		}
-		if (direction.equals("right") && playerLoc.x <= 495) { 
-			character.translate(5, 0);
+		if (direction.equals("right") && playerLoc.x <= 495) {
+			playerLoc.x += 5;
 		}
 		if (direction.equals("up") && playerLoc.y >= 5) { 
-			character.translate(0, -5);
+			playerLoc.y -= 5;
 		}
 		if (direction.equals("down") && playerLoc.y <= 495) { 
-			character.translate(0, 5);
+			playerLoc.y += 5;
 		}
-		g.drawPolygon(character);
+		drawPlayer();
 	}
 	
 	public static void blankRoom() {
