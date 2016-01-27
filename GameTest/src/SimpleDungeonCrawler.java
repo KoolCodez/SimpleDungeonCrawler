@@ -27,7 +27,8 @@ public class SimpleDungeonCrawler {
 	public static Graphics g = panel.getGraphics();
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
-	public static Point playerLoc = new Point(0, 0);
+	public static Point playerLoc = new Point(250, 250);
+	public static int playerSpeed = 10;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		KeyPress keyBoard = new KeyPress();
@@ -37,6 +38,7 @@ public class SimpleDungeonCrawler {
 		end = true;
 		Point p = new Point(0, 10);
 		blankRoom();
+		roomArray[0][0] = new StandardRoom();
 		drawPlayer();
 		while (end) {
 			synchronized (keyBoard) {
@@ -44,13 +46,47 @@ public class SimpleDungeonCrawler {
 			}
 			KeyEvent key = KeyPress.whichKey;
 			String keyName = Character.toString(key.getKeyChar());
+			checkIfLeavingRoom();
 			//System.out.println("You pressed " + key.getKeyChar() + "!");
 		}
 	}
 	
+	public static void checkIfLeavingRoom() {
+		if (playerLoc.y >= 200 && playerLoc.y <= 300) {
+			if (playerLoc.x < 30 && loc.x != 0) {
+				loc.x--;
+				blankRoom();
+				eventChangeRooms();
+				
+			}
+			
+			if (playerLoc.x > 470 && loc.x != 9) {
+				loc.x++;
+				blankRoom();
+				eventChangeRooms();
+			}
+		}
+		if (playerLoc.x >= 200 && playerLoc.x <= 300) {
+			if (playerLoc.y < 30 && loc.y != 0) {
+				loc.y--;
+				blankRoom();
+				eventChangeRooms();
+			}
+			
+			if (playerLoc.y > 470 && loc.y != 9) {
+				loc.y++;
+				blankRoom();
+				eventChangeRooms();
+			}
+		}
+		
+	}
+	
 	public static void refreshBoard() {
 		blankRoom();
-		
+		g.drawString(roomArray[loc.x][loc.y].typeOfRoom, 0, 10);
+		g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
+		g.drawString("[" + playerLoc.x + "][" + playerLoc.y + "]", 0, 30);
 	}
 	
 	public static void drawPlayer() {
@@ -63,22 +99,46 @@ public class SimpleDungeonCrawler {
 		xPoints[2] = playerLoc.x;
 		yPoints[2] = playerLoc.y + 10;
 		character = new Polygon(xPoints, yPoints, 3);
-		blankRoom();
+		refreshBoard();
 		g.drawPolygon(character);
 	}
 	
+	public static boolean playerIsInsideBox() {
+		boolean withinBox = false;
+		if (playerLoc.x >= 34 && playerLoc.x <= 466 && playerLoc.y >= 34 && playerLoc.y <= 466) {
+			withinBox = true;
+		}
+		return withinBox;
+	}
+	
 	public static void movePlayer(String direction) {
-		if (direction.equals("left") && playerLoc.x >= 5) { 
-			playerLoc.x -= 5;
+		if (direction.equals("left")) { 
+			if (playerLoc.y < 300 && playerLoc.y > 200) {
+				playerLoc.x -= playerSpeed;
+			} else if (playerIsInsideBox()) {
+				playerLoc.x -= playerSpeed;
+			}
 		}
-		if (direction.equals("right") && playerLoc.x <= 495) {
-			playerLoc.x += 5;
+		if (direction.equals("right")) {
+			if (playerLoc.y < 300 && playerLoc.y > 200) {
+				playerLoc.x += playerSpeed;
+			} else if (playerIsInsideBox()) {
+				playerLoc.x += playerSpeed;
+			}
 		}
-		if (direction.equals("up") && playerLoc.y >= 5) { 
-			playerLoc.y -= 5;
+		if (direction.equals("up")) { 
+			if (playerLoc.x < 300 && playerLoc.x > 200) {
+				playerLoc.y -= playerSpeed;
+			} else if (playerIsInsideBox()) {
+				playerLoc.y -= playerSpeed;
+			}
 		}
-		if (direction.equals("down") && playerLoc.y <= 495) { 
-			playerLoc.y += 5;
+		if (direction.equals("down")) { 
+			if (playerLoc.x < 300 && playerLoc.x > 200) {
+				playerLoc.y += playerSpeed;
+			} else if (playerIsInsideBox()) {
+				playerLoc.y += playerSpeed;
+			}
 		}
 		drawPlayer();
 	}
@@ -106,13 +166,14 @@ public class SimpleDungeonCrawler {
 				g.drawString("Congratulations, You Have Found Your TREASURE", 150, 250);
 			}
 			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
-			System.out.println("[" + loc.x + "][" + loc.y + "]");
+			//System.out.println("[" + loc.x + "][" + loc.y + "]");
 		} else {
 			StandardRoom current = roomArray[loc.x][loc.y];
 			g.drawString(current.typeOfRoom, 150, 250);
 			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
-			System.out.println("[" + loc.x + "][" + loc.y + "]");
+			//System.out.println("[" + loc.x + "][" + loc.y + "]");
 		}
+		playerLoc = new Point(250, 250);
 	}
 
 	public static void leftArrow() {
