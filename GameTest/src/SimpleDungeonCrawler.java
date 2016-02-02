@@ -40,12 +40,21 @@ public class SimpleDungeonCrawler {
 		blankRoom();
 		roomArray[0][0] = new StandardRoom();
 		drawPlayer();
+		Thread watchA = new KeyListenerThread("a");
+		Thread watchS = new KeyListenerThread("s");
+		Thread watchD = new KeyListenerThread("d");
+		Thread watchW = new KeyListenerThread("w");
+		watchA.start();
+		watchS.start();
+		watchD.start();
+		watchW.start();
 		while (end) {
 			synchronized (keyBoard) {
 				keyBoard.wait();
 			}
 			KeyEvent key = KeyPress.whichKey;
 			String keyName = Character.toString(key.getKeyChar());
+			
 			checkIfLeavingRoom();
 			//System.out.println("You pressed " + key.getKeyChar() + "!");
 		}
