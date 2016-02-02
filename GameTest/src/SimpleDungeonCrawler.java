@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.io.*;
@@ -10,11 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
+import javax.imageio.ImageIO;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
@@ -40,14 +43,9 @@ public class SimpleDungeonCrawler {
 		blankRoom();
 		roomArray[0][0] = new StandardRoom();
 		drawPlayer();
-		Thread watchA = new KeyListenerThread("a");
-		Thread watchS = new KeyListenerThread("s");
-		Thread watchD = new KeyListenerThread("d");
-		Thread watchW = new KeyListenerThread("w");
-		watchA.start();
-		watchS.start();
-		watchD.start();
-		watchW.start();
+		Image img = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
+		g.drawImage(img, 0, 0, null);
+		panel.setBackground(img);
 		while (end) {
 			synchronized (keyBoard) {
 				keyBoard.wait();
