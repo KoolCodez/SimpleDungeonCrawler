@@ -16,10 +16,11 @@ public class KeyPress implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		boolean keyPressedLocal = keyIsPressed;
 		keyIsPressed = true;
-		if (!keyPressedLocal) {
+		System.out.println("you just typed: " + Character.toString(e.getKeyChar()));
+		/*if (!keyPressedLocal) {
 			Thread t1 = new NewThread(Character.toString(e.getKeyChar()));
 			t1.start();
-		}
+		}*/
 		/*switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
 			if (GameTest.loc.y != 0) {
