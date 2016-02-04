@@ -12,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,36 +27,28 @@ public class SimpleDungeonCrawler {
 	public static boolean end;
 	public static final String S_PRESSED = "S";
 	public static Polygon character;
-	public static DrawingPanel panel = new DrawingPanel(500, 500);
-	public static Graphics g = panel.getGraphics();
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
 	public static Point playerLoc = new Point(250, 250);
 	public static int playerSpeed = 10;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
+		JFrame frame = new JFrame("PENIS");
+		frame.setSize(500, 500);
+		frame.setLayout(null);
+		frame.setVisible(true);
+		JPanel panel = new JPanel();
+		panel.setSize(500, 500);
+		panel.setLayout(null);
+		panel.setVisible(true);
+		frame.add(panel);
+		InputMap inputMap = panel.getInputMap();
 		KeyPress keyBoard = new KeyPress();
 		panel.addKeyListener(keyBoard);
-		MouseClick mouse = new MouseClick();
-		panel.addMouseListener(mouse);
-		end = true;
+		
 		Point p = new Point(0, 10);
-		blankRoom();
 		roomArray[0][0] = new StandardRoom();
-		drawPlayer();
 		Image img = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
-		g.drawImage(img, 0, 0, null);
-		panel.setBackground(img);
-		while (end) {
-			synchronized (keyBoard) {
-				keyBoard.wait();
-			}
-			KeyEvent key = KeyPress.whichKey;
-			String keyName = Character.toString(key.getKeyChar());
-			
-			checkIfLeavingRoom();
-			//System.out.println("You pressed " + key.getKeyChar() + "!");
-		}
 	}
 	
 	public static void checkIfLeavingRoom() {
@@ -91,9 +84,9 @@ public class SimpleDungeonCrawler {
 	
 	public static void refreshBoard() {
 		blankRoom();
-		g.drawString(roomArray[loc.x][loc.y].typeOfRoom, 0, 10);
-		g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
-		g.drawString("[" + playerLoc.x + "][" + playerLoc.y + "]", 0, 30);
+		//g.drawString(roomArray[loc.x][loc.y].typeOfRoom, 0, 10);
+		//g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
+		//g.drawString("[" + playerLoc.x + "][" + playerLoc.y + "]", 0, 30);
 	}
 	
 	public static void drawPlayer() {
@@ -107,7 +100,6 @@ public class SimpleDungeonCrawler {
 		yPoints[2] = playerLoc.y + 10;
 		character = new Polygon(xPoints, yPoints, 3);
 		refreshBoard();
-		g.drawPolygon(character);
 	}
 	
 	public static boolean playerIsInsideBox() {
@@ -151,11 +143,11 @@ public class SimpleDungeonCrawler {
 	}
 	
 	public static void blankRoom() {
-		g.setColor(Color.white);
+		/*g.setColor(Color.white);
 		g.fillRect(0, 0, 500, 500);
 		g.setColor(Color.black);
 		drawArrows();
-		g.drawRect(34, 34, 432, 432);
+		g.drawRect(34, 34, 432, 432);*/
 	}
 	
 	public static void eventChangeRooms() {
@@ -164,20 +156,20 @@ public class SimpleDungeonCrawler {
 			roomArray[loc.x][loc.y] = new StandardRoom();
 			StandardRoom current = roomArray[loc.x][loc.y];
 			if (current.typeOfRoom.equals("battle")) {
-				g.drawString("Let The Battle COMMENCE!!", 150, 250);
+				
 			}
 			if (current.typeOfRoom.equals("puzzle")) {
-				g.drawString("Prepare to Have Your MIND MELTED!", 150, 250);
+				
 			}
 			if (current.typeOfRoom.equals("treasure")) {
-				g.drawString("Congratulations, You Have Found Your TREASURE", 150, 250);
+				
 			}
-			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
+			//g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			//System.out.println("[" + loc.x + "][" + loc.y + "]");
 		} else {
 			StandardRoom current = roomArray[loc.x][loc.y];
-			g.drawString(current.typeOfRoom, 150, 250);
-			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
+			//g.drawString(current.typeOfRoom, 150, 250);
+			//g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			//System.out.println("[" + loc.x + "][" + loc.y + "]");
 		}
 		playerLoc = new Point(250, 250);
@@ -194,7 +186,7 @@ public class SimpleDungeonCrawler {
 		xPoints[2] = 25;
 		yPoints[2] = 275;
 		Polygon leftArrow = new Polygon(xPoints, yPoints, n);
-		g.drawPolygon(leftArrow);
+		
 	}
 	
 	public static void upArrow() {
@@ -208,7 +200,6 @@ public class SimpleDungeonCrawler {
 		xPoints[2] = 275;
 		yPoints[2] = 25;
 		Polygon upArrow = new Polygon(xPoints, yPoints, n);
-		g.drawPolygon(upArrow);
 	}
 	
 	public static void rightArrow() {
@@ -222,7 +213,6 @@ public class SimpleDungeonCrawler {
 		xPoints[2] = 475;
 		yPoints[2] = 275;
 		Polygon rightArrow = new Polygon(xPoints, yPoints, n);
-		g.drawPolygon(rightArrow);
 	}
 	
 	public static void downArrow() {
@@ -236,7 +226,6 @@ public class SimpleDungeonCrawler {
 		xPoints[2] = 275;
 		yPoints[2] = 475;
 		Polygon downArrow = new Polygon(xPoints, yPoints, n);
-		g.drawPolygon(downArrow);
 	}
 	
 	public static void drawArrows() {
@@ -257,7 +246,6 @@ public class SimpleDungeonCrawler {
 		xPoints[2] = 60;
 		yPoints[2] = 270;
 		Polygon leftArrow = new Polygon(xPoints, yPoints, n);
-		g.drawPolygon(leftArrow);
 	}
 	
 }
