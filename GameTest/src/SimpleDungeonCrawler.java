@@ -35,7 +35,8 @@ public class SimpleDungeonCrawler {
 		frame.setSize(500, 500);
 		frame.setLayout(null);
 		frame.setVisible(true);
-		
+		KeyPress keyListener = new KeyPress();
+		frame.add(keyListener);
 		Point p = new Point(0, 10);
 		roomArray[0][0] = new StandardRoom();
 		backgroundImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
