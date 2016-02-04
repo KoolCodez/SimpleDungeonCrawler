@@ -7,6 +7,7 @@ import java.io.*;
 
 import javax.swing.*;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -28,18 +29,22 @@ public class SimpleDungeonCrawler {
 	public static Image backgroundImg;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
-		JFrame frame = new JFrame();
-		JButton button = new JButton("click");
-		button.setBounds(130,100,100, 40);
-		frame.add(button);
+		JFrame frame = new JFrame("PENIS");
 		frame.setSize(500, 500);
 		frame.setLayout(null);
 		frame.setVisible(true);
-		KeyPress keyListener = new KeyPress();
-		frame.add(keyListener);
+		JPanel panel = new JPanel();
+		panel.setSize(500, 500);
+		panel.setLayout(null);
+		panel.setVisible(true);
+		frame.add(panel);
+		InputMap inputMap = panel.getInputMap();
+		KeyPress keyBoard = new KeyPress();
+		panel.addKeyListener(keyBoard);
+		
 		Point p = new Point(0, 10);
 		roomArray[0][0] = new StandardRoom();
-		backgroundImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
+		Image img = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
 	}
 	
 	public static void checkIfLeavingRoom() {
@@ -134,12 +139,11 @@ public class SimpleDungeonCrawler {
 	}
 	
 	public static void blankRoom() {
-		//g.setColor(Color.white);
-		//g.fillRect(0, 0, 500, 500);
-		//g.setColor(Color.yellow);
-		//g.drawImage(backgroundImg, 0, 0, null);
-		//g.drawRect(34, 34, 432, 432);
-		//drawArrows();
+		/*g.setColor(Color.white);
+		g.fillRect(0, 0, 500, 500);
+		g.setColor(Color.black);
+		drawArrows();
+		g.drawRect(34, 34, 432, 432);*/
 	}
 	
 	public static void eventChangeRooms() {
@@ -148,10 +152,13 @@ public class SimpleDungeonCrawler {
 			roomArray[loc.x][loc.y] = new StandardRoom();
 			StandardRoom current = roomArray[loc.x][loc.y];
 			if (current.typeOfRoom.equals("battle")) {
-
+				
 			}
 			if (current.typeOfRoom.equals("puzzle")) {
-
+				
+			}
+			if (current.typeOfRoom.equals("puzzle")) {
+				
 			}
 			if (current.typeOfRoom.equals("treasure")) {
 				
