@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -9,6 +10,7 @@ import javax.swing.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -27,25 +29,40 @@ public class SimpleDungeonCrawler {
 	public static Point playerLoc = new Point(250, 250);
 	public static int playerSpeed = 10;
 	public static Image backgroundImg;
+	public static Graphics g;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		JFrame frame = new JFrame("PENIS");
-		frame.setSize(500, 500);
-		frame.setLayout(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setSize(500, 500);
+		frame.setBounds(0, 0, 516, 538);
+		frame.getContentPane().add(new CreateCanvas());
 		frame.setVisible(true);
+		frame.addKeyListener(new KeyPress());
 		JPanel panel = new JPanel();
-		panel.setSize(500, 500);
-		panel.setLayout(null);
+		panel.setSize(400, 400);
 		panel.setVisible(true);
+		Cursor cursor = new Cursor(2);
+		panel.setLocation(10, 10);
+		panel.setCursor(cursor);
+		//panel.setLayout(null);
 		frame.add(panel);
 		InputMap inputMap = panel.getInputMap();
-		KeyPress keyBoard = new KeyPress();
-		panel.addKeyListener(keyBoard);
-		
+		Action doNothing = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        System.out.println("nothing");
+		    }
+		};
+		panel.getInputMap().put(KeyStroke.getKeyStroke("a"), "move left");
+		panel.getActionMap().put("move left", doNothing);
+		//KeyPress keyBoard = new KeyPress();
+		//panel.addKeyListener(keyBoard);
 		Point p = new Point(0, 10);
-		roomArray[0][0] = new StandardRoom();
-		Image img = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
+		//roomArray[0][0] = new StandardRoom();
+		
 	}
+
+	
 	
 	public static void checkIfLeavingRoom() {
 		if (playerLoc.y >= 200 && playerLoc.y <= 300) {

@@ -7,6 +7,7 @@ public class KeyPress implements KeyListener {
 	public static boolean keyIsPressed;
 	public static boolean drawDone;
 
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -24,7 +25,7 @@ public class KeyPress implements KeyListener {
 			Thread t1 = new NewThread(Character.toString(e.getKeyChar()));
 			t1.start();
 		}*/
-		String keyType = Character.toString(e.getKeyChar());
+		/*String keyType = Character.toString(e.getKeyChar());
 		if (drawDone) {
 			if (keyType.equals("a")) {
 				SimpleDungeonCrawler.movePlayer("left");
@@ -38,7 +39,7 @@ public class KeyPress implements KeyListener {
 			if (keyType.equals("s")) {
 				SimpleDungeonCrawler.movePlayer("down");
 			}
-		}
+		}*/
 		/*switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
 			if (GameTest.loc.y != 0) {
