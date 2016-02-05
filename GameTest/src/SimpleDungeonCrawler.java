@@ -1,10 +1,13 @@
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Toolkit;
 import java.io.*;
+import java.util.Random;
 
 import javax.swing.*;
 import javax.imageio.ImageIO;
@@ -20,7 +23,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
 
-public class SimpleDungeonCrawler {
+public class SimpleDungeonCrawler extends JPanel {
 	public static boolean end;
 	public static final String S_PRESSED = "S";
 	public static Polygon character;
@@ -32,36 +35,34 @@ public class SimpleDungeonCrawler {
 	public static Graphics g;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
+		BufferedImage backgroundImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
+		BufferedImage characterImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Lame Dude"));
 		JFrame frame = new JFrame("PENIS");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setSize(500, 500);
-		frame.setBounds(0, 0, 516, 538);
-		frame.getContentPane().add(new CreateCanvas());
+		frame.setSize(500, 500);
 		frame.setVisible(true);
-		frame.addKeyListener(new KeyPress());
-		JPanel panel = new JPanel();
-		panel.setSize(400, 400);
-		panel.setVisible(true);
-		Cursor cursor = new Cursor(2);
-		panel.setLocation(10, 10);
-		panel.setCursor(cursor);
-		//panel.setLayout(null);
+		JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImg, 0, 0, null);
+            }
+        };
 		frame.add(panel);
-		InputMap inputMap = panel.getInputMap();
+		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap acMap = panel.getActionMap();
 		Action doNothing = new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
 		        System.out.println("nothing");
 		    }
 		};
-		panel.getInputMap().put(KeyStroke.getKeyStroke("a"), "move left");
-		panel.getActionMap().put("move left", doNothing);
-		//KeyPress keyBoard = new KeyPress();
-		//panel.addKeyListener(keyBoard);
+		inMap.put(KeyStroke.getKeyStroke("A"), "move left");
+		acMap.put("move left", doNothing);
 		Point p = new Point(0, 10);
+		//panel.repaint();
 		//roomArray[0][0] = new StandardRoom();
 		
 	}
-
 	
 	
 	public static void checkIfLeavingRoom() {
