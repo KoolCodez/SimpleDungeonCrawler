@@ -20,7 +20,7 @@ public class NewThread extends Thread {
 				if (keyType.equals("s")) {
 					SimpleDungeonCrawler.movePlayer("down");
 				}
-				Thread.sleep(100);
+				Thread.sleep(50);
 			}
 
 		} catch (InterruptedException e) {
