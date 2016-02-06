@@ -1,19 +1,19 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Toolkit;
 import java.io.*;
+import java.util.Random;
 
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -23,7 +23,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
 
-public class SimpleDungeonCrawler {
+public class SimpleDungeonCrawler extends JPanel {
 	public static boolean end;
 	public static final String S_PRESSED = "S";
 	public static Polygon character;
@@ -31,25 +31,39 @@ public class SimpleDungeonCrawler {
 	public static Point loc = new Point(0, 0);
 	public static Point playerLoc = new Point(250, 250);
 	public static int playerSpeed = 10;
+	public static Image backgroundImg;
+	public static Graphics g;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
+		BufferedImage backgroundImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
+		BufferedImage characterImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Lame Dude"));
 		JFrame frame = new JFrame("PENIS");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(500, 500);
-		frame.setLayout(null);
 		frame.setVisible(true);
-		JPanel panel = new JPanel();
-		panel.setSize(500, 500);
-		panel.setLayout(null);
-		panel.setVisible(true);
+		JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImg, 0, 0, null);
+            }
+        };
 		frame.add(panel);
-		InputMap inputMap = panel.getInputMap();
-		KeyPress keyBoard = new KeyPress();
-		panel.addKeyListener(keyBoard);
-		
+		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap acMap = panel.getActionMap();
+		Action doNothing = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        System.out.println("nothing");
+		    }
+		};
+		inMap.put(KeyStroke.getKeyStroke("A"), "move left");
+		acMap.put("move left", doNothing);
 		Point p = new Point(0, 10);
-		roomArray[0][0] = new StandardRoom();
-		Image img = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
+		//panel.repaint();
+		//roomArray[0][0] = new StandardRoom();
+		
 	}
+	
 	
 	public static void checkIfLeavingRoom() {
 		if (playerLoc.y >= 200 && playerLoc.y <= 300) {
@@ -161,6 +175,9 @@ public class SimpleDungeonCrawler {
 			if (current.typeOfRoom.equals("puzzle")) {
 				
 			}
+			if (current.typeOfRoom.equals("puzzle")) {
+				
+			}
 			if (current.typeOfRoom.equals("treasure")) {
 				
 			}
@@ -186,7 +203,6 @@ public class SimpleDungeonCrawler {
 		xPoints[2] = 25;
 		yPoints[2] = 275;
 		Polygon leftArrow = new Polygon(xPoints, yPoints, n);
-		
 	}
 	
 	public static void upArrow() {

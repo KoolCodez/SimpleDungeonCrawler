@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /DrawingPanel$DiffImage.class
 /DrawingPanel$ImagePanel.class
 /DrawingPanel$IndexGif89Frame.class
@@ -12,3 +13,8 @@
 /PuzzleRoom.class
 /SimpleDungeonCrawler.class
 /StandardRoom.class
+=======
+/CreateCanvas.class
+/SimpleDungeonCrawler$1.class
+/SimpleDungeonCrawler$2.class
+>>>>>>> origin/master
