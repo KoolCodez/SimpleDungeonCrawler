@@ -35,29 +35,61 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Graphics g;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
-		BufferedImage backgroundImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
-		BufferedImage characterImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Lame Dude"));
-		JFrame frame = new JFrame("PENIS");
+		String current = System.getProperty("user.dir");
+        System.out.println("Current working directory in Java : " + current);
+		BufferedImage backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
+		BufferedImage characterImg = ImageIO.read(new File("src\\Textures\\LameGuy.jpg"));
+		JFrame frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(500, 500);
+		frame.setSize(1000, 1000);
 		frame.setVisible(true);
 		JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(backgroundImg, 0, 0, null);
+                g.drawImage(characterImg, playerLoc.x, playerLoc.y, null);
             }
         };
 		frame.add(panel);
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = panel.getActionMap();
-		Action doNothing = new AbstractAction() {
+		Action moveLeft = new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-		        System.out.println("nothing");
+		        movePlayer("left");
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		Action moveRight = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        movePlayer("right");
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		Action moveUp = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        movePlayer("up");
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		Action moveDown = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        movePlayer("down");
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
 		    }
 		};
 		inMap.put(KeyStroke.getKeyStroke("A"), "move left");
-		acMap.put("move left", doNothing);
+		acMap.put("move left", moveLeft);
+		inMap.put(KeyStroke.getKeyStroke("D"), "move right");
+		acMap.put("move right", moveRight);
+		inMap.put(KeyStroke.getKeyStroke("W"), "move up");
+		acMap.put("move up", moveUp);
+		inMap.put(KeyStroke.getKeyStroke("S"), "move down");
+		acMap.put("move down", moveDown);
 		Point p = new Point(0, 10);
 		//panel.repaint();
 		//roomArray[0][0] = new StandardRoom();
@@ -153,7 +185,6 @@ public class SimpleDungeonCrawler extends JPanel {
 				playerLoc.y += playerSpeed;
 			}
 		}
-		drawPlayer();
 	}
 	
 	public static void blankRoom() {
