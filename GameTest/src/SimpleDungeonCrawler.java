@@ -33,35 +33,123 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static int playerSpeed = 10;
 	public static Image backgroundImg;
 	public static Graphics g;
+	public static boolean movingLeft = false;
+	public static boolean movingRight = false;
+	public static boolean movingUp = false;
+	public static boolean movingDown = false;
+	public static JFrame frame;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
-		BufferedImage backgroundImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Textures\\BasicGround.jpg"));
-		BufferedImage characterImg = ImageIO.read(new File("C:\\Users\\gaubnik000\\My Documents\\Github\\SimpleDungeonCrawler\\Lame Dude"));
-		JFrame frame = new JFrame("PENIS");
+		String current = System.getProperty("user.dir");
+        System.out.println("Current working directory in Java : " + current);
+		BufferedImage backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
+		BufferedImage characterImg = ImageIO.read(new File("src\\Textures\\BetterDuder.jpg"));
+		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(500, 500);
+		frame.setSize(1000, 1000);
 		frame.setVisible(true);
 		JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(backgroundImg, 0, 0, null);
+                g.drawImage(characterImg, playerLoc.x, playerLoc.y, null);
             }
         };
 		frame.add(panel);
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = panel.getActionMap();
-		Action doNothing = new AbstractAction() {
-		    public void actionPerformed(ActionEvent e) {
-		        System.out.println("nothing");
-		    }
-		};
-		inMap.put(KeyStroke.getKeyStroke("A"), "move left");
-		acMap.put("move left", doNothing);
+		createKeyBindings(inMap, acMap, frame);
+		
 		Point p = new Point(0, 10);
 		//panel.repaint();
 		//roomArray[0][0] = new StandardRoom();
 		
+	}
+	
+	public static void createKeyBindings(InputMap inMap, ActionMap acMap, JFrame frame) {
+		Action moveLeft = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		    	if (!movingLeft) {
+		    	movingLeft = true;
+		        	MoveLeft t1 = new MoveLeft();
+		        	t1.start();
+		    	}
+		    }
+		};
+		Action stopMoveLeft = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        movingLeft = false;
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		
+		Action moveRight = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		    	movingRight = true;
+		        movePlayer("right");
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		Action stopMoveRight = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        movingRight = false;
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		
+		Action moveUp = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		    	movingUp = true;
+		        movePlayer("up");
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		Action stopMoveUp = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        movingUp = false;
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		
+		Action moveDown = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		    	movingDown = true;
+		        movePlayer("down");
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		Action stopMoveDown = new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        movingDown = false;
+		        frame.getContentPane().validate();
+		        frame.getContentPane().repaint();
+		    }
+		};
+		
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "move left");
+		acMap.put("move left", moveLeft);
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "stop move left");
+		acMap.put("stop move left", stopMoveLeft);
+		
+		inMap.put(KeyStroke.getKeyStroke("D"), "move right");
+		acMap.put("move right", moveRight);
+		inMap.put(KeyStroke.getKeyStroke("released D"), "stop move right");
+		acMap.put("stop move right", stopMoveRight);
+		inMap.put(KeyStroke.getKeyStroke("W"), "move up");
+		acMap.put("move up", moveUp);
+		inMap.put(KeyStroke.getKeyStroke("released W"), "stop move up");
+		acMap.put("stop move up", stopMoveUp);
+		inMap.put(KeyStroke.getKeyStroke("S"), "move down");
+		acMap.put("move down", moveDown);
+		inMap.put(KeyStroke.getKeyStroke("released S"), "stop move down");
+		acMap.put("stop move down", stopMoveDown);
 	}
 	
 	
@@ -153,7 +241,6 @@ public class SimpleDungeonCrawler extends JPanel {
 				playerLoc.y += playerSpeed;
 			}
 		}
-		drawPlayer();
 	}
 	
 	public static void blankRoom() {
