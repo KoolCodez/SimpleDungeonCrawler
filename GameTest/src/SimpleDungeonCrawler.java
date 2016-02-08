@@ -30,7 +30,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
 	public static Point playerLoc = new Point(250, 250);
-	public static int playerSpeed = 10;
+	public static int playerSpeed = 2;
 	public static Image backgroundImg;
 	public static Graphics g;
 	public static boolean movingLeft = false;
@@ -87,10 +87,11 @@ public class SimpleDungeonCrawler extends JPanel {
 		
 		Action moveRight = new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-		    	movingRight = true;
-		        movePlayer("right");
-		        frame.getContentPane().validate();
-		        frame.getContentPane().repaint();
+		    	if (!movingRight) {
+			    	movingRight = true;
+			        	MoveRight t1 = new MoveRight();
+			        	t1.start();
+			    	}
 		    }
 		};
 		Action stopMoveRight = new AbstractAction() {
@@ -103,10 +104,11 @@ public class SimpleDungeonCrawler extends JPanel {
 		
 		Action moveUp = new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-		    	movingUp = true;
-		        movePlayer("up");
-		        frame.getContentPane().validate();
-		        frame.getContentPane().repaint();
+		    	if (!movingUp) {
+			    	movingUp = true;
+			        	MoveUp t1 = new MoveUp();
+			        	t1.start();
+			    	}
 		    }
 		};
 		Action stopMoveUp = new AbstractAction() {
@@ -119,10 +121,11 @@ public class SimpleDungeonCrawler extends JPanel {
 		
 		Action moveDown = new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-		    	movingDown = true;
-		        movePlayer("down");
-		        frame.getContentPane().validate();
-		        frame.getContentPane().repaint();
+		    	if (!movingDown) {
+			    	movingDown = true;
+			        	MoveDown t1 = new MoveDown();
+			        	t1.start();
+			    	}
 		    }
 		};
 		Action stopMoveDown = new AbstractAction() {

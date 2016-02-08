@@ -1,10 +1,9 @@
 
-
-public class MoveLeft extends Thread{
+public class MoveRight extends Thread {
 	public void run() {
 		try {
-			while (SimpleDungeonCrawler.movingLeft) {
-				SimpleDungeonCrawler.movePlayer("left");
+			while (SimpleDungeonCrawler.movingRight) {
+				SimpleDungeonCrawler.movePlayer("right");
 				SimpleDungeonCrawler.frame.getContentPane().validate();
 				SimpleDungeonCrawler.frame.getContentPane().repaint();
 				Thread.sleep(10);
@@ -14,4 +13,5 @@ public class MoveLeft extends Thread{
 			System.out.println("sleep interrupted");
 		}
 	}
+
 }
