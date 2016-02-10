@@ -141,17 +141,19 @@ public class SimpleDungeonCrawler extends JPanel {
 		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "stop move left");
 		acMap.put("stop move left", stopMoveLeft);
 		
-		inMap.put(KeyStroke.getKeyStroke("D"), "move right");
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false), "move right");
 		acMap.put("move right", moveRight);
-		inMap.put(KeyStroke.getKeyStroke("released D"), "stop move right");
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "stop move right");
 		acMap.put("stop move right", stopMoveRight);
-		inMap.put(KeyStroke.getKeyStroke("W"), "move up");
+		
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "move up");
 		acMap.put("move up", moveUp);
-		inMap.put(KeyStroke.getKeyStroke("released W"), "stop move up");
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "stop move up");
 		acMap.put("stop move up", stopMoveUp);
-		inMap.put(KeyStroke.getKeyStroke("S"), "move down");
+		
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, false), "move down");
 		acMap.put("move down", moveDown);
-		inMap.put(KeyStroke.getKeyStroke("released S"), "stop move down");
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true), "stop move down");
 		acMap.put("stop move down", stopMoveDown);
 	}
 	
@@ -207,40 +209,48 @@ public class SimpleDungeonCrawler extends JPanel {
 		refreshBoard();
 	}
 	
-	public static boolean playerIsInsideBox() {
-		boolean withinBox = false;
-		if (playerLoc.x >= 34 && playerLoc.x <= 466 && playerLoc.y >= 34 && playerLoc.y <= 466) {
-			withinBox = true;
+	public static boolean legalMove(String direction) {
+		boolean isLegal = false;
+		if (direction.equals("left")) {
+			if (playerLoc.x - playerSpeed >= 2) {
+				isLegal = true;
+			}
+		} else if (direction.equals("right")) {
+			if (playerLoc.x + playerSpeed <= 498) {
+				isLegal = true;
+			}
+		} else if (direction.equals("up")) {
+			if (playerLoc.y - playerSpeed >= 2) {
+				isLegal = true;
+			}
+		} else if (direction.equals("down")) {
+			if (playerLoc.y + playerSpeed <= 498) {
+				isLegal = true;
+			}
 		}
-		return withinBox;
+		
+		
+		return isLegal;
 	}
 	
 	public static void movePlayer(String direction) {
 		if (direction.equals("left")) { 
-			if (playerLoc.y < 300 && playerLoc.y > 200) {
-				playerLoc.x -= playerSpeed;
-			} else if (playerIsInsideBox()) {
+			if (legalMove(direction)) {
 				playerLoc.x -= playerSpeed;
 			}
 		}
 		if (direction.equals("right")) {
-			if (playerLoc.y < 300 && playerLoc.y > 200) {
-				playerLoc.x += playerSpeed;
-			} else if (playerIsInsideBox()) {
+			if (legalMove(direction)) {
 				playerLoc.x += playerSpeed;
 			}
 		}
 		if (direction.equals("up")) { 
-			if (playerLoc.x < 300 && playerLoc.x > 200) {
-				playerLoc.y -= playerSpeed;
-			} else if (playerIsInsideBox()) {
+			if (legalMove(direction)) {
 				playerLoc.y -= playerSpeed;
 			}
 		}
 		if (direction.equals("down")) { 
-			if (playerLoc.x < 300 && playerLoc.x > 200) {
-				playerLoc.y += playerSpeed;
-			} else if (playerIsInsideBox()) {
+			if (legalMove(direction)) {
 				playerLoc.y += playerSpeed;
 			}
 		}
