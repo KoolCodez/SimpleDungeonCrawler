@@ -3,8 +3,10 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.MenuItem;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.io.*;
 import java.util.Random;
@@ -41,13 +43,15 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String current = System.getProperty("user.dir");
-		System.out.println("Current working directory in Java : " + current);
+		//System.out.println("Current working directory in Java : " + current);
 		BufferedImage backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
 		BufferedImage characterImg = ImageIO.read(new File("src\\Textures\\BetterDuder.jpg"));
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);
+		g = frame.getGraphics();
+		g.setColor(Color.white);
 		JPanel panel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -56,14 +60,19 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.drawImage(characterImg, playerLoc.x, playerLoc.y, null);
 			}
 		};
+		//JButton startFight = new JButton("MORTAL KOMBAT");
+		//startFight.setBounds(40, 40, 100, 30);
+		//JPopupMenu fightMenu = new JPopupMenu("Fight");
+		//fightMenu.setBounds(50, 50, 100, 200);
+		//startFight.add(fightMenu);
+		//frame.add(startFight);
 		frame.add(panel);
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = panel.getActionMap();
 		createKeyBindings(inMap, acMap, frame);
 
 		Point p = new Point(0, 10);
-		// panel.repaint();
-		// roomArray[0][0] = new StandardRoom();
+		roomArray[0][0] = new StandardRoom();
 
 	}
 
@@ -158,30 +167,26 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void checkIfLeavingRoom() {
-		if (playerLoc.y >= 200 && playerLoc.y <= 300) {
+		if (playerLoc.y >= 200 && playerLoc.y <= 254) {
 			if (playerLoc.x < 30 && loc.x != 0) {
 				loc.x--;
-				blankRoom();
 				eventChangeRooms();
 
 			}
 
-			if (playerLoc.x > 470 && loc.x != 9) {
+			if (playerLoc.x > 444 && loc.x != 9) {
 				loc.x++;
-				blankRoom();
 				eventChangeRooms();
 			}
 		}
-		if (playerLoc.x >= 200 && playerLoc.x <= 300) {
+		if (playerLoc.x >= 200 && playerLoc.x <= 264) {
 			if (playerLoc.y < 30 && loc.y != 0) {
 				loc.y--;
-				blankRoom();
 				eventChangeRooms();
 			}
 
-			if (playerLoc.y > 470 && loc.y != 9) {
+			if (playerLoc.y > 434 && loc.y != 9) {
 				loc.y++;
-				blankRoom();
 				eventChangeRooms();
 			}
 		}
@@ -208,53 +213,64 @@ public class SimpleDungeonCrawler extends JPanel {
 		refreshBoard();
 	}
 
-	public static boolean legalMove(String direction) { //character 46 tall, 36 wide // wall 34
+	public static boolean legalMove(String direction) { // character 46 tall, 36
+														// wide // wall 34
 		boolean isLegal = false;
-		if (direction.equals("left")) {
-			if (playerLoc.x - playerSpeed >= 36 && playerLoc.y <= 418 && playerLoc.y >= 36) {
+		int leftSide = playerLoc.x;
+		int rightSide = playerLoc.x + 36;
+		int top = playerLoc.y;
+		int bottom = playerLoc.y + 46;
+		// movement bounded to the floor of the room.
+		if (direction.equals("left")) { // move left
+			if (leftSide - playerSpeed >= 36 && bottom <= 464 && top >= 36) {
 				isLegal = true;
 			}
-		} else if (direction.equals("right")) {
-			if (playerLoc.x + playerSpeed <= 428 && playerLoc.y <= 418 && playerLoc.y >= 36) {
+		} else if (direction.equals("right")) { // move right
+			if (rightSide + playerSpeed <= 464 && bottom <= 464 && top >= 36) {
 				isLegal = true;
 			}
-		} else if (direction.equals("up")) {
-			if (playerLoc.y - playerSpeed >= 36 && playerLoc.x <= 428 && playerLoc.x >= 36) {
+		} else if (direction.equals("up")) { // move up
+			if (top - playerSpeed >= 36 && rightSide <= 464 && leftSide >= 36) {
 				isLegal = true;
 			}
-		} else if (direction.equals("down")) {
-			if (playerLoc.y + playerSpeed <= 418 && playerLoc.x <= 428 && playerLoc.x >= 36) {
-				isLegal = true;
-			}
-		}
-		if (direction.equals("left") || direction.equals("right")) {
-			if (playerLoc.y >= 200 && playerLoc.y <= 300 && playerLoc.x - playerSpeed >= 2 && playerLoc.x + playerSpeed <= 462) {
-				isLegal = true;
-			}
-		} else if (direction.equals("up")) {
-			if (playerLoc.y - playerSpeed >= 200 && playerLoc.y <= 300 && playerLoc.x>= 2 && playerLoc.x <= 462) {
-				isLegal = true;
-			}
-		} else if (direction.equals("down")) {
-			if (playerLoc.y >= 200 && playerLoc.y + playerSpeed <= 300 && playerLoc.x >= 2 && playerLoc.x <= 462) {
+		} else if (direction.equals("down")) { // move down
+			if (bottom + playerSpeed <= 454 && rightSide <= 464 && leftSide >= 36) {
 				isLegal = true;
 			}
 		}
-		
-		if (direction.equals("up") || direction.equals("down")) {
-			if (playerLoc.x >= 200 && playerLoc.x <= 300 && playerLoc.y - playerSpeed >= 2 && playerLoc.y + playerSpeed <= 452) {
+		// movement bounded to the doorway area
+		if (direction.equals("left") || direction.equals("right")) { // left and
+																		// right
+																		// doorways
+			if (top >= 200 && bottom <= 300 && leftSide - playerSpeed >= 2 && rightSide + playerSpeed <= 498) {
+				isLegal = true;
+			}
+		} else if (direction.equals("up")) {
+			if (top - playerSpeed >= 200 && bottom <= 300 && leftSide >= 2 && rightSide <= 498) {
+				isLegal = true;
+			}
+		} else if (direction.equals("down")) {
+			if (top >= 200 && bottom + playerSpeed <= 300 && leftSide >= 2 && rightSide <= 498) {
+				isLegal = true;
+			}
+		}
+
+		if (direction.equals("up") || direction.equals("down")) { // top and
+																	// bottom
+																	// doorways
+			if (leftSide >= 200 && rightSide <= 300 && top - playerSpeed >= 2 && bottom + playerSpeed <= 498) {
 				isLegal = true;
 			}
 		} else if (direction.equals("left")) {
-				if (playerLoc.x - playerSpeed >= 200 && playerLoc.x <= 300 && playerLoc.y >= 2 && playerLoc.y <= 462) {
-					isLegal = true;
-				}
-			} else if (direction.equals("right")) {
-				if (playerLoc.x >= 200 && playerLoc.x + playerSpeed <= 300 && playerLoc.x >= 2 && playerLoc.x <= 462) {
-					isLegal = true;
-				}
+			if (leftSide - playerSpeed >= 200 && rightSide <= 300 && top >= 2 && bottom <= 498) {
+				isLegal = true;
 			}
-		
+		} else if (direction.equals("right")) {
+			if (leftSide >= 200 && rightSide + playerSpeed <= 300 && top >= 2 && bottom <= 462) {
+				isLegal = true;
+			}
+		}
+
 		return isLegal;
 	}
 
@@ -262,23 +278,28 @@ public class SimpleDungeonCrawler extends JPanel {
 		if (direction.equals("left")) {
 			if (legalMove(direction)) {
 				playerLoc.x -= playerSpeed;
+				checkIfLeavingRoom();
 			}
 		}
 		if (direction.equals("right")) {
 			if (legalMove(direction)) {
 				playerLoc.x += playerSpeed;
+				checkIfLeavingRoom();
 			}
 		}
 		if (direction.equals("up")) {
 			if (legalMove(direction)) {
 				playerLoc.y -= playerSpeed;
+				checkIfLeavingRoom();
 			}
 		}
 		if (direction.equals("down")) {
 			if (legalMove(direction)) {
 				playerLoc.y += playerSpeed;
+				checkIfLeavingRoom();
 			}
 		}
+		checkIfLeavingRoom();
 	}
 
 	public static void blankRoom() {
@@ -294,23 +315,20 @@ public class SimpleDungeonCrawler extends JPanel {
 			roomArray[loc.x][loc.y] = new StandardRoom();
 			StandardRoom current = roomArray[loc.x][loc.y];
 			if (current.typeOfRoom.equals("battle")) {
-
+				System.out.println("battle");
 			}
 			if (current.typeOfRoom.equals("puzzle")) {
-
-			}
-			if (current.typeOfRoom.equals("puzzle")) {
-
+				System.out.println("puzzle");
 			}
 			if (current.typeOfRoom.equals("treasure")) {
-
+				System.out.println("treasure");
 			}
-			// g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
+			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		} else {
 			StandardRoom current = roomArray[loc.x][loc.y];
-			// g.drawString(current.typeOfRoom, 150, 250);
-			// g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
+			g.drawString(current.typeOfRoom, 150, 250);
+			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		}
 		playerLoc = new Point(250, 250);
