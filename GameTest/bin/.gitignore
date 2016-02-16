@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /CreateCanvas.class
 /EntitiesInARoom.class
 /Entity.class
@@ -10,6 +11,9 @@
 /MoveUp.class
 /NewThread.class
 /PuzzleRoom.class
+=======
+/SimpleDungeonCrawler$10.class
+>>>>>>> origin/master
 /SimpleDungeonCrawler$1.class
 /SimpleDungeonCrawler$2.class
 /SimpleDungeonCrawler$3.class
@@ -19,5 +23,8 @@
 /SimpleDungeonCrawler$7.class
 /SimpleDungeonCrawler$8.class
 /SimpleDungeonCrawler$9.class
+<<<<<<< HEAD
 /SimpleDungeonCrawler.class
 /StandardRoom.class
+=======
+>>>>>>> origin/master
