@@ -4,10 +4,10 @@ public class MoveLeft extends Thread{
 	public void run() {
 		try {
 			while (SimpleDungeonCrawler.movingLeft) {
-				while (!SimpleDungeonCrawler.movingDown && !SimpleDungeonCrawler.movingUp) {
+				if (!SimpleDungeonCrawler.movingDown && !SimpleDungeonCrawler.movingUp) {
 					SimpleDungeonCrawler.movePlayer("left");
-					Thread.sleep(20);
 				}
+				Thread.sleep(20);
 			}
 
 		} catch (InterruptedException e) {

@@ -87,11 +87,10 @@ public class SimpleDungeonCrawler extends JPanel {
 						movingLeft = true;
 						MoveDownLeft t1 = new MoveDownLeft();
 						t1.start();
-					} else {
-						movingLeft = true;
-						MoveLeft t1 = new MoveLeft();
-						t1.start();
 					}
+					movingLeft = true;
+					MoveLeft t1 = new MoveLeft();
+					t1.start();
 				}
 			}
 		};
@@ -114,11 +113,10 @@ public class SimpleDungeonCrawler extends JPanel {
 						movingRight = true;
 						MoveDownRight t1 = new MoveDownRight();
 						t1.start();
-					} else {
-						movingRight = true;
-						MoveRight t1 = new MoveRight();
-						t1.start();
 					}
+					movingRight = true;
+					MoveRight t1 = new MoveRight();
+					t1.start();
 				}
 			}
 		};
@@ -141,11 +139,11 @@ public class SimpleDungeonCrawler extends JPanel {
 						movingUp = true;
 						MoveUpRight t1 = new MoveUpRight();
 						t1.start();
-					} else {
-						movingUp = true;
-						MoveUp t1 = new MoveUp();
-						t1.start();
 					}
+					movingUp = true;
+					MoveUp t1 = new MoveUp();
+					t1.start();
+					
 				}
 			}
 		};
@@ -168,11 +166,11 @@ public class SimpleDungeonCrawler extends JPanel {
 						movingDown = true;
 						MoveDownRight t1 = new MoveDownRight();
 						t1.start();
-					} else {
-						movingDown = true;
-						MoveDown t1 = new MoveDown();
-						t1.start();
 					}
+					movingDown = true;
+					MoveDown t1 = new MoveDown();
+					t1.start();
+
 				}
 			}
 		};
