@@ -32,7 +32,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
 	public static Point playerLoc = new Point(250, 250);
-	public static int playerSpeed = 2;
+	public static int playerSpeed = 4;
 	public static Image backgroundImg;
 	public static Graphics g;
 	public static boolean movingLeft = false;
@@ -60,17 +60,16 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.drawImage(characterImg, playerLoc.x, playerLoc.y, null);
 			}
 		};
-		//JButton startFight = new JButton("MORTAL KOMBAT");
-		//startFight.setBounds(40, 40, 100, 30);
-		//JPopupMenu fightMenu = new JPopupMenu("Fight");
-		//fightMenu.setBounds(50, 50, 100, 200);
-		//startFight.add(fightMenu);
-		//frame.add(startFight);
+		JButton attackButton = new JButton("ATTACK");
+		attackButton.setBounds(0, 0, 100, 50);
+		attackButton.setLocation(35, 35);
+		frame.add(attackButton);
 		frame.add(panel);
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = panel.getActionMap();
 		createKeyBindings(inMap, acMap, frame);
-
+		Refresh r1 = new Refresh();
+		r1.start();
 		Point p = new Point(0, 10);
 		roomArray[0][0] = new StandardRoom();
 
@@ -80,9 +79,19 @@ public class SimpleDungeonCrawler extends JPanel {
 		Action moveLeft = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				if (!movingLeft) {
-					movingLeft = true;
-					MoveLeft t1 = new MoveLeft();
-					t1.start();
+					if (movingUp) {
+						movingLeft = true;
+						MoveUpLeft t1 = new MoveUpLeft();
+						t1.start();
+					} else if(movingDown) {
+						movingLeft = true;
+						MoveDownLeft t1 = new MoveDownLeft();
+						t1.start();
+					} else {
+						movingLeft = true;
+						MoveLeft t1 = new MoveLeft();
+						t1.start();
+					}
 				}
 			}
 		};
@@ -97,9 +106,19 @@ public class SimpleDungeonCrawler extends JPanel {
 		Action moveRight = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				if (!movingRight) {
-					movingRight = true;
-					MoveRight t1 = new MoveRight();
-					t1.start();
+					if (movingUp) {
+						movingRight = true;
+						MoveUpRight t1 = new MoveUpRight();
+						t1.start();
+					} else if(movingDown) {
+						movingRight = true;
+						MoveDownRight t1 = new MoveDownRight();
+						t1.start();
+					} else {
+						movingRight = true;
+						MoveRight t1 = new MoveRight();
+						t1.start();
+					}
 				}
 			}
 		};
@@ -114,9 +133,19 @@ public class SimpleDungeonCrawler extends JPanel {
 		Action moveUp = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				if (!movingUp) {
-					movingUp = true;
-					MoveUp t1 = new MoveUp();
-					t1.start();
+					if (movingLeft) {
+						movingUp = true;
+						MoveUpLeft t1 = new MoveUpLeft();
+						t1.start();
+					} else if(movingRight) {
+						movingUp = true;
+						MoveUpRight t1 = new MoveUpRight();
+						t1.start();
+					} else {
+						movingUp = true;
+						MoveUp t1 = new MoveUp();
+						t1.start();
+					}
 				}
 			}
 		};
@@ -131,9 +160,19 @@ public class SimpleDungeonCrawler extends JPanel {
 		Action moveDown = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				if (!movingDown) {
-					movingDown = true;
-					MoveDown t1 = new MoveDown();
-					t1.start();
+					if (movingLeft) {
+						movingDown = true;
+						MoveDownLeft t1 = new MoveDownLeft();
+						t1.start();
+					} else if(movingRight) {
+						movingDown = true;
+						MoveDownRight t1 = new MoveDownRight();
+						t1.start();
+					} else {
+						movingDown = true;
+						MoveDown t1 = new MoveDown();
+						t1.start();
+					}
 				}
 			}
 		};
@@ -270,6 +309,19 @@ public class SimpleDungeonCrawler extends JPanel {
 				isLegal = true;
 			}
 		}
+		
+		if (direction.equals("down left")) {
+			isLegal = true;
+		}
+		if (direction.equals("down right")) {
+			isLegal = true;
+		}
+		if (direction.equals("up left")) {
+			isLegal = true;
+		}
+		if (direction.equals("up right")) {
+			isLegal = true;
+		}
 
 		return isLegal;
 	}
@@ -277,26 +329,55 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static void movePlayer(String direction) {
 		if (direction.equals("left")) {
 			if (legalMove(direction)) {
-				playerLoc.x -= playerSpeed;
-				checkIfLeavingRoom();
+					playerLoc.x -= playerSpeed;
+					checkIfLeavingRoom();
 			}
 		}
+		
 		if (direction.equals("right")) {
 			if (legalMove(direction)) {
-				playerLoc.x += playerSpeed;
-				checkIfLeavingRoom();
+					playerLoc.x += playerSpeed;
+					checkIfLeavingRoom();
 			}
 		}
 		if (direction.equals("up")) {
 			if (legalMove(direction)) {
-				playerLoc.y -= playerSpeed;
-				checkIfLeavingRoom();
+					playerLoc.y -= playerSpeed;
+					checkIfLeavingRoom();
 			}
 		}
 		if (direction.equals("down")) {
 			if (legalMove(direction)) {
-				playerLoc.y += playerSpeed;
-				checkIfLeavingRoom();
+					playerLoc.y += playerSpeed;
+					checkIfLeavingRoom();
+			}
+		}
+		if (direction.equals("down left")) {
+			if (legalMove(direction)) {
+					playerLoc.x -= playerSpeed - 1;
+					playerLoc.y += playerSpeed - 1;
+					checkIfLeavingRoom();
+			}
+		}
+		if (direction.equals("down right")) {
+			if (legalMove(direction)) {
+					playerLoc.x += playerSpeed - 1;
+					playerLoc.y += playerSpeed - 1;
+					checkIfLeavingRoom();
+			}
+		}
+		if (direction.equals("up left")) {
+			if (legalMove(direction)) {
+					playerLoc.x -= playerSpeed - 1;
+					playerLoc.y -= playerSpeed - 1;
+					checkIfLeavingRoom();
+			}
+		}
+		if (direction.equals("up right")) {
+			if (legalMove(direction)) {
+					playerLoc.x += playerSpeed - 1;
+					playerLoc.y -= playerSpeed - 1;
+					checkIfLeavingRoom();
 			}
 		}
 		checkIfLeavingRoom();
