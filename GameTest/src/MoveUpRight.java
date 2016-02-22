@@ -3,7 +3,7 @@ public class MoveUpRight extends Thread{
 		try {
 			while (SimpleDungeonCrawler.movingRight && SimpleDungeonCrawler.movingUp) {
 				SimpleDungeonCrawler.movePlayer("up right");
-				Thread.sleep(20);
+				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			}
 
 		} catch (InterruptedException e) {

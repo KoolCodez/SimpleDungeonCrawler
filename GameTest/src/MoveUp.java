@@ -6,7 +6,7 @@ public class MoveUp extends Thread {
 				if (!SimpleDungeonCrawler.movingRight && !SimpleDungeonCrawler.movingLeft) {
 					SimpleDungeonCrawler.movePlayer("up");
 				}					
-				Thread.sleep(20);
+				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			}
 
 		} catch (InterruptedException e) {

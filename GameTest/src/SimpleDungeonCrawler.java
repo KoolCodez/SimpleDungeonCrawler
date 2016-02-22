@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -40,6 +41,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static boolean movingUp = false;
 	public static boolean movingDown = false;
 	public static JFrame frame;
+	public static int refreshRate = 25; //number of millis to wait
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String current = System.getProperty("user.dir");
@@ -63,6 +65,13 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton attackButton = new JButton("ATTACK");
 		attackButton.setBounds(0, 0, 100, 50);
 		attackButton.setLocation(35, 35);
+		attackButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("You attacked for 0 dmg lmao");
+				
+			}
+		});
 		frame.add(attackButton);
 		frame.add(panel);
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);

@@ -7,7 +7,7 @@ public class MoveLeft extends Thread{
 				if (!SimpleDungeonCrawler.movingDown && !SimpleDungeonCrawler.movingUp) {
 					SimpleDungeonCrawler.movePlayer("left");
 				}
-				Thread.sleep(20);
+				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			}
 
 		} catch (InterruptedException e) {
