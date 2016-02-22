@@ -6,7 +6,7 @@ public class MoveDown extends Thread {
 		try {
 			while (SimpleDungeonCrawler.movingDown) {
 				if (!SimpleDungeonCrawler.movingLeft && ! SimpleDungeonCrawler.movingRight) {
-					SimpleDungeonCrawler.movePlayer("down");
+					SimpleDungeonCrawler.movePlayer(0, -1 * SimpleDungeonCrawler.playerSpeed);
 				}
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			}

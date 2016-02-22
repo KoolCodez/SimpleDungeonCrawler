@@ -250,13 +250,21 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	}
 
-	public static boolean legalMove(String direction) { // character 46 tall, 36
+	public static boolean legalMove(int deltaX, int deltaY) { // character 46 tall, 36
 														// wide // wall 34
 		boolean isLegal = false;
-		int leftSide = playerLoc.x;
-		int rightSide = playerLoc.x + 36;
-		int top = playerLoc.y;
-		int bottom = playerLoc.y + 46;
+		int x = playerLoc.x + deltaX;
+		int y = playerLoc.y + deltaY;
+		int leftSide = x;
+		int rightSide = x + 36;
+		int top = y;
+		int bottom = y + 46;
+		
+		
+		
+		
+		
+		
 		// movement bounded to the floor of the room.
 		if (direction.equals("left")) { // move left
 			if (leftSide - playerSpeed >= 36 && bottom <= 464 && top >= 36) {
@@ -324,60 +332,12 @@ public class SimpleDungeonCrawler extends JPanel {
 		return isLegal;
 	}
 
-	public static void movePlayer(String direction) {
-		if (direction.equals("left")) {
-			if (legalMove(direction)) {
-					playerLoc.x -= playerSpeed;
+	public static void movePlayer(int deltaX, int deltaY) {
+			if (legalMove(deltaX, deltaY)) {
+					playerLoc.x += deltaX;
+					playerLoc.y += deltaY;
 					checkIfLeavingRoom();
 			}
-		}
-		
-		if (direction.equals("right")) {
-			if (legalMove(direction)) {
-					playerLoc.x += playerSpeed;
-					checkIfLeavingRoom();
-			}
-		}
-		if (direction.equals("up")) {
-			if (legalMove(direction)) {
-					playerLoc.y -= playerSpeed;
-					checkIfLeavingRoom();
-			}
-		}
-		if (direction.equals("down")) {
-			if (legalMove(direction)) {
-					playerLoc.y += playerSpeed;
-					checkIfLeavingRoom();
-			}
-		}
-		if (direction.equals("down left")) {
-			if (legalMove(direction)) {
-					playerLoc.x -= playerSpeed - 1;
-					playerLoc.y += playerSpeed - 1;
-					checkIfLeavingRoom();
-			}
-		}
-		if (direction.equals("down right")) {
-			if (legalMove(direction)) {
-					playerLoc.x += playerSpeed - 1;
-					playerLoc.y += playerSpeed - 1;
-					checkIfLeavingRoom();
-			}
-		}
-		if (direction.equals("up left")) {
-			if (legalMove(direction)) {
-					playerLoc.x -= playerSpeed - 1;
-					playerLoc.y -= playerSpeed - 1;
-					checkIfLeavingRoom();
-			}
-		}
-		if (direction.equals("up right")) {
-			if (legalMove(direction)) {
-					playerLoc.x += playerSpeed - 1;
-					playerLoc.y -= playerSpeed - 1;
-					checkIfLeavingRoom();
-			}
-		}
 		checkIfLeavingRoom();
 	}
 
