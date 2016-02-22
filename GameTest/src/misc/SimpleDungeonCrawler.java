@@ -250,26 +250,6 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	}
 
-	public static void refreshBoard() {
-		blankRoom();
-		// g.drawString(roomArray[loc.x][loc.y].typeOfRoom, 0, 10);
-		// g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
-		// g.drawString("[" + playerLoc.x + "][" + playerLoc.y + "]", 0, 30);
-	}
-
-	public static void drawPlayer() {
-		int[] xPoints = new int[3];
-		int[] yPoints = new int[3];
-		xPoints[0] = playerLoc.x;
-		yPoints[0] = playerLoc.y;
-		xPoints[1] = playerLoc.x + 10;
-		yPoints[1] = playerLoc.y;
-		xPoints[2] = playerLoc.x;
-		yPoints[2] = playerLoc.y + 10;
-		character = new Polygon(xPoints, yPoints, 3);
-		refreshBoard();
-	}
-
 	public static boolean legalMove(String direction) { // character 46 tall, 36
 														// wide // wall 34
 		boolean isLegal = false;
@@ -401,13 +381,6 @@ public class SimpleDungeonCrawler extends JPanel {
 		checkIfLeavingRoom();
 	}
 
-	public static void blankRoom() {
-		/*
-		 * g.setColor(Color.white); g.fillRect(0, 0, 500, 500);
-		 * g.setColor(Color.black); drawArrows(); g.drawRect(34, 34, 432, 432);
-		 */
-	}
-
 	public static void eventChangeRooms() {
 
 		if (roomArray[loc.x][loc.y] == null) {
@@ -432,77 +405,4 @@ public class SimpleDungeonCrawler extends JPanel {
 		}
 		playerLoc = new Point(250, 250);
 	}
-
-	public static void leftArrow() {
-		int n = 3;
-		int[] xPoints = new int[n];
-		int[] yPoints = new int[n];
-		xPoints[0] = 5;
-		yPoints[0] = 250;
-		xPoints[1] = 25;
-		yPoints[1] = 225;
-		xPoints[2] = 25;
-		yPoints[2] = 275;
-		Polygon leftArrow = new Polygon(xPoints, yPoints, n);
-	}
-
-	public static void upArrow() {
-		int n = 3;
-		int[] xPoints = new int[n];
-		int[] yPoints = new int[n];
-		xPoints[0] = 250;
-		yPoints[0] = 5;
-		xPoints[1] = 225;
-		yPoints[1] = 25;
-		xPoints[2] = 275;
-		yPoints[2] = 25;
-		Polygon upArrow = new Polygon(xPoints, yPoints, n);
-	}
-
-	public static void rightArrow() {
-		int n = 3;
-		int[] xPoints = new int[n];
-		int[] yPoints = new int[n];
-		xPoints[0] = 495;
-		yPoints[0] = 250;
-		xPoints[1] = 475;
-		yPoints[1] = 225;
-		xPoints[2] = 475;
-		yPoints[2] = 275;
-		Polygon rightArrow = new Polygon(xPoints, yPoints, n);
-	}
-
-	public static void downArrow() {
-		int n = 3;
-		int[] xPoints = new int[n];
-		int[] yPoints = new int[n];
-		xPoints[0] = 250;
-		yPoints[0] = 495;
-		xPoints[1] = 225;
-		yPoints[1] = 475;
-		xPoints[2] = 275;
-		yPoints[2] = 475;
-		Polygon downArrow = new Polygon(xPoints, yPoints, n);
-	}
-
-	public static void drawArrows() {
-		leftArrow();
-		upArrow();
-		rightArrow();
-		downArrow();
-	}
-
-	public static void leftArrowBig() {
-		int n = 3;
-		int[] xPoints = new int[n];
-		int[] yPoints = new int[n];
-		xPoints[0] = 10;
-		yPoints[0] = 200;
-		xPoints[1] = 60;
-		yPoints[1] = 130;
-		xPoints[2] = 60;
-		yPoints[2] = 270;
-		Polygon leftArrow = new Polygon(xPoints, yPoints, n);
-	}
-
 }
