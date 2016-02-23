@@ -5,7 +5,8 @@ public class MoveUpLeft extends Thread{
 	public void run() {
 		try {
 			while (SimpleDungeonCrawler.movingLeft && SimpleDungeonCrawler.movingUp) {
-				SimpleDungeonCrawler.movePlayer("up left");
+				int speed = SimpleDungeonCrawler.diagSpeed;
+				SimpleDungeonCrawler.movePlayer(-speed, -speed);
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			}
 

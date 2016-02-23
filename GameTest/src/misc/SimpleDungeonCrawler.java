@@ -45,6 +45,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Point loc = new Point(0, 0);
 	public static Point playerLoc = new Point(250, 250);
 	public static int playerSpeed = 4;
+	public static int diagSpeed = 3;
 	public static Image backgroundImg;
 	public static Graphics g;
 	public static boolean movingLeft = false;
@@ -255,77 +256,17 @@ public class SimpleDungeonCrawler extends JPanel {
 		boolean isLegal = false;
 		int x = playerLoc.x + deltaX;
 		int y = playerLoc.y + deltaY;
-		int leftSide = x;
-		int rightSide = x + 36;
+		int left = x;
+		int right = x + 36;
 		int top = y;
 		int bottom = y + 46;
-		
-		
-		
-		
-		
-		
-		// movement bounded to the floor of the room.
-		if (direction.equals("left")) { // move left
-			if (leftSide - playerSpeed >= 36 && bottom <= 464 && top >= 36) {
-				isLegal = true;
-			}
-		} else if (direction.equals("right")) { // move right
-			if (rightSide + playerSpeed <= 464 && bottom <= 464 && top >= 36) {
-				isLegal = true;
-			}
-		} else if (direction.equals("up")) { // move up
-			if (top - playerSpeed >= 36 && rightSide <= 464 && leftSide >= 36) {
-				isLegal = true;
-			}
-		} else if (direction.equals("down")) { // move down
-			if (bottom + playerSpeed <= 454 && rightSide <= 464 && leftSide >= 36) {
-				isLegal = true;
-			}
-		}
-		// movement bounded to the doorway area
-		if (direction.equals("left") || direction.equals("right")) { // left and
-																		// right
-																		// doorways
-			if (top >= 200 && bottom <= 300 && leftSide - playerSpeed >= 2 && rightSide + playerSpeed <= 498) {
-				isLegal = true;
-			}
-		} else if (direction.equals("up")) {
-			if (top - playerSpeed >= 200 && bottom <= 300 && leftSide >= 2 && rightSide <= 498) {
-				isLegal = true;
-			}
-		} else if (direction.equals("down")) {
-			if (top >= 200 && bottom + playerSpeed <= 300 && leftSide >= 2 && rightSide <= 498) {
-				isLegal = true;
-			}
-		}
-
-		if (direction.equals("up") || direction.equals("down")) { // top and
-																	// bottom
-																	// doorways
-			if (leftSide >= 200 && rightSide <= 300 && top - playerSpeed >= 2 && bottom + playerSpeed <= 498) {
-				isLegal = true;
-			}
-		} else if (direction.equals("left")) {
-			if (leftSide - playerSpeed >= 200 && rightSide <= 300 && top >= 2 && bottom <= 498) {
-				isLegal = true;
-			}
-		} else if (direction.equals("right")) {
-			if (leftSide >= 200 && rightSide + playerSpeed <= 300 && top >= 2 && bottom <= 462) {
-				isLegal = true;
-			}
-		}
-		
-		if (direction.equals("down left")) {
+		if (bottom <= 464 && top >= 36 && right <= 464 && left >= 36) { // main room box
 			isLegal = true;
 		}
-		if (direction.equals("down right")) {
+		if (bottom <= 300 && top >= 200 && right <= 500 && left >= 0) { //right and left doors
 			isLegal = true;
 		}
-		if (direction.equals("up left")) {
-			isLegal = true;
-		}
-		if (direction.equals("up right")) {
+		if (bottom <= 500 && top >= 0 && right <= 300 && left >= 200) { //top and bottom doors
 			isLegal = true;
 		}
 
