@@ -39,8 +39,6 @@ import java.io.*;
 
 public class SimpleDungeonCrawler extends JPanel {
 	public static boolean end;
-	public static final String S_PRESSED = "S";
-	public static Polygon character;
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
 	public static Point playerLoc = new Point(250, 250);
@@ -53,39 +51,20 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static boolean movingUp = false;
 	public static boolean movingDown = false;
 	public static JFrame frame;
+	public static JPanel panel;
 	public static int refreshRate = 25; //number of millis to wait
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String current = System.getProperty("user.dir");
 		//System.out.println("Current working directory in Java : " + current);
-		BufferedImage backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
-		BufferedImage characterImg = ImageIO.read(new File("src\\Textures\\BetterDuder.jpg"));
+
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
-		JPanel panel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(backgroundImg, 0, 0, null);
-				g.drawImage(characterImg, playerLoc.x, playerLoc.y, null);
-			}
-		};
-		JButton attackButton = new JButton("ATTACK");
-		attackButton.setBounds(0, 0, 100, 50);
-		attackButton.setLocation(35, 35);
-		attackButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("You attacked for 0 dmg lmao");
-				
-			}
-		});
-		frame.add(attackButton);
-		frame.add(panel);
+		createButtonsAndPanels();
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = panel.getActionMap();
 		createKeyBindings(inMap, acMap, frame);
@@ -94,6 +73,62 @@ public class SimpleDungeonCrawler extends JPanel {
 		Point p = new Point(0, 10);
 		roomArray[0][0] = new StandardRoom();
 
+	}
+	
+	public static void createButtonsAndPanels() throws IOException {
+		
+		BufferedImage backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
+		BufferedImage characterImg = ImageIO.read(new File("src\\Textures\\BetterDuder.jpg"));
+		BufferedImage rightArrow = ImageIO.read(new File("src\\Textures\\RightArrowOn.jpg"));
+		BufferedImage leftArrow = ImageIO.read(new File("src\\Textures\\LeftArrowOn.jpg"));
+		BufferedImage bottomArrow = ImageIO.read(new File("src\\Textures\\BotArrowOn.jpg"));
+		BufferedImage topArrow = ImageIO.read(new File("src\\Textures\\TopArrowOn.jpg"));
+		panel = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(backgroundImg, 0, 0, null);
+				g.drawImage(characterImg, playerLoc.x, playerLoc.y, null);
+				g.drawImage(rightArrow, 470, 225, null);
+				g.drawImage(leftArrow, 4, 225, null);
+				g.drawImage(bottomArrow, 225, 470, null);
+				g.drawImage(topArrow, 225, 4, null);
+			}
+		};
+		JPanel attackPanel = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.setColor(Color.yellow);
+				g.fillRect(0, 0, 50, 50);
+			}
+		};
+		attackPanel.setLocation(0, 0);
+		attackPanel.setBounds(0, 0, 500, 500);
+		JButton attackButton = new JButton("ATTACK");
+		attackButton.setBounds(0, 0, 100, 50);
+		attackButton.setLocation(35, 35);
+		JButton exitButton = new JButton("Exit");
+		attackPanel.add(exitButton);
+		exitButton.setBounds(0, 0, 100, 50);
+		exitButton.setLocation(35, 85);
+		exitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.remove(attackPanel);
+				frame.remove(exitButton);
+				frame.add(panel);
+			}
+		});
+		attackButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.remove(panel);
+				frame.add(attackPanel);
+			}
+		});
+		frame.add(attackButton);
+		frame.add(panel);
 	}
 
 	public static void createKeyBindings(InputMap inMap, ActionMap acMap, JFrame frame) {
