@@ -1,4 +1,5 @@
 package misc;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -83,6 +84,8 @@ public class SimpleDungeonCrawler extends JPanel {
 		BufferedImage leftArrow = ImageIO.read(new File("src\\Textures\\LeftArrowOn.jpg"));
 		BufferedImage bottomArrow = ImageIO.read(new File("src\\Textures\\BotArrowOn.jpg"));
 		BufferedImage topArrow = ImageIO.read(new File("src\\Textures\\TopArrowOn.jpg"));
+		
+		//Declarations
 		panel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -95,7 +98,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.drawImage(topArrow, 225, 4, null);
 			}
 		};
-		JPanel attackPanel = new JPanel() {
+		JPanel attackPanel = new JPanel(new BorderLayout()) {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -103,32 +106,53 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.fillRect(0, 0, 50, 50);
 			}
 		};
-		attackPanel.setLocation(0, 0);
-		attackPanel.setBounds(0, 0, 500, 500);
-		JButton attackButton = new JButton("ATTACK");
+		JButton inventoryButton = new JButton("Inventory");
+		JButton exitButton = new JButton("Exit");		
+		JButton attackButton = new JButton("ATTACK");		
+		
+		//.set stuffs
+			//attackPanel
+		//attackPanel.setBounds(0, 0, 500, 500);
+		//attackPanel.setLocation(0, 0);
+		//attackPanel.add(exitButton);
+			//attackButton
 		attackButton.setBounds(0, 0, 100, 50);
-		attackButton.setLocation(35, 35);
-		JButton exitButton = new JButton("Exit");
-		attackPanel.add(exitButton);
-		exitButton.setBounds(0, 0, 100, 50);
-		exitButton.setLocation(35, 85);
-		exitButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frame.remove(attackPanel);
-				frame.remove(exitButton);
-				frame.add(panel);
-			}
-		});
+		attackButton.setLocation(35, 500);
 		attackButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.remove(panel);
-				frame.add(attackPanel);
+				frame.getContentPane().remove(panel);
+				frame.getContentPane().add(attackPanel);
+				frame.getContentPane().add(exitButton);
+				//frame.add(exitButton);
+				
 			}
 		});
-		frame.add(attackButton);
-		frame.add(panel);
+			//exitButton
+		exitButton.setBounds(0, 0, 100, 50);
+		exitButton.setLocation(500, 35);
+		exitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().remove(exitButton);
+				frame.getContentPane().add(panel);
+				frame.getContentPane().add(attackButton);
+				frame.getContentPane().add(inventoryButton);
+			}
+		});
+			//inventoryButton
+		inventoryButton.setBounds(0, 0, 100, 50);
+		inventoryButton.setLocation(500, 85);
+		inventoryButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("lmao you have nothing");
+			}
+		});
+		//initializing frame stuff
+		frame.getContentPane().add(attackButton);
+		frame.getContentPane().add(inventoryButton);
+		frame.getContentPane().add(panel);
 	}
 
 	public static void createKeyBindings(InputMap inMap, ActionMap acMap, JFrame frame) {
