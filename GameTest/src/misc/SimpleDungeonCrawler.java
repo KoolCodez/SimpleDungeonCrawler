@@ -71,6 +71,8 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static BufferedImage charFront;
 	public static BufferedImage charLeft;
 	public static BufferedImage charRight;
+	public static BufferedImage charLeftOpArm;
+	public static BufferedImage charRightOpArm;
 	
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
@@ -112,6 +114,8 @@ public class SimpleDungeonCrawler extends JPanel {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
 		charLeft = ImageIO.read(new File("src\\Textures\\MainCharLeft.jpg"));
 		charRight = ImageIO.read(new File("src\\Textures\\MainCharRight.jpg"));
+		charLeftOpArm = ImageIO.read(new File("src\\Textures\\MainCharLeftRightArmUp.jpg"));
+		charRightOpArm = ImageIO.read(new File("src\\Textures\\MainCharRightLeftArmUp.jpg"));
 		
 		backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
 		charImg = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
