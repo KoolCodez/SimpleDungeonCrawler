@@ -8,6 +8,7 @@ public class MoveRight extends Thread {
 				if (!SimpleDungeonCrawler.movingDown && !SimpleDungeonCrawler.movingUp) {
 					int speed = SimpleDungeonCrawler.playerSpeed;
 					SimpleDungeonCrawler.movePlayer(speed, 0);
+					SimpleDungeonCrawler.charImg = SimpleDungeonCrawler.charRight;
 				}
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			}

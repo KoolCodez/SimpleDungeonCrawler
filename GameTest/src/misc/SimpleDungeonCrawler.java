@@ -55,7 +55,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static int refreshRate = 25; //number of millis to wait
 	//Images
 	public static BufferedImage backgroundImg;
-	public static BufferedImage characterImg;
+	public static BufferedImage charImg;
 	public static BufferedImage rightArrow;
 	public static BufferedImage leftArrow;
 	public static BufferedImage bottomArrow;
@@ -68,6 +68,9 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static BufferedImage leftArrowOff;
 	public static BufferedImage bottomArrowOff;
 	public static BufferedImage topArrowOff;
+	public static BufferedImage charFront;
+	public static BufferedImage charLeft;
+	public static BufferedImage charRight;
 	
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
@@ -92,8 +95,12 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 	
 	public static void createImages() throws IOException {
+		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
+		charLeft = ImageIO.read(new File("src\\Textures\\MainCharLeft.jpg"));
+		charRight = ImageIO.read(new File("src\\Textures\\MainCharRight.jpg"));
+		
 		backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
-		characterImg = ImageIO.read(new File("src\\Textures\\BetterDuder.jpg"));
+		charImg = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
 		rightArrowOn = ImageIO.read(new File("src\\Textures\\RightArrowOn.jpg"));
 		leftArrowOn = ImageIO.read(new File("src\\Textures\\LeftArrowOn.jpg"));
 		bottomArrowOn = ImageIO.read(new File("src\\Textures\\BotArrowOn.jpg"));
@@ -102,6 +109,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		leftArrowOff = ImageIO.read(new File("src\\Textures\\LeftArrowOff.jpg"));
 		bottomArrowOff = ImageIO.read(new File("src\\Textures\\BotArrowOff.jpg"));
 		topArrowOff = ImageIO.read(new File("src\\Textures\\TopArrowOff.jpg"));
+		
 		rightArrow = rightArrowOn;
 		leftArrow = leftArrowOff; //starts off
 		bottomArrow = bottomArrowOn;
@@ -121,7 +129,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(backgroundImg, 0, 0, null);
-				g.drawImage(characterImg, playerLoc.x, playerLoc.y, null);
+				g.drawImage(charImg, playerLoc.x, playerLoc.y, null);
 				g.drawImage(rightArrow, 470, 225, null);
 				g.drawImage(leftArrow, 4, 225, null);
 				g.drawImage(bottomArrow, 225, 470, null);
