@@ -78,7 +78,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1000, 1000);
+		frame.setSize(650, 550);
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
