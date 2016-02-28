@@ -1,4 +1,5 @@
 package misc;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -52,8 +53,8 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static boolean movingDown = false;
 	public static JFrame frame;
 	public static JPanel panel;
-	public static int refreshRate = 25; //number of millis to wait
-	//Images
+	public static int refreshRate = 25; // number of millis to wait
+	// Images
 	public static BufferedImage backgroundImg;
 	public static BufferedImage charImg;
 	public static BufferedImage rightArrow;
@@ -71,10 +72,10 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static BufferedImage charFront;
 	public static BufferedImage charLeft;
 	public static BufferedImage charRight;
-	
+
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
-		//System.out.println("Current working directory in Java : " + current);
+		// System.out.println("Current working directory in Java : " + current);
 
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,12 +94,12 @@ public class SimpleDungeonCrawler extends JPanel {
 		roomArray[0][0] = new StandardRoom();
 
 	}
-	
+
 	public static void createImages() throws IOException {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
 		charLeft = ImageIO.read(new File("src\\Textures\\MainCharLeft.jpg"));
 		charRight = ImageIO.read(new File("src\\Textures\\MainCharRight.jpg"));
-		
+
 		backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
 		charImg = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
 		rightArrowOn = ImageIO.read(new File("src\\Textures\\RightArrowOn.jpg"));
@@ -109,21 +110,21 @@ public class SimpleDungeonCrawler extends JPanel {
 		leftArrowOff = ImageIO.read(new File("src\\Textures\\LeftArrowOff.jpg"));
 		bottomArrowOff = ImageIO.read(new File("src\\Textures\\BotArrowOff.jpg"));
 		topArrowOff = ImageIO.read(new File("src\\Textures\\TopArrowOff.jpg"));
-		
+
 		rightArrow = rightArrowOn;
-		leftArrow = leftArrowOff; //starts off
+		leftArrow = leftArrowOff; // starts off
 		bottomArrow = bottomArrowOn;
-		topArrow = topArrowOff; //starts off
+		topArrow = topArrowOff; // starts off
 	}
-	
+
 	public static void createButtonsAndPanels() {
-		//Declarations
+		// Declarations
 		JPanel atkPanel = new JPanel();
 		JButton atkButton = new JButton("ATTACK");
 		JButton exitButton = new JButton("EXIT");
 		JButton invButton = new JButton("INVENTORY");
 		JButton saveButton = new JButton("SAVE");
-			//panel
+		// panel
 		panel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -140,38 +141,38 @@ public class SimpleDungeonCrawler extends JPanel {
 		panel.add(atkButton);
 		panel.add(invButton);
 		panel.add(saveButton);
-			//attack panel
+		// attack panel
 		atkPanel.add(exitButton);
 		atkPanel.setLayout(null);
-		
-			//attack button
+
+		// attack button
 		atkButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().remove(panel);
 				frame.getContentPane().add(atkPanel);
-				
+
 			}
 		});
 		atkButton.setBounds(500, 100, 100, 50);
-		//attackButton.setIcon(defaultIcon);
-			//inventory button
+		// attackButton.setIcon(defaultIcon);
+		// inventory button
 		invButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		invButton.setBounds(500, 150, 100, 50);
-			//save button
+		// save button
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		saveButton.setBounds(500, 200, 100, 50);
-			//exit button
+		// exit button
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -180,7 +181,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		exitButton.setBounds(500, 100, 100, 50);
-		//initializing frame stuff
+		// initializing frame stuff
 		frame.getContentPane().add(panel);
 	}
 
@@ -192,7 +193,7 @@ public class SimpleDungeonCrawler extends JPanel {
 						movingLeft = true;
 						MoveUpLeft t1 = new MoveUpLeft();
 						t1.start();
-					} else if(movingDown) {
+					} else if (movingDown) {
 						movingLeft = true;
 						MoveDownLeft t1 = new MoveDownLeft();
 						t1.start();
@@ -218,7 +219,7 @@ public class SimpleDungeonCrawler extends JPanel {
 						movingRight = true;
 						MoveUpRight t1 = new MoveUpRight();
 						t1.start();
-					} else if(movingDown) {
+					} else if (movingDown) {
 						movingRight = true;
 						MoveDownRight t1 = new MoveDownRight();
 						t1.start();
@@ -244,7 +245,7 @@ public class SimpleDungeonCrawler extends JPanel {
 						movingUp = true;
 						MoveUpLeft t1 = new MoveUpLeft();
 						t1.start();
-					} else if(movingRight) {
+					} else if (movingRight) {
 						movingUp = true;
 						MoveUpRight t1 = new MoveUpRight();
 						t1.start();
@@ -252,7 +253,7 @@ public class SimpleDungeonCrawler extends JPanel {
 					movingUp = true;
 					MoveUp t1 = new MoveUp();
 					t1.start();
-					
+
 				}
 			}
 		};
@@ -271,7 +272,7 @@ public class SimpleDungeonCrawler extends JPanel {
 						movingDown = true;
 						MoveDownLeft t1 = new MoveDownLeft();
 						t1.start();
-					} else if(movingRight) {
+					} else if (movingRight) {
 						movingDown = true;
 						MoveDownRight t1 = new MoveDownRight();
 						t1.start();
@@ -339,8 +340,9 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	}
 
-	public static boolean legalMove(int deltaX, int deltaY) { // character 46 tall, 36
-														// wide // wall 34
+	public static boolean legalMove(int deltaX, int deltaY) { // character 46
+																// tall, 36
+		// wide // wall 34
 		boolean isLegal = false;
 		int x = playerLoc.x + deltaX;
 		int y = playerLoc.y + deltaY;
@@ -348,13 +350,21 @@ public class SimpleDungeonCrawler extends JPanel {
 		int right = x + 36;
 		int top = y;
 		int bottom = y + 46;
-		if (bottom <= 464 && top >= 36 && right <= 464 && left >= 36) { // main room box
+		if (bottom <= 464 && top >= 36 && right <= 464 && left >= 36) { // main
+																		// room
+																		// box
 			isLegal = true;
 		}
-		if (bottom <= 300 && top >= 200 && right <= 500 && left >= 0) { //right and left doors
+		if (bottom <= 300 && top >= 200 && right <= 500 && left >= 0) { // right
+																		// and
+																		// left
+																		// doors
 			isLegal = true;
 		}
-		if (bottom <= 500 && top >= 0 && right <= 300 && left >= 200) { //top and bottom doors
+		if (bottom <= 500 && top >= 0 && right <= 300 && left >= 200) { // top
+																		// and
+																		// bottom
+																		// doors
 			isLegal = true;
 		}
 
@@ -362,11 +372,11 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void movePlayer(int deltaX, int deltaY) {
-			if (legalMove(deltaX, deltaY)) {
-					playerLoc.x += deltaX;
-					playerLoc.y += deltaY;
-					checkIfLeavingRoom();
-			}
+		if (legalMove(deltaX, deltaY)) {
+			playerLoc.x += deltaX;
+			playerLoc.y += deltaY;
+			checkIfLeavingRoom();
+		}
 		checkIfLeavingRoom();
 	}
 
