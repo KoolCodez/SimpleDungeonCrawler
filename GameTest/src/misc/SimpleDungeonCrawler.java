@@ -72,6 +72,8 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static BufferedImage charFront;
 	public static BufferedImage charLeft;
 	public static BufferedImage charRight;
+	public static BufferedImage charLeftOpArm;
+	public static BufferedImage charRightOpArm;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
@@ -79,7 +81,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1000, 1000);
+		frame.setSize(650, 550);
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
@@ -94,12 +96,25 @@ public class SimpleDungeonCrawler extends JPanel {
 		roomArray[0][0] = new StandardRoom();
 
 	}
-
+	public static void battleSequence() {
+		StandardRoom currentRoom = roomArray[loc.x][loc.y];
+		int count = 0;
+		for (int i = 0; i <= 3; i++) {
+			if (currentRoom.entities[i] != null) {
+				count++;
+			}
+		}
+		Entity[] entities = new Entity[count];
+		for (int i = 0; i <= 3; i++) {
+			entities[i] = currentRoom.entities[i];
+		}
+	}
 	public static void createImages() throws IOException {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
 		charLeft = ImageIO.read(new File("src\\Textures\\MainCharLeft.jpg"));
 		charRight = ImageIO.read(new File("src\\Textures\\MainCharRight.jpg"));
-
+		charLeftOpArm = ImageIO.read(new File("src\\Textures\\MainCharLeftRightArmUp.jpg"));
+		charRightOpArm = ImageIO.read(new File("src\\Textures\\MainCharRightLeftArmUp.jpg"));
 		backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
 		charImg = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
 		rightArrowOn = ImageIO.read(new File("src\\Textures\\RightArrowOn.jpg"));
