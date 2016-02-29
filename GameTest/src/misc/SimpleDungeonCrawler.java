@@ -96,7 +96,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		roomArray[0][0] = new StandardRoom();
 
 	}
-	public static void battleSequence() {
+	public static void battleSequence() { //scrap this for now, other stuff requires more testing
 		StandardRoom currentRoom = roomArray[loc.x][loc.y];
 		int count = 0;
 		for (int i = 0; i <= 3; i++) {
@@ -109,6 +109,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			entities[i] = currentRoom.entities[i];
 		}
 	}
+	
 	public static void createImages() throws IOException {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
 		charLeft = ImageIO.read(new File("src\\Textures\\MainCharLeft.jpg"));

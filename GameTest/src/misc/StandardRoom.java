@@ -11,9 +11,6 @@ public class StandardRoom {
 			typeOfRoom = "puzzle";
 		} else if(typeNum == 3 || typeNum == 4 || typeNum == 5 || typeNum == 6 || typeNum == 7) {
 			typeOfRoom = "battle";
-			for (int i = rand.nextInt(3); i >= 0; i--) {
-				entities[i] = new EnemyEntity();
-			}
 		} else if(typeNum == 8 || typeNum == 9) {
 			typeOfRoom = "treasure";
 		}
