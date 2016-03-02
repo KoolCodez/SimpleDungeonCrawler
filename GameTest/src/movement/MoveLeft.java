@@ -1,4 +1,5 @@
 package movement;
+import misc.Images;
 import misc.SimpleDungeonCrawler;
 
 public class MoveLeft extends Thread{
@@ -11,9 +12,9 @@ public class MoveLeft extends Thread{
 					SimpleDungeonCrawler.movePlayer(-speed, 0);
 					count++;
 					if (count % 10 < 5) {
-						SimpleDungeonCrawler.charImg = SimpleDungeonCrawler.charLeftOpArm;
+						Images.charImg = Images.charLeftOpArm;
 					} else {
-						SimpleDungeonCrawler.charImg = SimpleDungeonCrawler.charLeft;
+						Images.charImg = Images.charLeft;
 					}
 				}
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);

@@ -58,26 +58,6 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static JPanel invPanel;
 	public static JPanel charPanel;
 	public static int refreshRate = 25; // number of millis to wait
-	// Images
-	public static BufferedImage backgroundImg;
-	public static BufferedImage charImg;
-	public static BufferedImage rightArrow;
-	public static BufferedImage leftArrow;
-	public static BufferedImage bottomArrow;
-	public static BufferedImage topArrow;
-	public static BufferedImage rightArrowOn;
-	public static BufferedImage leftArrowOn;
-	public static BufferedImage bottomArrowOn;
-	public static BufferedImage topArrowOn;
-	public static BufferedImage rightArrowOff;
-	public static BufferedImage leftArrowOff;
-	public static BufferedImage bottomArrowOff;
-	public static BufferedImage topArrowOff;
-	public static BufferedImage charFront;
-	public static BufferedImage charLeft;
-	public static BufferedImage charRight;
-	public static BufferedImage charLeftOpArm;
-	public static BufferedImage charRightOpArm;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
@@ -89,7 +69,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
-		createImages();
+		Images.createImages();
 		createButtonsAndPanels();
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = panel.getActionMap();
@@ -116,28 +96,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		}
 	}
 
-	public static void createImages() throws IOException {
-		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
-		charLeft = ImageIO.read(new File("src\\Textures\\MainCharLeft.jpg"));
-		charRight = ImageIO.read(new File("src\\Textures\\MainCharRight.jpg"));
-		charLeftOpArm = ImageIO.read(new File("src\\Textures\\MainCharLeftRightArmUp.jpg"));
-		charRightOpArm = ImageIO.read(new File("src\\Textures\\MainCharRightLeftArmUp.jpg"));
-		backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
-		charImg = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
-		rightArrowOn = ImageIO.read(new File("src\\Textures\\RightArrowOn.jpg"));
-		leftArrowOn = ImageIO.read(new File("src\\Textures\\LeftArrowOn.jpg"));
-		bottomArrowOn = ImageIO.read(new File("src\\Textures\\BotArrowOn.jpg"));
-		topArrowOn = ImageIO.read(new File("src\\Textures\\TopArrowOn.jpg"));
-		rightArrowOff = ImageIO.read(new File("src\\Textures\\RightArrowOff.jpg"));
-		leftArrowOff = ImageIO.read(new File("src\\Textures\\LeftArrowOff.jpg"));
-		bottomArrowOff = ImageIO.read(new File("src\\Textures\\BotArrowOff.jpg"));
-		topArrowOff = ImageIO.read(new File("src\\Textures\\TopArrowOff.jpg"));
-
-		rightArrow = rightArrowOn;
-		leftArrow = leftArrowOff; // starts off
-		bottomArrow = bottomArrowOn;
-		topArrow = topArrowOff; // starts off
-	}
+	
 
 	public static void createButtonsAndPanels() {
 		// Declarations
@@ -148,12 +107,12 @@ public class SimpleDungeonCrawler extends JPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(backgroundImg, 0, 0, null);
-				g.drawImage(charImg, playerLoc.x, playerLoc.y, null);
-				g.drawImage(rightArrow, 470, 225, null);
-				g.drawImage(leftArrow, 4, 225, null);
-				g.drawImage(bottomArrow, 225, 470, null);
-				g.drawImage(topArrow, 225, 4, null);
+				g.drawImage(Images.backgroundImg, 0, 0, null);
+				g.drawImage(Images.charImg, playerLoc.x, playerLoc.y, null);
+				g.drawImage(Images.rightArrow, 470, 225, null);
+				g.drawImage(Images.leftArrow, 4, 225, null);
+				g.drawImage(Images.bottomArrow, 225, 470, null);
+				g.drawImage(Images.topArrow, 225, 4, null);
 			}
 		};
 		panel.setLayout(null);
@@ -545,20 +504,20 @@ public class SimpleDungeonCrawler extends JPanel {
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		}
 		if (loc.x == 0) {
-			leftArrow = leftArrowOff;
+			Images.leftArrow = Images.leftArrowOff;
 		} else if (loc.x == 9) {
-			rightArrow = rightArrowOff;
+			Images.rightArrow = Images.rightArrowOff;
 		} else {
-			rightArrow = rightArrowOn;
-			leftArrow = leftArrowOn;
+			Images.rightArrow = Images.rightArrowOn;
+			Images.leftArrow = Images.leftArrowOn;
 		}
 		if (loc.y == 0) {
-			topArrow = topArrowOff;
+			Images.topArrow = Images.topArrowOff;
 		} else if (loc.y == 9) {
-			bottomArrow = bottomArrowOff;
+			Images.bottomArrow = Images.bottomArrowOff;
 		} else {
-			topArrow = topArrowOn;
-			bottomArrow = bottomArrowOn;
+			Images.topArrow = Images.topArrowOn;
+			Images.bottomArrow = Images.bottomArrowOn;
 		}
 		playerLoc = new Point(250, 250);
 	}

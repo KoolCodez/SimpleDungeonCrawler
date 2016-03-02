@@ -1,4 +1,5 @@
 package movement;
+import misc.Images;
 import misc.SimpleDungeonCrawler;
 
 public class MoveDown extends Thread {
@@ -8,7 +9,7 @@ public class MoveDown extends Thread {
 				if (!SimpleDungeonCrawler.movingLeft && ! SimpleDungeonCrawler.movingRight) {
 					int speed = SimpleDungeonCrawler.playerSpeed;
 					SimpleDungeonCrawler.movePlayer(0, speed);
-					SimpleDungeonCrawler.charImg = SimpleDungeonCrawler.charFront;
+					Images.charImg = Images.charFront;
 				}
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			}
