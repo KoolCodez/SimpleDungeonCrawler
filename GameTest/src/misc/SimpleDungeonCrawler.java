@@ -78,7 +78,6 @@ public class SimpleDungeonCrawler extends JPanel {
 		r1.start();
 		Point p = new Point(0, 10);
 		roomArray[0][0] = new StandardRoom();
-
 	}
 
 	public static void battleSequence() { // scrap this for now, other stuff
@@ -96,8 +95,6 @@ public class SimpleDungeonCrawler extends JPanel {
 		}
 	}
 
-	
-
 	public static void createButtonsAndPanels() {
 		// Declarations
 		JButton menuButton = new JButton("MENU");
@@ -109,10 +106,10 @@ public class SimpleDungeonCrawler extends JPanel {
 				super.paintComponent(g);
 				g.drawImage(Images.backgroundImg, 0, 0, null);
 				g.drawImage(Images.charImg, playerLoc.x, playerLoc.y, null);
-				g.drawImage(Images.rightArrow, 470, 225, null);
-				g.drawImage(Images.leftArrow, 4, 225, null);
-				g.drawImage(Images.bottomArrow, 225, 470, null);
-				g.drawImage(Images.topArrow, 225, 4, null);
+				g.drawImage(Images.rightArrow, 474, 225, null);
+				g.drawImage(Images.leftArrow, 0, 225, null);
+				g.drawImage(Images.bottomArrow, 225, 474, null);
+				g.drawImage(Images.topArrow, 225, 0, null);
 			}
 		};
 		panel.setLayout(null);
