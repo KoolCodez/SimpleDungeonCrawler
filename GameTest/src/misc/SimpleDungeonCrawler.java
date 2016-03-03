@@ -44,6 +44,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
 	public static Point playerLoc = new Point(250, 250);
+	public static FriendlyEntity character;
 	public static int playerSpeed = 4;
 	public static int diagSpeed = 3;
 	public static Graphics g;
@@ -69,6 +70,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
+		character = new FriendlyEntity(5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 		Images.createImages();
 		createButtonsAndPanels();
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -148,16 +150,138 @@ public class SimpleDungeonCrawler extends JPanel {
 	
 	public static void createCharScreen() {
 		JButton exitButton = new JButton("EXIT");
+		JButton strUp = new JButton("+1");
+		JButton strDown = new JButton("-1");
+		JButton dexUp = new JButton("+1");
+		JButton dexDown = new JButton("-1");
+		JButton conUp = new JButton("+1");
+		JButton conDown = new JButton("-1");
+		JButton wisUp = new JButton("+1");
+		JButton wisDown = new JButton("-1");
+		JButton intUp = new JButton("+1");
+		JButton intDown = new JButton("-1");
+		JButton chrUp = new JButton("+1");
+		JButton chrDown = new JButton("-1");
 		// attack panel
 		charPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				g.drawString("STRENGTH: " + character.str, 200, 100);
+				g.drawString("DEXTERITY: " + character.dex, 200, 150);
+				g.drawString("CONSTITUTION: " + character.con, 200, 200);
+				g.drawString("WISDOM: " + character.wis, 200, 250);
+				g.drawString("INTELLIGENCE: " + character.intl, 200, 300);
+				g.drawString("CHARISMA: " + character.chr, 200, 350);
 			}
 		};
 		charPanel.add(exitButton);
+		charPanel.add(strUp);
+		charPanel.add(strDown);
+		charPanel.add(dexUp);
+		charPanel.add(dexDown);
+		charPanel.add(conUp);
+		charPanel.add(conDown);
+		charPanel.add(wisUp);
+		charPanel.add(wisDown);
+		charPanel.add(intUp);
+		charPanel.add(intDown);
+		charPanel.add(chrUp);
+		charPanel.add(chrDown);
 		charPanel.setLayout(null);
+		
+		//level buttons
+		strUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.str++;
+			}
+		});
+		strUp.setBounds(200, 100, 50, 25);
+		strDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.str--;
+			}
+		});
+		strDown.setBounds(250, 100, 50, 25);
+		
+		dexUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.dex++;
+			}
+		});
+		dexUp.setBounds(200, 150, 50, 25);
+		dexDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.dex--;
+			}
+		});
+		dexDown.setBounds(250, 150, 50, 25);
+		
+		conUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.con++;
+			}
+		});
+		conUp.setBounds(200, 200, 50, 25);
+		conDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.con--;
+			}
+		});
+		conDown.setBounds(250, 200, 50, 25);
+		
+		wisUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.wis++;
+			}
+		});
+		wisUp.setBounds(200, 250, 50, 25);
+		wisDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.wis--;
+			}
+		});
+		wisDown.setBounds(250, 250, 50, 25);
 
+		intUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.intl++;
+			}
+		});
+		intUp.setBounds(200, 300, 50, 25);
+		intDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.intl--;
+			}
+		});
+		intDown.setBounds(250, 300, 50, 25);
+
+		chrUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.chr++;
+			}
+		});
+		chrUp.setBounds(200, 350, 50, 25);
+		intDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.chr--;
+			}
+		});
+		chrDown.setBounds(250, 350, 50, 25);
+		
+		
 		// exit button
 		exitButton.addActionListener(new ActionListener() {
 			@Override
