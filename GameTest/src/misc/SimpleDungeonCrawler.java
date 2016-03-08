@@ -64,7 +64,6 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
 		// System.out.println("Current working directory in Java : " + current);
-
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(650, 550);
