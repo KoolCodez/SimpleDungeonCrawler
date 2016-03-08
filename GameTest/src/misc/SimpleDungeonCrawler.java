@@ -16,6 +16,7 @@ import java.util.Random;
 
 import javax.swing.*;
 
+import items.Stick;
 import movement.MoveDown;
 import movement.MoveDownLeft;
 import movement.MoveDownRight;
@@ -332,14 +333,17 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void createInventory() {
 		JButton exitButton = new JButton("EXIT");
+		Stick stick = new Stick();
 		// attack panel
 		invPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				g.drawString(stick.itemName, 0, 60);
 			}
 		};
 		invPanel.add(exitButton);
+		invPanel.add(stick.item);
 		invPanel.setLayout(null);
 
 		// exit button
@@ -351,7 +355,8 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		exitButton.setBounds(500, 100, 100, 50);
-
+		
+		stick.item.setBounds(0, 0, 50, 50);
 	}
 
 	public static void createAtkPanel() {

@@ -26,6 +26,7 @@ public class Images {
 	public static BufferedImage charRight;
 	public static BufferedImage charLeftOpArm;
 	public static BufferedImage charRightOpArm;
+	public static BufferedImage stickItem;
 	
 	public static void createImages() throws IOException {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
@@ -48,5 +49,7 @@ public class Images {
 		leftArrow = leftArrowOff; // starts off
 		bottomArrow = bottomArrowOn;
 		topArrow = topArrowOff; // starts off
+		
+		stickItem = ImageIO.read(new File("src\\Textures\\Stick.jpg"));
 	}
 }

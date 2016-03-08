@@ -1,4 +1,4 @@
-package misc;
+package items;
 
 import javax.swing.ImageIcon;
 
