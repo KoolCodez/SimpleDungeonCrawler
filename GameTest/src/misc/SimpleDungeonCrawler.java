@@ -10,12 +10,14 @@ import java.awt.MenuItem;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.PopupMenu;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.*;
 import java.util.Random;
 
 import javax.swing.*;
 
+import items.GenericItem;
 import items.Stick;
 import movement.MoveDown;
 import movement.MoveDownLeft;
@@ -73,6 +75,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		g.setColor(Color.white);
 		character = new FriendlyEntity(5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 		Images.createImages();
+		character.addItem(new Stick());
 		createButtonsAndPanels();
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = panel.getActionMap();
@@ -175,7 +178,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		startButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
 		menuCoord.y += 50;
-		
+
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -333,30 +336,70 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void createInventory() {
 		JButton exitButton = new JButton("EXIT");
-		Stick stick = new Stick();
+		JButton addStick = new JButton("STICK ME");
+		
 		// attack panel
 		invPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawString(stick.itemName, 0, 60);
+				// g.drawString(stick.itemName, 0, 60);
 			}
 		};
+		invPanel.add(addStick);
 		invPanel.add(exitButton);
-		invPanel.add(stick.item);
 		invPanel.setLayout(null);
 
 		// exit button
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				invPanel.removeAll();
+				invPanel.add(addStick);
+				invPanel.add(exitButton);
+				
 				frame.getContentPane().add(menuPanel);
 				frame.getContentPane().remove(invPanel);
 			}
 		});
 		exitButton.setBounds(500, 100, 100, 50);
-		
-		stick.item.setBounds(0, 0, 50, 50);
+
+		// stick button
+		addStick.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.addItem(new Stick());
+				invPanel.removeAll();
+				invPanel.add(addStick);
+				invPanel.add(exitButton);
+				refreshInv();
+			}
+		});
+		addStick.setBounds(500, 150, 100, 50);
+	}
+	public static void refreshInv() {
+		Rectangle rText = new Rectangle(0, 50, 50, 20);
+		Rectangle rImage = new Rectangle(0, 0, 50, 50);
+		for (int i = character.entityInventory.size() - 1; i >= 0; i--) {
+			GenericItem item = character.entityInventory.get(i);
+			JTextArea text = new JTextArea(item.itemName);
+			text.setEditable(false);
+			text.setBounds(rText);
+			rText.x += 50;
+			if (rText.x >= 450) {
+				rText.x -= 450;
+				rText.y += 70;
+			}
+			invPanel.add(text);
+			JLabel itemLabel = item.item;
+			itemLabel.setBounds(rImage);
+			rImage.x += 50;
+			if (rImage.x >= 450) {
+				rImage.x -= 450;
+				rImage.y += 70;
+			}
+			invPanel.add(itemLabel);
+		}
 	}
 
 	public static void createAtkPanel() {
@@ -435,6 +478,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().remove(menuPanel);
 				frame.getContentPane().add(invPanel);
+				refreshInv();
 			}
 		});
 		invButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
@@ -448,7 +492,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		saveButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
 		menuCoord.y += 50;
-		
+
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

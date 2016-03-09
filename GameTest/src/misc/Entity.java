@@ -1,12 +1,16 @@
 package misc;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import items.GenericItem;
 
 public class Entity { // extend this class with specific entity-classes.
 	public String entityType;
 	public Point entityLocation;
-	public String[] entityInventory = new String[5];
+	public static List<GenericItem> entityInventory;
 	public static double str;
 	public static double dex;
 	public static double con;
@@ -17,8 +21,13 @@ public class Entity { // extend this class with specific entity-classes.
 	Random rand = new Random();
 
 	public Entity() {
+		entityInventory = new ArrayList<GenericItem>();
 		entityType = "Generic Entity";
 		entityLocation = new Point(250 - rand.nextInt(), 250 + rand.nextInt());
+	}
+	
+	public static void addItem(GenericItem item) {
+		entityInventory.add(item);
 	}
 
 	public static void setStats(double strength, double dexterity, double constitution, double intelligence,
