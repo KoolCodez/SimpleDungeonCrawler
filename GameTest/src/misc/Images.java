@@ -31,6 +31,10 @@ public class Images {
 	public static BufferedImage stickItem3;
 	public static BufferedImage stickItem4;
 	public static BufferedImage stickItem5;
+	public static BufferedImage bagButton;
+	public static BufferedImage fightButton;
+	public static BufferedImage fleeButton;
+	public static BufferedImage moveButton;
 	
 	public static void createImages() throws IOException {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
@@ -59,5 +63,11 @@ public class Images {
 		stickItem3 = ImageIO.read(new File("src\\Textures\\Stick3.jpg"));
 		stickItem4 = ImageIO.read(new File("src\\Textures\\Stick4.jpg"));
 		stickItem5 = ImageIO.read(new File("src\\Textures\\Stick5.jpg"));
+		
+		bagButton = ImageIO.read(new File("src\\Textures\\BagButton.jpg"));
+		fightButton = ImageIO.read(new File("src\\Textures\\FightButton.jpg"));
+		fleeButton = ImageIO.read(new File("src\\Textures\\FleeButton.jpg"));
+		moveButton = ImageIO.read(new File("src\\Textures\\MoveButton.jpg"));
+		
 	}
 }

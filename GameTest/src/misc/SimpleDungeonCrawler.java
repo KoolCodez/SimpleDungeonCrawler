@@ -407,6 +407,10 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void createAtkPanel() {
 		JButton exitButton = new JButton("EXIT");
+		JButton bagButton = new JButton();
+		JButton fightButton = new JButton();
+		JButton fleeButton = new JButton();
+		JButton moveButton = new JButton();
 		// attack panel
 		atkPanel = new JPanel() {
 			@Override
@@ -414,19 +418,33 @@ public class SimpleDungeonCrawler extends JPanel {
 				super.paintComponent(g);
 			}
 		};
-		atkPanel.add(exitButton);
+		atkPanel.add(bagButton);
+		atkPanel.add(fightButton);
+		atkPanel.add(fleeButton);
+		atkPanel.add(moveButton);
+		//atkPanel.add(exitButton);
 		atkPanel.setLayout(null);
 
 		// exit button
-		exitButton.addActionListener(new ActionListener() {
+		fleeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().add(panel);
 				frame.getContentPane().remove(atkPanel);
 			}
 		});
-		exitButton.setBounds(500, 100, 100, 50);
-
+		
+		fightButton.setBounds(350, 74, 150, 50);
+		fightButton.setIcon(new ImageIcon(Images.fightButton));
+		
+		fleeButton.setBounds(350, 200, 150, 50);
+		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
+		
+		moveButton.setBounds(350, 250, 150, 50);
+		moveButton.setIcon(new ImageIcon(Images.moveButton));
+		
+		bagButton.setBounds(350, 300, 150, 50);
+		bagButton.setIcon(new ImageIcon(Images.bagButton));
 	}
 
 	public static void createMenu() {
