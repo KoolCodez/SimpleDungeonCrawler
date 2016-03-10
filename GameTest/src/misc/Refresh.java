@@ -1,15 +1,13 @@
+package misc;
 
-
-public class MoveLeft extends Thread{
+public class Refresh extends Thread {
 	public void run() {
 		try {
-			while (SimpleDungeonCrawler.movingLeft) {
-				SimpleDungeonCrawler.movePlayer("left");
+			while (true) {
 				SimpleDungeonCrawler.frame.getContentPane().validate();
 				SimpleDungeonCrawler.frame.getContentPane().repaint();
-				Thread.sleep(50);
+				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			}
-
 		} catch (InterruptedException e) {
 			System.out.println("sleep interrupted");
 		}

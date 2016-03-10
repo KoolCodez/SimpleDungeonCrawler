@@ -1,8 +1,10 @@
+package misc;
 import java.util.Random;
 
 public class StandardRoom {
 	public String typeOfRoom;
 	Random rand = new Random();
+	public Entity[] entities = new Entity[20];
 	public StandardRoom() {
 		int typeNum = rand.nextInt(10);
 		if (typeNum == 0 || typeNum == 1 || typeNum == 2) {

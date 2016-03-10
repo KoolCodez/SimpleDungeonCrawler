@@ -1,43 +1,4 @@
-<<<<<<< HEAD
-/DrawingPanel$DiffImage.class
-/DrawingPanel$ImagePanel.class
-/DrawingPanel$IndexGif89Frame.class
-/DrawingPanel$ReverseColorMap.class
-/DrawingPanel.class
-/EntitiesInARoom.class
-/Entity.class
-/KeyListenerThread.class
-/KeyPress.class
-/MouseClick.class
-/NewThread.class
-/PuzzleRoom.class
-/SimpleDungeonCrawler.class
-/StandardRoom.class
-=======
-/CreateCanvas.class
-/SimpleDungeonCrawler$1.class
-/SimpleDungeonCrawler$2.class
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
-/SimpleDungeonCrawler$3.class
-/SimpleDungeonCrawler$4.class
-/SimpleDungeonCrawler$5.class
 /Textures/
-/SimpleDungeonCrawler$6.class
-/SimpleDungeonCrawler$7.class
-/SimpleDungeonCrawler$8.class
-/SimpleDungeonCrawler$9.class
-/threads/
-/miscClasses/
-/EntitiesInARoom.class
-/Entity.class
-/KeyPress.class
-/MouseClick.class
-/PuzzleRoom.class
-/SimpleDungeonCrawler.class
-/StandardRoom.class
-/KeyListenerThread.class
-/MoveLeft.class
-/NewThread.class
->>>>>>> origin/master
+/misc/
+/movement/
+/items/
