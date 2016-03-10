@@ -1,12 +1,18 @@
 package items;
+import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class GenericItem {
-	public static String itemName;
-	public static JLabel item;
+	public String itemName;
+	public ImageIcon itemImage;
 	public GenericItem(ImageIcon image, String name) {
-		item = new JLabel(image);
+		itemImage = image;
 		itemName = name;
+	}
+	
+	public ImageIcon getImage() {
+		return itemImage;
 	}
 }

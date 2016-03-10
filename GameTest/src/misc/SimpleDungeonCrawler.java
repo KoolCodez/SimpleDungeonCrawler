@@ -368,7 +368,9 @@ public class SimpleDungeonCrawler extends JPanel {
 		addStick.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.addItem(new Stick());
+				Stick stick = new Stick();
+				stick.getImage();
+				character.addItem(stick);
 				invPanel.removeAll();
 				invPanel.add(addStick);
 				invPanel.add(exitButton);
@@ -377,6 +379,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		addStick.setBounds(500, 150, 100, 50);
 	}
+	
 	public static void refreshInv() {
 		Rectangle rText = new Rectangle(0, 50, 50, 20);
 		Rectangle rImage = new Rectangle(0, 0, 50, 50);
@@ -391,7 +394,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				rText.y += 70;
 			}
 			invPanel.add(text);
-			JLabel itemLabel = item.item;
+			JLabel itemLabel = new JLabel(item.itemImage);
 			itemLabel.setBounds(rImage);
 			rImage.x += 50;
 			if (rImage.x >= 450) {

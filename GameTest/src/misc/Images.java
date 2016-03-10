@@ -27,6 +27,10 @@ public class Images {
 	public static BufferedImage charLeftOpArm;
 	public static BufferedImage charRightOpArm;
 	public static BufferedImage stickItem;
+	public static BufferedImage stickItem2;
+	public static BufferedImage stickItem3;
+	public static BufferedImage stickItem4;
+	public static BufferedImage stickItem5;
 	
 	public static void createImages() throws IOException {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
@@ -51,5 +55,9 @@ public class Images {
 		topArrow = topArrowOff; // starts off
 		
 		stickItem = ImageIO.read(new File("src\\Textures\\Stick.jpg"));
+		stickItem2 = ImageIO.read(new File("src\\Textures\\Stick2.jpg"));
+		stickItem3 = ImageIO.read(new File("src\\Textures\\Stick3.jpg"));
+		stickItem4 = ImageIO.read(new File("src\\Textures\\Stick4.jpg"));
+		stickItem5 = ImageIO.read(new File("src\\Textures\\Stick5.jpg"));
 	}
 }
