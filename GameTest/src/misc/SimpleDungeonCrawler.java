@@ -416,6 +416,8 @@ public class SimpleDungeonCrawler extends JPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
+				
 			}
 		};
 		atkPanel.add(bagButton);
@@ -434,16 +436,16 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		
-		fightButton.setBounds(350, 74, 150, 50);
+		fightButton.setBounds(349, 74, 150, 50);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
 		
-		fleeButton.setBounds(350, 200, 150, 50);
+		fleeButton.setBounds(349, 200, 150, 50);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
 		
-		moveButton.setBounds(350, 250, 150, 50);
+		moveButton.setBounds(349, 250, 150, 50);
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
 		
-		bagButton.setBounds(350, 300, 150, 50);
+		bagButton.setBounds(349, 300, 150, 50);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
 	}
 

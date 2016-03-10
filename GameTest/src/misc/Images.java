@@ -35,6 +35,7 @@ public class Images {
 	public static BufferedImage fightButton;
 	public static BufferedImage fleeButton;
 	public static BufferedImage moveButton;
+	public static BufferedImage battleMenu;
 	
 	public static void createImages() throws IOException {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
@@ -68,6 +69,7 @@ public class Images {
 		fightButton = ImageIO.read(new File("src\\Textures\\FightButton.jpg"));
 		fleeButton = ImageIO.read(new File("src\\Textures\\FleeButton.jpg"));
 		moveButton = ImageIO.read(new File("src\\Textures\\MoveButton.jpg"));
+		battleMenu = ImageIO.read(new File("src\\Textures\\BattleMenu.jpg"));
 		
 	}
 }
