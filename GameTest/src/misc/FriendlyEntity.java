@@ -3,13 +3,15 @@ package misc;
 import java.util.Random;
 
 public class FriendlyEntity extends Entity {
-	public int friendlyHealth;
+	public int health;
+	public int maxHealth;
 	Random rand = new Random();
 	public FriendlyEntity(int health, double strength, double dexterity, double constitution, double intelligence,
 			double wisdom, double charisma) {
 		super();
 		super.entityType = "Enemy";
-		friendlyHealth = health;
+		this.health = health;
+		maxHealth = health;
 		super.setStats(strength, dexterity, constitution, intelligence, wisdom, charisma);
 	}
 }

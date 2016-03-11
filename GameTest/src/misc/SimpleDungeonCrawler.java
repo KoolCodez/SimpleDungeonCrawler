@@ -343,7 +343,6 @@ public class SimpleDungeonCrawler extends JPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				// g.drawString(stick.itemName, 0, 60);
 			}
 		};
 		invPanel.add(addStick);
@@ -411,12 +410,16 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton fightButton = new JButton();
 		JButton fleeButton = new JButton();
 		JButton moveButton = new JButton();
+		JButton debugHealth = new JButton("-1 hp");
 		// attack panel
 		atkPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
+				g.setColor(Color.red);
+				g.fillRect(107, 466, 220 * character.health / character.maxHealth, 18);
+				g.setColor(Color.black);
 				
 			}
 		};
@@ -424,9 +427,17 @@ public class SimpleDungeonCrawler extends JPanel {
 		atkPanel.add(fightButton);
 		atkPanel.add(fleeButton);
 		atkPanel.add(moveButton);
+		atkPanel.add(debugHealth);
 		//atkPanel.add(exitButton);
 		atkPanel.setLayout(null);
-
+		
+		debugHealth.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				character.health--;
+			}
+		});
+		debugHealth.setBounds(107, 456, 30, 10);
 		// exit button
 		fleeButton.addActionListener(new ActionListener() {
 			@Override
