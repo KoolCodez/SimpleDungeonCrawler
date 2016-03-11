@@ -439,14 +439,15 @@ public class SimpleDungeonCrawler extends JPanel {
 		fightButton.setBounds(349, 74, 150, 50);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
 		
-		fleeButton.setBounds(349, 200, 150, 50);
-		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
-		
-		moveButton.setBounds(349, 250, 150, 50);
+		moveButton.setBounds(349, 174, 150, 50);
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
 		
-		bagButton.setBounds(349, 300, 150, 50);
+		bagButton.setBounds(349, 276, 150, 50);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
+		
+		fleeButton.setBounds(349, 376, 150, 50);
+		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
+		
 	}
 
 	public static void createMenu() {
