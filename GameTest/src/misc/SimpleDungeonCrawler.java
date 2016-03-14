@@ -3,6 +3,7 @@ package misc;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -63,6 +64,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static JPanel charPanel;
 	public static JPanel mainMenu;
 	public static int refreshRate = 25; // number of millis to wait
+	public static Font font = new Font("Harrington", Font.BOLD, 18);
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
@@ -131,7 +133,8 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(panel);
 			}
 		});
-		menuButton.setBounds(500, 100, 100, 50);
+		menuButton.setBounds(500, 100, 150, 50);
+		menuButton.setFont(font);
 
 		// attack button
 		atkButton.addActionListener(new ActionListener() {
@@ -141,7 +144,8 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().add(atkPanel);
 			}
 		});
-		atkButton.setBounds(500, 150, 100, 50);
+		atkButton.setBounds(500, 150, 150, 50);
+		atkButton.setFont(font);
 		// attackButton.setIcon(defaultIcon);
 
 		// initializing frame stuff
@@ -161,7 +165,8 @@ public class SimpleDungeonCrawler extends JPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-
+				g.drawImage(Images.mainMenu, 0, 0, 500, 500, null);
+				
 			}
 		};
 		mainMenu.setLayout(null);
@@ -178,6 +183,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		startButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
 		menuCoord.y += 50;
+		startButton.setFont(font);
 
 		exitButton.addActionListener(new ActionListener() {
 			@Override
@@ -187,6 +193,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		exitButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
 		menuCoord.y += 50;
+		exitButton.setFont(font);
 	}
 
 	public static void createCharScreen() {
@@ -362,6 +369,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		exitButton.setBounds(500, 100, 100, 50);
+		exitButton.setFont(font);
 
 		// stick button
 		addStick.addActionListener(new ActionListener() {
@@ -377,6 +385,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		addStick.setBounds(500, 150, 100, 50);
+		addStick.setFont(font);
 	}
 	
 	public static void refreshInv() {
@@ -495,6 +504,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, 150, 50);
 		menuCoord.y += 50;
+		resume.setFont(font);
 
 		// char button
 		charButton.addActionListener(new ActionListener() {
@@ -506,6 +516,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		charButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
 		menuCoord.y += 50;
+		charButton.setFont(font);
 
 		// inventory button
 		invButton.addActionListener(new ActionListener() {
@@ -518,7 +529,8 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		invButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
 		menuCoord.y += 50;
-
+		invButton.setFont(font);
+		
 		// save button
 		saveButton.addActionListener(new ActionListener() {
 			@Override
@@ -527,7 +539,8 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		saveButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
 		menuCoord.y += 50;
-
+		saveButton.setFont(font);
+		
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -536,6 +549,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		exitButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
+		exitButton.setFont(font);
 	}
 
 	public static void createKeyBindings(InputMap inMap, ActionMap acMap, JFrame frame) {
