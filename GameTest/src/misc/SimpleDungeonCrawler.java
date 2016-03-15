@@ -38,19 +38,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
 
 public class SimpleDungeonCrawler extends JPanel {
-	public static boolean end;
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
-	public static Point playerLoc = new Point(250, 250);
+	public static Point2D playerLoc = new Point2D.Double(250.0, 250.0);
 	public static FriendlyEntity character;
-	public static int playerSpeed = 4;
-	public static int diagSpeed = 3;
+	public static double playerSpeed = 4;
+	public static double diagSpeed = Math.sqrt(playerSpeed) * Math.sqrt(2) + .3;
 	public static Graphics g;
 	public static boolean movingLeft = false;
 	public static boolean movingRight = false;
@@ -113,7 +113,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(Images.backgroundImg, 0, 0, null);
-				g.drawImage(Images.charImg, playerLoc.x, playerLoc.y, null);
+				g.drawImage(Images.charImg, (int) playerLoc.getX(), (int) playerLoc.getY(), null);
 				g.drawImage(Images.rightArrow, 474, 225, null);
 				g.drawImage(Images.leftArrow, 0, 225, null);
 				g.drawImage(Images.bottomArrow, 225, 474, null);
@@ -681,25 +681,25 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void checkIfLeavingRoom() {
-		if (playerLoc.y >= 200 && playerLoc.y <= 254) {
-			if (playerLoc.x < 30 && loc.x != 0) {
+		if ((int) playerLoc.getY() >= 200 && (int) playerLoc.getY() <= 254) {
+			if (playerLoc.getX() < 30 && loc.x != 0) {
 				loc.x--;
 				eventChangeRooms();
 
 			}
 
-			if (playerLoc.x > 444 && loc.x != 9) {
+			if (playerLoc.getX() > 444 && loc.x != 9) {
 				loc.x++;
 				eventChangeRooms();
 			}
 		}
-		if (playerLoc.x >= 200 && playerLoc.x <= 264) {
-			if (playerLoc.y < 30 && loc.y != 0) {
+		if (playerLoc.getX() >= 200 && playerLoc.getX() <= 264) {
+			if ((int) playerLoc.getY() < 30 && loc.y != 0) {
 				loc.y--;
 				eventChangeRooms();
 			}
 
-			if (playerLoc.y > 434 && loc.y != 9) {
+			if ((int) playerLoc.getY() > 434 && loc.y != 9) {
 				loc.y++;
 				eventChangeRooms();
 			}
@@ -707,16 +707,16 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	}
 
-	public static boolean legalMove(int deltaX, int deltaY) { // character 46
+	public static boolean legalMove(double deltaX, double deltaY) { // character 46
 																// tall, 36
 		// wide // wall 34
 		boolean isLegal = false;
-		int x = playerLoc.x + deltaX;
-		int y = playerLoc.y + deltaY;
-		int left = x;
-		int right = x + 36;
-		int top = y;
-		int bottom = y + 46;
+		double x = playerLoc.getX() + deltaX;
+		double y =  playerLoc.getY() + deltaY;
+		double left = x;
+		double right = x + 36;
+		double top = y;
+		double bottom = y + 46;
 		if (bottom <= 464 && top >= 36 && right <= 464 && left >= 36) { // main
 																		// room
 																		// box
@@ -738,10 +738,9 @@ public class SimpleDungeonCrawler extends JPanel {
 		return isLegal;
 	}
 
-	public static void movePlayer(int deltaX, int deltaY) {
+	public static void movePlayer(double deltaX, double deltaY) {
 		if (legalMove(deltaX, deltaY)) {
-			playerLoc.x += deltaX;
-			playerLoc.y += deltaY;
+			playerLoc.setLocation(playerLoc.getX() + deltaX, playerLoc.getY() + deltaY);
 			checkIfLeavingRoom();
 		}
 		checkIfLeavingRoom();
