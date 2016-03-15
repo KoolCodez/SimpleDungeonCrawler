@@ -50,7 +50,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Point2D playerLoc = new Point2D.Double(250.0, 250.0);
 	public static FriendlyEntity character;
 	public static double playerSpeed = 4;
-	public static double diagSpeed = Math.sqrt(playerSpeed) * Math.sqrt(2) + .3;
+	public static double diagSpeed = playerSpeed / Math.sqrt(2);
 	public static Graphics g;
 	public static boolean movingLeft = false;
 	public static boolean movingRight = false;
