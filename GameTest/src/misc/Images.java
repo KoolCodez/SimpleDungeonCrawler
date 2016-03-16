@@ -37,6 +37,8 @@ public class Images {
 	public static BufferedImage moveButton;
 	public static BufferedImage battleMenu;
 	public static BufferedImage mainMenu;
+	public static BufferedImage battleChar;
+	public static BufferedImage battleGoblin;
 	
 	public static void createImages() throws IOException {
 		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
@@ -71,6 +73,8 @@ public class Images {
 		fleeButton = ImageIO.read(new File("src\\Textures\\FleeButton.jpg"));
 		moveButton = ImageIO.read(new File("src\\Textures\\MoveButton.jpg"));
 		battleMenu = ImageIO.read(new File("src\\Textures\\BattleMenu.jpg"));
+		battleChar = ImageIO.read(new File("src\\Textures\\BattleMainChar.jpg"));
+		battleGoblin = ImageIO.read(new File("src\\Textures\\BattleGoblin.jpg"));
 		
 		mainMenu = ImageIO.read(new File("src\\Textures\\BrickStone.jpg"));
 		

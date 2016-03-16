@@ -71,7 +71,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		// System.out.println("Current working directory in Java : " + current);
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(650, 550);
+		frame.setSize(650, 538);
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
@@ -81,7 +81,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		createButtonsAndPanels();
 		InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = panel.getActionMap();
-		createKeyBindings(inMap, acMap, frame);
+		createKeyBindings(inMap, acMap);
 		Refresh r1 = new Refresh();
 		r1.start();
 		Point p = new Point(0, 10);
@@ -375,6 +375,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		addStick.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (character.entityInventory.size() < 20) {
 				Stick stick = new Stick();
 				stick.getImage();
 				character.addItem(stick);
@@ -382,6 +383,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				invPanel.add(addStick);
 				invPanel.add(exitButton);
 				refreshInv();
+				}
 			}
 		});
 		addStick.setBounds(500, 150, 100, 50);
@@ -429,6 +431,8 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.setColor(Color.red);
 				g.fillRect(107, 466, 220 * character.health / character.maxHealth, 18);
 				g.setColor(Color.black);
+				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
+				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
 				
 			}
 		};
@@ -552,7 +556,16 @@ public class SimpleDungeonCrawler extends JPanel {
 		exitButton.setFont(font);
 	}
 
-	public static void createKeyBindings(InputMap inMap, ActionMap acMap, JFrame frame) {
+	public static void createKeyBindings(InputMap inMap, ActionMap acMap) {
+		
+		Action pause = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				frame.remove(panel);
+				createMenu();
+				frame.add(menuPanel);
+			}
+		};
+		
 		Action moveLeft = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				if (!movingLeft) {
@@ -658,6 +671,9 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().repaint();
 			}
 		};
+		
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "pause");
+		acMap.put("pause", pause);
 
 		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "move left");
 		acMap.put("move left", moveLeft);
