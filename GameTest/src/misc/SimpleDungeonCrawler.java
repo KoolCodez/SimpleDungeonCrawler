@@ -14,6 +14,8 @@ import java.awt.PopupMenu;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -439,18 +441,20 @@ public class SimpleDungeonCrawler extends JPanel {
 		StandardRoom currentRoom = roomArray[loc.x][loc.y];
 		int selectedEnemy = 0;
 		// exit button
-		fleeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frame.getContentPane().add(panel);
-				frame.getContentPane().remove(atkPanel);
-			}
-		});
+		
 		
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fight(currentRoom, selectedEnemy);
+				List<Entity> initList = setInitiative(currentRoom);
+				for (int i = 0; i < initList.size(); i++) {
+					if (initList.get(i).getClass().toString().equals("EnemyEntity")) {
+						enemyAttack((EnemyEntity) initList.get(i));
+					} else {
+						characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
+					}
+				}
+				checkHealth(currentRoom);
 			}
 		});
 		fightButton.setBounds(349, 74, 150, 50);
@@ -461,36 +465,62 @@ public class SimpleDungeonCrawler extends JPanel {
 
 		bagButton.setBounds(349, 276, 150, 50);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
-
+		
+		fleeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().add(panel);
+				frame.getContentPane().remove(atkPanel);
+			}
+		});
 		fleeButton.setBounds(349, 376, 150, 50);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
 
 		
 	}
-
-	public static void fight(StandardRoom current, int selectedEnemy) {
-		List<EnemyEntity> enemyEntities = current.enemyEntities;
-		EnemyEntity enemy = enemyEntities.get(selectedEnemy);
+	
+	public static List<Entity> setInitiative(StandardRoom current) {
+		List<Entity> initList = new ArrayList<Entity>();
+		for (int i = 0; i < current.enemyEntities.size(); i++) {
+			int r = r6();
+			current.enemyEntities.get(i).initiative = r;
+			System.out.print(r + "");
+			initList.add(current.enemyEntities.get(i));
+		}
+		int r = r6();
+		character.initiative = r;
+		System.out.print(r + "");
+		initList.add(character);
+		Collections.sort(null); //TODO sort based on initiative
+		return initList;
+	}
+	
+	public static void checkHealth(StandardRoom current) {
+		
+	}
+	
+	public static void characterAttack(EnemyEntity enemy) {
 		//does it hit
-		if (character.dex > EnemyEntity.dex) {
-			//how much damage does it do
+			if (character.dex > EnemyEntity.dex) {
+				//how much damage does it do
+				double damage = 0.0;
+				damage = character.selectedWeapon.damage + character.str - enemy.con;
+				//subtract damage
+				enemy.enemyHealth -= (int) damage;
+			}
+	}
+	
+	public static void enemyAttack(EnemyEntity enemy) {
+		if (enemy.dex > character.dex) {
 			double damage = 0.0;
-			damage = character.selectedWeapon.damage + character.str - enemy.con;
+			damage = enemy.selectedWeapon.damage + enemy.str - character.con;
 			//subtract damage
-			enemy.enemyHealth -= (int) damage;
+			character.health -= (int) damage;
 		}
 	}
 	
-	public static void enemiesAttack(List<EnemyEntity> enemies) {
-		for (int i = 0; i < enemies.size(); i++) {
-			EnemyEntity enemy = enemies.get(i);
-			if (enemy.dex > character.dex) {
-				double damage = 0.0;
-				damage = enemy.selectedWeapon.damage + enemy.str - character.con;
-				//subtract damage
-				character.health -= (int) damage;
-			}
-		}
+	public static void friendlyAttack() {
+		
 	}
 
 	public static void move() {
@@ -507,6 +537,10 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static int r20() {
 		return new Random().nextInt(20) + 1;
+	}
+	
+	public static int r6() {
+		return new Random().nextInt(6) + 1;
 	}
 
 	public static void createMenu() {

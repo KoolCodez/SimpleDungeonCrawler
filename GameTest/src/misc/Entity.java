@@ -17,6 +17,7 @@ public class Entity { // extend this class with specific entity-classes.
 	public static double intl;
 	public static double wis;
 	public static double chr;
+	public int initiative;
 
 	Random rand = new Random();
 
@@ -38,5 +39,9 @@ public class Entity { // extend this class with specific entity-classes.
 		intl = intelligence;
 		wis = wisdom;
 		chr = charisma;
+	}
+	
+	public int compareTo(int otherInit) {
+		return this.initiative - otherInit;
 	}
 }
