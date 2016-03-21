@@ -7,16 +7,16 @@ import java.util.Random;
 
 import items.GenericItem;
 
-public class Entity { // extend this class with specific entity-classes.
+public class Entity implements Comparable<Entity>{ // extend this class with specific entity-classes.
 	public String entityType;
 	public Point entityLocation;
-	public static List<GenericItem> entityInventory;
-	public static double str;
-	public static double dex;
-	public static double con;
-	public static double intl;
-	public static double wis;
-	public static double chr;
+	public List<GenericItem> entityInventory;
+	public double str;
+	public double dex;
+	public double con;
+	public double intl;
+	public double wis;
+	public double chr;
 	public int initiative;
 
 	Random rand = new Random();
@@ -27,11 +27,11 @@ public class Entity { // extend this class with specific entity-classes.
 		entityLocation = new Point(250 - rand.nextInt(), 250 + rand.nextInt());
 	}
 	
-	public static void addItem(GenericItem item) {
+	public void addItem(GenericItem item) {
 		entityInventory.add(item);
 	}
 
-	public static void setStats(double strength, double dexterity, double constitution, double intelligence,
+	public void setStats(double strength, double dexterity, double constitution, double intelligence,
 			double wisdom, double charisma) {
 		str = strength;
 		dex = dexterity;
@@ -41,7 +41,7 @@ public class Entity { // extend this class with specific entity-classes.
 		chr = charisma;
 	}
 	
-	public int compareTo(int otherInit) {
-		return this.initiative - otherInit;
+	public int compareTo(Entity otherInit) {
+		return this.initiative - otherInit.initiative;
 	}
 }

@@ -7,8 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Images {
-	public static BufferedImage backgroundImg;
-	public static BufferedImage charImg;
+	//Arrows\\
 	public static BufferedImage rightArrow;
 	public static BufferedImage leftArrow;
 	public static BufferedImage bottomArrow;
@@ -21,64 +20,96 @@ public class Images {
 	public static BufferedImage leftArrowOff;
 	public static BufferedImage bottomArrowOff;
 	public static BufferedImage topArrowOff;
+	//Buttons\\
+	public static BufferedImage bagButton;
+	public static BufferedImage fightButton;
+	public static BufferedImage fleeButton;
+	public static BufferedImage moveButton;
+	//Characters\\
+	public static BufferedImage charImg;
 	public static BufferedImage charFront;
 	public static BufferedImage charLeft;
 	public static BufferedImage charRight;
 	public static BufferedImage charLeftOpArm;
 	public static BufferedImage charRightOpArm;
+	public static BufferedImage battleChar;
+	//Enemies\\
+	public static BufferedImage battleGoblin;
+	//Grounds\\
+	public static BufferedImage backgroundImg;
+	//Items\\
 	public static BufferedImage stickItem;
 	public static BufferedImage stickItem2;
 	public static BufferedImage stickItem3;
 	public static BufferedImage stickItem4;
 	public static BufferedImage stickItem5;
-	public static BufferedImage bagButton;
-	public static BufferedImage fightButton;
-	public static BufferedImage fleeButton;
-	public static BufferedImage moveButton;
+	//Menus\\
 	public static BufferedImage battleMenu;
 	public static BufferedImage mainMenu;
-	public static BufferedImage battleChar;
-	public static BufferedImage battleGoblin;
 	public static BufferedImage pauseMenu;
 	
 	public static void createImages() throws IOException {
-		charFront = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
-		charLeft = ImageIO.read(new File("src\\Textures\\MainCharLeft.jpg"));
-		charRight = ImageIO.read(new File("src\\Textures\\MainCharRight.jpg"));
-		charLeftOpArm = ImageIO.read(new File("src\\Textures\\MainCharLeftRightArmUp.jpg"));
-		charRightOpArm = ImageIO.read(new File("src\\Textures\\MainCharRightLeftArmUp.jpg"));
-		backgroundImg = ImageIO.read(new File("src\\Textures\\BasicGround.jpg"));
-		charImg = ImageIO.read(new File("src\\Textures\\MainCharFront.jpg"));
-		rightArrowOn = ImageIO.read(new File("src\\Textures\\RightArrowOn.jpg"));
-		leftArrowOn = ImageIO.read(new File("src\\Textures\\LeftArrowOn.jpg"));
-		bottomArrowOn = ImageIO.read(new File("src\\Textures\\BotArrowOn.jpg"));
-		topArrowOn = ImageIO.read(new File("src\\Textures\\TopArrowOn.jpg"));
-		rightArrowOff = ImageIO.read(new File("src\\Textures\\RightArrowOff.jpg"));
-		leftArrowOff = ImageIO.read(new File("src\\Textures\\LeftArrowOff.jpg"));
-		bottomArrowOff = ImageIO.read(new File("src\\Textures\\BotArrowOff.jpg"));
-		topArrowOff = ImageIO.read(new File("src\\Textures\\TopArrowOff.jpg"));
-
+		arrows();
+		buttons();
+		characters();
+		enemies();
+		grounds();
+		items();
+		menus();
+	}
+	
+	public static void arrows() throws IOException {
+		rightArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\RightArrowOn.jpg"));
+		leftArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\LeftArrowOn.jpg"));
+		bottomArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\BotArrowOn.jpg"));
+		topArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\TopArrowOn.jpg"));
+		rightArrowOff = ImageIO.read(new File("src\\Textures\\Arrows\\RightArrowOff.jpg"));
+		leftArrowOff = ImageIO.read(new File("src\\Textures\\Arrows\\LeftArrowOff.jpg"));
+		bottomArrowOff = ImageIO.read(new File("src\\Textures\\Arrows\\BotArrowOff.jpg"));
+		topArrowOff = ImageIO.read(new File("src\\Textures\\Arrows\\TopArrowOff.jpg"));
 		rightArrow = rightArrowOn;
 		leftArrow = leftArrowOff; // starts off
 		bottomArrow = bottomArrowOn;
 		topArrow = topArrowOff; // starts off
-		
-		stickItem = ImageIO.read(new File("src\\Textures\\Stick.jpg"));
-		stickItem2 = ImageIO.read(new File("src\\Textures\\Stick2.jpg"));
-		stickItem3 = ImageIO.read(new File("src\\Textures\\Stick3.jpg"));
-		stickItem4 = ImageIO.read(new File("src\\Textures\\Stick4.jpg"));
-		stickItem5 = ImageIO.read(new File("src\\Textures\\Stick5.jpg"));
-		
-		bagButton = ImageIO.read(new File("src\\Textures\\BagButton.jpg"));
-		fightButton = ImageIO.read(new File("src\\Textures\\FightButton.jpg"));
-		fleeButton = ImageIO.read(new File("src\\Textures\\FleeButton.jpg"));
-		moveButton = ImageIO.read(new File("src\\Textures\\MoveButton.jpg"));
-		battleMenu = ImageIO.read(new File("src\\Textures\\BattleMenu2.jpg"));
-		battleChar = ImageIO.read(new File("src\\Textures\\BattleMainChar.jpg"));
-		battleGoblin = ImageIO.read(new File("src\\Textures\\BattleGoblin.jpg"));
-		
-		mainMenu = ImageIO.read(new File("src\\Textures\\BrickStone.jpg"));
-		pauseMenu = ImageIO.read(new File("src\\Textures\\PauseMenu.jpg"));
-		
+	}
+	
+	public static void buttons() throws IOException {
+		bagButton = ImageIO.read(new File("src\\Textures\\Buttons\\BagButton.jpg"));
+		fightButton = ImageIO.read(new File("src\\Textures\\Buttons\\FightButton.jpg"));
+		fleeButton = ImageIO.read(new File("src\\Textures\\Buttons\\FleeButton.jpg"));
+		moveButton = ImageIO.read(new File("src\\Textures\\Buttons\\MoveButton.jpg"));
+
+	}
+	
+	public static void characters() throws IOException {
+		charFront = ImageIO.read(new File("src\\Textures\\Characters\\MainCharFront.jpg"));
+		charLeft = ImageIO.read(new File("src\\Textures\\Characters\\MainCharLeft.jpg"));
+		charRight = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRight.jpg"));
+		charLeftOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharLeftRightArmUp.jpg"));
+		charRightOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRightLeftArmUp.jpg"));
+		charImg = charFront;
+		battleChar = ImageIO.read(new File("src\\Textures\\Characters\\BattleMainChar.jpg"));
+	}
+	
+	public static void enemies() throws IOException {
+		battleGoblin = ImageIO.read(new File("src\\Textures\\Enemies\\BattleGoblin.jpg"));
+	}
+	
+	public static void grounds() throws IOException {
+		backgroundImg = ImageIO.read(new File("src\\Textures\\Grounds\\BasicGround.jpg"));
+	}
+	
+	public static void items() throws IOException {
+		stickItem = ImageIO.read(new File("src\\Textures\\Items\\Stick.jpg"));
+		stickItem2 = ImageIO.read(new File("src\\Textures\\Items\\Stick2.jpg"));
+		stickItem3 = ImageIO.read(new File("src\\Textures\\Items\\Stick3.jpg"));
+		stickItem4 = ImageIO.read(new File("src\\Textures\\Items\\Stick4.jpg"));
+		stickItem5 = ImageIO.read(new File("src\\Textures\\Items\\Stick5.jpg"));
+	}
+	
+	public static void menus() throws IOException {
+		battleMenu = ImageIO.read(new File("src\\Textures\\Menus\\BattleMenu2.jpg"));
+		mainMenu = ImageIO.read(new File("src\\Textures\\Menus\\BrickStone.jpg"));
+		pauseMenu = ImageIO.read(new File("src\\Textures\\Menus\\PauseMenu.jpg"));
 	}
 }

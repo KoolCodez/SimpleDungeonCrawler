@@ -438,20 +438,22 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		debugHealth.setBounds(107, 456, 30, 10);
-		StandardRoom currentRoom = roomArray[loc.x][loc.y];
-		int selectedEnemy = 0;
 		// exit button
 		
 		
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				StandardRoom currentRoom = roomArray[loc.x][loc.y];
 				List<Entity> initList = setInitiative(currentRoom);
+				int selectedEnemy = 0;
 				for (int i = 0; i < initList.size(); i++) {
-					if (initList.get(i).getClass().toString().equals("EnemyEntity")) {
+					if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity")) {
 						enemyAttack((EnemyEntity) initList.get(i));
-					} else {
+					} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity")){
 						characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
+					} else {
+						System.out.println(initList.get(i).getClass().toString());
 					}
 				}
 				checkHealth(currentRoom);
@@ -475,23 +477,20 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		fleeButton.setBounds(349, 376, 150, 50);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
-
-		
 	}
 	
 	public static List<Entity> setInitiative(StandardRoom current) {
-		List<Entity> initList = new ArrayList<Entity>();
+		ArrayList<Entity> initList = new ArrayList<Entity>();
 		for (int i = 0; i < current.enemyEntities.size(); i++) {
 			int r = r6();
 			current.enemyEntities.get(i).initiative = r;
-			System.out.print(r + "");
 			initList.add(current.enemyEntities.get(i));
 		}
 		int r = r6();
 		character.initiative = r;
-		System.out.print(r + "");
 		initList.add(character);
-		Collections.sort(null); //TODO sort based on initiative
+		//TODO sort based on initiative
+		Collections.sort(initList);
 		return initList;
 	}
 	
@@ -500,22 +499,30 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 	
 	public static void characterAttack(EnemyEntity enemy) {
+		System.out.println("Character Attack!");
 		//does it hit
-			if (character.dex > EnemyEntity.dex) {
+			if (character.dex > enemy.dex) {
 				//how much damage does it do
 				double damage = 0.0;
 				damage = character.selectedWeapon.damage + character.str - enemy.con;
 				//subtract damage
 				enemy.enemyHealth -= (int) damage;
+				System.out.println("He Hit For " + damage + "Damage!");
+			} else {
+				System.out.println("He Missed!");
 			}
 	}
 	
 	public static void enemyAttack(EnemyEntity enemy) {
+		System.out.println("Enemy Attack!");
 		if (enemy.dex > character.dex) {
 			double damage = 0.0;
 			damage = enemy.selectedWeapon.damage + enemy.str - character.con;
 			//subtract damage
 			character.health -= (int) damage;
+			System.out.println("He Hit For " + damage + "Damage!");
+		} else {
+			System.out.println("He Missed!");
 		}
 	}
 	
