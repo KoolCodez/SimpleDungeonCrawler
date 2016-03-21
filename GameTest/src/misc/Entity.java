@@ -18,6 +18,7 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	public double wis;
 	public double chr;
 	public int initiative;
+	public int AC;
 
 	Random rand = new Random();
 
@@ -32,13 +33,14 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	}
 
 	public void setStats(double strength, double dexterity, double constitution, double intelligence,
-			double wisdom, double charisma) {
+			double wisdom, double charisma, int AC) {
 		str = strength;
 		dex = dexterity;
 		con = constitution;
 		intl = intelligence;
 		wis = wisdom;
 		chr = charisma;
+		this.AC = AC;
 	}
 	
 	public int compareTo(Entity otherInit) {

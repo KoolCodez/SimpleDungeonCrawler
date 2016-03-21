@@ -78,7 +78,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
-		character = new FriendlyEntity(5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+		character = new FriendlyEntity(5, 10, 10, 10, 10, 10, 10, 10);
 		Images.createImages();
 		character.addItem(new Stick());
 		createButtonsAndPanels();
@@ -450,13 +450,16 @@ public class SimpleDungeonCrawler extends JPanel {
 				for (int i = 0; i < initList.size(); i++) {
 					if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity")) {
 						enemyAttack((EnemyEntity) initList.get(i));
+						System.out.println();
 					} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity")){
 						characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
+						System.out.println();
 					} else {
 						System.out.println(initList.get(i).getClass().toString());
 					}
 				}
 				checkHealth(currentRoom);
+				System.out.println("New Turn");
 			}
 		});
 		fightButton.setBounds(349, 74, 150, 50);
@@ -501,10 +504,10 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static void characterAttack(EnemyEntity enemy) {
 		System.out.println("Character Attack!");
 		//does it hit
-			if (character.dex > enemy.dex) {
+			if (1/2 * Math.pow(enemy.dex - character.dex, 2) + 10 < r20()) {
 				//how much damage does it do
 				double damage = 0.0;
-				damage = character.selectedWeapon.damage + character.str - enemy.con;
+				damage = (character.str / enemy.str * character.selectedWeapon.damage) / enemy.AC;
 				//subtract damage
 				enemy.enemyHealth -= (int) damage;
 				System.out.println("He Hit For " + damage + "Damage!");
@@ -515,9 +518,9 @@ public class SimpleDungeonCrawler extends JPanel {
 	
 	public static void enemyAttack(EnemyEntity enemy) {
 		System.out.println("Enemy Attack!");
-		if (enemy.dex > character.dex) {
+		if (1/2 * Math.pow(character.dex - enemy.dex, 2) + 10 < r20()) {
 			double damage = 0.0;
-			damage = enemy.selectedWeapon.damage + enemy.str - character.con;
+			damage = (enemy.str / character.str * enemy.selectedWeapon.damage) / character.AC;
 			//subtract damage
 			character.health -= (int) damage;
 			System.out.println("He Hit For " + damage + "Damage!");

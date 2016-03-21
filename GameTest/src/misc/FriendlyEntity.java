@@ -10,11 +10,11 @@ public class FriendlyEntity extends Entity {
 	public GenericWeapon selectedWeapon;
 	Random rand = new Random();
 	public FriendlyEntity(int health, double strength, double dexterity, double constitution, double intelligence,
-			double wisdom, double charisma) {
+			double wisdom, double charisma, int AC) {
 		super();
 		super.entityType = "Enemy";
 		this.health = health;
 		maxHealth = health;
-		super.setStats(strength, dexterity, constitution, intelligence, wisdom, charisma);
+		super.setStats(strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
 	}
 }
