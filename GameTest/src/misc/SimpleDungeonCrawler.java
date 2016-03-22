@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
@@ -410,6 +411,8 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton fleeButton = new JButton();
 		JButton moveButton = new JButton();
 		JButton debugHealth = new JButton("-1 hp");
+		ArrayList<String> console1 = new ArrayList<String>();
+		//console1.add("Console is funtioning.");
 		// attack panel
 		atkPanel = new JPanel() {
 			@Override
@@ -421,7 +424,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
 				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
-
+				//g.drawString(console1.get(console1.size() - 1), 10, 100);
 			}
 		};
 		atkPanel.add(bagButton);
@@ -439,12 +442,6 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		debugHealth.setBounds(107, 456, 30, 10);
-		// exit button
-		ActionListener run = new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				
-			}
-		};
 		
 		fightButton.addActionListener(new ActionListener() {
 			@Override
@@ -457,22 +454,25 @@ public class SimpleDungeonCrawler extends JPanel {
 				StandardRoom currentRoom = roomArray[loc.x][loc.y];
 				List<Entity> initList = setInitiative(currentRoom);
 				int selectedEnemy = 0;
-				Timer timer = new Timer(1000, run);
-				timer.setRepeats(false);
 				for (int i = 0; i < initList.size(); i++) {
 					if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity")) {
-						enemyAttack((EnemyEntity) initList.get(i));
-						System.out.println();
+						enemyAttack((EnemyEntity) initList.get(i), console1);
+						//System.out.println();
 					} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity")){
-						characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
-						System.out.println();
+						characterAttack(currentRoom.enemyEntities.get(selectedEnemy), console1);
+						//System.out.println();
 					} else {
-						System.out.println(initList.get(i).getClass().toString());
+						//System.out.println(initList.get(i).getClass().toString());
 					}
-					timer.start();
+					try {
+						TimeUnit.SECONDS.sleep(2);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				//checkHealth(currentRoom);
-				System.out.println("New Turn");
+				//System.out.println("New Turn");
 			}
 		});
 		fightButton.setBounds(349, 74, 150, 50);
@@ -533,7 +533,8 @@ public class SimpleDungeonCrawler extends JPanel {
 		}
 	}
 	
-	public static void characterAttack(EnemyEntity enemy) {
+	public static void characterAttack(EnemyEntity enemy, ArrayList<String> console) {
+		//console.add("Character Attack!");
 		System.out.println("Character Attack!");
 		//does it hit
 		if (enemy.dex - character.dex + 10 < r20()) {
@@ -542,21 +543,26 @@ public class SimpleDungeonCrawler extends JPanel {
 			damage = (character.str / enemy.str * character.selectedWeapon.damage) / enemy.AC;
 			//subtract damage
 			enemy.enemyHealth -= (int) damage;
+			//console.add("He Hit For " + damage + "Damage!");
 			System.out.println("He Hit For " + damage + "Damage!");
 		} else {
+			//console.add("He Missed!");
 			System.out.println("He Missed!");
 		}
 	}
 	
-	public static void enemyAttack(EnemyEntity enemy) {
+	public static void enemyAttack(EnemyEntity enemy, ArrayList<String> console) {
+		//console.add("Enemy Attack!");
 		System.out.println("Enemy Attack!");
 		if (character.dex - enemy.dex + 10 < r20()) {
 			double damage = 0.0;
 			damage = (enemy.str / character.str * enemy.selectedWeapon.damage) / character.AC;
 			//subtract damage
 			character.health -= (int) damage;
+			//console.add("He Hit For " + damage + "Damage!");
 			System.out.println("He Hit For " + damage + "Damage!");
 		} else {
+			//console.add("He Missed!");
 			System.out.println("He Missed!");
 		}
 	}
