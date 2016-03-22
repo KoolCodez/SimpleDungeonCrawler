@@ -22,6 +22,7 @@ import java.util.Random;
 import javax.swing.*;
 
 import items.GenericItem;
+import items.GenericWeapon;
 import items.Stick;
 import movement.MoveDown;
 import movement.MoveDownLeft;
@@ -439,14 +440,25 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		debugHealth.setBounds(107, 456, 30, 10);
 		// exit button
-		
+		ActionListener run = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
+			}
+		};
 		
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
+				weapon.damage = 1.0;
+				weapon.ranged = false;
+				weapon.speed = 1.0;
+				character.selectedWeapon = weapon;
 				StandardRoom currentRoom = roomArray[loc.x][loc.y];
 				List<Entity> initList = setInitiative(currentRoom);
 				int selectedEnemy = 0;
+				Timer timer = new Timer(1000, run);
+				timer.setRepeats(false);
 				for (int i = 0; i < initList.size(); i++) {
 					if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity")) {
 						enemyAttack((EnemyEntity) initList.get(i));
@@ -457,8 +469,9 @@ public class SimpleDungeonCrawler extends JPanel {
 					} else {
 						System.out.println(initList.get(i).getClass().toString());
 					}
+					timer.start();
 				}
-				checkHealth(currentRoom);
+				//checkHealth(currentRoom);
 				System.out.println("New Turn");
 			}
 		});
@@ -497,28 +510,47 @@ public class SimpleDungeonCrawler extends JPanel {
 		return initList;
 	}
 	
-	public static void checkHealth(StandardRoom current) {
-		
+	public static boolean checkHealth(StandardRoom current) {
+		boolean fAlive = false;
+		boolean eAlive = false;
+		if(character.health <= 0) {
+			fAlive = true;
+		}
+		for (int i = 0; i < current.enemyEntities.size(); i++) {
+			if (current.enemyEntities.get(i).enemyHealth <= 0) {
+				eAlive = true;
+			}
+		}
+		if (fAlive && !eAlive) {
+			System.out.println("VICTORY!");
+			return false;
+		} else if (!fAlive && eAlive) {
+			System.out.println("DEFEAT");
+			return false;
+		} else {
+			System.out.println("CONTINUE THE BATTLE");
+			return true;
+		}
 	}
 	
 	public static void characterAttack(EnemyEntity enemy) {
 		System.out.println("Character Attack!");
 		//does it hit
-			if (1/2 * Math.pow(enemy.dex - character.dex, 2) + 10 < r20()) {
-				//how much damage does it do
-				double damage = 0.0;
-				damage = (character.str / enemy.str * character.selectedWeapon.damage) / enemy.AC;
-				//subtract damage
-				enemy.enemyHealth -= (int) damage;
-				System.out.println("He Hit For " + damage + "Damage!");
-			} else {
-				System.out.println("He Missed!");
-			}
+		if (enemy.dex - character.dex + 10 < r20()) {
+			//how much damage does it do
+			double damage = 0.0;
+			damage = (character.str / enemy.str * character.selectedWeapon.damage) / enemy.AC;
+			//subtract damage
+			enemy.enemyHealth -= (int) damage;
+			System.out.println("He Hit For " + damage + "Damage!");
+		} else {
+			System.out.println("He Missed!");
+		}
 	}
 	
 	public static void enemyAttack(EnemyEntity enemy) {
 		System.out.println("Enemy Attack!");
-		if (1/2 * Math.pow(character.dex - enemy.dex, 2) + 10 < r20()) {
+		if (character.dex - enemy.dex + 10 < r20()) {
 			double damage = 0.0;
 			damage = (enemy.str / character.str * enemy.selectedWeapon.damage) / character.AC;
 			//subtract damage
