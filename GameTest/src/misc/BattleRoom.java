@@ -11,7 +11,7 @@ public class BattleRoom extends StandardRoom {
 	
 	public BattleRoom(int enemies) {
 		for (int i = 0; i <= enemies; i++) {
-			EnemyEntity temp = new EnemyEntity(5, 10, 10, 10, 10, 10, 10, 10);
+			EnemyEntity temp = new EnemyEntity(5, 10, 10, 10, 10, 10, 10, 1);
 			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
 			weapon.damage = 1.0;
 			weapon.ranged = false;

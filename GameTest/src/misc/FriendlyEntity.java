@@ -5,16 +5,12 @@ import java.util.Random;
 import items.GenericWeapon;
 
 public class FriendlyEntity extends Entity {
-	public int health;
-	public int maxHealth;
 	public GenericWeapon selectedWeapon;
 	Random rand = new Random();
-	public FriendlyEntity(int health, double strength, double dexterity, double constitution, double intelligence,
+	public FriendlyEntity(double health, double strength, double dexterity, double constitution, double intelligence,
 			double wisdom, double charisma, int AC) {
 		super();
 		super.entityType = "Enemy";
-		this.health = health;
-		maxHealth = health;
-		super.setStats(strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
+		super.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
 	}
 }

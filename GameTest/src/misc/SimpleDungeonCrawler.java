@@ -80,7 +80,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
-		character = new FriendlyEntity(5, 10, 10, 10, 10, 10, 10, 10);
+		character = new FriendlyEntity(5, 10, 10, 10, 10, 10, 10, 1);
 		Images.createImages();
 		character.addItem(new Stick());
 		createButtonsAndPanels();
@@ -420,7 +420,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				super.paintComponent(g);
 				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
 				g.setColor(Color.red);
-				g.fillRect(107, 466, 220 * character.health / character.maxHealth, 18);
+				g.fillRect(107, 466, (int) (220 * character.health / character.maxHealth), 18);
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
 				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
@@ -446,33 +446,15 @@ public class SimpleDungeonCrawler extends JPanel {
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
-				weapon.damage = 1.0;
-				weapon.ranged = false;
-				weapon.speed = 1.0;
-				character.selectedWeapon = weapon;
-				StandardRoom currentRoom = roomArray[loc.x][loc.y];
-				List<Entity> initList = setInitiative(currentRoom);
-				int selectedEnemy = 0;
-				for (int i = 0; i < initList.size(); i++) {
-					if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity")) {
-						enemyAttack((EnemyEntity) initList.get(i), console1);
-						//System.out.println();
-					} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity")){
-						characterAttack(currentRoom.enemyEntities.get(selectedEnemy), console1);
-						//System.out.println();
-					} else {
-						//System.out.println(initList.get(i).getClass().toString());
-					}
-					try {
-						TimeUnit.SECONDS.sleep(2);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-				//checkHealth(currentRoom);
-				//System.out.println("New Turn");
+				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {    
+				    @Override
+				    protected Integer doInBackground() throws Exception {
+				    	battleSequence(console1);
+				    	return 0;
+				    }
+				};
+				worker.execute();
+				//battleSequence(console1);
 			}
 		});
 		fightButton.setBounds(349, 74, 150, 50);
@@ -493,6 +475,43 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		fleeButton.setBounds(349, 376, 150, 50);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
+	}
+	
+	public static void battleSequence(ArrayList<String> console1) {
+		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
+		weapon.damage = 1.0;
+		weapon.ranged = false;
+		weapon.speed = 1.0;
+		character.selectedWeapon = weapon;
+		StandardRoom currentRoom = roomArray[loc.x][loc.y];
+		List<Entity> initList = setInitiative(currentRoom);
+		int selectedEnemy = 0;
+		for (int i = 0; i < initList.size(); i++) {
+			frame.validate();
+			frame.repaint();
+			if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity")) {
+				enemyAttack((EnemyEntity) initList.get(i), console1);
+				//System.out.println();
+			} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity")){
+				characterAttack(currentRoom.enemyEntities.get(selectedEnemy), console1);
+				//System.out.println();
+			} else {
+				//System.out.println(initList.get(i).getClass().toString());
+			}
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			//checkHealth(currentRoom);
+			frame.validate();
+			frame.repaint();
+		}
+		checkHealth(currentRoom);
+		frame.validate();
+		frame.repaint();
+		//System.out.println("New Turn");
 	}
 	
 	public static List<Entity> setInitiative(StandardRoom current) {
@@ -517,7 +536,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			fAlive = true;
 		}
 		for (int i = 0; i < current.enemyEntities.size(); i++) {
-			if (current.enemyEntities.get(i).enemyHealth <= 0) {
+			if (current.enemyEntities.get(i).health <= 0) {
 				eAlive = true;
 			}
 		}
@@ -542,7 +561,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			double damage = 0.0;
 			damage = (character.str / enemy.str * character.selectedWeapon.damage) / enemy.AC;
 			//subtract damage
-			enemy.enemyHealth -= (int) damage;
+			enemy.health -= damage;
 			//console.add("He Hit For " + damage + "Damage!");
 			System.out.println("He Hit For " + damage + "Damage!");
 		} else {
@@ -558,7 +577,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			double damage = 0.0;
 			damage = (enemy.str / character.str * enemy.selectedWeapon.damage) / character.AC;
 			//subtract damage
-			character.health -= (int) damage;
+			character.health -= damage;
 			//console.add("He Hit For " + damage + "Damage!");
 			System.out.println("He Hit For " + damage + "Damage!");
 		} else {
