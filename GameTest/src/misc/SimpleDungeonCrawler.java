@@ -52,7 +52,7 @@ import java.io.*;
 public class SimpleDungeonCrawler extends JPanel {
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
-	public static Point2D playerLoc = new Point2D.Double(250.0, 250.0);
+	//public static Point2D character.getLocation() = new Point2D.Double(250.0, 250.0);
 	public static FriendlyEntity character;
 	public static double playerSpeed = 4;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
@@ -103,7 +103,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(Images.backgroundImg, 0, 0, null);
-				g.drawImage(Images.charImg, (int) playerLoc.getX(), (int) playerLoc.getY(), null);
+				g.drawImage(Images.charImg, (int) character.getLocation().getX(), (int) character.getLocation().getY(), null);
 				g.drawImage(Images.rightArrow, 474, 225, null);
 				g.drawImage(Images.leftArrow, 0, 225, null);
 				g.drawImage(Images.bottomArrow, 225, 474, null);
@@ -188,103 +188,103 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void createCharScreen() {
 		JButton exitButton = new JButton("EXIT");
-		JButton strUp = new JButton("+1");
+		JButton setStr = new JButton("+1");
 		JButton strDown = new JButton("-1");
-		JButton dexUp = new JButton("+1");
+		JButton setDex = new JButton("+1");
 		JButton dexDown = new JButton("-1");
-		JButton conUp = new JButton("+1");
+		JButton setCon = new JButton("+1");
 		JButton conDown = new JButton("-1");
-		JButton wisUp = new JButton("+1");
+		JButton setWis = new JButton("+1");
 		JButton wisDown = new JButton("-1");
 		JButton intUp = new JButton("+1");
 		JButton intDown = new JButton("-1");
-		JButton chrUp = new JButton("+1");
+		JButton setChr = new JButton("+1");
 		JButton chrDown = new JButton("-1");
 		// attack panel
 		charPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawString("STRENGTH: " + character.str, 200, 100);
-				g.drawString("DEXTERITY: " + character.dex, 200, 150);
-				g.drawString("CONSTITUTION: " + character.con, 200, 200);
-				g.drawString("WISDOM: " + character.wis, 200, 250);
-				g.drawString("INTELLIGENCE: " + character.intl, 200, 300);
-				g.drawString("CHARISMA: " + character.chr, 200, 350);
+				g.drawString("STRENGTH: " + character.getStr(), 200, 100);
+				g.drawString("DEXTERITY: " + character.getDex(), 200, 150);
+				g.drawString("CONSTITUTION: " + character.getCon(), 200, 200);
+				g.drawString("WISDOM: " + character.getWis(), 200, 250);
+				g.drawString("INTELLIGENCE: " + character.getIntl(), 200, 300);
+				g.drawString("CHARISMA: " + character.getChr(), 200, 350);
 			}
 		};
 		charPanel.add(exitButton);
-		charPanel.add(strUp);
+		charPanel.add(setStr);
 		charPanel.add(strDown);
-		charPanel.add(dexUp);
+		charPanel.add(setDex);
 		charPanel.add(dexDown);
-		charPanel.add(conUp);
+		charPanel.add(setCon);
 		charPanel.add(conDown);
-		charPanel.add(wisUp);
+		charPanel.add(setWis);
 		charPanel.add(wisDown);
 		charPanel.add(intUp);
 		charPanel.add(intDown);
-		charPanel.add(chrUp);
+		charPanel.add(setChr);
 		charPanel.add(chrDown);
 		charPanel.setLayout(null);
 
 		// level buttons
-		strUp.addActionListener(new ActionListener() {
+		setStr.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.str++;
+				character.setStr(1);
 			}
 		});
-		strUp.setBounds(200, 100, 50, 25);
+		setStr.setBounds(200, 100, 50, 25);
 		strDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.str--;
+				character.setStr(-1);
 			}
 		});
 		strDown.setBounds(250, 100, 50, 25);
 
-		dexUp.addActionListener(new ActionListener() {
+		setDex.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.dex++;
+				character.setDex(1);
 			}
 		});
-		dexUp.setBounds(200, 150, 50, 25);
+		setDex.setBounds(200, 150, 50, 25);
 		dexDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.dex--;
+				character.setDex(-1);
 			}
 		});
 		dexDown.setBounds(250, 150, 50, 25);
 
-		conUp.addActionListener(new ActionListener() {
+		setCon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.con++;
+				character.setCon(1);
 			}
 		});
-		conUp.setBounds(200, 200, 50, 25);
+		setCon.setBounds(200, 200, 50, 25);
 		conDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.con--;
+				character.setCon(-1);
 			}
 		});
 		conDown.setBounds(250, 200, 50, 25);
 
-		wisUp.addActionListener(new ActionListener() {
+		setWis.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.wis++;
+				character.setWis(1);
 			}
 		});
-		wisUp.setBounds(200, 250, 50, 25);
+		setWis.setBounds(200, 250, 50, 25);
 		wisDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.wis--;
+				character.setWis(-1);
 			}
 		});
 		wisDown.setBounds(250, 250, 50, 25);
@@ -292,29 +292,29 @@ public class SimpleDungeonCrawler extends JPanel {
 		intUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.intl++;
+				character.setIntl(1);
 			}
 		});
 		intUp.setBounds(200, 300, 50, 25);
 		intDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.intl--;
+				character.setIntl(-1);
 			}
 		});
 		intDown.setBounds(250, 300, 50, 25);
 
-		chrUp.addActionListener(new ActionListener() {
+		setChr.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.chr++;
+				character.setChr(1);
 			}
 		});
-		chrUp.setBounds(200, 350, 50, 25);
+		setChr.setBounds(200, 350, 50, 25);
 		intDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.chr--;
+				character.setChr(-1);
 			}
 		});
 		chrDown.setBounds(250, 350, 50, 25);
@@ -364,7 +364,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		addStick.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (character.entityInventory.size() < 20) {
+				if (character.getInventory().size() < 20) {
 					Stick stick = new Stick();
 					stick.getImage();
 					character.addItem(stick);
@@ -382,8 +382,8 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static void refreshInv() {
 		Rectangle rText = new Rectangle(0, 50, 50, 20);
 		Rectangle rImage = new Rectangle(0, 0, 50, 50);
-		for (int i = character.entityInventory.size() - 1; i >= 0; i--) {
-			GenericItem item = character.entityInventory.get(i);
+		for (int i = character.getInventory().size() - 1; i >= 0; i--) {
+			GenericItem item = character.getInventory().get(i);
 			JTextArea text = new JTextArea(item.itemName);
 			text.setEditable(false);
 			text.setBounds(rText);
@@ -420,7 +420,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				super.paintComponent(g);
 				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
 				g.setColor(Color.red);
-				g.fillRect(107, 466, (int) (220 * character.health / character.maxHealth), 18);
+				g.fillRect(107, 466, (int) (220 * character.getHealth() / character.getMaxHealth()), 18);
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
 				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
@@ -438,7 +438,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		debugHealth.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.health--;
+				character.setHealth(-1);
 			}
 		});
 		debugHealth.setBounds(107, 456, 30, 10);
@@ -482,7 +482,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		weapon.damage = 1.0;
 		weapon.ranged = false;
 		weapon.speed = 1.0;
-		character.selectedWeapon = weapon;
+		character.setWeapon(weapon);
 		StandardRoom currentRoom = roomArray[loc.x][loc.y];
 		List<Entity> initList = setInitiative(currentRoom);
 		int selectedEnemy = 0;
@@ -518,11 +518,11 @@ public class SimpleDungeonCrawler extends JPanel {
 		ArrayList<Entity> initList = new ArrayList<Entity>();
 		for (int i = 0; i < current.enemyEntities.size(); i++) {
 			int r = r6();
-			current.enemyEntities.get(i).initiative = r;
+			current.enemyEntities.get(i).setInitiative(r);
 			initList.add(current.enemyEntities.get(i));
 		}
 		int r = r6();
-		character.initiative = r;
+		character.setInitiative(r);
 		initList.add(character);
 		//TODO sort based on initiative
 		Collections.sort(initList);
@@ -532,11 +532,11 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static boolean checkHealth(StandardRoom current) {
 		boolean fAlive = false;
 		boolean eAlive = false;
-		if(character.health <= 0) {
+		if(character.getHealth() <= 0) {
 			fAlive = true;
 		}
 		for (int i = 0; i < current.enemyEntities.size(); i++) {
-			if (current.enemyEntities.get(i).health <= 0) {
+			if (current.enemyEntities.get(i).getHealth() <= 0) {
 				eAlive = true;
 			}
 		}
@@ -556,12 +556,12 @@ public class SimpleDungeonCrawler extends JPanel {
 		//console.add("Character Attack!");
 		System.out.println("Character Attack!");
 		//does it hit
-		if (enemy.dex - character.dex + 10 < r20()) {
+		if (enemy.getDex() - character.getDex() + 10 < r20()) {
 			//how much damage does it do
 			double damage = 0.0;
-			damage = (character.str / enemy.str * character.selectedWeapon.damage) / enemy.AC;
+			damage = (character.getStr() / enemy.getStr() * character.getWeapon().damage) / enemy.getAC();
 			//subtract damage
-			enemy.health -= damage;
+			enemy.setHealth(-damage);
 			//console.add("He Hit For " + damage + "Damage!");
 			System.out.println("He Hit For " + damage + "Damage!");
 		} else {
@@ -573,11 +573,11 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static void enemyAttack(EnemyEntity enemy, ArrayList<String> console) {
 		//console.add("Enemy Attack!");
 		System.out.println("Enemy Attack!");
-		if (character.dex - enemy.dex + 10 < r20()) {
+		if (character.getDex() - enemy.getDex() + 10 < r20()) {
 			double damage = 0.0;
-			damage = (enemy.str / character.str * enemy.selectedWeapon.damage) / character.AC;
+			damage = (enemy.getStr() / character.getStr() * enemy.getWeapon().damage) / character.getAC();
 			//subtract damage
-			character.health -= damage;
+			character.setHealth(-damage);
 			//console.add("He Hit For " + damage + "Damage!");
 			System.out.println("He Hit For " + damage + "Damage!");
 		} else {
@@ -833,25 +833,25 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void checkIfLeavingRoom() {
-		if ((int) playerLoc.getY() >= 200 && (int) playerLoc.getY() <= 254) {
-			if (playerLoc.getX() < 30 && loc.x != 0) {
+		if ((int) character.getLocation().getY() >= 200 && (int) character.getLocation().getY() <= 254) {
+			if (character.getLocation().getX() < 30 && loc.x != 0) {
 				loc.x--;
 				eventChangeRooms();
 
 			}
 
-			if (playerLoc.getX() > 444 && loc.x != 9) {
+			if (character.getLocation().getX() > 444 && loc.x != 9) {
 				loc.x++;
 				eventChangeRooms();
 			}
 		}
-		if (playerLoc.getX() >= 200 && playerLoc.getX() <= 264) {
-			if ((int) playerLoc.getY() < 30 && loc.y != 0) {
+		if (character.getLocation().getX() >= 200 && character.getLocation().getX() <= 264) {
+			if ((int) character.getLocation().getY() < 30 && loc.y != 0) {
 				loc.y--;
 				eventChangeRooms();
 			}
 
-			if ((int) playerLoc.getY() > 434 && loc.y != 9) {
+			if ((int) character.getLocation().getY() > 434 && loc.y != 9) {
 				loc.y++;
 				eventChangeRooms();
 			}
@@ -864,8 +864,8 @@ public class SimpleDungeonCrawler extends JPanel {
 		// tall, 36
 		// wide // wall 34
 		boolean isLegal = false;
-		double x = playerLoc.getX() + deltaX;
-		double y = playerLoc.getY() + deltaY;
+		double x = character.getLocation().getX() + deltaX;
+		double y = character.getLocation().getY() + deltaY;
 		double left = x;
 		double right = x + 36;
 		double top = y;
@@ -893,7 +893,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void movePlayer(double deltaX, double deltaY) {
 		if (legalMove(deltaX, deltaY)) {
-			playerLoc.setLocation(playerLoc.getX() + deltaX, playerLoc.getY() + deltaY);
+			character.getLocation().setLocation(character.getLocation().getX() + deltaX, character.getLocation().getY() + deltaY);
 			checkIfLeavingRoom();
 		}
 		checkIfLeavingRoom();
@@ -936,6 +936,6 @@ public class SimpleDungeonCrawler extends JPanel {
 			Images.topArrow = Images.topArrowOn;
 			Images.bottomArrow = Images.bottomArrowOn;
 		}
-		playerLoc = new Point(250, 250);
+		character.getLocation().setLocation(250, 250); 
 	}
 }
