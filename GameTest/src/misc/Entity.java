@@ -29,7 +29,7 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	public Entity() {
 		inventory = new ArrayList<GenericItem>();
 		entityType = "Generic Entity";
-		location = new Point2D.Double(250 - rand.nextInt(), 250 + rand.nextInt());
+		location = new Point2D.Double(250, 250);
 	}
 	
 	public void setStats(double health, double strength, double dexterity, double constitution, double intelligence,

@@ -16,7 +16,7 @@ public class BattleRoom extends StandardRoom {
 			weapon.damage = 1.0;
 			weapon.ranged = false;
 			weapon.speed = 1.0;
-			temp.selectedWeapon = weapon;
+			temp.setWeapon(weapon);
 			enemyEntities.add(temp);
 			
 		}

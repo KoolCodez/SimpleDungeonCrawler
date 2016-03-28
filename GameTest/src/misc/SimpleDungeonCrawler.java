@@ -52,7 +52,8 @@ import java.io.*;
 public class SimpleDungeonCrawler extends JPanel {
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
-	//public static Point2D character.getLocation() = new Point2D.Double(250.0, 250.0);
+	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
+	// 250.0);
 	public static FriendlyEntity character;
 	public static double playerSpeed = 4;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
@@ -65,11 +66,14 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static JPanel panel;
 	public static JPanel menuPanel;
 	public static JPanel atkPanel;
+	public static JPanel turnPanel;
 	public static JPanel invPanel;
 	public static JPanel charPanel;
 	public static JPanel mainMenu;
 	public static int refreshRate = 25; // number of millis to wait
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
+	public static TurnWait t = new TurnWait();
+	public static boolean flee = false;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
@@ -103,7 +107,8 @@ public class SimpleDungeonCrawler extends JPanel {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(Images.backgroundImg, 0, 0, null);
-				g.drawImage(Images.charImg, (int) character.getLocation().getX(), (int) character.getLocation().getY(), null);
+				g.drawImage(Images.charImg, (int) character.getLocation().getX(), (int) character.getLocation().getY(),
+						null);
 				g.drawImage(Images.rightArrow, 474, 225, null);
 				g.drawImage(Images.leftArrow, 0, 225, null);
 				g.drawImage(Images.bottomArrow, 225, 474, null);
@@ -132,6 +137,15 @@ public class SimpleDungeonCrawler extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().remove(panel);
 				frame.getContentPane().add(atkPanel);
+				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
+					@Override
+					protected Integer doInBackground() throws Exception {
+						battleSequence(/* console1 */);
+						return 0;
+					}
+				};
+				flee = false;
+				worker.execute();
 			}
 		});
 		atkButton.setBounds(350, 50, 150, 50);
@@ -412,7 +426,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton moveButton = new JButton();
 		JButton debugHealth = new JButton("-1 hp");
 		ArrayList<String> console1 = new ArrayList<String>();
-		//console1.add("Console is funtioning.");
+		// console1.add("Console is funtioning.");
 		// attack panel
 		atkPanel = new JPanel() {
 			@Override
@@ -424,16 +438,31 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
 				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
-				//g.drawString(console1.get(console1.size() - 1), 10, 100);
+				// g.drawString(console1.get(console1.size() - 1), 10, 100);
 			}
 		};
-		atkPanel.add(bagButton);
-		atkPanel.add(fightButton);
-		atkPanel.add(fleeButton);
-		atkPanel.add(moveButton);
-		atkPanel.add(debugHealth);
+
+		turnPanel = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
+				g.setColor(Color.red);
+				g.fillRect(107, 466, (int) (220 * character.getHealth() / character.getMaxHealth()), 18);
+				g.setColor(Color.black);
+				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
+				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
+				// g.drawString(console1.get(console1.size() - 1), 10, 100);
+			}
+		};
+
+		turnPanel.add(bagButton);
+		turnPanel.add(fightButton);
+		turnPanel.add(fleeButton);
+		turnPanel.add(moveButton);
+		turnPanel.add(debugHealth);
 		// atkPanel.add(exitButton);
-		atkPanel.setLayout(null);
+		turnPanel.setLayout(null);
 
 		debugHealth.addActionListener(new ActionListener() {
 			@Override
@@ -442,19 +471,12 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		debugHealth.setBounds(107, 456, 30, 10);
-		
+
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {    
-				    @Override
-				    protected Integer doInBackground() throws Exception {
-				    	battleSequence(console1);
-				    	return 0;
-				    }
-				};
-				worker.execute();
-				//battleSequence(console1);
+				t.endTurn();
+				// battleSequence(console1);
 			}
 		});
 		fightButton.setBounds(349, 74, 150, 50);
@@ -465,10 +487,12 @@ public class SimpleDungeonCrawler extends JPanel {
 
 		bagButton.setBounds(349, 276, 150, 50);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
-		
+
 		fleeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				flee = true;
+				t.endTurn();
 				frame.getContentPane().add(panel);
 				frame.getContentPane().remove(atkPanel);
 			}
@@ -476,44 +500,60 @@ public class SimpleDungeonCrawler extends JPanel {
 		fleeButton.setBounds(349, 376, 150, 50);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
 	}
-	
-	public static void battleSequence(ArrayList<String> console1) {
-		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
-		weapon.damage = 1.0;
-		weapon.ranged = false;
-		weapon.speed = 1.0;
-		character.setWeapon(weapon);
+
+	public static void battleSequence(/* ArrayList<String> console1 */) {
 		StandardRoom currentRoom = roomArray[loc.x][loc.y];
-		List<Entity> initList = setInitiative(currentRoom);
-		int selectedEnemy = 0;
-		for (int i = 0; i < initList.size(); i++) {
+		while (checkLiving(currentRoom) && !flee) {
+			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
+			weapon.damage = 1.0;
+			weapon.ranged = false;
+			weapon.speed = 1.0;
+			character.setWeapon(weapon);
+
+			List<Entity> initList = setInitiative(currentRoom);
+			int selectedEnemy = 0;
+			for (int i = 0; i < initList.size(); i++) {
+				frame.validate();
+				frame.repaint();
+				if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity") && !flee) {
+					enemyAttack((EnemyEntity) initList.get(i)/* , console1 */);
+					// System.out.println();
+				} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity") && !flee) {
+					frame.remove(atkPanel);
+					frame.add(turnPanel);
+					synchronized (t) {
+						try {
+							t.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					frame.remove(turnPanel);
+					frame.add(atkPanel);
+					characterAttack(currentRoom.enemyEntities
+							.get(selectedEnemy)/* , console1 */);
+					// System.out.println();
+				} else {
+					// System.out.println(initList.get(i).getClass().toString());
+				}
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				// checkHealth(currentRoom);
+				frame.validate();
+				frame.repaint();
+			}
+			checkLiving(currentRoom);
 			frame.validate();
 			frame.repaint();
-			if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity")) {
-				enemyAttack((EnemyEntity) initList.get(i), console1);
-				//System.out.println();
-			} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity")){
-				characterAttack(currentRoom.enemyEntities.get(selectedEnemy), console1);
-				//System.out.println();
-			} else {
-				//System.out.println(initList.get(i).getClass().toString());
-			}
-			try {
-				TimeUnit.SECONDS.sleep(2);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			//checkHealth(currentRoom);
-			frame.validate();
-			frame.repaint();
+			// System.out.println("New Turn");
 		}
-		checkHealth(currentRoom);
-		frame.validate();
-		frame.repaint();
-		//System.out.println("New Turn");
 	}
-	
+
 	public static List<Entity> setInitiative(StandardRoom current) {
 		ArrayList<Entity> initList = new ArrayList<Entity>();
 		for (int i = 0; i < current.enemyEntities.size(); i++) {
@@ -524,15 +564,15 @@ public class SimpleDungeonCrawler extends JPanel {
 		int r = r6();
 		character.setInitiative(r);
 		initList.add(character);
-		//TODO sort based on initiative
+		// TODO sort based on initiative
 		Collections.sort(initList);
 		return initList;
 	}
-	
-	public static boolean checkHealth(StandardRoom current) {
+
+	public static boolean checkLiving(StandardRoom current) {
 		boolean fAlive = false;
 		boolean eAlive = false;
-		if(character.getHealth() <= 0) {
+		if (character.getHealth() <= 0) {
 			fAlive = true;
 		}
 		for (int i = 0; i < current.enemyEntities.size(); i++) {
@@ -551,43 +591,45 @@ public class SimpleDungeonCrawler extends JPanel {
 			return true;
 		}
 	}
-	
-	public static void characterAttack(EnemyEntity enemy, ArrayList<String> console) {
-		//console.add("Character Attack!");
+
+	public static void characterAttack(
+			EnemyEntity enemy/* , ArrayList<String> console */) {
+		// console.add("Character Attack!");
 		System.out.println("Character Attack!");
-		//does it hit
+		// does it hit
 		if (enemy.getDex() - character.getDex() + 10 < r20()) {
-			//how much damage does it do
+			// how much damage does it do
 			double damage = 0.0;
 			damage = (character.getStr() / enemy.getStr() * character.getWeapon().damage) / enemy.getAC();
-			//subtract damage
+			// subtract damage
 			enemy.setHealth(-damage);
-			//console.add("He Hit For " + damage + "Damage!");
+			// console.add("He Hit For " + damage + "Damage!");
 			System.out.println("He Hit For " + damage + "Damage!");
 		} else {
-			//console.add("He Missed!");
+			// console.add("He Missed!");
 			System.out.println("He Missed!");
 		}
 	}
-	
-	public static void enemyAttack(EnemyEntity enemy, ArrayList<String> console) {
-		//console.add("Enemy Attack!");
+
+	public static void enemyAttack(
+			EnemyEntity enemy/* , ArrayList<String> console */) {
+		// console.add("Enemy Attack!");
 		System.out.println("Enemy Attack!");
 		if (character.getDex() - enemy.getDex() + 10 < r20()) {
 			double damage = 0.0;
 			damage = (enemy.getStr() / character.getStr() * enemy.getWeapon().damage) / character.getAC();
-			//subtract damage
+			// subtract damage
 			character.setHealth(-damage);
-			//console.add("He Hit For " + damage + "Damage!");
+			// console.add("He Hit For " + damage + "Damage!");
 			System.out.println("He Hit For " + damage + "Damage!");
 		} else {
-			//console.add("He Missed!");
+			// console.add("He Missed!");
 			System.out.println("He Missed!");
 		}
 	}
-	
+
 	public static void friendlyAttack() {
-		
+
 	}
 
 	public static void move() {
@@ -605,7 +647,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static int r20() {
 		return new Random().nextInt(20) + 1;
 	}
-	
+
 	public static int r6() {
 		return new Random().nextInt(6) + 1;
 	}
@@ -893,7 +935,8 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void movePlayer(double deltaX, double deltaY) {
 		if (legalMove(deltaX, deltaY)) {
-			character.getLocation().setLocation(character.getLocation().getX() + deltaX, character.getLocation().getY() + deltaY);
+			character.getLocation().setLocation(character.getLocation().getX() + deltaX,
+					character.getLocation().getY() + deltaY);
 			checkIfLeavingRoom();
 		}
 		checkIfLeavingRoom();
@@ -936,6 +979,6 @@ public class SimpleDungeonCrawler extends JPanel {
 			Images.topArrow = Images.topArrowOn;
 			Images.bottomArrow = Images.bottomArrowOn;
 		}
-		character.getLocation().setLocation(250, 250); 
+		character.getLocation().setLocation(250, 250);
 	}
 }
