@@ -529,6 +529,11 @@ public class SimpleDungeonCrawler extends JPanel {
 							e.printStackTrace();
 						}
 					}
+					if (flee) {
+						if (flee(initList)) {
+							return;
+						}
+					}
 					frame.remove(turnPanel);
 					frame.add(atkPanel);
 					characterAttack(currentRoom.enemyEntities
@@ -640,8 +645,14 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	}
 
-	public static void flee() {
-
+	public static boolean flee(List<Entity> list) {
+		boolean successful = false;
+		if (r20() > 10 + (list.size() * 3 - 1) - (character.getDex() / 10)) { //TODO speed rather than dex
+			frame.remove(turnPanel);
+			frame.add(panel);
+			successful = true;
+		}
+		return successful;
 	}
 
 	public static int r20() {
