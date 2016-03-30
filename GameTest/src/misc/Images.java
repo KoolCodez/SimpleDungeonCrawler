@@ -1,5 +1,6 @@
 package misc;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class Images {
 	//Enemies\\
 	public static BufferedImage battleGoblin;
 	//Grounds\\
-	public static BufferedImage backgroundImg;
+	public static Image backgroundImg;
 	//Items\\
 	public static BufferedImage stickItem;
 	public static BufferedImage stickItem2;
@@ -95,8 +96,11 @@ public class Images {
 		battleGoblin = ImageIO.read(new File("src\\Textures\\Enemies\\BattleGoblin.jpg"));
 	}
 	
-	public static void grounds() throws IOException {
+	public static void grounds() throws IOException { //I AM THE GROUNDS KEEPER
 		backgroundImg = ImageIO.read(new File("src\\Textures\\Grounds\\BasicGround.jpg"));
+		double scale = SimpleDungeonCrawler.SCALE_FACTOR;
+		Image scaledBackground = backgroundImg.getScaledInstance((int) (500 * scale), (int) (500 * scale), Image.SCALE_SMOOTH);
+		backgroundImg = scaledBackground;
 	}
 	
 	public static void items() throws IOException {

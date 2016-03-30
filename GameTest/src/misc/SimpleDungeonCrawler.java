@@ -74,13 +74,17 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 	public static TurnWait t = new TurnWait();
 	public static boolean flee = false;
+	public static final double SCALE_FACTOR = .5;
+	private static final int MENU_SIZE = (int) (1000*SCALE_FACTOR);
+	private static final int BUTTON_HEIGHT = (int) (100*SCALE_FACTOR);
+	private static final int BUTTON_WIDTH = (int) (300*SCALE_FACTOR);
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
 		// System.out.println("Current working directory in Java : " + current);
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(516, 538);
+		frame.setSize((int) (1000 * SCALE_FACTOR + 16), (int) (1000 * SCALE_FACTOR + 38));
 		frame.setVisible(true);
 		g = frame.getGraphics();
 		g.setColor(Color.white);
@@ -109,10 +113,10 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.drawImage(Images.backgroundImg, 0, 0, null);
 				g.drawImage(Images.charImg, (int) character.getLocation().getX(), (int) character.getLocation().getY(),
 						null);
-				g.drawImage(Images.rightArrow, 474, 225, null);
-				g.drawImage(Images.leftArrow, 0, 225, null);
-				g.drawImage(Images.bottomArrow, 225, 474, null);
-				g.drawImage(Images.topArrow, 225, 0, null);
+				g.drawImage(Images.rightArrow, (int) (474*SCALE_FACTOR), (int) (225*SCALE_FACTOR), null);
+				g.drawImage(Images.leftArrow, (int) (0*SCALE_FACTOR), (int) (225*SCALE_FACTOR), null);
+				g.drawImage(Images.bottomArrow, (int) (225*SCALE_FACTOR), (int) (474*SCALE_FACTOR), null);
+				g.drawImage(Images.topArrow, (int) (225*SCALE_FACTOR), (int) (0*SCALE_FACTOR), null);
 			}
 		};
 		panel.setLayout(null);
@@ -128,7 +132,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(panel);
 			}
 		});
-		menuButton.setBounds(350, 0, 150, 50);
+		menuButton.setBounds((int) (350*SCALE_FACTOR), (int) (0*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuButton.setFont(font);
 
 		// attack button
@@ -148,7 +152,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				worker.execute();
 			}
 		});
-		atkButton.setBounds(350, 50, 150, 50);
+		atkButton.setBounds((int) (700*SCALE_FACTOR), (int) (100*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		atkButton.setFont(font);
 		// attackButton.setIcon(defaultIcon);
 
@@ -164,12 +168,12 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static void createMainMenu() {
 		JButton startButton = new JButton("START");
 		JButton exitButton = new JButton("EXIT");
-		Point menuCoord = new Point(175, 225);
+		Point menuCoord = new Point((int) (175*SCALE_FACTOR), (int) (225*SCALE_FACTOR));
 		mainMenu = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(Images.mainMenu, 0, 0, 500, 500, null);
+				g.drawImage(Images.mainMenu, (int) (0*SCALE_FACTOR), (int) (0*SCALE_FACTOR), MENU_SIZE, MENU_SIZE, null);
 
 			}
 		};
@@ -185,8 +189,8 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(mainMenu);
 			}
 		});
-		startButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
-		menuCoord.y += 50;
+		startButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
 		startButton.setFont(font);
 
 		exitButton.addActionListener(new ActionListener() {
@@ -195,8 +199,8 @@ public class SimpleDungeonCrawler extends JPanel {
 				System.exit(0);
 			}
 		});
-		exitButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
-		menuCoord.y += 50;
+		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
 		exitButton.setFont(font);
 	}
 
@@ -371,7 +375,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(invPanel);
 			}
 		});
-		exitButton.setBounds(350, 100, 100, 50);
+		exitButton.setBounds((int) (700*SCALE_FACTOR), (int) (200*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		exitButton.setFont(font);
 
 		// stick button
@@ -389,7 +393,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				}
 			}
 		});
-		addStick.setBounds(350, 150, 100, 50);
+		addStick.setBounds((int) (700*SCALE_FACTOR), (int) (300*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		addStick.setFont(font);
 	}
 
@@ -432,9 +436,9 @@ public class SimpleDungeonCrawler extends JPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
+				g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);
 				g.setColor(Color.red);
-				g.fillRect(107, 466, (int) (220 * character.getHealth() / character.getMaxHealth()), 18);
+				g.fillRect((int) (107*SCALE_FACTOR), (int) (466*SCALE_FACTOR), (int) (220*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (18*SCALE_FACTOR));
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
 				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
@@ -448,10 +452,10 @@ public class SimpleDungeonCrawler extends JPanel {
 				super.paintComponent(g);
 				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
 				g.setColor(Color.red);
-				g.fillRect(107, 466, (int) (220 * character.getHealth() / character.getMaxHealth()), 18);
+				g.fillRect((int) (107*SCALE_FACTOR), (int) (466*SCALE_FACTOR), (int) (220 * character.getHealth() / character.getMaxHealth()), (int) (18*SCALE_FACTOR));
 				g.setColor(Color.black);
-				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
-				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
+				g.drawImage(Images.battleChar, (int) (300*SCALE_FACTOR), (int) (600*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
+				g.drawImage(Images.battleGoblin, (int) (300*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
 				// g.drawString(console1.get(console1.size() - 1), 10, 100);
 			}
 		};
@@ -479,13 +483,13 @@ public class SimpleDungeonCrawler extends JPanel {
 				// battleSequence(console1);
 			}
 		});
-		fightButton.setBounds(349, 74, 150, 50);
+		fightButton.setBounds((int) (349*SCALE_FACTOR), (int) (74*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
 
-		moveButton.setBounds(349, 174, 150, 50);
+		moveButton.setBounds((int) (349*SCALE_FACTOR), (int) (174*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
 
-		bagButton.setBounds(349, 276, 150, 50);
+		bagButton.setBounds((int) (349*SCALE_FACTOR), (int) (276*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
 
 		fleeButton.addActionListener(new ActionListener() {
@@ -495,7 +499,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				t.endTurn();
 			}
 		});
-		fleeButton.setBounds(349, 376, 150, 50);
+		fleeButton.setBounds((int) (349*SCALE_FACTOR), (int) (376*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
 	}
 
@@ -668,7 +672,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton invButton = new JButton("INVENTORY");
 		JButton saveButton = new JButton("SAVE");
 		JButton exitButton = new JButton("QUIT");
-		Point menuCoord = new Point(175, 125);
+		Point menuCoord = new Point((int) (175*SCALE_FACTOR), (int) (125*SCALE_FACTOR));
 
 		// menu panel
 		menuPanel = new JPanel() {
@@ -694,8 +698,8 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(menuPanel);
 			}
 		});
-		resume.setBounds(menuCoord.x, menuCoord.y, 150, 50);
-		menuCoord.y += 50;
+		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
 		resume.setFont(font);
 
 		// char button
@@ -706,8 +710,8 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(menuPanel);
 			}
 		});
-		charButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
-		menuCoord.y += 50;
+		charButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
 		charButton.setFont(font);
 
 		// inventory button
@@ -719,8 +723,8 @@ public class SimpleDungeonCrawler extends JPanel {
 				refreshInv();
 			}
 		});
-		invButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
-		menuCoord.y += 50;
+		invButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
 		invButton.setFont(font);
 
 		// save button
@@ -729,8 +733,8 @@ public class SimpleDungeonCrawler extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		saveButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
-		menuCoord.y += 50;
+		saveButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
 		saveButton.setFont(font);
 
 		exitButton.addActionListener(new ActionListener() {
@@ -740,7 +744,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().add(mainMenu);
 			}
 		});
-		exitButton.setBounds(menuCoord.x, menuCoord.y, 150, 50);
+		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		exitButton.setFont(font);
 	}
 
@@ -885,19 +889,19 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void checkIfLeavingRoom() {
-		if ((int) character.getLocation().getY() >= 200 && (int) character.getLocation().getY() <= 254) {
-			if (character.getLocation().getX() < 30 && loc.x != 0) {
+		if ((int) character.getLocation().getY() >= (int) (200*SCALE_FACTOR) && (int) character.getLocation().getY() <= (int) (254*SCALE_FACTOR)) {
+			if (character.getLocation().getX() < (int) (30*SCALE_FACTOR) && loc.x != 0) {
 				loc.x--;
 				eventChangeRooms();
 
 			}
 
-			if (character.getLocation().getX() > 444 && loc.x != 9) {
+			if (character.getLocation().getX() > (int) (444*SCALE_FACTOR) && loc.x != 9) {
 				loc.x++;
 				eventChangeRooms();
 			}
 		}
-		if (character.getLocation().getX() >= 200 && character.getLocation().getX() <= 264) {
+		if (character.getLocation().getX() >= (int) (200*SCALE_FACTOR) && character.getLocation().getX() <= (int) (264*SCALE_FACTOR)) {
 			if ((int) character.getLocation().getY() < 30 && loc.y != 0) {
 				loc.y--;
 				eventChangeRooms();
