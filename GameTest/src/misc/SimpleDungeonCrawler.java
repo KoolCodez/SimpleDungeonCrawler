@@ -493,8 +493,6 @@ public class SimpleDungeonCrawler extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				flee = true;
 				t.endTurn();
-				frame.getContentPane().add(panel);
-				frame.getContentPane().remove(atkPanel);
 			}
 		});
 		fleeButton.setBounds(349, 376, 150, 50);
@@ -530,6 +528,7 @@ public class SimpleDungeonCrawler extends JPanel {
 						}
 					}
 					if (flee) {
+						flee = false;
 						if (flee(initList)) {
 							return;
 						}
@@ -555,7 +554,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			checkLiving(currentRoom);
 			frame.validate();
 			frame.repaint();
-			// System.out.println("New Turn");
+			System.out.println("New Turn");
 		}
 	}
 
@@ -586,13 +585,13 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		}
 		if (fAlive && !eAlive) {
-			System.out.println("VICTORY!");
+			//System.out.println("VICTORY!");
 			return false;
 		} else if (!fAlive && eAlive) {
-			System.out.println("DEFEAT");
+			//System.out.println("DEFEAT");
 			return false;
 		} else {
-			System.out.println("CONTINUE THE BATTLE");
+			//System.out.println("CONTINUE THE BATTLE");
 			return true;
 		}
 	}
@@ -647,7 +646,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static boolean flee(List<Entity> list) {
 		boolean successful = false;
-		if (r20() > 10 + (list.size() * 3 - 1) - (character.getDex() / 10)) { //TODO speed rather than dex
+		if (false/*r20() > 10 + (list.size() - 1) - (character.getDex() / 10)*/) { //TODO speed rather than dex
 			frame.remove(turnPanel);
 			frame.add(panel);
 			successful = true;
