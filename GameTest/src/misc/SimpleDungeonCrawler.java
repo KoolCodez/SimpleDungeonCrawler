@@ -3,6 +3,7 @@ package misc;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -46,6 +47,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Point playerLoc = new Point(250, 250);
 	public static int playerSpeed = 4;
 	public static int diagSpeed = 3;
+	public static int str = 2;
 	public static Graphics g;
 	public static boolean movingLeft = false;
 	public static boolean movingRight = false;
@@ -148,15 +150,40 @@ public class SimpleDungeonCrawler extends JPanel {
 	
 	public static void createCharScreen() {
 		JButton exitButton = new JButton("EXIT");
+		JButton strUp = new JButton("+1");
+		JButton strDown = new JButton("-1");
 		// attack panel
 		charPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				g.drawString("STRENGTH: " + str, 200, 100);
+				g.drawString("DEXTERITY", 200, 150);
+				g.drawString("CONSTITUTION", 200, 200);
+				g.drawString("WISDOM", 200, 250);
+				g.drawString("INTELLIGENCE", 200, 300);
+				g.drawString("CHARISMA", 200, 350);
 			}
 		};
 		charPanel.add(exitButton);
+		charPanel.add(strUp);
+		charPanel.add(strDown);
 		charPanel.setLayout(null);
+		
+		strUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				str += 1;
+			}
+		});
+		strUp.setBounds(200, 100, 50, 25);
+		strDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				str -= 1;
+			}
+		});
+		strDown.setBounds(250, 100, 50, 25);
 
 		// exit button
 		exitButton.addActionListener(new ActionListener() {
