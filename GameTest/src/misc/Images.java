@@ -99,7 +99,7 @@ public class Images {
 	public static void grounds() throws IOException { //I AM THE GROUNDS KEEPER
 		backgroundImg = ImageIO.read(new File("src\\Textures\\Grounds\\BasicGround.jpg"));
 		double scale = SimpleDungeonCrawler.SCALE_FACTOR;
-		Image scaledBackground = backgroundImg.getScaledInstance((int) (500 * scale), (int) (500 * scale), Image.SCALE_SMOOTH);
+		Image scaledBackground = backgroundImg.getScaledInstance((int) (1000 * scale), (int) (1000 * scale), Image.SCALE_SMOOTH);
 		backgroundImg = scaledBackground;
 	}
 	

@@ -74,7 +74,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 	public static TurnWait t = new TurnWait();
 	public static boolean flee = false;
-	public static final double SCALE_FACTOR = .5;
+	public static final double SCALE_FACTOR = 1;
 	private static final int MENU_SIZE = (int) (1000*SCALE_FACTOR);
 	private static final int BUTTON_HEIGHT = (int) (100*SCALE_FACTOR);
 	private static final int BUTTON_WIDTH = (int) (300*SCALE_FACTOR);
@@ -113,10 +113,10 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.drawImage(Images.backgroundImg, 0, 0, null);
 				g.drawImage(Images.charImg, (int) character.getLocation().getX(), (int) character.getLocation().getY(),
 						null);
-				g.drawImage(Images.rightArrow, (int) (474*SCALE_FACTOR), (int) (225*SCALE_FACTOR), null);
-				g.drawImage(Images.leftArrow, (int) (0*SCALE_FACTOR), (int) (225*SCALE_FACTOR), null);
-				g.drawImage(Images.bottomArrow, (int) (225*SCALE_FACTOR), (int) (474*SCALE_FACTOR), null);
-				g.drawImage(Images.topArrow, (int) (225*SCALE_FACTOR), (int) (0*SCALE_FACTOR), null);
+				g.drawImage(Images.rightArrow, (int) (948*SCALE_FACTOR), (int) (450*SCALE_FACTOR), null);
+				g.drawImage(Images.leftArrow, (int) (0*SCALE_FACTOR), (int) (450*SCALE_FACTOR), null);
+				g.drawImage(Images.bottomArrow, (int) (450*SCALE_FACTOR), (int) (948*SCALE_FACTOR), null);
+				g.drawImage(Images.topArrow, (int) (450*SCALE_FACTOR), (int) (0*SCALE_FACTOR), null);
 			}
 		};
 		panel.setLayout(null);
@@ -132,7 +132,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(panel);
 			}
 		});
-		menuButton.setBounds((int) (350*SCALE_FACTOR), (int) (0*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuButton.setBounds((int) (700*SCALE_FACTOR), (int) (0*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuButton.setFont(font);
 
 		// attack button
@@ -168,7 +168,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static void createMainMenu() {
 		JButton startButton = new JButton("START");
 		JButton exitButton = new JButton("EXIT");
-		Point menuCoord = new Point((int) (175*SCALE_FACTOR), (int) (225*SCALE_FACTOR));
+		Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (450*SCALE_FACTOR));
 		mainMenu = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -483,13 +483,13 @@ public class SimpleDungeonCrawler extends JPanel {
 				// battleSequence(console1);
 			}
 		});
-		fightButton.setBounds((int) (349*SCALE_FACTOR), (int) (74*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		fightButton.setBounds((int) (699*SCALE_FACTOR), (int) (148*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
 
-		moveButton.setBounds((int) (349*SCALE_FACTOR), (int) (174*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
 
-		bagButton.setBounds((int) (349*SCALE_FACTOR), (int) (276*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		bagButton.setBounds((int) (699*SCALE_FACTOR), (int) (552*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
 
 		fleeButton.addActionListener(new ActionListener() {
@@ -499,7 +499,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				t.endTurn();
 			}
 		});
-		fleeButton.setBounds((int) (349*SCALE_FACTOR), (int) (376*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		fleeButton.setBounds((int) (699*SCALE_FACTOR), (int) (752*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
 	}
 
@@ -672,7 +672,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton invButton = new JButton("INVENTORY");
 		JButton saveButton = new JButton("SAVE");
 		JButton exitButton = new JButton("QUIT");
-		Point menuCoord = new Point((int) (175*SCALE_FACTOR), (int) (125*SCALE_FACTOR));
+		Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (250*SCALE_FACTOR));
 
 		// menu panel
 		menuPanel = new JPanel() {
@@ -889,25 +889,25 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void checkIfLeavingRoom() {
-		if ((int) character.getLocation().getY() >= (int) (200*SCALE_FACTOR) && (int) character.getLocation().getY() <= (int) (254*SCALE_FACTOR)) {
-			if (character.getLocation().getX() < (int) (30*SCALE_FACTOR) && loc.x != 0) {
+		if ((int) character.getLocation().getY() >= (int) (400*SCALE_FACTOR) && (int) character.getLocation().getY() <= (int) (508*SCALE_FACTOR)) {
+			if (character.getLocation().getX() < (int) (60*SCALE_FACTOR) && loc.x != 0) {
 				loc.x--;
 				eventChangeRooms();
 
 			}
 
-			if (character.getLocation().getX() > (int) (444*SCALE_FACTOR) && loc.x != 9) {
+			if (character.getLocation().getX() > (int) (888*SCALE_FACTOR) && loc.x != 9) {
 				loc.x++;
 				eventChangeRooms();
 			}
 		}
-		if (character.getLocation().getX() >= (int) (200*SCALE_FACTOR) && character.getLocation().getX() <= (int) (264*SCALE_FACTOR)) {
-			if ((int) character.getLocation().getY() < 30 && loc.y != 0) {
+		if (character.getLocation().getX() >= (int) (400*SCALE_FACTOR) && character.getLocation().getX() <= (int) (528*SCALE_FACTOR)) {
+			if ((int) character.getLocation().getY() < (int) (60*SCALE_FACTOR) && loc.y != 0) {
 				loc.y--;
 				eventChangeRooms();
 			}
 
-			if ((int) character.getLocation().getY() > 434 && loc.y != 9) {
+			if ((int) character.getLocation().getY() > (int) (868 * SCALE_FACTOR) && loc.y != 9) {
 				loc.y++;
 				eventChangeRooms();
 			}
@@ -926,18 +926,18 @@ public class SimpleDungeonCrawler extends JPanel {
 		double right = x + 36;
 		double top = y;
 		double bottom = y + 46;
-		if (bottom <= 464 && top >= 36 && right <= 464 && left >= 36) { // main
+		if (bottom <= (int) (928*SCALE_FACTOR) && top >= (int) (72*SCALE_FACTOR) && right <= (int) (928*SCALE_FACTOR) && left >= (int) (72*SCALE_FACTOR)) { // main
 																		// room
 																		// box
 			isLegal = true;
 		}
-		if (bottom <= 300 && top >= 200 && right <= 500 && left >= 0) { // right
+		if (bottom <= (int) (600*SCALE_FACTOR) && top >= (int) (400*SCALE_FACTOR) && right <= (int) (1000*SCALE_FACTOR) && left >= (int) (0*SCALE_FACTOR)) { // right
 																		// and
 																		// left
 																		// doors
 			isLegal = true;
 		}
-		if (bottom <= 500 && top >= 0 && right <= 300 && left >= 200) { // top
+		if (bottom <= (int) (1000*SCALE_FACTOR) && top >= (int) (0*SCALE_FACTOR) && right <= (int) (600*SCALE_FACTOR) && left >= (int) (400*SCALE_FACTOR)) { // top
 																		// and
 																		// bottom
 																		// doors
