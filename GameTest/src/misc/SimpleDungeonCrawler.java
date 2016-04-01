@@ -54,7 +54,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Point loc = new Point(0, 0);
 	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
 	// 250.0);
-	public static final double SCALE_FACTOR = 1;
+	public static final double SCALE_FACTOR = .75;
 	public static FriendlyEntity character;
 	public static double playerSpeed = 4 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
@@ -891,7 +891,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void checkIfLeavingRoom() {
 		if ((int) character.getLocation().getY() >= (int) (400*SCALE_FACTOR) && (int) character.getLocation().getY() <= (int) (508*SCALE_FACTOR)) {
-			if (character.getLocation().getX() < (int) (60*SCALE_FACTOR) && loc.x != 0) {
+			if (character.getLocation().getX() < (int) (50*SCALE_FACTOR) && loc.x != 0) {
 				loc.x--;
 				eventChangeRooms("right");
 
@@ -903,7 +903,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		}
 		if (character.getLocation().getX() >= (int) (400*SCALE_FACTOR) && character.getLocation().getX() <= (int) (528*SCALE_FACTOR)) {
-			if ((int) character.getLocation().getY() < (int) (60*SCALE_FACTOR) && loc.y != 0) {
+			if ((int) character.getLocation().getY() < (int) (50*SCALE_FACTOR) && loc.y != 0) {
 				loc.y--;
 				eventChangeRooms("bottom");
 			}
@@ -997,11 +997,11 @@ public class SimpleDungeonCrawler extends JPanel {
 		if (door.equals("left")) {
 			character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
 		} else if (door.equals("right")) {
-			character.getLocation().setLocation(900 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+			character.getLocation().setLocation(800 * SCALE_FACTOR, 500 * SCALE_FACTOR);
 		} else if (door.equals("top")) {
-			character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+			character.getLocation().setLocation(500 * SCALE_FACTOR, 100 * SCALE_FACTOR);
 		} else if (door.equals("bottom")) {
-			character.getLocation().setLocation(500 * SCALE_FACTOR, 900 * SCALE_FACTOR);
+			character.getLocation().setLocation(500 * SCALE_FACTOR, 800 * SCALE_FACTOR);
 		} else {
 			character.getLocation().setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
 		}
