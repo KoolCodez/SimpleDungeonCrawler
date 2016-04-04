@@ -56,7 +56,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	// 250.0);
 	public static final double SCALE_FACTOR = .75;
 	public static FriendlyEntity character;
-	public static double playerSpeed = 4 * SCALE_FACTOR;
+	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
 	public static Graphics g;
 	public static boolean movingLeft = false;
