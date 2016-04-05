@@ -457,6 +457,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, (int) (300*SCALE_FACTOR), (int) (600*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
 				g.drawImage(Images.battleGoblin, (int) (300*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
+				g.drawString("Turn Points" + t.getTurnPoints(), 0, 0);
 				// g.drawString(console1.get(console1.size() - 1), 10, 100);
 			}
 		};
@@ -471,6 +472,12 @@ public class SimpleDungeonCrawler extends JPanel {
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (t.getTurnPoints() >= 3) {
+					t.setTurnPoints(-3);
+					//TODO some kind of fight method i guess
+				} else {
+					System.out.println("Not enough turn points");
+				}
 				t.endTurn();
 				// battleSequence(console1);
 			}
@@ -487,6 +494,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.remove(turnPanel);
 				frame.add(bagPanel);
 				JLabel weaponLabel = new JLabel(character.getWeapon().getImage());
+				weaponLabel.setBounds(0, 0, SCALED_100, SCALED_100);
 				bagPanel.add(weaponLabel);
 			}
 		});
@@ -506,16 +514,25 @@ public class SimpleDungeonCrawler extends JPanel {
 	
 	public static void createBagPanel() {
 		JButton returnButton = new JButton("RETURN");
+		JButton selectWeapon = new JButton("SELECT WEAPON");
 		bagPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				g.drawString("SELECTED WEAPON", 0, SCALED_100);
 			}
 		};
-		
+		bagPanel.add(selectWeapon);
 		bagPanel.add(returnButton);
 		bagPanel.setLayout(null);
 		
+		selectWeapon.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO make a selection panel i guess
+			}
+		});
+		selectWeapon.setBounds((int) (0*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		
 		returnButton.addActionListener(new ActionListener() {
 			@Override
