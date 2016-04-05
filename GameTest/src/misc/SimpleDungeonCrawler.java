@@ -74,7 +74,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 	public static TurnWait t = new TurnWait();
 	public static boolean flee = false;
-	public static final double SCALE_FACTOR = .5;
+	public static final double SCALE_FACTOR = 1;
 	private static final int MENU_SIZE = (int) (1000*SCALE_FACTOR);
 	private static final int BUTTON_HEIGHT = (int) (100*SCALE_FACTOR);
 	private static final int BUTTON_WIDTH = (int) (300*SCALE_FACTOR);
