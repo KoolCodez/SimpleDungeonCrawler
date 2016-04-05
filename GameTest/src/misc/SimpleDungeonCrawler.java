@@ -71,6 +71,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static JPanel invPanel;
 	public static JPanel charPanel;
 	public static JPanel mainMenu;
+	public static JPanel bagPanel;
 	public static int refreshRate = 25; // number of millis to wait
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 	public static TurnWait t = new TurnWait();
@@ -429,7 +430,6 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton fightButton = new JButton();
 		JButton fleeButton = new JButton();
 		JButton moveButton = new JButton();
-		JButton debugHealth = new JButton("-1 hp");
 		ArrayList<String> console1 = new ArrayList<String>();
 		// console1.add("Console is funtioning.");
 		// attack panel
@@ -439,7 +439,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				super.paintComponent(g);
 				g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);
 				g.setColor(Color.red);
-				g.fillRect((int) (107*SCALE_FACTOR), (int) (466*SCALE_FACTOR), (int) (220*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (18*SCALE_FACTOR));
+				g.fillRect((int) (214*SCALE_FACTOR), (int) (932*SCALE_FACTOR), (int) (440*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (36*SCALE_FACTOR));
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
 				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
@@ -451,9 +451,9 @@ public class SimpleDungeonCrawler extends JPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
+				g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);
 				g.setColor(Color.red);
-				g.fillRect((int) (107*SCALE_FACTOR), (int) (466*SCALE_FACTOR), (int) (220 * character.getHealth() / character.getMaxHealth()), (int) (18*SCALE_FACTOR));
+				g.fillRect((int) (214*SCALE_FACTOR), (int) (932*SCALE_FACTOR), (int) (440*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (36*SCALE_FACTOR));
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, (int) (300*SCALE_FACTOR), (int) (600*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
 				g.drawImage(Images.battleGoblin, (int) (300*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
@@ -465,17 +465,8 @@ public class SimpleDungeonCrawler extends JPanel {
 		turnPanel.add(fightButton);
 		turnPanel.add(fleeButton);
 		turnPanel.add(moveButton);
-		turnPanel.add(debugHealth);
-		// atkPanel.add(exitButton);
 		turnPanel.setLayout(null);
-
-		debugHealth.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				character.setHealth(-1);
-			}
-		});
-		debugHealth.setBounds(107, 456, 30, 10);
+		createBagPanel();
 
 		fightButton.addActionListener(new ActionListener() {
 			@Override
@@ -487,9 +478,18 @@ public class SimpleDungeonCrawler extends JPanel {
 		fightButton.setBounds((int) (699*SCALE_FACTOR), (int) (148*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
 
-		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);//TODO MOVEMENT
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
-
+		
+		bagButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.remove(turnPanel);
+				frame.add(bagPanel);
+				JLabel weaponLabel = new JLabel(character.getWeapon().getImage());
+				bagPanel.add(weaponLabel);
+			}
+		});
 		bagButton.setBounds((int) (699*SCALE_FACTOR), (int) (552*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
 
@@ -502,6 +502,29 @@ public class SimpleDungeonCrawler extends JPanel {
 		});
 		fleeButton.setBounds((int) (699*SCALE_FACTOR), (int) (752*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
+	}
+	
+	public static void createBagPanel() {
+		JButton returnButton = new JButton("RETURN");
+		bagPanel = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+			}
+		};
+		
+		bagPanel.add(returnButton);
+		bagPanel.setLayout(null);
+		
+		
+		returnButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.add(turnPanel);
+				frame.remove(bagPanel);
+			}
+		});
+		returnButton.setBounds((int) (700*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 	}
 
 	public static void battleSequence(/* ArrayList<String> console1 */) {
@@ -651,7 +674,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static boolean flee(List<Entity> list) {
 		boolean successful = false;
-		if (false/*r20() > 10 + (list.size() - 1) - (character.getDex() / 10)*/) { //TODO speed rather than dex
+		if (r20() > 10 + (list.size() - 1) - (character.getDex() / 10)) { //TODO speed rather than dex
 			frame.remove(turnPanel);
 			frame.add(panel);
 			successful = true;
