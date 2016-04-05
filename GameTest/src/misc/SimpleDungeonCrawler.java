@@ -54,8 +54,9 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Point loc = new Point(0, 0);
 	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
 	// 250.0);
+	public static final double SCALE_FACTOR = .75;
 	public static FriendlyEntity character;
-	public static double playerSpeed = 4;
+	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
 	public static Graphics g;
 	public static boolean movingLeft = false;
@@ -70,11 +71,12 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static JPanel invPanel;
 	public static JPanel charPanel;
 	public static JPanel mainMenu;
+	public static JPanel bagPanel;
 	public static int refreshRate = 25; // number of millis to wait
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 	public static TurnWait t = new TurnWait();
 	public static boolean flee = false;
-	public static final double SCALE_FACTOR = 1;
+	private static final int SCALED_100 = (int) (100*SCALE_FACTOR);
 	private static final int MENU_SIZE = (int) (1000*SCALE_FACTOR);
 	private static final int BUTTON_HEIGHT = (int) (100*SCALE_FACTOR);
 	private static final int BUTTON_WIDTH = (int) (300*SCALE_FACTOR);
@@ -113,10 +115,10 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.drawImage(Images.backgroundImg, 0, 0, null);
 				g.drawImage(Images.charImg, (int) character.getLocation().getX(), (int) character.getLocation().getY(),
 						null);
-				g.drawImage(Images.rightArrow, (int) (474*SCALE_FACTOR), (int) (225*SCALE_FACTOR), null);
-				g.drawImage(Images.leftArrow, (int) (0*SCALE_FACTOR), (int) (225*SCALE_FACTOR), null);
-				g.drawImage(Images.bottomArrow, (int) (225*SCALE_FACTOR), (int) (474*SCALE_FACTOR), null);
-				g.drawImage(Images.topArrow, (int) (225*SCALE_FACTOR), (int) (0*SCALE_FACTOR), null);
+				g.drawImage(Images.rightArrow, (int) (948*SCALE_FACTOR), (int) (450*SCALE_FACTOR), null);
+				g.drawImage(Images.leftArrow, (int) (0*SCALE_FACTOR), (int) (450*SCALE_FACTOR), null);
+				g.drawImage(Images.bottomArrow, (int) (450*SCALE_FACTOR), (int) (948*SCALE_FACTOR), null);
+				g.drawImage(Images.topArrow, (int) (450*SCALE_FACTOR), (int) (0*SCALE_FACTOR), null);
 			}
 		};
 		panel.setLayout(null);
@@ -132,7 +134,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(panel);
 			}
 		});
-		menuButton.setBounds((int) (350*SCALE_FACTOR), (int) (0*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuButton.setBounds((int) (700*SCALE_FACTOR), (int) (0*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuButton.setFont(font);
 
 		// attack button
@@ -168,7 +170,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static void createMainMenu() {
 		JButton startButton = new JButton("START");
 		JButton exitButton = new JButton("EXIT");
-		Point menuCoord = new Point((int) (175*SCALE_FACTOR), (int) (225*SCALE_FACTOR));
+		Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (450*SCALE_FACTOR));
 		mainMenu = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -375,7 +377,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				frame.getContentPane().remove(invPanel);
 			}
 		});
-		exitButton.setBounds((int) (700*SCALE_FACTOR), (int) (200*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		exitButton.setBounds((int) (700*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		exitButton.setFont(font);
 
 		// stick button
@@ -393,30 +395,30 @@ public class SimpleDungeonCrawler extends JPanel {
 				}
 			}
 		});
-		addStick.setBounds((int) (700*SCALE_FACTOR), (int) (300*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		addStick.setBounds((int) (0*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		addStick.setFont(font);
 	}
 
 	public static void refreshInv() {
-		Rectangle rText = new Rectangle(0, 50, 50, 20);
-		Rectangle rImage = new Rectangle(0, 0, 50, 50);
+		Rectangle rText = new Rectangle(0, SCALED_100, SCALED_100, (int) (40*SCALE_FACTOR));
+		Rectangle rImage = new Rectangle(0, 0, SCALED_100, SCALED_100);
 		for (int i = character.getInventory().size() - 1; i >= 0; i--) {
 			GenericItem item = character.getInventory().get(i);
 			JTextArea text = new JTextArea(item.itemName);
 			text.setEditable(false);
 			text.setBounds(rText);
-			rText.x += 50;
-			if (rText.x >= 450) {
-				rText.x -= 450;
-				rText.y += 70;
+			rText.x += SCALED_100;
+			if (rText.x >= (int) (900*SCALE_FACTOR)) {
+				rText.x -= (int) (900*SCALE_FACTOR);
+				rText.y += (int) (140*SCALE_FACTOR);
 			}
 			invPanel.add(text);
 			JLabel itemLabel = new JLabel(item.itemImage);
 			itemLabel.setBounds(rImage);
-			rImage.x += 50;
-			if (rImage.x >= 450) {
-				rImage.x -= 450;
-				rImage.y += 70;
+			rImage.x += SCALED_100;
+			if (rImage.x >= (int) (900*SCALE_FACTOR)) {
+				rImage.x -= (int) (900*SCALE_FACTOR);
+				rImage.y += (int) (140*SCALE_FACTOR);
 			}
 			invPanel.add(itemLabel);
 		}
@@ -428,7 +430,6 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton fightButton = new JButton();
 		JButton fleeButton = new JButton();
 		JButton moveButton = new JButton();
-		JButton debugHealth = new JButton("-1 hp");
 		ArrayList<String> console1 = new ArrayList<String>();
 		// console1.add("Console is funtioning.");
 		// attack panel
@@ -438,7 +439,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				super.paintComponent(g);
 				g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);
 				g.setColor(Color.red);
-				g.fillRect((int) (107*SCALE_FACTOR), (int) (466*SCALE_FACTOR), (int) (220*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (18*SCALE_FACTOR));
+				g.fillRect((int) (214*SCALE_FACTOR), (int) (932*SCALE_FACTOR), (int) (440*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (36*SCALE_FACTOR));
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
 				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
@@ -450,12 +451,13 @@ public class SimpleDungeonCrawler extends JPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(Images.battleMenu, 0, 0, 500, 500, null);
+				g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);
 				g.setColor(Color.red);
-				g.fillRect((int) (107*SCALE_FACTOR), (int) (466*SCALE_FACTOR), (int) (220 * character.getHealth() / character.getMaxHealth()), (int) (18*SCALE_FACTOR));
+				g.fillRect((int) (214*SCALE_FACTOR), (int) (932*SCALE_FACTOR), (int) (440*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (36*SCALE_FACTOR));
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, (int) (300*SCALE_FACTOR), (int) (600*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
 				g.drawImage(Images.battleGoblin, (int) (300*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
+				g.drawString("Turn Points" + t.getTurnPoints(), 0, 0);
 				// g.drawString(console1.get(console1.size() - 1), 10, 100);
 			}
 		};
@@ -464,32 +466,39 @@ public class SimpleDungeonCrawler extends JPanel {
 		turnPanel.add(fightButton);
 		turnPanel.add(fleeButton);
 		turnPanel.add(moveButton);
-		turnPanel.add(debugHealth);
-		// atkPanel.add(exitButton);
 		turnPanel.setLayout(null);
-
-		debugHealth.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				character.setHealth(-1);
-			}
-		});
-		debugHealth.setBounds(107, 456, 30, 10);
+		createBagPanel();
 
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (t.getTurnPoints() >= 3) {
+					t.setTurnPoints(-3);
+					//TODO some kind of fight method i guess
+				} else {
+					System.out.println("Not enough turn points");
+				}
 				t.endTurn();
 				// battleSequence(console1);
 			}
 		});
-		fightButton.setBounds((int) (349*SCALE_FACTOR), (int) (74*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		fightButton.setBounds((int) (699*SCALE_FACTOR), (int) (148*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
 
-		moveButton.setBounds((int) (349*SCALE_FACTOR), (int) (174*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);//TODO MOVEMENT
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
-
-		bagButton.setBounds((int) (349*SCALE_FACTOR), (int) (276*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		
+		bagButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.remove(turnPanel);
+				frame.add(bagPanel);
+				JLabel weaponLabel = new JLabel(character.getWeapon().getImage());
+				weaponLabel.setBounds(0, 0, SCALED_100, SCALED_100);
+				bagPanel.add(weaponLabel);
+			}
+		});
+		bagButton.setBounds((int) (699*SCALE_FACTOR), (int) (552*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
 
 		fleeButton.addActionListener(new ActionListener() {
@@ -499,8 +508,40 @@ public class SimpleDungeonCrawler extends JPanel {
 				t.endTurn();
 			}
 		});
-		fleeButton.setBounds((int) (349*SCALE_FACTOR), (int) (376*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		fleeButton.setBounds((int) (699*SCALE_FACTOR), (int) (752*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
+	}
+	
+	public static void createBagPanel() {
+		JButton returnButton = new JButton("RETURN");
+		JButton selectWeapon = new JButton("SELECT WEAPON");
+		bagPanel = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawString("SELECTED WEAPON", 0, SCALED_100);
+			}
+		};
+		bagPanel.add(selectWeapon);
+		bagPanel.add(returnButton);
+		bagPanel.setLayout(null);
+		
+		selectWeapon.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO make a selection panel i guess
+			}
+		});
+		selectWeapon.setBounds((int) (0*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		
+		returnButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.add(turnPanel);
+				frame.remove(bagPanel);
+			}
+		});
+		returnButton.setBounds((int) (700*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 	}
 
 	public static void battleSequence(/* ArrayList<String> console1 */) {
@@ -650,7 +691,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static boolean flee(List<Entity> list) {
 		boolean successful = false;
-		if (false/*r20() > 10 + (list.size() - 1) - (character.getDex() / 10)*/) { //TODO speed rather than dex
+		if (r20() > 10 + (list.size() - 1) - (character.getDex() / 10)) { //TODO speed rather than dex
 			frame.remove(turnPanel);
 			frame.add(panel);
 			successful = true;
@@ -672,7 +713,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton invButton = new JButton("INVENTORY");
 		JButton saveButton = new JButton("SAVE");
 		JButton exitButton = new JButton("QUIT");
-		Point menuCoord = new Point((int) (175*SCALE_FACTOR), (int) (125*SCALE_FACTOR));
+		Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (250*SCALE_FACTOR));
 
 		// menu panel
 		menuPanel = new JPanel() {
@@ -889,27 +930,27 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void checkIfLeavingRoom() {
-		if ((int) character.getLocation().getY() >= (int) (200*SCALE_FACTOR) && (int) character.getLocation().getY() <= (int) (254*SCALE_FACTOR)) {
-			if (character.getLocation().getX() < (int) (30*SCALE_FACTOR) && loc.x != 0) {
+		if ((int) character.getLocation().getY() >= (int) (400*SCALE_FACTOR) && (int) character.getLocation().getY() <= (int) (508*SCALE_FACTOR)) {
+			if (character.getLocation().getX() < (int) (50*SCALE_FACTOR) && loc.x != 0) {
 				loc.x--;
-				eventChangeRooms();
+				eventChangeRooms("right");
 
 			}
 
-			if (character.getLocation().getX() > (int) (444*SCALE_FACTOR) && loc.x != 9) {
+			if (character.getLocation().getX() > (int) (888*SCALE_FACTOR) && loc.x != 9) {
 				loc.x++;
-				eventChangeRooms();
+				eventChangeRooms("left");
 			}
 		}
-		if (character.getLocation().getX() >= (int) (200*SCALE_FACTOR) && character.getLocation().getX() <= (int) (264*SCALE_FACTOR)) {
-			if ((int) character.getLocation().getY() < 30 && loc.y != 0) {
+		if (character.getLocation().getX() >= (int) (400*SCALE_FACTOR) && character.getLocation().getX() <= (int) (528*SCALE_FACTOR)) {
+			if ((int) character.getLocation().getY() < (int) (50*SCALE_FACTOR) && loc.y != 0) {
 				loc.y--;
-				eventChangeRooms();
+				eventChangeRooms("bottom");
 			}
 
-			if ((int) character.getLocation().getY() > 434 && loc.y != 9) {
+			if ((int) character.getLocation().getY() > (int) (868 * SCALE_FACTOR) && loc.y != 9) {
 				loc.y++;
-				eventChangeRooms();
+				eventChangeRooms("top");
 			}
 		}
 
@@ -923,21 +964,21 @@ public class SimpleDungeonCrawler extends JPanel {
 		double x = character.getLocation().getX() + deltaX;
 		double y = character.getLocation().getY() + deltaY;
 		double left = x;
-		double right = x + 36;
+		double right = x + 72 * SCALE_FACTOR;
 		double top = y;
-		double bottom = y + 46;
-		if (bottom <= 464 && top >= 36 && right <= 464 && left >= 36) { // main
+		double bottom = y + 92 * SCALE_FACTOR;
+		if (bottom <= (int) (928*SCALE_FACTOR) && top >= (int) (72*SCALE_FACTOR) && right <= (int) (928*SCALE_FACTOR) && left >= (int) (72*SCALE_FACTOR)) { // main
 																		// room
 																		// box
 			isLegal = true;
 		}
-		if (bottom <= 300 && top >= 200 && right <= 500 && left >= 0) { // right
+		if (bottom <= (int) (600*SCALE_FACTOR) && top >= (int) (400*SCALE_FACTOR) && right <= (int) (1000*SCALE_FACTOR) && left >= (int) (0*SCALE_FACTOR)) { // right
 																		// and
 																		// left
 																		// doors
 			isLegal = true;
 		}
-		if (bottom <= 500 && top >= 0 && right <= 300 && left >= 200) { // top
+		if (bottom <= (int) (1000*SCALE_FACTOR) && top >= (int) (0*SCALE_FACTOR) && right <= (int) (600*SCALE_FACTOR) && left >= (int) (400*SCALE_FACTOR)) { // top
 																		// and
 																		// bottom
 																		// doors
@@ -956,7 +997,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		checkIfLeavingRoom();
 	}
 
-	public static void eventChangeRooms() {
+	public static void eventChangeRooms(String door) {
 		if (roomArray[loc.x][loc.y] == null) {
 			roomArray[loc.x][loc.y] = new StandardRoom();
 			StandardRoom current = roomArray[loc.x][loc.y];
@@ -993,6 +1034,17 @@ public class SimpleDungeonCrawler extends JPanel {
 			Images.topArrow = Images.topArrowOn;
 			Images.bottomArrow = Images.bottomArrowOn;
 		}
-		character.getLocation().setLocation(250, 250);
+		if (door.equals("left")) {
+			character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+		} else if (door.equals("right")) {
+			character.getLocation().setLocation(800 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+		} else if (door.equals("top")) {
+			character.getLocation().setLocation(500 * SCALE_FACTOR, 100 * SCALE_FACTOR);
+		} else if (door.equals("bottom")) {
+			character.getLocation().setLocation(500 * SCALE_FACTOR, 800 * SCALE_FACTOR);
+		} else {
+			character.getLocation().setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+		}
+		
 	}
 }
