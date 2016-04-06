@@ -24,6 +24,25 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	private double health;
 	private double maxHealth;
 	private GenericWeapon selectedWeapon;
+	private int selectedEntity;
+	private Point2D battleLoc;
+	
+	public Point2D getBattleLoc() {
+		double battleRatioX = 696*SimpleDungeonCrawler.SCALE_FACTOR / (1000*SimpleDungeonCrawler.SCALE_FACTOR);
+		double battleRatioY = 703*SimpleDungeonCrawler.SCALE_FACTOR / (1000*SimpleDungeonCrawler.SCALE_FACTOR);
+		battleLoc = new Point2D.Double(this.location.getX() * (battleRatioX), this.location.getY() * (battleRatioY) + 149); 
+		//(0,149)(696, 149)(0,852)(696,852) 696, 703
+		return battleLoc;
+	}
+	
+	public int getSelectedEntity() {
+		return selectedEntity;
+	}
+
+	public void setSelectedEntity(int selectedEntity) {
+		this.selectedEntity = selectedEntity;
+	}
+
 	Random rand = new Random();
 	
 	public Entity() {

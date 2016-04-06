@@ -100,7 +100,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		Refresh r1 = new Refresh();
 		r1.start();
 		Point p = new Point(0, 10);
-		roomArray[0][0] = new BattleRoom(1);
+		roomArray[0][0] = new BattleRoom(0);
 	}
 
 	public static void createButtonsAndPanels() {
@@ -430,6 +430,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		JButton fightButton = new JButton();
 		JButton fleeButton = new JButton();
 		JButton moveButton = new JButton();
+		JButton endTurn = new JButton("END TURN");
 		ArrayList<String> console1 = new ArrayList<String>();
 		// console1.add("Console is funtioning.");
 		// attack panel
@@ -441,8 +442,12 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.setColor(Color.red);
 				g.fillRect((int) (214*SCALE_FACTOR), (int) (932*SCALE_FACTOR), (int) (440*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (36*SCALE_FACTOR));
 				g.setColor(Color.black);
-				g.drawImage(Images.battleChar, 150, 300, 100, 50, null);
-				g.drawImage(Images.battleGoblin, 150, 100, 100, 50, null);
+				StandardRoom current = roomArray[loc.x][loc.y];
+				for (int i = 0; i < current.enemyEntities.size(); i++) {
+					Point2D point = current.enemyEntities.get(i).getBattleLoc();
+					g.drawImage(Images.battleGoblin, (int) point.getX(), (int) point.getY(), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
+				}
+				g.drawImage(Images.battleChar, (int) (300*SCALE_FACTOR), (int) (600*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
 				// g.drawString(console1.get(console1.size() - 1), 10, 100);
 			}
 		};
@@ -456,7 +461,11 @@ public class SimpleDungeonCrawler extends JPanel {
 				g.fillRect((int) (214*SCALE_FACTOR), (int) (932*SCALE_FACTOR), (int) (440*SCALE_FACTOR * character.getHealth() / character.getMaxHealth()), (int) (36*SCALE_FACTOR));
 				g.setColor(Color.black);
 				g.drawImage(Images.battleChar, (int) (300*SCALE_FACTOR), (int) (600*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
-				g.drawImage(Images.battleGoblin, (int) (300*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
+				StandardRoom current = roomArray[loc.x][loc.y];
+				for (int i = 0; i < current.enemyEntities.size(); i++) {
+					Point2D point = current.enemyEntities.get(i).getBattleLoc();
+					g.drawImage(Images.battleGoblin, (int) point.getX(), (int) point.getY(), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
+				}
 				g.drawString("Turn Points" + t.getTurnPoints(), 0, 0);
 				// g.drawString(console1.get(console1.size() - 1), 10, 100);
 			}
@@ -466,6 +475,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		turnPanel.add(fightButton);
 		turnPanel.add(fleeButton);
 		turnPanel.add(moveButton);
+		turnPanel.add(endTurn);
 		turnPanel.setLayout(null);
 		createBagPanel();
 
@@ -474,18 +484,47 @@ public class SimpleDungeonCrawler extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (t.getTurnPoints() >= 3) {
 					t.setTurnPoints(-3);
-					//TODO some kind of fight method i guess
+					characterAttack(roomArray[loc.x][loc.y].enemyEntities.get(character.getSelectedEntity()));
 				} else {
 					System.out.println("Not enough turn points");
 				}
-				t.endTurn();
-				// battleSequence(console1);
 			}
 		});
 		fightButton.setBounds((int) (699*SCALE_FACTOR), (int) (148*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
+		
+		endTurn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				t.endTurn();
+			}
+		});
+		endTurn.setBounds((int) (699*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 
-		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);//TODO MOVEMENT
+		moveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClick mouse = new MouseClick();
+				turnPanel.addMouseListener(mouse);
+				synchronized (mouse) {
+					try {
+						mouse.wait();
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					Point point = mouse.getLocation();
+					double x = character.getBattleLoc().getX();
+					double y = character.getBattleLoc().getY();
+					if (Math.abs(x - point.x) * (1/SCALED_100) + Math.abs(y - point.y)  * (1/SCALED_100) < t.getTurnPoints()) {
+						//TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
+						//possibly make setBattleLocation change location in a backwards orientation?
+						//ALSO THIS IS GLITCHING, so...
+					}
+				}
+				//TODO MOVEMENT
+			}
+		});
+		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
 		
 		bagButton.addActionListener(new ActionListener() {
@@ -529,7 +568,9 @@ public class SimpleDungeonCrawler extends JPanel {
 		selectWeapon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO make a selection panel i guess
+				if (t.getTurnPoints() > 2) {
+					//TODO choose weapon method
+				}
 			}
 		});
 		selectWeapon.setBounds((int) (0*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -554,7 +595,6 @@ public class SimpleDungeonCrawler extends JPanel {
 			character.setWeapon(weapon);
 
 			List<Entity> initList = setInitiative(currentRoom);
-			int selectedEnemy = 0;
 			for (int i = 0; i < initList.size(); i++) {
 				frame.validate();
 				frame.repaint();
@@ -568,7 +608,6 @@ public class SimpleDungeonCrawler extends JPanel {
 						try {
 							t.wait();
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -580,8 +619,7 @@ public class SimpleDungeonCrawler extends JPanel {
 					}
 					frame.remove(turnPanel);
 					frame.add(atkPanel);
-					characterAttack(currentRoom.enemyEntities
-							.get(selectedEnemy)/* , console1 */);
+					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy)/* , console1 */);
 					// System.out.println();
 				} else {
 					// System.out.println(initList.get(i).getClass().toString());
@@ -589,9 +627,9 @@ public class SimpleDungeonCrawler extends JPanel {
 				try {
 					TimeUnit.SECONDS.sleep(2);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				t.reset();
 				// checkHealth(currentRoom);
 				frame.validate();
 				frame.repaint();
@@ -613,7 +651,6 @@ public class SimpleDungeonCrawler extends JPanel {
 		int r = r6();
 		character.setInitiative(r);
 		initList.add(character);
-		// TODO sort based on initiative
 		Collections.sort(initList);
 		return initList;
 	}

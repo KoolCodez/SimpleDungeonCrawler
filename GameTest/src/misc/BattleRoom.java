@@ -2,6 +2,7 @@ package misc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
@@ -17,6 +18,8 @@ public class BattleRoom extends StandardRoom {
 			weapon.ranged = false;
 			weapon.speed = 1.0;
 			temp.setWeapon(weapon);
+			Random rand = new Random();
+			temp.setLocation(rand.nextInt(500) - 250, rand.nextInt(500) - 250);
 			enemyEntities.add(temp);
 			
 		}
