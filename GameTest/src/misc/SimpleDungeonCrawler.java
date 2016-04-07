@@ -504,24 +504,14 @@ public class SimpleDungeonCrawler extends JPanel {
 		moveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MouseClick mouse = new MouseClick();
-				turnPanel.addMouseListener(mouse);
-				synchronized (mouse) {
-					try {
-						mouse.wait();
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
+				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
+					@Override
+					protected Integer doInBackground() throws Exception {
+						move();
+						return 0;
 					}
-					Point point = mouse.getLocation();
-					double x = character.getBattleLoc().getX();
-					double y = character.getBattleLoc().getY();
-					if (Math.abs(x - point.x) * (1/SCALED_100) + Math.abs(y - point.y)  * (1/SCALED_100) < t.getTurnPoints()) {
-						//TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
-						//possibly make setBattleLocation change location in a backwards orientation?
-						//ALSO THIS IS GLITCHING, so...
-					}
-				}
-				//TODO MOVEMENT
+				};
+				worker.execute();
 			}
 		});
 		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -558,7 +548,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawString("SELECTED WEAPON", 0, SCALED_100);
+				g.drawString("SELECTED WEAPON", 0, (int) (118*SCALE_FACTOR));
 			}
 		};
 		bagPanel.add(selectWeapon);
@@ -719,7 +709,27 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void move() {
-
+		MouseClick mouse = new MouseClick();
+		frame.getContentPane().addMouseListener(mouse);
+		synchronized (mouse) {
+			try {
+				mouse.wait();
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
+			Point point = mouse.getLocation();
+			double x = character.getBattleLoc().getX();
+			double y = character.getBattleLoc().getY();
+			if (Math.abs(x - point.x) * (1/SCALED_100) + Math.abs(y - point.y)  * (1/SCALED_100) < t.getTurnPoints()) {
+				//TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
+				//possibly make setBattleLocation change location in a backwards orientation?
+				//ALSO THIS IS GLITCHING, so...
+				System.out.println("legalClick");
+		} else {
+			System.out.println("illegal, u r haxor");
+		}
+		//TODO MOVEMENT
 	}
 
 	public static void bag() {

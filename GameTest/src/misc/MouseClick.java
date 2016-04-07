@@ -16,8 +16,10 @@ public class MouseClick implements MouseInputListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		location = e.getLocationOnScreen();
+		synchronized (this) {
+			this.notifyAll();
+		}
 	}
 
 	@Override
@@ -39,7 +41,9 @@ public class MouseClick implements MouseInputListener{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		location = e.getLocationOnScreen();
-		this.notify();
+		synchronized (this) {
+			this.notify();
+		}
 		
 	}
 
