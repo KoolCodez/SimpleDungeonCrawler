@@ -6,7 +6,7 @@ public class Refresh extends Thread {
 			while (true) {
 				SimpleDungeonCrawler.frame.getContentPane().validate();
 				SimpleDungeonCrawler.frame.getContentPane().repaint(); 
-				Thread.sleep(SimpleDungeonCrawler.refreshRate);
+				Thread.sleep(SimpleDungeonCrawler.fps);
 			}
 		} catch (InterruptedException e) {
 			System.out.println("sleep interrupted");

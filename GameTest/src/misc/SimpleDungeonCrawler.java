@@ -54,7 +54,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Point loc = new Point(0, 0);
 	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
 	// 250.0);
-	public static final double SCALE_FACTOR = .75;
+	public static final double SCALE_FACTOR = 1;
 	public static FriendlyEntity character;
 	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
@@ -73,6 +73,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static JPanel mainMenu;
 	public static JPanel bagPanel;
 	public static int refreshRate = 25; // number of millis to wait
+	public static int fps = 50;
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 	public static TurnWait t = new TurnWait();
 	public static boolean flee = false;
@@ -490,7 +491,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				}
 			}
 		});
-		fightButton.setBounds((int) (699*SCALE_FACTOR), (int) (148*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		fightButton.setBounds((int) (698*SCALE_FACTOR), (int) (148*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
 		
 		endTurn.addActionListener(new ActionListener() {
@@ -499,7 +500,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				t.endTurn();
 			}
 		});
-		endTurn.setBounds((int) (699*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		endTurn.setBounds((int) (698*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 
 		moveButton.addActionListener(new ActionListener() {
 			@Override
@@ -524,7 +525,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				//TODO MOVEMENT
 			}
 		});
-		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		moveButton.setBounds((int) (698*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
 		
 		bagButton.addActionListener(new ActionListener() {
@@ -537,7 +538,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				bagPanel.add(weaponLabel);
 			}
 		});
-		bagButton.setBounds((int) (699*SCALE_FACTOR), (int) (552*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		bagButton.setBounds((int) (698*SCALE_FACTOR), (int) (552*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
 
 		fleeButton.addActionListener(new ActionListener() {
@@ -547,7 +548,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				t.endTurn();
 			}
 		});
-		fleeButton.setBounds((int) (699*SCALE_FACTOR), (int) (752*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		fleeButton.setBounds((int) (698*SCALE_FACTOR), (int) (752*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
 	}
 	
@@ -745,7 +746,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void createMenu() {
-		JButton resume = new JButton("RESUME");
+		JButton resume = new JButton();
 		JButton charButton = new JButton("CHARACTER");
 		JButton invButton = new JButton("INVENTORY");
 		JButton saveButton = new JButton("SAVE");
@@ -777,6 +778,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		resume.setIcon(new ImageIcon(Images.resumeButton));
 		menuCoord.y += BUTTON_HEIGHT;
 		resume.setFont(font);
 
