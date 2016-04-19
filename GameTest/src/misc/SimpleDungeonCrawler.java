@@ -54,7 +54,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Point loc = new Point(0, 0);
 	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
 	// 250.0);
-	public static final double SCALE_FACTOR = .75;
+	public static final double SCALE_FACTOR = 1;
 	public static FriendlyEntity character;
 	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
@@ -73,8 +73,9 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static JPanel mainMenu;
 	public static JPanel bagPanel;
 	public static int refreshRate = 25; // number of millis to wait
+	public static int fps = 50;
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
-	public static TurnWait t = new TurnWait();
+	public static TurnWait waitForTurn = new TurnWait();
 	public static boolean flee = false;
 	private static final int SCALED_100 = (int) (100*SCALE_FACTOR);
 	private static final int MENU_SIZE = (int) (1000*SCALE_FACTOR);
@@ -466,7 +467,7 @@ public class SimpleDungeonCrawler extends JPanel {
 					Point2D point = current.enemyEntities.get(i).getBattleLoc();
 					g.drawImage(Images.battleGoblin, (int) point.getX(), (int) point.getY(), (int) (200*SCALE_FACTOR), (int) (100*SCALE_FACTOR), null);
 				}
-				g.drawString("Turn Points" + t.getTurnPoints(), 0, 0);
+				g.drawString("Turn Points" + waitForTurn.getTurnPoints(), 0, 0);
 				// g.drawString(console1.get(console1.size() - 1), 10, 100);
 			}
 		};
@@ -482,24 +483,24 @@ public class SimpleDungeonCrawler extends JPanel {
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (t.getTurnPoints() >= 3) {
-					t.setTurnPoints(-3);
+				if (waitForTurn.getTurnPoints() >= 3) {
+					waitForTurn.setTurnPoints(-3);
 					characterAttack(roomArray[loc.x][loc.y].enemyEntities.get(character.getSelectedEntity()));
 				} else {
 					System.out.println("Not enough turn points");
 				}
 			}
 		});
-		fightButton.setBounds((int) (699*SCALE_FACTOR), (int) (148*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		fightButton.setBounds((int) (698*SCALE_FACTOR), (int) (148*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fightButton.setIcon(new ImageIcon(Images.fightButton));
 		
 		endTurn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				t.endTurn();
+				waitForTurn.endTurn();
 			}
 		});
-		endTurn.setBounds((int) (699*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		endTurn.setBounds((int) (698*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 
 		moveButton.addActionListener(new ActionListener() {
 			@Override
@@ -514,7 +515,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				worker.execute();
 			}
 		});
-		moveButton.setBounds((int) (699*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		moveButton.setBounds((int) (698*SCALE_FACTOR), (int) (348*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		moveButton.setIcon(new ImageIcon(Images.moveButton));
 		
 		bagButton.addActionListener(new ActionListener() {
@@ -527,17 +528,17 @@ public class SimpleDungeonCrawler extends JPanel {
 				bagPanel.add(weaponLabel);
 			}
 		});
-		bagButton.setBounds((int) (699*SCALE_FACTOR), (int) (552*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		bagButton.setBounds((int) (698*SCALE_FACTOR), (int) (552*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		bagButton.setIcon(new ImageIcon(Images.bagButton));
 
 		fleeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				flee = true;
-				t.endTurn();
+				waitForTurn.endTurn();
 			}
 		});
-		fleeButton.setBounds((int) (699*SCALE_FACTOR), (int) (752*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		fleeButton.setBounds((int) (698*SCALE_FACTOR), (int) (752*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
 	}
 	
@@ -558,7 +559,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		selectWeapon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (t.getTurnPoints() > 2) {
+				if (waitForTurn.getTurnPoints() > 2) {
 					//TODO choose weapon method
 				}
 			}
@@ -594,9 +595,9 @@ public class SimpleDungeonCrawler extends JPanel {
 				} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity") && !flee) {
 					frame.remove(atkPanel);
 					frame.add(turnPanel);
-					synchronized (t) {
+					synchronized (waitForTurn) {
 						try {
-							t.wait();
+							waitForTurn.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -619,7 +620,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				t.reset();
+				waitForTurn.reset();
 				// checkHealth(currentRoom);
 				frame.validate();
 				frame.repaint();
@@ -721,7 +722,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			Point point = mouse.getLocation();
 			double x = character.getBattleLoc().getX();
 			double y = character.getBattleLoc().getY();
-			if (Math.abs(x - point.x) * (1/SCALED_100) + Math.abs(y - point.y)  * (1/SCALED_100) < t.getTurnPoints()) {
+			if (Math.abs(x - point.x) * (1/SCALED_100) + Math.abs(y - point.y)  * (1/SCALED_100) < waitForTurn.getTurnPoints()) {
 				//TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
 				//possibly make setBattleLocation change location in a backwards orientation?
 				//ALSO THIS IS GLITCHING, so...
@@ -755,7 +756,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 
 	public static void createMenu() {
-		JButton resume = new JButton("RESUME");
+		JButton resume = new JButton();
 		JButton charButton = new JButton("CHARACTER");
 		JButton invButton = new JButton("INVENTORY");
 		JButton saveButton = new JButton("SAVE");
@@ -787,6 +788,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			}
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		resume.setIcon(new ImageIcon(Images.resumeButton));
 		menuCoord.y += BUTTON_HEIGHT;
 		resume.setFont(font);
 

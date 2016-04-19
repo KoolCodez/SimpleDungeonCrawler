@@ -26,6 +26,7 @@ public class Images {
 	public static Image fightButton;
 	public static Image fleeButton;
 	public static Image moveButton;
+	public static Image resumeButton;
 	//Characters\\
 	public static Image charImg;
 	public static Image charFront;
@@ -85,14 +86,16 @@ public class Images {
 	}
 	
 	public static void buttons() throws IOException {
-		bagButton = ImageIO.read(new File("src\\Textures\\Buttons\\BagButton.jpg"));
+		bagButton = ImageIO.read(new File("src\\Textures\\Buttons\\BagButton2x.jpg"));
 		bagButton = bagButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
-		fightButton = ImageIO.read(new File("src\\Textures\\Buttons\\FightButton.jpg"));
+		fightButton = ImageIO.read(new File("src\\Textures\\Buttons\\FightButton2x.jpg"));
 		fightButton = fightButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
-		fleeButton = ImageIO.read(new File("src\\Textures\\Buttons\\FleeButton.jpg"));
+		fleeButton = ImageIO.read(new File("src\\Textures\\Buttons\\FleeButton2x.jpg"));
 		fleeButton = fleeButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
-		moveButton = ImageIO.read(new File("src\\Textures\\Buttons\\MoveButton.jpg"));
+		moveButton = ImageIO.read(new File("src\\Textures\\Buttons\\MoveButton2x.jpg"));
 		moveButton = moveButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		resumeButton = ImageIO.read(new File("src\\Textures\\Buttons\\ResumeButton2x.jpg"));
+		resumeButton = resumeButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
 
 	}
 	
