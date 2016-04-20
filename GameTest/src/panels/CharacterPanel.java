@@ -29,7 +29,7 @@ public class CharacterPanel {
 		JButton setChr = new JButton("+1");
 		JButton chrDown = new JButton("-1");
 		// attack panel
-		Panels.charPanel = new JPanel() {
+		Panels.characterPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -41,20 +41,20 @@ public class CharacterPanel {
 				g.drawString("CHARISMA: " + character.getChr(), 200, 350);
 			}
 		};
-		Panels.charPanel.add(exitButton);
-		Panels.charPanel.add(setStr);
-		Panels.charPanel.add(strDown);
-		Panels.charPanel.add(setDex);
-		Panels.charPanel.add(dexDown);
-		Panels.charPanel.add(setCon);
-		Panels.charPanel.add(conDown);
-		Panels.charPanel.add(setWis);
-		Panels.charPanel.add(wisDown);
-		Panels.charPanel.add(intUp);
-		Panels.charPanel.add(intDown);
-		Panels.charPanel.add(setChr);
-		Panels.charPanel.add(chrDown);
-		Panels.charPanel.setLayout(null);
+		Panels.characterPanel.add(exitButton);
+		Panels.characterPanel.add(setStr);
+		Panels.characterPanel.add(strDown);
+		Panels.characterPanel.add(setDex);
+		Panels.characterPanel.add(dexDown);
+		Panels.characterPanel.add(setCon);
+		Panels.characterPanel.add(conDown);
+		Panels.characterPanel.add(setWis);
+		Panels.characterPanel.add(wisDown);
+		Panels.characterPanel.add(intUp);
+		Panels.characterPanel.add(intDown);
+		Panels.characterPanel.add(setChr);
+		Panels.characterPanel.add(chrDown);
+		Panels.characterPanel.setLayout(null);
 
 		// level buttons
 		setStr.addActionListener(new ActionListener() {
@@ -151,8 +151,8 @@ public class CharacterPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(Panels.menuPanel);
-				Panels.frame.getContentPane().remove(Panels.charPanel);
+				Panels.frame.getContentPane().add(Panels.pauseMenuPanel);
+				Panels.frame.getContentPane().remove(Panels.characterPanel);
 			}
 		});
 		exitButton.setBounds(350, 100, 150, 50);

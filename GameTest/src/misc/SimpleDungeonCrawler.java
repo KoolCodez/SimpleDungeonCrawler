@@ -106,7 +106,7 @@ public class SimpleDungeonCrawler extends JPanel {
 					enemyAttack((EnemyEntity) initList.get(i)/* , console1 */);
 					// System.out.println();
 				} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity") && !flee) {
-					Panels.frame.remove(Panels.atkPanel);
+					Panels.frame.remove(Panels.attackPanel);
 					Panels.frame.add(Panels.turnPanel);
 					synchronized (waitForTurn) {
 						try {
@@ -122,7 +122,7 @@ public class SimpleDungeonCrawler extends JPanel {
 						}
 					}
 					Panels.frame.remove(Panels.turnPanel);
-					Panels.frame.add(Panels.atkPanel);
+					Panels.frame.add(Panels.attackPanel);
 					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy)/* , console1 */);
 					// System.out.println();
 				} else {

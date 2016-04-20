@@ -44,8 +44,8 @@ public class CoreGameplayPanel {
 		menuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(Panels.menuPanel);
-				Panels.frame.getContentPane().remove(Panels.atkPanel);
+				Panels.frame.getContentPane().add(Panels.pauseMenuPanel);
+				Panels.frame.getContentPane().remove(Panels.attackPanel);
 				Panels.frame.getContentPane().remove(Panels.coreGameplayPanel);
 			}
 		});
@@ -57,7 +57,7 @@ public class CoreGameplayPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Panels.frame.getContentPane().remove(Panels.coreGameplayPanel);
-				Panels.frame.getContentPane().add(Panels.atkPanel);
+				Panels.frame.getContentPane().add(Panels.attackPanel);
 				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 					@Override
 					protected Integer doInBackground() throws Exception {

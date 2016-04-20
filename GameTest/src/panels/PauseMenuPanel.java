@@ -28,27 +28,27 @@ public class PauseMenuPanel {
 		Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (250*SCALE_FACTOR));
 
 		// menu panel
-		Panels.menuPanel = new JPanel() {
+		Panels.pauseMenuPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(Images.pauseMenu, 0, 0, null);
 			}
 		};
-		Panels.menuPanel.setLayout(null);
-		Panels.menuPanel.add(resume);
-		Panels.menuPanel.add(charButton);
-		Panels.menuPanel.add(invButton);
-		Panels.menuPanel.add(saveButton);
-		Panels.menuPanel.add(exitButton);
+		Panels.pauseMenuPanel.setLayout(null);
+		Panels.pauseMenuPanel.add(resume);
+		Panels.pauseMenuPanel.add(charButton);
+		Panels.pauseMenuPanel.add(invButton);
+		Panels.pauseMenuPanel.add(saveButton);
+		Panels.pauseMenuPanel.add(exitButton);
 
 		// start button
 		resume.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Panels.frame.getContentPane().add(Panels.coreGameplayPanel);
-				Panels.frame.getContentPane().remove(Panels.atkPanel);
-				Panels.frame.getContentPane().remove(Panels.menuPanel);
+				Panels.frame.getContentPane().remove(Panels.attackPanel);
+				Panels.frame.getContentPane().remove(Panels.pauseMenuPanel);
 			}
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -60,8 +60,8 @@ public class PauseMenuPanel {
 		charButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(Panels.charPanel);
-				Panels.frame.getContentPane().remove(Panels.menuPanel);
+				Panels.frame.getContentPane().add(Panels.characterPanel);
+				Panels.frame.getContentPane().remove(Panels.pauseMenuPanel);
 			}
 		});
 		charButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -72,8 +72,8 @@ public class PauseMenuPanel {
 		invButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().remove(Panels.menuPanel);
-				Panels.frame.getContentPane().add(Panels.invPanel);
+				Panels.frame.getContentPane().remove(Panels.pauseMenuPanel);
+				Panels.frame.getContentPane().add(Panels.inventoryPanel);
 				InventoryPanel.refreshInv();
 			}
 		});
@@ -94,7 +94,7 @@ public class PauseMenuPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().remove(Panels.menuPanel);
+				Panels.frame.getContentPane().remove(Panels.pauseMenuPanel);
 				Panels.frame.getContentPane().add(Panels.mainMenu);
 			}
 		});

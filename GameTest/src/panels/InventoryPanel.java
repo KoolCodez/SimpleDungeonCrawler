@@ -25,25 +25,25 @@ public class InventoryPanel {
 		JButton addStick = new JButton("STICK ME");
 
 		// attack panel
-		Panels.invPanel = new JPanel() {
+		Panels.inventoryPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 			}
 		};
-		Panels.invPanel.add(addStick);
-		Panels.invPanel.add(exitButton);
-		Panels.invPanel.setLayout(null);
+		Panels.inventoryPanel.add(addStick);
+		Panels.inventoryPanel.add(exitButton);
+		Panels.inventoryPanel.setLayout(null);
 
 		// exit button
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.invPanel.removeAll();
-				Panels.invPanel.add(addStick);
-				Panels.invPanel.add(exitButton);
-				Panels.frame.getContentPane().add(Panels.menuPanel);
-				Panels.frame.getContentPane().remove(Panels.invPanel);
+				Panels.inventoryPanel.removeAll();
+				Panels.inventoryPanel.add(addStick);
+				Panels.inventoryPanel.add(exitButton);
+				Panels.frame.getContentPane().add(Panels.pauseMenuPanel);
+				Panels.frame.getContentPane().remove(Panels.inventoryPanel);
 			}
 		});
 		exitButton.setBounds((int) (700*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -57,9 +57,9 @@ public class InventoryPanel {
 					Stick stick = new Stick();
 					stick.getImage();
 					SimpleDungeonCrawler.character.addItem(stick);
-					Panels.invPanel.removeAll();
-					Panels.invPanel.add(addStick);
-					Panels.invPanel.add(exitButton);
+					Panels.inventoryPanel.removeAll();
+					Panels.inventoryPanel.add(addStick);
+					Panels.inventoryPanel.add(exitButton);
 					refreshInv();
 				}
 			}
@@ -81,7 +81,7 @@ public class InventoryPanel {
 				rText.x -= (int) (900*SCALE_FACTOR);
 				rText.y += (int) (140*SCALE_FACTOR);
 			}
-			Panels.invPanel.add(text);
+			Panels.inventoryPanel.add(text);
 			JLabel itemLabel = new JLabel(item.itemImage);
 			itemLabel.setBounds(rImage);
 			rImage.x += SCALED_100;
@@ -89,7 +89,7 @@ public class InventoryPanel {
 				rImage.x -= (int) (900*SCALE_FACTOR);
 				rImage.y += (int) (140*SCALE_FACTOR);
 			}
-			Panels.invPanel.add(itemLabel);
+			Panels.inventoryPanel.add(itemLabel);
 		}
 	}
 }

@@ -38,34 +38,36 @@ import movement.MoveUpLeft;
 import movement.MoveUpRight;
 
 public class Panels {
-	
+
 	public static JFrame frame;
 	public static JPanel coreGameplayPanel;
-	public static JPanel menuPanel;
-	public static JPanel atkPanel;
+	public static JPanel pauseMenuPanel;
+	public static JPanel attackPanel;
 	public static JPanel turnPanel;
-	public static JPanel invPanel;
-	public static JPanel charPanel;
+	public static JPanel inventoryPanel;
+	public static JPanel characterPanel;
 	public static JPanel mainMenu;
 	public static JPanel bagPanel;
 	static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	public static final int SCALED_100 = (int) (100*SCALE_FACTOR);
-	public static final int MENU_SIZE = (int) (1000*SCALE_FACTOR);
-	public static final int BUTTON_HEIGHT = (int) (100*SCALE_FACTOR);
-	public static final int BUTTON_WIDTH = (int) (300*SCALE_FACTOR);
-	
+	public static final int SCALED_100 = (int) (100 * SCALE_FACTOR);
+	public static final int MENU_SIZE = (int) (1000 * SCALE_FACTOR);
+	public static final int BUTTON_HEIGHT = (int) (100 * SCALE_FACTOR);
+	public static final int BUTTON_WIDTH = (int) (300 * SCALE_FACTOR);
+
 	public Panels() {
 		// initializing frame stuff
-				MainMenu mainMenuInitializer = new MainMenu();
-				mainMenuInitializer.createMainMenu();
-				AttackPanel attackPanel = new AttackPanel();
-				attackPanel.createAtkPanel();
-				PauseMenuPanel pauseMenu = new PauseMenuPanel();
-				pauseMenu.createPauseMenu();
-				InventoryPanel inventoryPanel = new InventoryPanel();
-				inventoryPanel.createInventory();
-				CharacterPanel characterPanel = new CharacterPanel();
-				characterPanel.createCharScreen();
-				frame.getContentPane().add(mainMenu);
+		CoreGameplayPanel coreGameplayPanelInitializer = new CoreGameplayPanel();
+		coreGameplayPanelInitializer.createCoreGameplayPanel();
+		MainMenu mainMenuInitializer = new MainMenu();
+		mainMenuInitializer.createMainMenu();
+		AttackPanel attackPanelInitializer = new AttackPanel();
+		attackPanelInitializer.createAtkPanel();
+		PauseMenuPanel pauseMenuInitializer = new PauseMenuPanel();
+		pauseMenuInitializer.createPauseMenu();
+		InventoryPanel inventoryInitializer = new InventoryPanel();
+		inventoryInitializer.createInventory();
+		CharacterPanel characterInitializer = new CharacterPanel();
+		characterInitializer.createCharScreen();
+		frame.getContentPane().add(mainMenu);
 	}
 }

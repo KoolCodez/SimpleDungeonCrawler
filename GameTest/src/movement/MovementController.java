@@ -24,7 +24,7 @@ public class MovementController {
 			public void actionPerformed(ActionEvent e) {
 				Panels.frame.remove(Panels.coreGameplayPanel);
 				//createMenu(); //TODO
-				Panels.frame.add(Panels.menuPanel);
+				Panels.frame.add(Panels.pauseMenuPanel);
 			}
 		};
 

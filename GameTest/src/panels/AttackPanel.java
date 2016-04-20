@@ -34,7 +34,7 @@ public class AttackPanel {
 		ArrayList<String> console1 = new ArrayList<String>();
 		// console1.add("Console is funtioning.");
 		// attack panel
-		Panels.atkPanel = new JPanel() {
+		Panels.attackPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
