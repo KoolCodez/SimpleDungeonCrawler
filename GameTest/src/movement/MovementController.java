@@ -7,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
 import panels.Panels;
@@ -18,8 +19,9 @@ public class MovementController {
 	public static boolean movingUp = false;
 	public static boolean movingDown = false;
 	
-	public static void createKeyBindings(InputMap inMap, ActionMap acMap) {
-
+	public static void createKeyBindings() {
+		InputMap inMap = Panels.coreGameplayPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap acMap = Panels.coreGameplayPanel.getActionMap();
 		Action pause = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				Panels.frame.remove(Panels.coreGameplayPanel);

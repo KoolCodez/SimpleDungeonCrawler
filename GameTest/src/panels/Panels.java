@@ -36,6 +36,7 @@ import movement.MoveRight;
 import movement.MoveUp;
 import movement.MoveUpLeft;
 import movement.MoveUpRight;
+import movement.MovementController;
 
 public class Panels {
 
@@ -58,6 +59,8 @@ public class Panels {
 		// initializing frame stuff
 		CoreGameplayPanel coreGameplayPanelInitializer = new CoreGameplayPanel();
 		coreGameplayPanelInitializer.createCoreGameplayPanel();
+		MovementController movementInitializer = new MovementController();
+		movementInitializer.createKeyBindings();
 		MainMenu mainMenuInitializer = new MainMenu();
 		mainMenuInitializer.createMainMenu();
 		AttackPanel attackPanelInitializer = new AttackPanel();

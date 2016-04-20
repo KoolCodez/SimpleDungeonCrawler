@@ -55,8 +55,8 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static Point loc = new Point(0, 0);
 	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
 	// 250.0);
-	public static final double SCALE_FACTOR = 1;
-	public static FriendlyEntity character;
+	public static final double SCALE_FACTOR = .75;
+	public static Entity character;
 	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
 	public static Graphics g;
@@ -75,12 +75,11 @@ public class SimpleDungeonCrawler extends JPanel {
 		Panels.frame.setVisible(true);
 		g = Panels.frame.getGraphics();
 		g.setColor(Color.white);
-		character = new FriendlyEntity(5, 10, 10, 10, 10, 10, 10, 1);
+		character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
 		Images.createImages();
 		character.addItem(new Stick());
 		Panels panelInitializer = new Panels();
-		InputMap inMap = Panels.coreGameplayPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		ActionMap acMap = Panels.coreGameplayPanel.getActionMap();
+		
 		Refresh r1 = new Refresh();
 		r1.start();
 		Point p = new Point(0, 10);
@@ -89,7 +88,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	
 
-	public static void battleSequence(/* ArrayList<String> console1 */) {
+	public static void battleSequence() {
 		StandardRoom currentRoom = roomArray[loc.x][loc.y];
 		while (checkLiving(currentRoom) && !flee) {
 			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
@@ -103,7 +102,7 @@ public class SimpleDungeonCrawler extends JPanel {
 				Panels.frame.validate();
 				Panels.frame.repaint();
 				if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity") && !flee) {
-					enemyAttack((EnemyEntity) initList.get(i)/* , console1 */);
+					initList.get(i).attack(character);
 					// System.out.println();
 				} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity") && !flee) {
 					Panels.frame.remove(Panels.attackPanel);
@@ -123,7 +122,7 @@ public class SimpleDungeonCrawler extends JPanel {
 					}
 					Panels.frame.remove(Panels.turnPanel);
 					Panels.frame.add(Panels.attackPanel);
-					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy)/* , console1 */);
+					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
 					// System.out.println();
 				} else {
 					// System.out.println(initList.get(i).getClass().toString());
@@ -147,10 +146,10 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static List<Entity> setInitiative(StandardRoom current) {
 		ArrayList<Entity> initList = new ArrayList<Entity>();
-		for (int i = 0; i < current.enemyEntities.size(); i++) {
+		for (int i = 0; i < current.entities.size(); i++) {
 			int r = r6();
-			current.enemyEntities.get(i).setInitiative(r);
-			initList.add(current.enemyEntities.get(i));
+			current.entities.get(i).setInitiative(r);
+			initList.add(current.entities.get(i));
 		}
 		int r = r6();
 		character.setInitiative(r);
@@ -162,11 +161,11 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static boolean checkLiving(StandardRoom current) {
 		boolean fAlive = false;
 		boolean eAlive = false;
-		if (character.getHealth() <= 0) {
+		if (character.stats.getHealth() <= 0) {
 			fAlive = true;
 		}
-		for (int i = 0; i < current.enemyEntities.size(); i++) {
-			if (current.enemyEntities.get(i).getHealth() <= 0) {
+		for (int i = 0; i < current.entities.size(); i++) {
+			if (current.entities.get(i).stats.getHealth() <= 0) {
 				eAlive = true;
 			}
 		}
@@ -179,42 +178,6 @@ public class SimpleDungeonCrawler extends JPanel {
 		} else {
 			//System.out.println("CONTINUE THE BATTLE");
 			return true;
-		}
-	}
-
-	public static void characterAttack(
-			EnemyEntity enemy/* , ArrayList<String> console */) {
-		// console.add("Character Attack!");
-		System.out.println("Character Attack!");
-		// does it hit
-		if (enemy.getDex() - character.getDex() + 10 < r20()) {
-			// how much damage does it do
-			double damage = 0.0;
-			damage = (character.getStr() / enemy.getStr() * character.getWeapon().damage) / enemy.getAC();
-			// subtract damage
-			enemy.setHealth(-damage);
-			// console.add("He Hit For " + damage + "Damage!");
-			System.out.println("He Hit For " + damage + "Damage!");
-		} else {
-			// console.add("He Missed!");
-			System.out.println("He Missed!");
-		}
-	}
-
-	public static void enemyAttack(
-			EnemyEntity enemy/* , ArrayList<String> console */) {
-		// console.add("Enemy Attack!");
-		System.out.println("Enemy Attack!");
-		if (character.getDex() - enemy.getDex() + 10 < r20()) {
-			double damage = 0.0;
-			damage = (enemy.getStr() / character.getStr() * enemy.getWeapon().damage) / character.getAC();
-			// subtract damage
-			character.setHealth(-damage);
-			// console.add("He Hit For " + damage + "Damage!");
-			System.out.println("He Hit For " + damage + "Damage!");
-		} else {
-			// console.add("He Missed!");
-			System.out.println("He Missed!");
 		}
 	}
 
@@ -252,7 +215,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static boolean flee(List<Entity> list) {
 		boolean successful = false;
-		if (r20() > 10 + (list.size() - 1) - (character.getDex() / 10)) { //TODO speed rather than dex
+		if (r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) { //TODO speed rather than dex
 			Panels.frame.remove(Panels.turnPanel);
 			Panels.frame.add(Panels.coreGameplayPanel);
 			successful = true;

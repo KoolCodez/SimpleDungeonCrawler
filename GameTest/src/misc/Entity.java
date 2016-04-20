@@ -13,19 +13,49 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	private String entityType;
 	private Point2D location;
 	private List<GenericItem> inventory;
-	private double str;
-	private double dex;
-	private double con;
-	private double intl;
-	private double wis;
-	private double chr;
+	public EntityStats stats = new EntityStats();
 	private int initiative;
-	private double AC;
-	private double health;
-	private double maxHealth;
 	private GenericWeapon selectedWeapon;
 	private int selectedEntity;
 	private Point2D battleLoc;
+	private String name = "Entity";
+	
+	public Entity() {
+		inventory = new ArrayList<GenericItem>();
+		entityType = "Generic Entity";
+		location = new Point2D.Double(250, 250);
+	}
+
+	public Entity(double health, double strength, double dexterity, double constitution, double intelligence,
+			double wisdom, double charisma, int AC) {
+		inventory = new ArrayList<GenericItem>();
+		entityType = "Generic Entity";
+		location = new Point2D.Double(250, 250);
+		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
+	}
+	
+	public void attack(Entity enemy) {
+		System.out.println(name + " Attack!");
+		// does it hit
+		if (enemy.stats.getDex() - stats.getDex() + 10 < SimpleDungeonCrawler.r20()) {
+			// how much damage does it do
+			double damage = 0.0;
+			damage = (stats.getStr() / enemy.stats.getStr() * selectedWeapon.damage) / enemy.stats.getAC();
+			// subtract damage
+			enemy.stats.setHealth(-damage);
+			System.out.println("He Hit For " + damage + "Damage!");
+		} else {
+			System.out.println("He Missed!");
+		}
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public Point2D getBattleLoc() {
 		double battleRatioX = 696*SimpleDungeonCrawler.SCALE_FACTOR / (1000*SimpleDungeonCrawler.SCALE_FACTOR);
@@ -41,27 +71,6 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 
 	public void setSelectedEntity(int selectedEntity) {
 		this.selectedEntity = selectedEntity;
-	}
-
-	Random rand = new Random();
-	
-	public Entity() {
-		inventory = new ArrayList<GenericItem>();
-		entityType = "Generic Entity";
-		location = new Point2D.Double(250, 250);
-	}
-	
-	public void setStats(double health, double strength, double dexterity, double constitution, double intelligence,
-			double wisdom, double charisma, int AC) {
-		maxHealth = health;
-		this.health = maxHealth;
-		str = strength;
-		dex = dexterity;
-		con = constitution;
-		intl = intelligence;
-		wis = wisdom;
-		chr = charisma;
-		this.AC = AC;
 	}
 	
 	public void setType(String newType) {
@@ -88,84 +97,12 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 		inventory.add(item);
 	}
 	
-	public void setStr(double strength) {
-		this.str += strength;
-	}
-	
-	public double getStr() {
-		return str;
-	}
-	
-	public void setDex(double dexterity) {
-		this.dex += dexterity;
-	}
-	
-	public double getDex() {
-		return dex;
-	}
-	
-	public void setCon(double constitution) {
-		this.con += constitution;
-	}
-	
-	public double getCon() {
-		return con;
-	}
-	
-	public void setIntl(double intelligence) {
-		this.intl += intelligence;
-	}
-	
-	public double getIntl() {
-		return intl;
-	}
-	
-	public void setWis(double wisdom) {
-		this.wis += wisdom;
-	}
-	
-	public double getWis() {
-		return wis;
-	}
-	
-	public void setChr(double charisma) {
-		chr += charisma;
-	}
-	
-	public double getChr() {
-		return chr;
-	}
-	
 	public void setInitiative(int init) {
 		initiative = init;
 	}
 	
 	public int getInitiative() {
 		return initiative;
-	}
-	
-	public void setAC(double deltaAC) {
-		AC += deltaAC;
-	}
-	
-	public double getAC() {
-		return AC;
-	}
-	
-	public void setHealth(double deltaHealth) {
-		health += deltaHealth;
-	}
-	
-	public double getHealth() {
-		return health;
-	}
-	
-	public void setMaxHealth(double deltaMaxHealth) {
-		maxHealth += deltaMaxHealth;
-	}
-	
-	public double getMaxHealth() {
-		return maxHealth;
 	}
 	
 	public void setWeapon(GenericWeapon weapon) {
