@@ -4,7 +4,7 @@ import misc.SimpleDungeonCrawler;
 public class MoveUpRight extends Thread{
 	public void run() {
 		try {
-			while (SimpleDungeonCrawler.movingRight && SimpleDungeonCrawler.movingUp) {
+			while (MovementController.movingRight && MovementController.movingUp) {
 				double speed = SimpleDungeonCrawler.diagSpeed;
 				SimpleDungeonCrawler.movePlayer(speed, 0);
 				SimpleDungeonCrawler.movePlayer(0, -speed);

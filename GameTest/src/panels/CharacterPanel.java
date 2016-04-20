@@ -7,9 +7,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class CharScreen {
-	
+import misc.SimpleDungeonCrawler;
+
+public class CharacterPanel {
+	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
+	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
 	public static void createCharScreen() {
+		misc.FriendlyEntity character = SimpleDungeonCrawler.character;
 		JButton exitButton = new JButton("EXIT");
 		JButton setStr = new JButton("+1");
 		JButton strDown = new JButton("-1");
@@ -24,7 +29,7 @@ public class CharScreen {
 		JButton setChr = new JButton("+1");
 		JButton chrDown = new JButton("-1");
 		// attack panel
-		charPanel = new JPanel() {
+		Panels.charPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -36,20 +41,20 @@ public class CharScreen {
 				g.drawString("CHARISMA: " + character.getChr(), 200, 350);
 			}
 		};
-		charPanel.add(exitButton);
-		charPanel.add(setStr);
-		charPanel.add(strDown);
-		charPanel.add(setDex);
-		charPanel.add(dexDown);
-		charPanel.add(setCon);
-		charPanel.add(conDown);
-		charPanel.add(setWis);
-		charPanel.add(wisDown);
-		charPanel.add(intUp);
-		charPanel.add(intDown);
-		charPanel.add(setChr);
-		charPanel.add(chrDown);
-		charPanel.setLayout(null);
+		Panels.charPanel.add(exitButton);
+		Panels.charPanel.add(setStr);
+		Panels.charPanel.add(strDown);
+		Panels.charPanel.add(setDex);
+		Panels.charPanel.add(dexDown);
+		Panels.charPanel.add(setCon);
+		Panels.charPanel.add(conDown);
+		Panels.charPanel.add(setWis);
+		Panels.charPanel.add(wisDown);
+		Panels.charPanel.add(intUp);
+		Panels.charPanel.add(intDown);
+		Panels.charPanel.add(setChr);
+		Panels.charPanel.add(chrDown);
+		Panels.charPanel.setLayout(null);
 
 		// level buttons
 		setStr.addActionListener(new ActionListener() {
@@ -146,8 +151,8 @@ public class CharScreen {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getContentPane().add(menuPanel);
-				frame.getContentPane().remove(charPanel);
+				Panels.frame.getContentPane().add(Panels.menuPanel);
+				Panels.frame.getContentPane().remove(Panels.charPanel);
 			}
 		});
 		exitButton.setBounds(350, 100, 150, 50);

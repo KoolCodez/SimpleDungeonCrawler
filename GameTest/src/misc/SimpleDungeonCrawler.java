@@ -33,7 +33,7 @@ import movement.MoveRight;
 import movement.MoveUp;
 import movement.MoveUpLeft;
 import movement.MoveUpRight;
-import panels.PanelSubsystem;
+import panels.Panels;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -60,35 +60,27 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
 	public static Graphics g;
-	public static boolean movingLeft = false;
-	public static boolean movingRight = false;
-	public static boolean movingUp = false;
-	public static boolean movingDown = false;
 	public static int refreshRate = 25; // number of millis to wait
 	public static int fps = 50;
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 	public static TurnWait waitForTurn = new TurnWait();
 	public static boolean flee = false;
-	private static final int SCALED_100 = (int) (100*SCALE_FACTOR);
-	private static final int MENU_SIZE = (int) (1000*SCALE_FACTOR);
-	private static final int BUTTON_HEIGHT = (int) (100*SCALE_FACTOR);
-	private static final int BUTTON_WIDTH = (int) (300*SCALE_FACTOR);
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String current = System.getProperty("user.dir");
 		// System.out.println("Current working directory in Java : " + current);
-		PanelSubsystem.frame = new JFrame("Simple Dungeon Crawler");
-		PanelSubsystem.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		PanelSubsystem.frame.setSize((int) (1000 * SCALE_FACTOR + 16), (int) (1000 * SCALE_FACTOR + 38));
-		PanelSubsystem.frame.setVisible(true);
-		g = PanelSubsystem.frame.getGraphics();
+		Panels.frame = new JFrame("Simple Dungeon Crawler");
+		Panels.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Panels.frame.setSize((int) (1000 * SCALE_FACTOR + 16), (int) (1000 * SCALE_FACTOR + 38));
+		Panels.frame.setVisible(true);
+		g = Panels.frame.getGraphics();
 		g.setColor(Color.white);
 		character = new FriendlyEntity(5, 10, 10, 10, 10, 10, 10, 1);
 		Images.createImages();
 		character.addItem(new Stick());
-		PanelSubsystem panelInitializer = new PanelSubsystem();
-		InputMap inMap = PanelSubsystem.panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		ActionMap acMap = PanelSubsystem.panel.getActionMap();
+		Panels panelInitializer = new Panels();
+		InputMap inMap = Panels.coreGameplayPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap acMap = Panels.coreGameplayPanel.getActionMap();
 		Refresh r1 = new Refresh();
 		r1.start();
 		Point p = new Point(0, 10);
@@ -108,14 +100,14 @@ public class SimpleDungeonCrawler extends JPanel {
 
 			List<Entity> initList = setInitiative(currentRoom);
 			for (int i = 0; i < initList.size(); i++) {
-				PanelSubsystem.frame.validate();
-				PanelSubsystem.frame.repaint();
+				Panels.frame.validate();
+				Panels.frame.repaint();
 				if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity") && !flee) {
 					enemyAttack((EnemyEntity) initList.get(i)/* , console1 */);
 					// System.out.println();
 				} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity") && !flee) {
-					PanelSubsystem.frame.remove(PanelSubsystem.atkPanel);
-					PanelSubsystem.frame.add(PanelSubsystem.turnPanel);
+					Panels.frame.remove(Panels.atkPanel);
+					Panels.frame.add(Panels.turnPanel);
 					synchronized (waitForTurn) {
 						try {
 							waitForTurn.wait();
@@ -129,8 +121,8 @@ public class SimpleDungeonCrawler extends JPanel {
 							return;
 						}
 					}
-					PanelSubsystem.frame.remove(PanelSubsystem.turnPanel);
-					PanelSubsystem.frame.add(PanelSubsystem.atkPanel);
+					Panels.frame.remove(Panels.turnPanel);
+					Panels.frame.add(Panels.atkPanel);
 					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy)/* , console1 */);
 					// System.out.println();
 				} else {
@@ -143,12 +135,12 @@ public class SimpleDungeonCrawler extends JPanel {
 				}
 				waitForTurn.reset();
 				// checkHealth(currentRoom);
-				PanelSubsystem.frame.validate();
-				PanelSubsystem.frame.repaint();
+				Panels.frame.validate();
+				Panels.frame.repaint();
 			}
 			checkLiving(currentRoom);
-			PanelSubsystem.frame.validate();
-			PanelSubsystem.frame.repaint();
+			Panels.frame.validate();
+			Panels.frame.repaint();
 			System.out.println("New Turn");
 		}
 	}
@@ -232,7 +224,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void move() {
 		MouseClick mouse = new MouseClick();
-		PanelSubsystem.frame.getContentPane().addMouseListener(mouse);
+		Panels.frame.getContentPane().addMouseListener(mouse);
 		synchronized (mouse) {
 			try {
 				mouse.wait();
@@ -243,7 +235,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			Point point = mouse.getLocation();
 			double x = character.getBattleLoc().getX();
 			double y = character.getBattleLoc().getY();
-			if (Math.abs(x - point.x) * (1/SCALED_100) + Math.abs(y - point.y)  * (1/SCALED_100) < waitForTurn.getTurnPoints()) {
+			if (Math.abs(x - point.x) * (1/Panels.SCALED_100) + Math.abs(y - point.y)  * (1/Panels.SCALED_100) < waitForTurn.getTurnPoints()) {
 				//TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
 				//possibly make setBattleLocation change location in a backwards orientation?
 				//ALSO THIS IS GLITCHING, so...
@@ -261,8 +253,8 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static boolean flee(List<Entity> list) {
 		boolean successful = false;
 		if (r20() > 10 + (list.size() - 1) - (character.getDex() / 10)) { //TODO speed rather than dex
-			PanelSubsystem.frame.remove(PanelSubsystem.turnPanel);
-			PanelSubsystem.frame.add(PanelSubsystem.panel);
+			Panels.frame.remove(Panels.turnPanel);
+			Panels.frame.add(Panels.coreGameplayPanel);
 			successful = true;
 		}
 		return successful;

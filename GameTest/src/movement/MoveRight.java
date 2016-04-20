@@ -6,8 +6,8 @@ public class MoveRight extends Thread {
 	public void run() {
 		int count = 0;
 		try {
-			while (SimpleDungeonCrawler.movingRight) {
-				if (!SimpleDungeonCrawler.movingDown && !SimpleDungeonCrawler.movingUp) {
+			while (MovementController.movingRight) {
+				if (!MovementController.movingDown && !MovementController.movingUp) {
 					double speed = SimpleDungeonCrawler.playerSpeed;
 					SimpleDungeonCrawler.movePlayer(speed, 0);
 					count++;
