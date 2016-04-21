@@ -8,8 +8,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
+import combatSystem.Battle;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
+import movement.MovementController;
 
 public class CoreGameplayPanel {
 
@@ -17,13 +19,22 @@ public class CoreGameplayPanel {
 	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
 	private static int SCALED_100 = Panels.SCALED_100;
+	
+	private JPanel coreGameplayPanel;
 
-	public static void createCoreGameplayPanel() {
-		// Declarations
-		JButton menuButton = new JButton("PAUSE");
-		JButton atkButton = new JButton("ATTACK");
-		// panel
-		Panels.coreGameplayPanel = new JPanel() {
+	public CoreGameplayPanel() {
+		createCoreGameplayPanel();
+		MovementController movementController = new MovementController(coreGameplayPanel);
+		createMenuButton();
+		createAttackButton();
+	}
+	
+	public JPanel getPanel() {
+		return coreGameplayPanel;
+	}
+	
+	private void createCoreGameplayPanel() {
+		coreGameplayPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -36,42 +47,36 @@ public class CoreGameplayPanel {
 				g.drawImage(Images.topArrow, (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), null);
 			}
 		};
-		Panels.coreGameplayPanel.setLayout(null);
-		Panels.coreGameplayPanel.add(atkButton);
-		Panels.coreGameplayPanel.add(menuButton);
-
-		// menu button
+		coreGameplayPanel.setLayout(null);
+	}
+	
+	private void createMenuButton() {
+		JButton menuButton = new JButton("PAUSE");
 		menuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Panels.frame.getContentPane().remove(coreGameplayPanel);
 				Panels.frame.getContentPane().add(Panels.pauseMenuPanel);
-				Panels.frame.getContentPane().remove(Panels.attackPanel);
-				Panels.frame.getContentPane().remove(Panels.coreGameplayPanel);
 			}
 		});
 		menuButton.setBounds((int) (700 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuButton.setFont(SimpleDungeonCrawler.font);
-
-		// attack button
+		coreGameplayPanel.add(menuButton);
+	}
+	
+	private void createAttackButton() {
+		JButton atkButton = new JButton("ATTACK");
 		atkButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().remove(Panels.coreGameplayPanel);
-				Panels.frame.getContentPane().add(Panels.attackPanel);
-				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-					@Override
-					protected Integer doInBackground() throws Exception {
-						SimpleDungeonCrawler.battleSequence(/* console1 */);
-						return 0;
-					}
-				};
-				SimpleDungeonCrawler.flee = false;
-				worker.execute();
+				Panels.frame.getContentPane().remove(coreGameplayPanel);
+				AttackPanel attackPanel = new AttackPanel();
+				Panels.frame.getContentPane().add(attackPanel.getPanel());
 			}
 		});
 		atkButton.setBounds((int) (700 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		atkButton.setFont(SimpleDungeonCrawler.font);
-		// attackButton.setIcon(defaultIcon);
+		coreGameplayPanel.add(atkButton);
 	}
 
 }

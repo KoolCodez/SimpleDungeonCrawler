@@ -41,10 +41,9 @@ import movement.MovementController;
 public class Panels {
 
 	public static JFrame frame;
-	public static JPanel coreGameplayPanel;
+	//public static JPanel coreGameplayPanel;
 	public static JPanel pauseMenuPanel;
-	public static JPanel attackPanel;
-	public static JPanel turnPanel;
+	//public static JPanel attackPanel;
 	public static JPanel inventoryPanel;
 	public static JPanel characterPanel;
 	public static JPanel mainMenu;
@@ -57,14 +56,8 @@ public class Panels {
 
 	public Panels() {
 		// initializing frame stuff
-		CoreGameplayPanel coreGameplayPanelInitializer = new CoreGameplayPanel();
-		coreGameplayPanelInitializer.createCoreGameplayPanel();
-		MovementController movementInitializer = new MovementController();
-		movementInitializer.createKeyBindings();
 		MainMenu mainMenuInitializer = new MainMenu();
 		mainMenuInitializer.createMainMenu();
-		AttackPanel attackPanelInitializer = new AttackPanel();
-		attackPanelInitializer.createAtkPanel();
 		PauseMenuPanel pauseMenuInitializer = new PauseMenuPanel();
 		pauseMenuInitializer.createPauseMenu();
 		InventoryPanel inventoryInitializer = new InventoryPanel();
