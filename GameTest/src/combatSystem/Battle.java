@@ -15,11 +15,13 @@ import misc.Images;
 import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
+import misc.Utilities;
 import panels.AttackPanel;
 import panels.CoreGameplayPanel;
 import panels.Panels;
 
 public class Battle {
+	private Utilities utilities = new Utilities();
 	private Entity character;
 	public TurnWait waitForTurn = new TurnWait();
 	public boolean flee = false;
@@ -84,11 +86,11 @@ public class Battle {
 	public List<Entity> setInitiative(StandardRoom current) {
 		ArrayList<Entity> initList = new ArrayList<Entity>();
 		for (int i = 0; i < current.entities.size(); i++) {
-			int r = r6();
+			int r = utilities.r6();
 			current.entities.get(i).setInitiative(r);
 			initList.add(current.entities.get(i));
 		}
-		int r = r6();
+		int r = utilities.r6();
 		character.setInitiative(r);
 		initList.add(character);
 		Collections.sort(initList);
@@ -148,20 +150,12 @@ public class Battle {
 
 	public boolean flee(List<Entity> list) {
 		boolean successful = false;
-		if (r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) { //TODO speed rather than dex
+		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) { //TODO speed rather than dex
 			Panels.frame.removeAll();
 			Panels.frame.add(new CoreGameplayPanel().getPanel());
 			successful = true;
 		}
 		return successful;
-	}
-
-	public static int r20() {
-		return new Random().nextInt(20) + 1;
-	}
-
-	public static int r6() {
-		return new Random().nextInt(6) + 1;
 	}
 
 }

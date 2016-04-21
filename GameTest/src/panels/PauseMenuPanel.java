@@ -46,9 +46,8 @@ public class PauseMenuPanel {
 		resume.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(Panels.coreGameplayPanel);
-				Panels.frame.getContentPane().remove(Panels.attackPanel);
-				Panels.frame.getContentPane().remove(Panels.pauseMenuPanel);
+				Panels.frame.getContentPane().add(new CoreGameplayPanel().getPanel());
+				Panels.frame.getContentPane().removeAll();
 			}
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);

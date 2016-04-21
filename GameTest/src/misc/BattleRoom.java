@@ -12,7 +12,7 @@ public class BattleRoom extends StandardRoom {
 	
 	public BattleRoom(int enemies) {
 		for (int i = 0; i <= enemies; i++) {
-			EnemyEntity temp = new EnemyEntity(5, 10, 10, 10, 10, 10, 10, 1);
+			Entity temp = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
 			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
 			weapon.damage = 1.0;
 			weapon.ranged = false;
@@ -20,7 +20,7 @@ public class BattleRoom extends StandardRoom {
 			temp.setWeapon(weapon);
 			Random rand = new Random();
 			temp.setLocation(rand.nextInt(500) - 250, rand.nextInt(500) - 250);
-			enemyEntities.add(temp);
+			entities.add(temp);
 			
 		}
 	}

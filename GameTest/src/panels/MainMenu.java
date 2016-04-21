@@ -42,7 +42,7 @@ public class MainMenu {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(Panels.coreGameplayPanel);
+				Panels.frame.getContentPane().add(new CoreGameplayPanel().getPanel());
 				Panels.frame.getContentPane().remove(Panels.mainMenu);
 			}
 		});

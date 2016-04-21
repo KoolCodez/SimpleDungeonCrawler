@@ -32,6 +32,10 @@ public class AttackPanel {
 		createBattle();
 	}
 	
+	public AttackPanel(Battle battle) {
+		
+	}
+	
 	public JPanel getPanel() {
 		return attackPanel;
 	}
@@ -42,10 +46,7 @@ public class AttackPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Panels.frame.remove(attackPanel);
-				Panels.frame.add(Panels.bagPanel);
-				JLabel weaponLabel = new JLabel(SimpleDungeonCrawler.character.getWeapon().getImage());
-				weaponLabel.setBounds(0, 0, SCALED_100, SCALED_100);
-				Panels.bagPanel.add(weaponLabel);
+				Panels.frame.add(new BagPanel(battle).getPanel());
 			}
 		});
 		bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (552 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

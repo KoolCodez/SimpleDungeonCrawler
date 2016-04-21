@@ -19,6 +19,7 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	private int selectedEntity;
 	private Point2D battleLoc;
 	private String name = "Entity";
+	private Utilities utilities = new Utilities();
 	
 	public Entity() {
 		inventory = new ArrayList<GenericItem>();
@@ -37,7 +38,7 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	public void attack(Entity enemy) {
 		System.out.println(name + " Attack!");
 		// does it hit
-		if (enemy.stats.getDex() - stats.getDex() + 10 < SimpleDungeonCrawler.r20()) {
+		if (enemy.stats.getDex() - stats.getDex() + 10 < utilities.r20()) {
 			// how much damage does it do
 			double damage = 0.0;
 			damage = (stats.getStr() / enemy.stats.getStr() * selectedWeapon.damage) / enemy.stats.getAC();

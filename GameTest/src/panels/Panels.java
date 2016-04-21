@@ -47,7 +47,7 @@ public class Panels {
 	public static JPanel inventoryPanel;
 	public static JPanel characterPanel;
 	public static JPanel mainMenu;
-	public static JPanel bagPanel;
+	//public static JPanel bagPanel;
 	static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
 	public static final int SCALED_100 = (int) (100 * SCALE_FACTOR);
 	public static final int MENU_SIZE = (int) (1000 * SCALE_FACTOR);

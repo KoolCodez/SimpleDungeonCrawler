@@ -1,4 +1,4 @@
-package misc;
+package combatSystem;
 
 public class TurnWait {
 	private int turnPoints;

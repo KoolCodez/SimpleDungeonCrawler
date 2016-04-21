@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import misc.Entity;
 import misc.SimpleDungeonCrawler;
 
 public class CharacterPanel {
@@ -14,7 +15,7 @@ public class CharacterPanel {
 	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
 	public static void createCharScreen() {
-		misc.FriendlyEntity character = SimpleDungeonCrawler.character;
+		Entity character = SimpleDungeonCrawler.character;
 		JButton exitButton = new JButton("EXIT");
 		JButton setStr = new JButton("+1");
 		JButton strDown = new JButton("-1");
@@ -33,12 +34,12 @@ public class CharacterPanel {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawString("STRENGTH: " + character.getStr(), 200, 100);
-				g.drawString("DEXTERITY: " + character.getDex(), 200, 150);
-				g.drawString("CONSTITUTION: " + character.getCon(), 200, 200);
-				g.drawString("WISDOM: " + character.getWis(), 200, 250);
-				g.drawString("INTELLIGENCE: " + character.getIntl(), 200, 300);
-				g.drawString("CHARISMA: " + character.getChr(), 200, 350);
+				g.drawString("STRENGTH: " + character.stats.getStr(), 200, 100);
+				g.drawString("DEXTERITY: " + character.stats.getDex(), 200, 150);
+				g.drawString("CONSTITUTION: " + character.stats.getCon(), 200, 200);
+				g.drawString("WISDOM: " + character.stats.getWis(), 200, 250);
+				g.drawString("INTELLIGENCE: " + character.stats.getIntl(), 200, 300);
+				g.drawString("CHARISMA: " + character.stats.getChr(), 200, 350);
 			}
 		};
 		Panels.characterPanel.add(exitButton);
@@ -60,14 +61,14 @@ public class CharacterPanel {
 		setStr.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setStr(1);
+				character.stats.setStr(1);
 			}
 		});
 		setStr.setBounds(200, 100, 50, 25);
 		strDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setStr(-1);
+				character.stats.setStr(-1);
 			}
 		});
 		strDown.setBounds(250, 100, 50, 25);
@@ -75,14 +76,14 @@ public class CharacterPanel {
 		setDex.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setDex(1);
+				character.stats.setDex(1);
 			}
 		});
 		setDex.setBounds(200, 150, 50, 25);
 		dexDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setDex(-1);
+				character.stats.setDex(-1);
 			}
 		});
 		dexDown.setBounds(250, 150, 50, 25);
@@ -90,14 +91,14 @@ public class CharacterPanel {
 		setCon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setCon(1);
+				character.stats.setCon(1);
 			}
 		});
 		setCon.setBounds(200, 200, 50, 25);
 		conDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setCon(-1);
+				character.stats.setCon(-1);
 			}
 		});
 		conDown.setBounds(250, 200, 50, 25);
@@ -105,14 +106,14 @@ public class CharacterPanel {
 		setWis.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setWis(1);
+				character.stats.setWis(1);
 			}
 		});
 		setWis.setBounds(200, 250, 50, 25);
 		wisDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setWis(-1);
+				character.stats.setWis(-1);
 			}
 		});
 		wisDown.setBounds(250, 250, 50, 25);
@@ -120,14 +121,14 @@ public class CharacterPanel {
 		intUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setIntl(1);
+				character.stats.setIntl(1);
 			}
 		});
 		intUp.setBounds(200, 300, 50, 25);
 		intDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setIntl(-1);
+				character.stats.setIntl(-1);
 			}
 		});
 		intDown.setBounds(250, 300, 50, 25);
@@ -135,14 +136,14 @@ public class CharacterPanel {
 		setChr.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setChr(1);
+				character.stats.setChr(1);
 			}
 		});
 		setChr.setBounds(200, 350, 50, 25);
 		intDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				character.setChr(-1);
+				character.stats.setChr(-1);
 			}
 		});
 		chrDown.setBounds(250, 350, 50, 25);
