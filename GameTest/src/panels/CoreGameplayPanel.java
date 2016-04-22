@@ -69,9 +69,9 @@ public class CoreGameplayPanel {
 		atkButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().remove(coreGameplayPanel);
+				Panels.frame.remove(coreGameplayPanel);
 				AttackPanel attackPanel = new AttackPanel();
-				Panels.frame.getContentPane().add(attackPanel.getPanel());
+				Panels.frame.add(attackPanel.getPanel());
 			}
 		});
 		atkButton.setBounds((int) (700 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

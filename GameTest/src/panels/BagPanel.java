@@ -64,7 +64,7 @@ public class BagPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Panels.frame.remove(bagPanel);
-				Panels.frame.add(new AttackPanel(battle).getPanel());
+				Panels.frame.add(new AttackPanel().getPanel()); //TODO
 			}
 		});
 		returnButton.setBounds((int) (700*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

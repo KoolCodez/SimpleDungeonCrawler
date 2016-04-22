@@ -32,92 +32,8 @@ public class AttackPanel {
 		createBattle();
 	}
 	
-	public AttackPanel(Battle battle) {
-		
-	}
-	
 	public JPanel getPanel() {
 		return attackPanel;
-	}
-	
-	private void createBagButton() {
-		JButton bagButton = new JButton();
-		bagButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Panels.frame.remove(attackPanel);
-				Panels.frame.add(new BagPanel(battle).getPanel());
-			}
-		});
-		bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (552 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		bagButton.setIcon(new ImageIcon(Images.bagButton));
-		attackPanel.add(bagButton);
-	}
-	
-	private void createFightButton() {
-		JButton fightButton = new JButton();
-		fightButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (battle.waitForTurn.getTurnPoints() >= 3) {
-					battle.waitForTurn.setTurnPoints(-3);
-					SimpleDungeonCrawler.character.attack(
-							SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
-									.get(SimpleDungeonCrawler.character.getSelectedEntity()));
-				} else {
-					System.out.println("Not enough turn points");
-				}
-			}
-		});
-		fightButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		fightButton.setIcon(new ImageIcon(Images.fightButton));
-		attackPanel.add(fightButton);
-	}
-	
-	private void createMoveButton() {
-		JButton moveButton = new JButton();
-		moveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-					@Override
-					protected Integer doInBackground() throws Exception {
-						battle.move();
-						return 0;
-					}
-				};
-				worker.execute();
-			}
-		});
-		moveButton.setBounds((int) (698 * SCALE_FACTOR), (int) (348 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		moveButton.setIcon(new ImageIcon(Images.moveButton));
-		attackPanel.add(moveButton);
-	}
-
-	private void createFleeButton() {
-		JButton fleeButton = new JButton();
-		fleeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				battle.flee = true;
-				battle.waitForTurn.endTurn();
-			}
-		});
-		fleeButton.setBounds((int) (698 * SCALE_FACTOR), (int) (752 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		fleeButton.setIcon(new ImageIcon(Images.fleeButton));
-		attackPanel.add(fleeButton);
-	}
-
-	private void createEndTurnButton() {
-		JButton endTurnButton = new JButton("END TURN");
-		endTurnButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				battle.waitForTurn.endTurn();
-			}
-		});
-		endTurnButton.setBounds((int) (698 * SCALE_FACTOR), (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		attackPanel.add(endTurnButton);
 	}
 
 	private void drawBattlePanel(Graphics g) {
@@ -155,22 +71,13 @@ public class AttackPanel {
 		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 			@Override
 			protected Integer doInBackground() throws Exception {
+				System.out.println("new battle");
 				battle.battleSequence();
 				return 0;
 			}
 		};
 		battle.flee = false;
 		worker.execute();
-	}
-
-	public void addButtonsToAttackPanel() {
-		createFightButton();
-		createEndTurnButton();
-		createMoveButton();
-		createBagButton();
-		createFleeButton();
-		attackPanel.validate();
-		attackPanel.repaint();
 	}
 
 	public void removeButtonsFromAttackPanel() {

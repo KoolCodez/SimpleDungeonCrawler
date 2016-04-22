@@ -17,6 +17,7 @@ import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 import misc.Utilities;
 import panels.AttackPanel;
+import panels.BattleTurnPanel;
 import panels.CoreGameplayPanel;
 import panels.Panels;
 
@@ -30,7 +31,6 @@ public class Battle {
 	}
 	
 	public void battleSequence() {
-		AttackPanel attackPanel = new AttackPanel();
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		while (checkLiving(currentRoom) && !flee) {
 			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
@@ -46,10 +46,15 @@ public class Battle {
 					initList.get(i).attack(character);
 					// System.out.println();
 				} else if (initList.get(i).getType().equals("Friendly") && !flee) {
-					attackPanel.addButtonsToAttackPanel();
-					System.out.println("Created Buttons");
+					BattleTurnPanel battleTurnPanel = new BattleTurnPanel(this);
+					System.out.println("create panel");
+					Panels.frame.removeAll();
+					Panels.frame.add(battleTurnPanel.getPanel());
+					Panels.frame.revalidate();
+					Panels.frame.repaint();
 					synchronized (waitForTurn) {
 						try {
+							System.out.println("wait");
 							waitForTurn.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
@@ -61,7 +66,7 @@ public class Battle {
 							return;
 						}
 					}
-					attackPanel.removeButtonsFromAttackPanel();
+					Panels.frame.remove(battleTurnPanel.getPanel());
 					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
 					// System.out.println();
 				} else {

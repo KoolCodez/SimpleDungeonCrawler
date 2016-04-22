@@ -36,7 +36,7 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	}
 	
 	public void attack(Entity enemy) {
-		System.out.println(name + " Attack!");
+		System.out.println(name + entityType + " Attack!");
 		// does it hit
 		if (enemy.stats.getDex() - stats.getDex() + 10 < utilities.r20()) {
 			// how much damage does it do
