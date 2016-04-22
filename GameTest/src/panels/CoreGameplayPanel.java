@@ -56,7 +56,7 @@ public class CoreGameplayPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Panels.frame.getContentPane().remove(coreGameplayPanel);
-				Panels.frame.getContentPane().add(Panels.pauseMenuPanel);
+				Panels.frame.getContentPane().add(new PauseMenuPanel().getPanel());
 			}
 		});
 		menuButton.setBounds((int) (700 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

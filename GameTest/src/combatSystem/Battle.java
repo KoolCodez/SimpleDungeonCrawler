@@ -42,11 +42,12 @@ public class Battle {
 			for (int i = 0; i < initList.size(); i++) {
 				Panels.frame.validate();
 				Panels.frame.repaint();
-				if (initList.get(i).getClass().toString().equals("class misc.EnemyEntity") && !flee) {
+				if (initList.get(i).getType().equals("Enemy") && !flee) {
 					initList.get(i).attack(character);
 					// System.out.println();
-				} else if (initList.get(i).getClass().toString().equals("class misc.FriendlyEntity") && !flee) {
+				} else if (initList.get(i).getType().equals("Friendly") && !flee) {
 					attackPanel.addButtonsToAttackPanel();
+					System.out.println("Created Buttons");
 					synchronized (waitForTurn) {
 						try {
 							waitForTurn.wait();

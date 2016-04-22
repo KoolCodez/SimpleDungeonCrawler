@@ -169,6 +169,8 @@ public class AttackPanel {
 		createMoveButton();
 		createBagButton();
 		createFleeButton();
+		attackPanel.validate();
+		attackPanel.repaint();
 	}
 
 	public void removeButtonsFromAttackPanel() {

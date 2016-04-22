@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import panels.Panels;
+import panels.PauseMenuPanel;
 
 public class MovementController {
 	
@@ -27,7 +28,7 @@ public class MovementController {
 			public void actionPerformed(ActionEvent e) {
 				Panels.frame.remove(coreGameplayPanel);
 				//createMenu(); //TODO
-				Panels.frame.add(Panels.pauseMenuPanel);
+				Panels.frame.add(new PauseMenuPanel().getPanel());
 			}
 		};
 

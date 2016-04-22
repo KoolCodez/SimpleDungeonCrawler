@@ -19,68 +19,49 @@ public class PauseMenuPanel {
 	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
 	private static int SCALED_100 = Panels.SCALED_100;
 	private static Font font = SimpleDungeonCrawler.font;
-	public static void createPauseMenu() {
-		JButton resume = new JButton();
-		JButton charButton = new JButton("CHARACTER");
-		JButton invButton = new JButton("INVENTORY");
-		JButton saveButton = new JButton("SAVE");
-		JButton exitButton = new JButton("QUIT");
-		Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (250*SCALE_FACTOR));
-
-		// menu panel
-		Panels.pauseMenuPanel = new JPanel() {
+	Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (250*SCALE_FACTOR));
+	private JPanel pauseMenuPanel;
+	
+	public PauseMenuPanel() {
+		createPauseMenuPanel();
+		createResumeButton();
+		createInventoryButton();
+		createCharacterButton();
+		createSaveButton();
+		createExitButton();
+	}
+	
+	public JPanel getPanel() {
+		return pauseMenuPanel;
+	}
+	
+	private void createPauseMenuPanel() {
+		pauseMenuPanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(Images.pauseMenu, 0, 0, null);
 			}
 		};
-		Panels.pauseMenuPanel.setLayout(null);
-		Panels.pauseMenuPanel.add(resume);
-		Panels.pauseMenuPanel.add(charButton);
-		Panels.pauseMenuPanel.add(invButton);
-		Panels.pauseMenuPanel.add(saveButton);
-		Panels.pauseMenuPanel.add(exitButton);
-
-		// start button
-		resume.addActionListener(new ActionListener() {
+		pauseMenuPanel.setLayout(null);
+	}
+	
+	private void createExitButton() {
+		JButton exitButton = new JButton("QUIT");
+		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(new CoreGameplayPanel().getPanel());
-				Panels.frame.getContentPane().removeAll();
+				Panels.frame.getContentPane().remove(pauseMenuPanel);
+				Panels.frame.getContentPane().add(Panels.mainMenu);
 			}
 		});
-		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
-		resume.setIcon(new ImageIcon(Images.resumeButton));
-		menuCoord.y += BUTTON_HEIGHT;
-		resume.setFont(font);
-
-		// char button
-		charButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(Panels.characterPanel);
-				Panels.frame.getContentPane().remove(Panels.pauseMenuPanel);
-			}
-		});
-		charButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
-		menuCoord.y += BUTTON_HEIGHT;
-		charButton.setFont(font);
-
-		// inventory button
-		invButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().remove(Panels.pauseMenuPanel);
-				Panels.frame.getContentPane().add(Panels.inventoryPanel);
-				InventoryPanel.refreshInv();
-			}
-		});
-		invButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
-		menuCoord.y += BUTTON_HEIGHT;
-		invButton.setFont(font);
-
-		// save button
+		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		exitButton.setFont(font);
+		pauseMenuPanel.add(exitButton);
+	}
+	
+	private void createSaveButton() {
+		JButton saveButton = new JButton("SAVE");
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -89,15 +70,53 @@ public class PauseMenuPanel {
 		saveButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuCoord.y += BUTTON_HEIGHT;
 		saveButton.setFont(font);
-
-		exitButton.addActionListener(new ActionListener() {
+		pauseMenuPanel.add(saveButton);
+	}
+	
+	private void createInventoryButton() {
+		JButton invButton = new JButton("INVENTORY");
+		invButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().remove(Panels.pauseMenuPanel);
-				Panels.frame.getContentPane().add(Panels.mainMenu);
+				Panels.frame.getContentPane().remove(pauseMenuPanel);
+				Panels.frame.getContentPane().add(Panels.inventoryPanel);
+				InventoryPanel.refreshInv();
 			}
 		});
-		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
-		exitButton.setFont(font);
+		invButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
+		invButton.setFont(font);
+		pauseMenuPanel.add(invButton);
+	}
+	
+	private void createCharacterButton() {
+		JButton charButton = new JButton("CHARACTER");
+		charButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Panels.frame.getContentPane().add(Panels.characterPanel);
+				Panels.frame.getContentPane().remove(pauseMenuPanel);
+			}
+		});
+		charButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
+		charButton.setFont(font);
+		pauseMenuPanel.add(charButton);
+	}
+	
+	private void createResumeButton() {
+		JButton resume = new JButton();
+		resume.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Panels.frame.getContentPane().removeAll();
+				Panels.frame.getContentPane().add(new CoreGameplayPanel().getPanel());
+			}
+		});
+		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		resume.setIcon(new ImageIcon(Images.resumeButton));
+		menuCoord.y += BUTTON_HEIGHT;
+		resume.setFont(font);
+		pauseMenuPanel.add(resume);
 	}
 }

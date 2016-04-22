@@ -61,7 +61,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
 	public static Graphics g;
 	public static int refreshRate = 25; // number of millis to wait
-	public static int fps = 50;
+	public static int fps = 30;
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 
 	public static void main(String[] args) throws InterruptedException, IOException {
@@ -74,6 +74,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		g = Panels.frame.getGraphics();
 		g.setColor(Color.white);
 		character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
+		character.setType("Friendly");
 		Images.createImages();
 		character.addItem(new Stick());
 		Panels panelInitializer = new Panels();

@@ -42,7 +42,7 @@ public class Panels {
 
 	public static JFrame frame;
 	//public static JPanel coreGameplayPanel;
-	public static JPanel pauseMenuPanel;
+	//public static JPanel pauseMenuPanel;
 	//public static JPanel attackPanel;
 	public static JPanel inventoryPanel;
 	public static JPanel characterPanel;
@@ -58,8 +58,6 @@ public class Panels {
 		// initializing frame stuff
 		MainMenu mainMenuInitializer = new MainMenu();
 		mainMenuInitializer.createMainMenu();
-		PauseMenuPanel pauseMenuInitializer = new PauseMenuPanel();
-		pauseMenuInitializer.createPauseMenu();
 		InventoryPanel inventoryInitializer = new InventoryPanel();
 		inventoryInitializer.createInventory();
 		CharacterPanel characterInitializer = new CharacterPanel();

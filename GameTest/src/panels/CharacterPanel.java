@@ -152,7 +152,7 @@ public class CharacterPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(Panels.pauseMenuPanel);
+				Panels.frame.getContentPane().add(new PauseMenuPanel().getPanel());
 				Panels.frame.getContentPane().remove(Panels.characterPanel);
 			}
 		});

@@ -42,7 +42,7 @@ public class InventoryPanel {
 				Panels.inventoryPanel.removeAll();
 				Panels.inventoryPanel.add(addStick);
 				Panels.inventoryPanel.add(exitButton);
-				Panels.frame.getContentPane().add(Panels.pauseMenuPanel);
+				Panels.frame.getContentPane().add(new PauseMenuPanel().getPanel());
 				Panels.frame.getContentPane().remove(Panels.inventoryPanel);
 			}
 		});

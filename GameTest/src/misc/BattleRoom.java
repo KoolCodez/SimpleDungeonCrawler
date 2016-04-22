@@ -20,6 +20,7 @@ public class BattleRoom extends StandardRoom {
 			temp.setWeapon(weapon);
 			Random rand = new Random();
 			temp.setLocation(rand.nextInt(500) - 250, rand.nextInt(500) - 250);
+			temp.setType("Enemy");
 			entities.add(temp);
 			
 		}
