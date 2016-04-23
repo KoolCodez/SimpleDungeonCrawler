@@ -22,9 +22,10 @@ import misc.Utilities;
 import panels.AttackPanel;
 import panels.BattleTurnPanel;
 import panels.CoreGameplayPanel;
-import panels.Panels;
+import misc.*;
 
 public class Battle {
+	private double SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 	private Utilities utilities = new Utilities();
 	private Entity character;
 	public TurnWait waitForTurn = new TurnWait();
@@ -44,8 +45,8 @@ public class Battle {
 			character.setWeapon(weapon);
 			List<Entity> initList = setInitiative(currentRoom);
 			for (int i = 0; i < initList.size(); i++) {
-				Panels.frame.validate();
-				Panels.frame.repaint();
+				SimpleDungeonCrawler.frame.validate();
+				SimpleDungeonCrawler.frame.repaint();
 				if (initList.get(i).getType().equals("Enemy") && !flee) {
 					initList.get(i).attack(character);
 					// System.out.println();
@@ -56,9 +57,9 @@ public class Battle {
 					SwingUtilities.invokeLater(new Runnable() {
 					    public void run() {
 					    	
-							Panels.frame.getContentPane().getComponent(0).setVisible(false);;
+					    	SimpleDungeonCrawler.frame.getContentPane().getComponent(0).setVisible(false);;
 							battleTurnPanel.addButtonsToTurnPanel();
-							Panels.frame.add(battleTurnPanel.getPanel());
+							SimpleDungeonCrawler.frame.add(battleTurnPanel);
 					    }
 					  });
 					synchronized (waitForTurn) {
@@ -77,8 +78,8 @@ public class Battle {
 					}
 					SwingUtilities.invokeLater(new Runnable() {
 					    public void run() {
-							Panels.frame.getContentPane().getComponent(0).setVisible(true);
-							Panels.frame.remove(battleTurnPanel.getPanel());
+					    	SimpleDungeonCrawler.frame.getContentPane().getComponent(0).setVisible(true);
+					    	SimpleDungeonCrawler.frame.remove(battleTurnPanel);
 					    }
 					  });
 					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
@@ -93,12 +94,12 @@ public class Battle {
 				}
 				
 				// checkHealth(currentRoom);
-				Panels.frame.validate();
-				Panels.frame.repaint();
+				SimpleDungeonCrawler.frame.validate();
+				SimpleDungeonCrawler.frame.repaint();
 			}
 			checkLiving(currentRoom);
-			Panels.frame.validate();
-			Panels.frame.repaint();
+			SimpleDungeonCrawler.frame.validate();
+			SimpleDungeonCrawler.frame.repaint();
 			System.out.println("New Turn");
 		}
 	}
@@ -142,7 +143,7 @@ public class Battle {
 
 	public void move() {
 		MouseClick mouse = new MouseClick();
-		Panels.frame.getContentPane().addMouseListener(mouse);
+		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
 		synchronized (mouse) {
 			try {
 				mouse.wait();
@@ -153,7 +154,7 @@ public class Battle {
 			Point point = mouse.getLocation();
 			double x = character.getBattleLoc().getX();
 			double y = character.getBattleLoc().getY();
-			if (Math.abs(x - point.x) * (1/Panels.SCALED_100) + Math.abs(y - point.y)  * (1/Panels.SCALED_100) < waitForTurn.getTurnPoints()) {
+			if (Math.abs(x - point.x) * (1/SCALED_100) + Math.abs(y - point.y)  * (1/SCALED_100) < waitForTurn.getTurnPoints()) {
 				//TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
 				//possibly make setBattleLocation change location in a backwards orientation?
 				//ALSO THIS IS GLITCHING, so...
@@ -171,7 +172,7 @@ public class Battle {
 	public boolean flee(List<Entity> list) {
 		boolean successful = false;
 		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) { //TODO speed rather than dex
-			Panels.frame.add(new CoreGameplayPanel().getPanel());
+			SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
 			successful = true;
 		}
 		return successful;

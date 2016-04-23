@@ -10,12 +10,24 @@ import javax.swing.JPanel;
 import misc.Entity;
 import misc.SimpleDungeonCrawler;
 
-public class CharacterPanel {
+public class CharacterPanel extends JPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
-	public static void createCharScreen() {
-		Entity character = SimpleDungeonCrawler.character;
+	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+	Entity character = SimpleDungeonCrawler.character;
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		g.drawString("STRENGTH: " + character.stats.getStr(), 200, 100);
+		g.drawString("DEXTERITY: " + character.stats.getDex(), 200, 150);
+		g.drawString("CONSTITUTION: " + character.stats.getCon(), 200, 200);
+		g.drawString("WISDOM: " + character.stats.getWis(), 200, 250);
+		g.drawString("INTELLIGENCE: " + character.stats.getIntl(), 200, 300);
+		g.drawString("CHARISMA: " + character.stats.getChr(), 200, 350);
+	}
+	
+	public CharacterPanel() {
+		
 		JButton exitButton = new JButton("EXIT");
 		JButton setStr = new JButton("+1");
 		JButton strDown = new JButton("-1");
@@ -30,32 +42,20 @@ public class CharacterPanel {
 		JButton setChr = new JButton("+1");
 		JButton chrDown = new JButton("-1");
 		// attack panel
-		Panels.characterPanel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawString("STRENGTH: " + character.stats.getStr(), 200, 100);
-				g.drawString("DEXTERITY: " + character.stats.getDex(), 200, 150);
-				g.drawString("CONSTITUTION: " + character.stats.getCon(), 200, 200);
-				g.drawString("WISDOM: " + character.stats.getWis(), 200, 250);
-				g.drawString("INTELLIGENCE: " + character.stats.getIntl(), 200, 300);
-				g.drawString("CHARISMA: " + character.stats.getChr(), 200, 350);
-			}
-		};
-		Panels.characterPanel.add(exitButton);
-		Panels.characterPanel.add(setStr);
-		Panels.characterPanel.add(strDown);
-		Panels.characterPanel.add(setDex);
-		Panels.characterPanel.add(dexDown);
-		Panels.characterPanel.add(setCon);
-		Panels.characterPanel.add(conDown);
-		Panels.characterPanel.add(setWis);
-		Panels.characterPanel.add(wisDown);
-		Panels.characterPanel.add(intUp);
-		Panels.characterPanel.add(intDown);
-		Panels.characterPanel.add(setChr);
-		Panels.characterPanel.add(chrDown);
-		Panels.characterPanel.setLayout(null);
+		add(exitButton);
+		add(setStr);
+		add(strDown);
+		add(setDex);
+		add(dexDown);
+		add(setCon);
+		add(conDown);
+		add(setWis);
+		add(wisDown);
+		add(intUp);
+		add(intDown);
+		add(setChr);
+		add(chrDown);
+		setLayout(null);
 
 		// level buttons
 		setStr.addActionListener(new ActionListener() {
@@ -152,8 +152,8 @@ public class CharacterPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(new PauseMenuPanel().getPanel());
-				Panels.frame.getContentPane().remove(Panels.characterPanel);
+				SimpleDungeonCrawler.frame.getContentPane().removeAll();
+				SimpleDungeonCrawler.frame.getContentPane().add(new PauseMenuPanel());
 			}
 		});
 		exitButton.setBounds(350, 100, 150, 50);

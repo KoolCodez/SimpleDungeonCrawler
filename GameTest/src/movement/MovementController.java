@@ -11,7 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import panels.Panels;
+import misc.SimpleDungeonCrawler;
 import panels.PauseMenuPanel;
 
 public class MovementController {
@@ -26,9 +26,9 @@ public class MovementController {
 		ActionMap acMap = coreGameplayPanel.getActionMap();
 		Action pause = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.remove(coreGameplayPanel);
+				SimpleDungeonCrawler.frame.remove(coreGameplayPanel);
 				//createMenu(); //TODO
-				Panels.frame.add(new PauseMenuPanel().getPanel());
+				SimpleDungeonCrawler.frame.add(new PauseMenuPanel());
 			}
 		};
 
@@ -53,8 +53,8 @@ public class MovementController {
 		Action stopMoveLeft = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				movingLeft = false;
-				Panels.frame.getContentPane().validate();
-				Panels.frame.getContentPane().repaint();
+				SimpleDungeonCrawler.frame.getContentPane().validate();
+				SimpleDungeonCrawler.frame.getContentPane().repaint();
 			}
 		};
 
@@ -79,8 +79,8 @@ public class MovementController {
 		Action stopMoveRight = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				movingRight = false;
-				Panels.frame.getContentPane().validate();
-				Panels.frame.getContentPane().repaint();
+				SimpleDungeonCrawler.frame.getContentPane().validate();
+				SimpleDungeonCrawler.frame.getContentPane().repaint();
 			}
 		};
 
@@ -106,8 +106,8 @@ public class MovementController {
 		Action stopMoveUp = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				movingUp = false;
-				Panels.frame.getContentPane().validate();
-				Panels.frame.getContentPane().repaint();
+				SimpleDungeonCrawler.frame.getContentPane().validate();
+				SimpleDungeonCrawler.frame.getContentPane().repaint();
 			}
 		};
 
@@ -133,8 +133,8 @@ public class MovementController {
 		Action stopMoveDown = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				movingDown = false;
-				Panels.frame.getContentPane().validate();
-				Panels.frame.getContentPane().repaint();
+				SimpleDungeonCrawler.frame.getContentPane().validate();
+				SimpleDungeonCrawler.frame.getContentPane().repaint();
 			}
 		};
 

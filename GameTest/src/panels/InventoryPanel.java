@@ -14,36 +14,33 @@ import items.GenericItem;
 import items.Stick;
 import misc.SimpleDungeonCrawler;
 
-public class InventoryPanel {
+public class InventoryPanel extends JPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
-	private static int SCALED_100 = Panels.SCALED_100;
+	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 	
-	public static void createInventory() {
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+	}
+	
+	public void createInventory() {
 		JButton exitButton = new JButton("EXIT");
 		JButton addStick = new JButton("STICK ME");
-
-		// attack panel
-		Panels.inventoryPanel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-			}
-		};
-		Panels.inventoryPanel.add(addStick);
-		Panels.inventoryPanel.add(exitButton);
-		Panels.inventoryPanel.setLayout(null);
+		add(addStick);
+		add(exitButton);
+		setLayout(null);
 
 		// exit button
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.inventoryPanel.removeAll();
-				Panels.inventoryPanel.add(addStick);
-				Panels.inventoryPanel.add(exitButton);
-				Panels.frame.getContentPane().add(new PauseMenuPanel().getPanel());
-				Panels.frame.getContentPane().remove(Panels.inventoryPanel);
+				removeAll();
+				add(addStick);
+				add(exitButton);
+				SimpleDungeonCrawler.frame.getContentPane().add(new PauseMenuPanel());
+				SimpleDungeonCrawler.frame.getContentPane().removeAll();
 			}
 		});
 		exitButton.setBounds((int) (700*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -57,9 +54,9 @@ public class InventoryPanel {
 					Stick stick = new Stick();
 					stick.getImage();
 					SimpleDungeonCrawler.character.addItem(stick);
-					Panels.inventoryPanel.removeAll();
-					Panels.inventoryPanel.add(addStick);
-					Panels.inventoryPanel.add(exitButton);
+					removeAll();
+					add(addStick);
+					add(exitButton);
 					refreshInv();
 				}
 			}
@@ -68,7 +65,7 @@ public class InventoryPanel {
 		addStick.setFont(SimpleDungeonCrawler.font);
 	}
 
-	public static void refreshInv() {
+	public void refreshInv() {
 		Rectangle rText = new Rectangle(0, SCALED_100, SCALED_100, (int) (40*SCALE_FACTOR));
 		Rectangle rImage = new Rectangle(0, 0, SCALED_100, SCALED_100);
 		for (int i = SimpleDungeonCrawler.character.getInventory().size() - 1; i >= 0; i--) {
@@ -81,7 +78,7 @@ public class InventoryPanel {
 				rText.x -= (int) (900*SCALE_FACTOR);
 				rText.y += (int) (140*SCALE_FACTOR);
 			}
-			Panels.inventoryPanel.add(text);
+			add(text);
 			JLabel itemLabel = new JLabel(item.itemImage);
 			itemLabel.setBounds(rImage);
 			rImage.x += SCALED_100;
@@ -89,7 +86,7 @@ public class InventoryPanel {
 				rImage.x -= (int) (900*SCALE_FACTOR);
 				rImage.y += (int) (140*SCALE_FACTOR);
 			}
-			Panels.inventoryPanel.add(itemLabel);
+			add(itemLabel);
 		}
 	}
 }

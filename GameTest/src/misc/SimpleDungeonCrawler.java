@@ -33,7 +33,7 @@ import movement.MoveRight;
 import movement.MoveUp;
 import movement.MoveUpLeft;
 import movement.MoveUpRight;
-import panels.Panels;
+import panels.MainMenu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -56,31 +56,35 @@ public class SimpleDungeonCrawler extends JPanel {
 	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
 	// 250.0);
 	public static final double SCALE_FACTOR = .75;
+	public static final int SCALED_100 = (int) (100 * SCALE_FACTOR);
+	public static final int MENU_SIZE = (int) (1000 * SCALE_FACTOR);
+	public static final int BUTTON_HEIGHT = (int) (100 * SCALE_FACTOR);
+	public static final int BUTTON_WIDTH = (int) (300 * SCALE_FACTOR);
 	public static Entity character;
 	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
 	public static Graphics g;
 	public static int refreshRate = 25; // number of millis to wait
 	public static int fps = 30;
+	public static JFrame frame;
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 
 	public static void main(String[] args) throws InterruptedException, IOException {
-		String current = System.getProperty("user.dir");
+		//String current = System.getProperty("user.dir");
 		// System.out.println("Current working directory in Java : " + current);
-		Panels.frame = new JFrame("Simple Dungeon Crawler");
-		Panels.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Panels.frame.setSize((int) (1000 * SCALE_FACTOR + 16), (int) (1000 * SCALE_FACTOR + 38));
-		Panels.frame.setVisible(true);
-		g = Panels.frame.getGraphics();
+		frame = new JFrame("Simple Dungeon Crawler");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize((int) (1000 * SCALE_FACTOR + 16), (int) (1000 * SCALE_FACTOR + 38));
+		frame.setVisible(true);
+		g =frame.getGraphics();
 		g.setColor(Color.white);
 		character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
 		character.setType("Friendly");
 		Images.createImages();
 		character.addItem(new Stick());
-		Panels panelInitializer = new Panels();
+		frame.add(new MainMenu());
 		Refresh r1 = new Refresh();
 		r1.start();
-		Point p = new Point(0, 10);
 		roomArray[0][0] = new BattleRoom(0);
 	}
 

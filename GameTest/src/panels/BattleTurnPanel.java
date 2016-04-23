@@ -16,26 +16,22 @@ import misc.Images;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 
-public class BattleTurnPanel {
+public class BattleTurnPanel extends JPanel {
 		private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-		private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
-		private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
-		private static int MENU_SIZE = Panels.MENU_SIZE;
-		private static int SCALED_100 = Panels.SCALED_100;
-		private JPanel battleTurnPanel;
+		private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
+		private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+		private static int MENU_SIZE = SimpleDungeonCrawler.MENU_SIZE;
+		private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 		private Battle battle;
 		
 		public BattleTurnPanel(Battle battle) {
 			this.battle = battle;
-			createbattleTurnPanel();
+			setLayout(null);
 			//addButtonsToTurnPanel();
 		}
 		
-		public JPanel getPanel() {
-			return battleTurnPanel;
-		}
-		
-		private void drawBattleTurnPanel(Graphics g) {
+		@Override
+		public void paintComponent(Graphics g) {
 			g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);
 			g.setColor(Color.red);
 			g.fillRect((int) (214 * SCALE_FACTOR), (int) (932 * SCALE_FACTOR), (int) (440 * SCALE_FACTOR
@@ -53,18 +49,6 @@ public class BattleTurnPanel {
 			g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50, 50);
 			// g.drawString(console1.get(console1.size() - 1), 10, 100);
 		}
-
-		private void createbattleTurnPanel() {
-			battleTurnPanel = new JPanel() {
-				@Override
-				protected void paintComponent(Graphics g) {
-					super.paintComponent(g);
-					drawBattleTurnPanel(g);
-				}
-			};
-			battleTurnPanel.setLayout(null);
-			//battleTurnPanel.setBounds(0, 0, (int) (1000 * SCALE_FACTOR), (int) (1000 * SCALE_FACTOR));
-		}
 		
 		public void addButtonsToTurnPanel() {
 			createFightButton();
@@ -74,18 +58,23 @@ public class BattleTurnPanel {
 			createFleeButton();
 		}
 		
+		public void setVisibleCorridor(boolean flag) {
+			this.setVisible(flag);
+		}
+		
 		private void createBagButton() {
 			JButton bagButton = new JButton();
+			
 			bagButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					battleTurnPanel.setVisible(false);
-					Panels.frame.add(new BagPanel(battle).getPanel());
+					setVisibleCorridor(false);
+					SimpleDungeonCrawler.frame.add(new BagPanel(battle).getPanel());
 				}
 			});
 			bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (552 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 			bagButton.setIcon(new ImageIcon(Images.bagButton));
-			battleTurnPanel.add(bagButton);
+			add(bagButton);
 		}
 		
 		private void createFightButton() {
@@ -105,7 +94,7 @@ public class BattleTurnPanel {
 			});
 			fightButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 			fightButton.setIcon(new ImageIcon(Images.fightButton));
-			battleTurnPanel.add(fightButton);
+			add(fightButton);
 		}
 		
 		private void createMoveButton() {
@@ -125,7 +114,7 @@ public class BattleTurnPanel {
 			});
 			moveButton.setBounds((int) (698 * SCALE_FACTOR), (int) (348 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 			moveButton.setIcon(new ImageIcon(Images.moveButton));
-			battleTurnPanel.add(moveButton);
+			add(moveButton);
 		}
 
 		private void createFleeButton() {
@@ -139,7 +128,7 @@ public class BattleTurnPanel {
 			});
 			fleeButton.setBounds((int) (698 * SCALE_FACTOR), (int) (752 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 			fleeButton.setIcon(new ImageIcon(Images.fleeButton));
-			battleTurnPanel.add(fleeButton);
+			add(fleeButton);
 		}
 
 		private void createEndTurnButton() {
@@ -151,6 +140,6 @@ public class BattleTurnPanel {
 				}
 			});
 			endTurnButton.setBounds((int) (698 * SCALE_FACTOR), (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-			battleTurnPanel.add(endTurnButton);
+			add(endTurnButton);
 		}
 }

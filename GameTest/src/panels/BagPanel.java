@@ -13,9 +13,9 @@ import misc.SimpleDungeonCrawler;
 
 public class BagPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
-	private static int SCALED_100 = Panels.SCALED_100;
+	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 	private Battle battle;
 	private JPanel bagPanel;
 	
@@ -63,8 +63,8 @@ public class BagPanel {
 		returnButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().getComponent(1).setVisible(true); //TODO
-				Panels.frame.remove(bagPanel);
+				SimpleDungeonCrawler.frame.getContentPane().getComponent(1).setVisible(true); //TODO
+				SimpleDungeonCrawler.frame.remove(bagPanel);
 			}
 		});
 		returnButton.setBounds((int) (700*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

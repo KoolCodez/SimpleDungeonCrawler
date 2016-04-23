@@ -13,37 +13,26 @@ import javax.swing.JPanel;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
 
-public class PauseMenuPanel {
+public class PauseMenuPanel extends JPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
-	private static int SCALED_100 = Panels.SCALED_100;
+	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 	private static Font font = SimpleDungeonCrawler.font;
 	Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (250*SCALE_FACTOR));
-	private JPanel pauseMenuPanel;
 	
 	public PauseMenuPanel() {
-		createPauseMenuPanel();
 		createResumeButton();
 		createInventoryButton();
 		createCharacterButton();
 		createSaveButton();
 		createExitButton();
+		setLayout(null);
 	}
 	
-	public JPanel getPanel() {
-		return pauseMenuPanel;
-	}
-	
-	private void createPauseMenuPanel() {
-		pauseMenuPanel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(Images.pauseMenu, 0, 0, null);
-			}
-		};
-		pauseMenuPanel.setLayout(null);
+	@Override
+	public void paintComponent(Graphics g) {
+		g.drawImage(Images.pauseMenu, 0, 0, null);
 	}
 	
 	private void createExitButton() {
@@ -51,13 +40,13 @@ public class PauseMenuPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().remove(pauseMenuPanel);
-				Panels.frame.getContentPane().add(Panels.mainMenu);
+				SimpleDungeonCrawler.frame.getContentPane().removeAll();
+				SimpleDungeonCrawler.frame.getContentPane().add(new MainMenu());
 			}
 		});
 		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		exitButton.setFont(font);
-		pauseMenuPanel.add(exitButton);
+		add(exitButton);
 	}
 	
 	private void createSaveButton() {
@@ -70,7 +59,7 @@ public class PauseMenuPanel {
 		saveButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuCoord.y += BUTTON_HEIGHT;
 		saveButton.setFont(font);
-		pauseMenuPanel.add(saveButton);
+		add(saveButton);
 	}
 	
 	private void createInventoryButton() {
@@ -78,15 +67,16 @@ public class PauseMenuPanel {
 		invButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().remove(pauseMenuPanel);
-				Panels.frame.getContentPane().add(Panels.inventoryPanel);
-				InventoryPanel.refreshInv();
+				SimpleDungeonCrawler.frame.getContentPane().removeAll();
+				InventoryPanel inventoryPanel = new InventoryPanel();
+				SimpleDungeonCrawler.frame.getContentPane().add(inventoryPanel);
+				inventoryPanel.refreshInv();
 			}
 		});
 		invButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuCoord.y += BUTTON_HEIGHT;
 		invButton.setFont(font);
-		pauseMenuPanel.add(invButton);
+		add(invButton);
 	}
 	
 	private void createCharacterButton() {
@@ -94,14 +84,14 @@ public class PauseMenuPanel {
 		charButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(Panels.characterPanel);
-				Panels.frame.getContentPane().remove(pauseMenuPanel);
+				SimpleDungeonCrawler.frame.getContentPane().add(new CharacterPanel());
+				SimpleDungeonCrawler.frame.getContentPane().removeAll();
 			}
 		});
 		charButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuCoord.y += BUTTON_HEIGHT;
 		charButton.setFont(font);
-		pauseMenuPanel.add(charButton);
+		add(charButton);
 	}
 	
 	private void createResumeButton() {
@@ -109,14 +99,14 @@ public class PauseMenuPanel {
 		resume.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().removeAll();
-				Panels.frame.getContentPane().add(new CoreGameplayPanel().getPanel());
+				SimpleDungeonCrawler.frame.getContentPane().removeAll();
+				SimpleDungeonCrawler.frame.getContentPane().add(new CoreGameplayPanel());
 			}
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		resume.setIcon(new ImageIcon(Images.resumeButton));
 		menuCoord.y += BUTTON_HEIGHT;
 		resume.setFont(font);
-		pauseMenuPanel.add(resume);
+		add(resume);
 	}
 }

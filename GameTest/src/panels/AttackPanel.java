@@ -18,30 +18,24 @@ import misc.Images;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 
-public class AttackPanel {
+public class AttackPanel extends JPanel{
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
-	private static int MENU_SIZE = Panels.MENU_SIZE;
-	private static int SCALED_100 = Panels.SCALED_100;
-	private JPanel attackPanel;
+	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+	private static int MENU_SIZE = SimpleDungeonCrawler.MENU_SIZE;
+	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 	private Battle battle;
 
 	public AttackPanel() {
-		createAttackPanel();
 		createBattle();
+		setLayout(null);
 	}
 	
 	public AttackPanel(Battle battle) {
-		createAttackPanel();
 		this.battle = battle;
 	}
-	
-	public JPanel getPanel() {
-		return attackPanel;
-	}
-
-	private void drawBattlePanel(Graphics g) {
+	@Override
+	public void paintComponent(Graphics g) {
 		g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);
 		g.setColor(Color.red);
 		g.fillRect((int) (214 * SCALE_FACTOR), (int) (932 * SCALE_FACTOR), (int) (440 * SCALE_FACTOR
@@ -59,17 +53,6 @@ public class AttackPanel {
 		g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 0, 0);
 		// g.drawString(console1.get(console1.size() - 1), 10, 100);
 	}
-
-	private void createAttackPanel() {
-		attackPanel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				drawBattlePanel(g);
-			}
-		};
-		attackPanel.setLayout(null);
-	}
 	
 	private void createBattle() {
 		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
@@ -82,12 +65,11 @@ public class AttackPanel {
 				return 0;
 			}
 		};
-		
 		worker.execute();
 	}
 
 	public void removeButtonsFromAttackPanel() {
-		attackPanel.removeAll();
+		this.removeAll();
 	}
 
 }

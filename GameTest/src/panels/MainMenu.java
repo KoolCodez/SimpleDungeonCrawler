@@ -11,45 +11,28 @@ import javax.swing.JPanel;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
 
-public class MainMenu {
+public class MainMenu extends JPanel{
 
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = Panels.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = Panels.BUTTON_HEIGHT;
+	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+	Point menuCoord = new Point((int) (350 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR));
 
 	public MainMenu() {
-		createMainMenu();
+		createStartButton();
+		createExitButton();
+		setLayout(null);
 	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		g.drawImage(Images.mainMenu, (int) (0 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), SimpleDungeonCrawler.MENU_SIZE,
+				SimpleDungeonCrawler.MENU_SIZE, null);
 
-	public static void createMainMenu() {
-		JButton startButton = new JButton("START");
+	}
+	
+	private void createExitButton() {
 		JButton exitButton = new JButton("EXIT");
-		Point menuCoord = new Point((int) (350 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR));
-		Panels.mainMenu = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(Images.mainMenu, (int) (0 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), Panels.MENU_SIZE,
-						Panels.MENU_SIZE, null);
-
-			}
-		};
-		Panels.mainMenu.setLayout(null);
-		Panels.mainMenu.add(startButton);
-		Panels.mainMenu.add(exitButton);
-
-		// start button
-		startButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Panels.frame.getContentPane().add(new CoreGameplayPanel().getPanel());
-				Panels.frame.getContentPane().remove(Panels.mainMenu);
-			}
-		});
-		startButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
-		menuCoord.y += BUTTON_HEIGHT;
-		startButton.setFont(SimpleDungeonCrawler.font);
-
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -59,5 +42,21 @@ public class MainMenu {
 		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuCoord.y += BUTTON_HEIGHT;
 		exitButton.setFont(SimpleDungeonCrawler.font);
+		add(exitButton);
+	}
+	
+	private void createStartButton() {
+		JButton startButton = new JButton("START");
+		startButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SimpleDungeonCrawler.frame.getContentPane().add(new CoreGameplayPanel());
+				SimpleDungeonCrawler.frame.getContentPane().remove(0);
+			}
+		});
+		startButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuCoord.y += BUTTON_HEIGHT;
+		startButton.setFont(SimpleDungeonCrawler.font);
+		add(startButton);
 	}
 }
