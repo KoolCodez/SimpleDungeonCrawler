@@ -28,7 +28,7 @@ public class BattleTurnPanel {
 		public BattleTurnPanel(Battle battle) {
 			this.battle = battle;
 			createbattleTurnPanel();
-			addButtonsToTurnPanel();
+			//addButtonsToTurnPanel();
 		}
 		
 		public JPanel getPanel() {
@@ -63,6 +63,7 @@ public class BattleTurnPanel {
 				}
 			};
 			battleTurnPanel.setLayout(null);
+			//battleTurnPanel.setBounds(0, 0, (int) (1000 * SCALE_FACTOR), (int) (1000 * SCALE_FACTOR));
 		}
 		
 		public void addButtonsToTurnPanel() {
@@ -78,7 +79,7 @@ public class BattleTurnPanel {
 			bagButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Panels.frame.remove(battleTurnPanel);
+					battleTurnPanel.setVisible(false);
 					Panels.frame.add(new BagPanel(battle).getPanel());
 				}
 			});

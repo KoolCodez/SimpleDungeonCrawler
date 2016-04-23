@@ -32,6 +32,11 @@ public class AttackPanel {
 		createBattle();
 	}
 	
+	public AttackPanel(Battle battle) {
+		createAttackPanel();
+		this.battle = battle;
+	}
+	
 	public JPanel getPanel() {
 		return attackPanel;
 	}
@@ -67,16 +72,17 @@ public class AttackPanel {
 	}
 	
 	private void createBattle() {
-		battle = new Battle();
 		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 			@Override
 			protected Integer doInBackground() throws Exception {
 				System.out.println("new battle");
+				battle = new Battle();
 				battle.battleSequence();
+				battle.flee = false;
 				return 0;
 			}
 		};
-		battle.flee = false;
+		
 		worker.execute();
 	}
 

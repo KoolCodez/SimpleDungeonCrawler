@@ -1,5 +1,6 @@
 package combatSystem;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +9,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import items.GenericWeapon;
 import misc.Entity;
@@ -33,6 +36,7 @@ public class Battle {
 	public void battleSequence() {
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		while (checkLiving(currentRoom) && !flee) {
+			waitForTurn.reset();
 			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
 			weapon.damage = 1.0;
 			weapon.ranged = false;
@@ -46,12 +50,17 @@ public class Battle {
 					initList.get(i).attack(character);
 					// System.out.println();
 				} else if (initList.get(i).getType().equals("Friendly") && !flee) {
-					BattleTurnPanel battleTurnPanel = new BattleTurnPanel(this);
-					System.out.println("create panel");
-					Panels.frame.removeAll();
-					Panels.frame.add(battleTurnPanel.getPanel());
-					Panels.frame.revalidate();
-					Panels.frame.repaint();
+					Battle battle = this;
+					BattleTurnPanel battleTurnPanel = new BattleTurnPanel(battle);
+					//Component[] lemmeSeeVariables = Panels.frame.getContentPane().getComponents();
+					SwingUtilities.invokeLater(new Runnable() {
+					    public void run() {
+					    	
+							Panels.frame.getContentPane().getComponent(0).setVisible(false);;
+							battleTurnPanel.addButtonsToTurnPanel();
+							Panels.frame.add(battleTurnPanel.getPanel());
+					    }
+					  });
 					synchronized (waitForTurn) {
 						try {
 							System.out.println("wait");
@@ -66,7 +75,12 @@ public class Battle {
 							return;
 						}
 					}
-					Panels.frame.remove(battleTurnPanel.getPanel());
+					SwingUtilities.invokeLater(new Runnable() {
+					    public void run() {
+							Panels.frame.getContentPane().getComponent(0).setVisible(true);
+							Panels.frame.remove(battleTurnPanel.getPanel());
+					    }
+					  });
 					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
 					// System.out.println();
 				} else {
@@ -77,7 +91,7 @@ public class Battle {
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				waitForTurn.reset();
+				
 				// checkHealth(currentRoom);
 				Panels.frame.validate();
 				Panels.frame.repaint();
