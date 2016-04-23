@@ -171,7 +171,6 @@ public class Battle {
 	public boolean flee(List<Entity> list) {
 		boolean successful = false;
 		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) { //TODO speed rather than dex
-			Panels.frame.removeAll();
 			Panels.frame.add(new CoreGameplayPanel().getPanel());
 			successful = true;
 		}
