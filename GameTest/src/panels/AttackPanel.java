@@ -34,6 +34,7 @@ public class AttackPanel extends JPanel{
 	public AttackPanel(Battle battle) {
 		this.battle = battle;
 	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);

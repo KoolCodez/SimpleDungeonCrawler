@@ -1,11 +1,13 @@
 package panels;
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import combatSystem.Battle;
@@ -57,8 +59,16 @@ public class CoreGameplayPanel extends JPanel{
 		atkButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Component[] variables = SimpleDungeonCrawler.frame.getContentPane().getComponents();
 				SimpleDungeonCrawler.frame.remove(0);
+				SwingUtilities.invokeLater(new Runnable() {
+				    public void run() {
+						SimpleDungeonCrawler.frame.invalidate();
+						SimpleDungeonCrawler.frame.repaint();
+				    }
+				 });
 				SimpleDungeonCrawler.frame.add(new AttackPanel());
+				
 			}
 		});
 		atkButton.setBounds((int) (700 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
