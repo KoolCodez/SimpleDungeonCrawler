@@ -40,8 +40,8 @@ public class PauseMenuPanel extends JPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDungeonCrawler.frame.getContentPane().removeAll();
-				SimpleDungeonCrawler.frame.getContentPane().add(new MainMenu());
+				setVisible(false);
+				SimpleDungeonCrawler.frame.add(new MainMenu());
 			}
 		});
 		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -67,9 +67,9 @@ public class PauseMenuPanel extends JPanel {
 		invButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDungeonCrawler.frame.getContentPane().removeAll();
+				setVisible(false);
 				InventoryPanel inventoryPanel = new InventoryPanel();
-				SimpleDungeonCrawler.frame.getContentPane().add(inventoryPanel);
+				SimpleDungeonCrawler.frame.add(inventoryPanel);
 				inventoryPanel.refreshInv();
 			}
 		});
@@ -84,8 +84,8 @@ public class PauseMenuPanel extends JPanel {
 		charButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDungeonCrawler.frame.getContentPane().add(new CharacterPanel());
-				SimpleDungeonCrawler.frame.getContentPane().removeAll();
+				setVisible(false);
+				SimpleDungeonCrawler.frame.add(new CharacterPanel());
 			}
 		});
 		charButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -99,8 +99,8 @@ public class PauseMenuPanel extends JPanel {
 		resume.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDungeonCrawler.frame.getContentPane().removeAll();
-				SimpleDungeonCrawler.frame.getContentPane().add(new CoreGameplayPanel());
+				setVisible(false);
+				SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
 			}
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);

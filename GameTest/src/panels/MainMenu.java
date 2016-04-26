@@ -51,7 +51,7 @@ public class MainMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SimpleDungeonCrawler.frame.getContentPane().add(new CoreGameplayPanel());
-				SimpleDungeonCrawler.frame.getContentPane().remove(0);
+				setVisible(false);
 			}
 		});
 		startButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);

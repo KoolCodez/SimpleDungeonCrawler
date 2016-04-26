@@ -36,7 +36,7 @@ public class InventoryPanel extends JPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeAll();
+				setVisible(false);
 				add(addStick);
 				add(exitButton);
 				SimpleDungeonCrawler.frame.getContentPane().add(new PauseMenuPanel());

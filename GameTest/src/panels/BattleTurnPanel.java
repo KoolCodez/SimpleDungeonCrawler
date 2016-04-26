@@ -58,17 +58,13 @@ public class BattleTurnPanel extends JPanel {
 			createFleeButton();
 		}
 		
-		public void setVisibleCorridor(boolean flag) {
-			this.setVisible(flag);
-		}
-		
 		private void createBagButton() {
 			JButton bagButton = new JButton();
 			
 			bagButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					setVisibleCorridor(false);
+					setVisible(false);
 					SimpleDungeonCrawler.frame.add(new BagPanel(battle).getPanel());
 				}
 			});

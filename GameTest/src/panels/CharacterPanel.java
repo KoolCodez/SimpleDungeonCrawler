@@ -15,9 +15,10 @@ public class CharacterPanel extends JPanel {
 	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
 	Entity character = SimpleDungeonCrawler.character;
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		g.drawString("STRENGTH: " + character.stats.getStr(), 200, 100);
 		g.drawString("DEXTERITY: " + character.stats.getDex(), 200, 150);
 		g.drawString("CONSTITUTION: " + character.stats.getCon(), 200, 200);
@@ -25,10 +26,29 @@ public class CharacterPanel extends JPanel {
 		g.drawString("INTELLIGENCE: " + character.stats.getIntl(), 200, 300);
 		g.drawString("CHARISMA: " + character.stats.getChr(), 200, 350);
 	}
-	
+
 	public CharacterPanel() {
+		createStatButtons();
+		createExitButton();
+		setLayout(null);
 		
+	}
+	
+	private void createExitButton() {
 		JButton exitButton = new JButton("EXIT");
+		// exit button
+				exitButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						setVisible(false);
+						SimpleDungeonCrawler.frame.getContentPane().add(new PauseMenuPanel());
+					}
+				});
+				exitButton.setBounds(350, 100, 150, 50);
+		add(exitButton);
+	}
+
+	private void createStatButtons() {
 		JButton setStr = new JButton("+1");
 		JButton strDown = new JButton("-1");
 		JButton setDex = new JButton("+1");
@@ -41,8 +61,7 @@ public class CharacterPanel extends JPanel {
 		JButton intDown = new JButton("-1");
 		JButton setChr = new JButton("+1");
 		JButton chrDown = new JButton("-1");
-		// attack panel
-		add(exitButton);
+
 		add(setStr);
 		add(strDown);
 		add(setDex);
@@ -55,9 +74,7 @@ public class CharacterPanel extends JPanel {
 		add(intDown);
 		add(setChr);
 		add(chrDown);
-		setLayout(null);
-
-		// level buttons
+		
 		setStr.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -147,17 +164,6 @@ public class CharacterPanel extends JPanel {
 			}
 		});
 		chrDown.setBounds(250, 350, 50, 25);
-
-		// exit button
-		exitButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SimpleDungeonCrawler.frame.getContentPane().removeAll();
-				SimpleDungeonCrawler.frame.getContentPane().add(new PauseMenuPanel());
-			}
-		});
-		exitButton.setBounds(350, 100, 150, 50);
-
 	}
 
 }

@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import combatSystem.Battle;
@@ -27,7 +28,8 @@ public class AttackPanel extends JPanel{
 	private Battle battle;
 
 	public AttackPanel() {
-		createBattle();
+		//createBattle();
+		
 		setLayout(null);
 	}
 	
@@ -51,22 +53,8 @@ public class AttackPanel extends JPanel{
 			g.drawImage(Images.battleGoblin, (int) point.getX(), (int) point.getY(), (int) (200 * SCALE_FACTOR),
 					(int) (100 * SCALE_FACTOR), null);
 		}
-		g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 0, 0);
+		//g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 0, 0);
 		// g.drawString(console1.get(console1.size() - 1), 10, 100);
-	}
-	
-	private void createBattle() {
-		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-			@Override
-			protected Integer doInBackground() throws Exception {
-				System.out.println("new battle");
-				battle = new Battle();
-				battle.battleSequence();
-				battle.flee = false;
-				return 0;
-			}
-		};
-		worker.execute();
 	}
 
 	public void removeButtonsFromAttackPanel() {

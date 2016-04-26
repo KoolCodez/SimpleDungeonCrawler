@@ -30,8 +30,12 @@ public class Battle {
 	private Entity character;
 	public TurnWait waitForTurn = new TurnWait();
 	public boolean flee = false;
+	AttackPanel attackPanel = new AttackPanel();
+	BattleTurnPanel battleTurnPanel = new BattleTurnPanel(this);
+	
 	public Battle() {
 		character = SimpleDungeonCrawler.character;
+		SimpleDungeonCrawler.frame.add(attackPanel);
 	}
 	
 	public void battleSequence() {
@@ -51,13 +55,12 @@ public class Battle {
 					initList.get(i).attack(character);
 					// System.out.println();
 				} else if (initList.get(i).getType().equals("Friendly") && !flee) {
-					Battle battle = this;
-					BattleTurnPanel battleTurnPanel = new BattleTurnPanel(battle);
+					Component[] variables = SimpleDungeonCrawler.frame.getContentPane().getComponents();
 					//Component[] lemmeSeeVariables = Panels.frame.getContentPane().getComponents();
 					SwingUtilities.invokeLater(new Runnable() {
 					    public void run() {
 					    	
-					    	SimpleDungeonCrawler.frame.getContentPane().getComponent(0).setVisible(false);;
+					    	attackPanel.setVisible(false);;
 							battleTurnPanel.addButtonsToTurnPanel();
 							SimpleDungeonCrawler.frame.add(battleTurnPanel);
 					    }
@@ -78,7 +81,7 @@ public class Battle {
 					}
 					SwingUtilities.invokeLater(new Runnable() {
 					    public void run() {
-					    	SimpleDungeonCrawler.frame.getContentPane().getComponent(0).setVisible(true);
+					    	attackPanel.setVisible(true);
 					    	SimpleDungeonCrawler.frame.remove(battleTurnPanel);
 					    }
 					  });
@@ -172,6 +175,7 @@ public class Battle {
 	public boolean flee(List<Entity> list) {
 		boolean successful = false;
 		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) { //TODO speed rather than dex
+			battleTurnPanel.setVisible(false);
 			SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
 			successful = true;
 		}
