@@ -40,10 +40,10 @@ public class Battle {
 	
 	public void battleSequence() {
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		List<Entity> initList = setInitiative(currentRoom);
 		while (checkLiving(currentRoom) && !flee) {
 			waitForTurn.reset();
 			setDefaultWeapon();
-			List<Entity> initList = setInitiative(currentRoom);
 			runThroughBattleQueue(initList);
 			checkLiving(currentRoom);
 			SimpleDungeonCrawler.frame.validate();
