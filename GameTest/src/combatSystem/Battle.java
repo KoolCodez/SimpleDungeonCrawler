@@ -32,7 +32,7 @@ public class Battle {
 	public boolean flee = false;
 	AttackPanel attackPanel = new AttackPanel();
 	BattleTurnPanel battleTurnPanel = new BattleTurnPanel(this);
-	
+
 	public Battle() {
 		character = SimpleDungeonCrawler.character;
 		SimpleDungeonCrawler.frame.add(attackPanel);
@@ -42,68 +42,95 @@ public class Battle {
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		while (checkLiving(currentRoom) && !flee) {
 			waitForTurn.reset();
-			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
-			weapon.damage = 1.0;
-			weapon.ranged = false;
-			weapon.speed = 1.0;
-			character.setWeapon(weapon);
+			setDefaultWeapon();
 			List<Entity> initList = setInitiative(currentRoom);
-			for (int i = 0; i < initList.size(); i++) {
-				SimpleDungeonCrawler.frame.validate();
-				SimpleDungeonCrawler.frame.repaint();
-				if (initList.get(i).getType().equals("Enemy") && !flee) {
-					initList.get(i).attack(character);
-					// System.out.println();
-				} else if (initList.get(i).getType().equals("Friendly") && !flee) {
-					Component[] variables = SimpleDungeonCrawler.frame.getContentPane().getComponents();
-					//Component[] lemmeSeeVariables = Panels.frame.getContentPane().getComponents();
-					SwingUtilities.invokeLater(new Runnable() {
-					    public void run() {
-					    	
-					    	attackPanel.setVisible(false);;
-							battleTurnPanel.addButtonsToTurnPanel();
-							SimpleDungeonCrawler.frame.add(battleTurnPanel);
-					    }
-					  });
-					synchronized (waitForTurn) {
-						try {
-							System.out.println("wait");
-							waitForTurn.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					if (flee) {
-						flee = false;
-						if (flee(initList)) {
-							return;
-						}
-					}
-					SwingUtilities.invokeLater(new Runnable() {
-					    public void run() {
-					    	attackPanel.setVisible(true);
-					    	SimpleDungeonCrawler.frame.remove(battleTurnPanel);
-					    }
-					  });
-					//characterAttack(currentRoom.enemyEntities.get(selectedEnemy));
-					// System.out.println();
-				} else {
-					// System.out.println(initList.get(i).getClass().toString());
-				}
-				try {
-					TimeUnit.SECONDS.sleep(2);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-				
-				// checkHealth(currentRoom);
-				SimpleDungeonCrawler.frame.validate();
-				SimpleDungeonCrawler.frame.repaint();
-			}
+			runThroughBattleQueue(initList);
 			checkLiving(currentRoom);
 			SimpleDungeonCrawler.frame.validate();
 			SimpleDungeonCrawler.frame.repaint();
 			System.out.println("New Turn");
+		}
+	}
+
+	private boolean isEnemy(Entity ent) {
+		return ent.getType().equals("Enemy");
+	}
+
+	private boolean isFriendly(Entity ent) {
+		return ent.getType().equals("Friendly");
+	}
+
+	private void switchToTurnPanel() {
+		Component[] variables = SimpleDungeonCrawler.frame.getContentPane().getComponents();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				attackPanel.setVisible(false);
+				battleTurnPanel.addButtonsToTurnPanel();
+				SimpleDungeonCrawler.frame.add(battleTurnPanel);
+			}
+		});
+	}
+	
+	private void switchToAttackPanel() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				SimpleDungeonCrawler.frame.remove(battleTurnPanel);
+				attackPanel.setVisible(true);
+			}
+		});
+	}
+	
+	private void letPlayerTakeTurn() {
+		synchronized (waitForTurn) {
+			try {
+				System.out.println("wait");
+				waitForTurn.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void printEntityError(Entity ent) {
+		System.out.print("invalid entity");
+		System.out.println(ent.getClass().toString());
+	}
+	
+	private void setDefaultWeapon() { //TODO this is temporary, should go away when inventory is fixed
+		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
+		weapon.damage = 1.0;
+		weapon.ranged = false;
+		weapon.speed = 1.0;
+		character.setWeapon(weapon);
+	}
+	
+	private void sleep(int millis) {
+		try {
+			TimeUnit.MILLISECONDS.sleep(millis);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	private void runThroughBattleQueue(List<Entity> initList) {
+		for (int i = 0; i < initList.size(); i++) {
+			Entity currentEntity = initList.get(i);
+			if (isEnemy(currentEntity) && !flee) {
+				currentEntity.attack(character);
+			} else if (isFriendly(currentEntity) && !flee) {
+				switchToTurnPanel();
+				letPlayerTakeTurn();
+				if (flee) {
+					if (flee(initList)) {
+						return;
+					}
+				}
+				switchToAttackPanel();
+			} else {
+				printEntityError(initList.get(i));
+			}
+			sleep(1000);
+			// checkHealth(currentRoom);
 		}
 	}
 
@@ -133,13 +160,13 @@ public class Battle {
 			}
 		}
 		if (fAlive && !eAlive) {
-			//System.out.println("VICTORY!");
+			// System.out.println("VICTORY!");
 			return false;
 		} else if (!fAlive && eAlive) {
-			//System.out.println("DEFEAT");
+			// System.out.println("DEFEAT");
 			return false;
 		} else {
-			//System.out.println("CONTINUE THE BATTLE");
+			// System.out.println("CONTINUE THE BATTLE");
 			return true;
 		}
 	}
@@ -154,18 +181,20 @@ public class Battle {
 				e1.printStackTrace();
 			}
 		}
-			Point point = mouse.getLocation();
-			double x = character.getBattleLoc().getX();
-			double y = character.getBattleLoc().getY();
-			if (Math.abs(x - point.x) * (1/SCALED_100) + Math.abs(y - point.y)  * (1/SCALED_100) < waitForTurn.getTurnPoints()) {
-				//TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
-				//possibly make setBattleLocation change location in a backwards orientation?
-				//ALSO THIS IS GLITCHING, so...
-				System.out.println("legalClick");
+		Point point = mouse.getLocation();
+		double x = character.getBattleLoc().getX();
+		double y = character.getBattleLoc().getY();
+		if (Math.abs(x - point.x) * (1 / SCALED_100) + Math.abs(y - point.y) * (1 / SCALED_100) < waitForTurn
+				.getTurnPoints()) {
+			// TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
+			// possibly make setBattleLocation change location in a backwards
+			// orientation?
+			// ALSO THIS IS GLITCHING, so...
+			System.out.println("legalClick");
 		} else {
 			System.out.println("illegal, u r haxor");
 		}
-		//TODO MOVEMENT
+		// TODO MOVEMENT
 	}
 
 	public static void bag() {
@@ -174,7 +203,9 @@ public class Battle {
 
 	public boolean flee(List<Entity> list) {
 		boolean successful = false;
-		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) { //TODO speed rather than dex
+		flee = false;
+		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) {
+			flee = true;
 			battleTurnPanel.setVisible(false);
 			SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
 			successful = true;
