@@ -1,5 +1,6 @@
 package panels;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -35,6 +36,23 @@ public class InventoryPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawRect(selectedLocation.x, selectedLocation.y, SCALED_100, SCALED_140);
+		drawInv(g);
+	}
+	
+	private void drawInv(Graphics g) {
+		Rectangle rText = new Rectangle(0, SCALED_100, SCALED_100, SCALED_40);
+		Rectangle rImage = new Rectangle(0, 0, SCALED_100, SCALED_100);
+		for (int i = SimpleDungeonCrawler.character.getInventory().size() - 1; i >= 0; i--) {
+			GenericItem item = SimpleDungeonCrawler.character.getInventory().get(i);
+			g.drawImage(item.itemImage.getImage(), rImage.x, rImage.y, null);
+			rImage.x += SCALED_100;
+			if (rImage.x >= (int) (900 * SCALE_FACTOR)) {
+				rImage.x -= (int) (900 * SCALE_FACTOR);
+				rImage.y += (int) (140 * SCALE_FACTOR);
+			}
+			g.setFont(new Font("Harrington", Font.BOLD, 18));
+			g.drawString(item.itemName, rImage.x, rImage.y + (int) (120 * SCALE_FACTOR));
+		}
 	}
 
 	public InventoryPanel() {
@@ -45,6 +63,7 @@ public class InventoryPanel extends JPanel {
 		startMouseListener();
 		createExitButton();
 		createAddStickButton();
+		createDeleteItemButton();
 		setLayout(null);
 	}
 
@@ -80,7 +99,22 @@ public class InventoryPanel extends JPanel {
 				(int) (((selectedItemNumber - selectedItemNumber % 8) / 8)) * SCALED_140);
 
 		selectedLocation = newPoint;
-		System.out.println("selected item number is " + selectedItemNumber);
+	}
+	
+	private void createDeleteItemButton() {
+		JButton deleteItemButton = new JButton("DELETE ITEM");
+		deleteItemButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(selectedItemNumber);
+				List<GenericItem> inventory = SimpleDungeonCrawler.character.getInventory();
+				int inventorySize = inventory.size();
+				inventory.remove(inventorySize - selectedItemNumber + 1);
+			}
+		});
+		deleteItemButton.setBounds(BUTTON_WIDTH, (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		deleteItemButton.setFont(SimpleDungeonCrawler.font);
+		add(deleteItemButton);
 	}
 
 	private void createAddStickButton() {
@@ -92,10 +126,10 @@ public class InventoryPanel extends JPanel {
 					Stick stick = new Stick();
 					stick.getImage();
 					SimpleDungeonCrawler.character.addItem(stick);
-					removeAll();
+					/*removeAll();
 					add(addStick);
 					createExitButton();
-					refreshInv();
+					refreshInv();*/
 				}
 			}
 		});
