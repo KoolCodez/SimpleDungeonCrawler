@@ -45,13 +45,13 @@ public class InventoryPanel extends JPanel {
 		for (int i = SimpleDungeonCrawler.character.getInventory().size() - 1; i >= 0; i--) {
 			GenericItem item = SimpleDungeonCrawler.character.getInventory().get(i);
 			g.drawImage(item.itemImage.getImage(), rImage.x, rImage.y, null);
+			g.setFont(new Font("Harrington", Font.BOLD, 18));
+			g.drawString(item.itemName, rImage.x, rImage.y + (int) (120 * SCALE_FACTOR));
 			rImage.x += SCALED_100;
 			if (rImage.x >= (int) (900 * SCALE_FACTOR)) {
 				rImage.x -= (int) (900 * SCALE_FACTOR);
 				rImage.y += (int) (140 * SCALE_FACTOR);
 			}
-			g.setFont(new Font("Harrington", Font.BOLD, 18));
-			g.drawString(item.itemName, rImage.x, rImage.y + (int) (120 * SCALE_FACTOR));
 		}
 	}
 
@@ -92,13 +92,7 @@ public class InventoryPanel extends JPanel {
 
 	private void selectItem(Point point) {
 		selectedItemNumber = (point.x - (point.x % SCALED_100)) / SCALED_100 + 8 * ((point.y - (point.y % SCALED_140)) / SCALED_140);
-		if (selectedItemNumber > 20/*SimpleDungeonCrawler.character.getInventory().size()*/) {
-			selectedItemNumber = 20/*SimpleDungeonCrawler.character.getInventory().size()*/;
-		}
-		Point newPoint = new Point((int) ((selectedItemNumber % 8) * SCALED_100),
-				(int) (((selectedItemNumber - selectedItemNumber % 8) / 8)) * SCALED_140);
-
-		selectedLocation = newPoint;
+		refreshItem();
 	}
 	
 	private void createDeleteItemButton() {
@@ -109,12 +103,23 @@ public class InventoryPanel extends JPanel {
 				System.out.println(selectedItemNumber);
 				List<GenericItem> inventory = SimpleDungeonCrawler.character.getInventory();
 				int inventorySize = inventory.size();
-				inventory.remove(inventorySize - selectedItemNumber + 1);
+				inventory.remove(inventorySize - selectedItemNumber - 1);
+				refreshItem();
 			}
 		});
 		deleteItemButton.setBounds(BUTTON_WIDTH, (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		deleteItemButton.setFont(SimpleDungeonCrawler.font);
 		add(deleteItemButton);
+	}
+	
+	private void refreshItem() {
+		if (selectedItemNumber > SimpleDungeonCrawler.character.getInventory().size() - 1) {
+			selectedItemNumber = SimpleDungeonCrawler.character.getInventory().size() - 1;
+		}
+		Point newPoint = new Point((int) ((selectedItemNumber % 8) * SCALED_100),
+				(int) (((selectedItemNumber - selectedItemNumber % 8) / 8)) * SCALED_140);
+
+		selectedLocation = newPoint;
 	}
 
 	private void createAddStickButton() {
@@ -136,31 +141,6 @@ public class InventoryPanel extends JPanel {
 		addStick.setBounds((int) (0 * SCALE_FACTOR), (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		addStick.setFont(SimpleDungeonCrawler.font);
 		add(addStick);
-	}
-
-	public void refreshInv() {
-		Rectangle rText = new Rectangle(0, SCALED_100, SCALED_100, SCALED_40);
-		Rectangle rImage = new Rectangle(0, 0, SCALED_100, SCALED_100);
-		for (int i = SimpleDungeonCrawler.character.getInventory().size() - 1; i >= 0; i--) {
-			GenericItem item = SimpleDungeonCrawler.character.getInventory().get(i);
-			JTextArea text = new JTextArea(item.itemName);
-			text.setEditable(false);
-			text.setBounds(rText);
-			rText.x += SCALED_100;
-			if (rText.x >= (int) (900 * SCALE_FACTOR)) {
-				rText.x -= (int) (900 * SCALE_FACTOR);
-				rText.y += (int) (140 * SCALE_FACTOR);
-			}
-			add(text);
-			JLabel itemLabel = new JLabel(item.itemImage);
-			itemLabel.setBounds(rImage);
-			rImage.x += SCALED_100;
-			if (rImage.x >= (int) (900 * SCALE_FACTOR)) {
-				rImage.x -= (int) (900 * SCALE_FACTOR);
-				rImage.y += (int) (140 * SCALE_FACTOR);
-			}
-			add(itemLabel);
-		}
 	}
 
 	private void createExitButton() {

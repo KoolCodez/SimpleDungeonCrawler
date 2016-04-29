@@ -70,7 +70,6 @@ public class PauseMenuPanel extends JPanel {
 				setVisible(false);
 				InventoryPanel inventoryPanel = new InventoryPanel();
 				SimpleDungeonCrawler.frame.add(inventoryPanel);
-				inventoryPanel.refreshInv();
 			}
 		});
 		invButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
