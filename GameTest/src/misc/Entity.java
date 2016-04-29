@@ -1,5 +1,6 @@
 package misc;
 
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -20,7 +21,16 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	private Point2D battleLoc;
 	private String name = "Entity";
 	private Utilities utilities = new Utilities();
+	private Image image;
 	
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	public Entity() {
 		inventory = new ArrayList<GenericItem>();
 		entityType = "Generic Entity";

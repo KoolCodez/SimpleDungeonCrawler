@@ -11,7 +11,9 @@ import items.GenericWeapon;
 public class BattleRoom extends StandardRoom {
 	
 	public BattleRoom(int enemies) {
-		for (int i = 0; i <= enemies; i++) {
+		super();
+		super.typeOfRoom = BATTLE_TAG;
+		for (int i = 0; i < enemies; i++) {
 			Entity temp = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
 			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
 			weapon.damage = 1.0;
@@ -21,6 +23,7 @@ public class BattleRoom extends StandardRoom {
 			Random rand = new Random();
 			temp.setLocation(rand.nextInt(500) - 250, rand.nextInt(500) - 250);
 			temp.setType("Enemy");
+			temp.setImage(Images.charFront);
 			entities.add(temp);
 			
 		}

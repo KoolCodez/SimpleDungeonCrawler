@@ -11,8 +11,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import combatSystem.Battle;
+import misc.Entity;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
+import misc.StandardRoom;
 import movement.MovementController;
 
 public class CoreGameplayPanel extends JPanel{
@@ -31,6 +33,10 @@ public class CoreGameplayPanel extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		drawPanel(g);
+	}
+	
+	private void drawPanel(Graphics g) {
 		g.drawImage(Images.backgroundImg, 0, 0, null);
 		g.drawImage(Images.charImg, (int) SimpleDungeonCrawler.character.getLocation().getX(),
 				(int) SimpleDungeonCrawler.character.getLocation().getY(), null);
@@ -38,6 +44,11 @@ public class CoreGameplayPanel extends JPanel{
 		g.drawImage(Images.leftArrow, (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.bottomArrow, (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR), null);
 		g.drawImage(Images.topArrow, (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), null);
+		StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		for (int i = 0; i < current.entities.size(); i++) {
+			Entity entity = current.entities.get(i);
+			g.drawImage(entity.getImage(), (int) entity.getLocation().getX(), (int) entity.getLocation().getY(), null);
+		}
 	}
 	
 	private void createMenuButton() {

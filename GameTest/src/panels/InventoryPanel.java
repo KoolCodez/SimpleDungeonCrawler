@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -35,8 +36,8 @@ public class InventoryPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawRect(selectedLocation.x, selectedLocation.y, SCALED_100, SCALED_140);
 		drawInv(g);
+		g.drawRect(selectedLocation.x, selectedLocation.y, SCALED_100, SCALED_140);
 	}
 	
 	private void drawInv(Graphics g) {
@@ -91,7 +92,7 @@ public class InventoryPanel extends JPanel {
 	}
 
 	private void selectItem(Point point) {
-		selectedItemNumber = (point.x - (point.x % SCALED_100)) / SCALED_100 + 8 * ((point.y - (point.y % SCALED_140)) / SCALED_140);
+		selectedItemNumber = (point.x - (point.x % SCALED_100)) / SCALED_100 + 9 * ((point.y - (point.y % SCALED_140)) / SCALED_140);
 		refreshItem();
 	}
 	
@@ -116,8 +117,8 @@ public class InventoryPanel extends JPanel {
 		if (selectedItemNumber > SimpleDungeonCrawler.character.getInventory().size() - 1) {
 			selectedItemNumber = SimpleDungeonCrawler.character.getInventory().size() - 1;
 		}
-		Point newPoint = new Point((int) ((selectedItemNumber % 8) * SCALED_100),
-				(int) (((selectedItemNumber - selectedItemNumber % 8) / 8)) * SCALED_140);
+		Point newPoint = new Point((int) ((selectedItemNumber % 9) * SCALED_100),
+				(int) (((selectedItemNumber - selectedItemNumber % 9) / 9)) * SCALED_140);
 
 		selectedLocation = newPoint;
 	}

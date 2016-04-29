@@ -85,7 +85,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		frame.add(new MainMenu());
 		Refresh r1 = new Refresh();
 		r1.start();
-		roomArray[0][0] = new BattleRoom(0);
+		roomArray[0][0] = new StandardRoom();
 	}
 
 	public static void checkIfLeavingRoom() {
@@ -158,16 +158,16 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void eventChangeRooms(String door) {
 		if (roomArray[loc.x][loc.y] == null) {
-			roomArray[loc.x][loc.y] = new StandardRoom();
 			StandardRoom current = roomArray[loc.x][loc.y];
-			if (current.typeOfRoom.equals("battle")) {
-				System.out.println("battle");
-			}
-			if (current.typeOfRoom.equals("puzzle")) {
-				System.out.println("puzzle");
-			}
-			if (current.typeOfRoom.equals("treasure")) {
-				System.out.println("treasure");
+			current = new StandardRoom();
+			Random rand = new Random();
+			int typeNum = rand.nextInt(10);
+			if (typeNum >= 0 && typeNum <= 2) {
+				current = new StandardRoom();
+			} else if(typeNum >= 3 && typeNum <= 7) {
+				current = new BattleRoom((int) typeNum / 2);
+			} else if(typeNum >= 8 || typeNum <= 9) {
+				current = new StandardRoom();
 			}
 			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
