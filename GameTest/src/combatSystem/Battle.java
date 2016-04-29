@@ -48,7 +48,7 @@ public class Battle {
 			checkLiving(currentRoom);
 			SimpleDungeonCrawler.frame.validate();
 			SimpleDungeonCrawler.frame.repaint();
-			System.out.println("New Turn");
+			System.out.println("New Turn"); //TODO reward for less rounds?
 		}
 	}
 
