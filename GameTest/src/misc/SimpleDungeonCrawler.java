@@ -85,7 +85,9 @@ public class SimpleDungeonCrawler extends JPanel {
 		frame.add(new MainMenu());
 		Refresh r1 = new Refresh();
 		r1.start();
-		roomArray[0][0] = new StandardRoom();
+		StandardRoom current = new StandardRoom();
+		current.typeOfRoom = "Standard";
+		roomArray[0][0] = current;
 	}
 
 	public static void checkIfLeavingRoom() {
@@ -158,17 +160,25 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void eventChangeRooms(String door) {
 		if (roomArray[loc.x][loc.y] == null) {
-			StandardRoom current = roomArray[loc.x][loc.y];
-			current = new StandardRoom();
+			StandardRoom current = new StandardRoom();
+			//current.typeOfRoom = "Standard";
+			roomArray[loc.x][loc.y] = current;
 			Random rand = new Random();
 			int typeNum = rand.nextInt(10);
 			if (typeNum >= 0 && typeNum <= 2) {
-				current = new StandardRoom();
+				current = new TreasureRoom();
 			} else if(typeNum >= 3 && typeNum <= 7) {
-				current = new BattleRoom((int) typeNum / 2);
+				int randomness = rand.nextInt(3);
+				current = new BattleRoom(randomness);
+				System.out.println(randomness);
 			} else if(typeNum >= 8 || typeNum <= 9) {
+				current = new PuzzleRoom();
+			} else {
 				current = new StandardRoom();
 			}
+			roomArray[loc.x][loc.y] = current;
+			System.out.println(current.entities.size());
+			System.out.println(current.typeOfRoom);
 			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		} else {
