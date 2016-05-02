@@ -18,9 +18,11 @@ public class BagPanel {
 	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 	private Battle battle;
 	private JPanel bagPanel;
+	JPanel previousPanel;
 	
-	public BagPanel(Battle battle) {
+	public BagPanel(Battle battle, JPanel previousPanel) {
 		this.battle = battle;
+		this.previousPanel = previousPanel;
 		createBagPanel();
 		createReturnButton();
 		createSelectWeaponButton();
@@ -63,7 +65,7 @@ public class BagPanel {
 		returnButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDungeonCrawler.frame.getContentPane().getComponent(1).setVisible(true); //TODO
+				previousPanel.setVisible(true); //TODO
 				SimpleDungeonCrawler.frame.remove(bagPanel);
 			}
 		});

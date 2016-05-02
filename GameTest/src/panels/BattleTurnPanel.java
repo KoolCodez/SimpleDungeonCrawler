@@ -60,12 +60,13 @@ public class BattleTurnPanel extends JPanel {
 		
 		private void createBagButton() {
 			JButton bagButton = new JButton();
+			JPanel current = this;
 			
 			bagButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
-					SimpleDungeonCrawler.frame.add(new BagPanel(battle).getPanel());
+					SimpleDungeonCrawler.frame.add(new BagPanel(battle, current).getPanel());
 				}
 			});
 			bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (552 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

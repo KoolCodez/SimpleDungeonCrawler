@@ -207,6 +207,8 @@ public class Battle {
 		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) {
 			flee = true;
 			battleTurnPanel.setVisible(false);
+			SimpleDungeonCrawler.loc.x--; //TODO this is probably not right
+			SimpleDungeonCrawler.eventChangeRooms("right");
 			SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
 			successful = true;
 		}
