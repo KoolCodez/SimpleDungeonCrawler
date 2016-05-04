@@ -19,7 +19,6 @@ import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 import misc.Utilities;
-import panels.AttackPanel;
 import panels.BattleTurnPanel;
 import panels.CoreGameplayPanel;
 import misc.*;
@@ -30,12 +29,11 @@ public class Battle {
 	private Entity character;
 	public TurnWait waitForTurn = new TurnWait();
 	public boolean flee = false;
-	AttackPanel attackPanel = new AttackPanel();
 	BattleTurnPanel battleTurnPanel = new BattleTurnPanel(this);
 
 	public Battle() {
 		character = SimpleDungeonCrawler.character;
-		SimpleDungeonCrawler.frame.add(attackPanel);
+		SimpleDungeonCrawler.frame.add(battleTurnPanel);
 	}
 	
 	public void battleSequence() {
@@ -60,22 +58,18 @@ public class Battle {
 		return ent.getType().equals("Friendly");
 	}
 
-	private void switchToTurnPanel() {
-		Component[] variables = SimpleDungeonCrawler.frame.getContentPane().getComponents();
+	private void switchToTurnPhase() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				attackPanel.setVisible(false);
 				battleTurnPanel.addButtonsToTurnPanel();
-				SimpleDungeonCrawler.frame.add(battleTurnPanel);
 			}
 		});
 	}
 	
-	private void switchToAttackPanel() {
+	private void switchToAttackPhase() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				SimpleDungeonCrawler.frame.remove(battleTurnPanel);
-				attackPanel.setVisible(true);
+				battleTurnPanel.removeAll();
 			}
 		});
 	}
@@ -118,14 +112,14 @@ public class Battle {
 			if (isEnemy(currentEntity) && !flee) {
 				currentEntity.attack(character);
 			} else if (isFriendly(currentEntity) && !flee) {
-				switchToTurnPanel();
+				switchToTurnPhase();
 				letPlayerTakeTurn();
 				if (flee) {
 					if (flee(initList)) {
 						return;
 					}
 				}
-				switchToAttackPanel();
+				switchToAttackPhase();
 			} else {
 				printEntityError(initList.get(i));
 			}
@@ -207,7 +201,11 @@ public class Battle {
 		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) {
 			flee = true;
 			battleTurnPanel.setVisible(false);
-			SimpleDungeonCrawler.loc.x--; //TODO this is probably not right
+			if (SimpleDungeonCrawler.loc.x > 0) {
+				SimpleDungeonCrawler.loc.x--; //TODO this is probably not right
+			} else if (SimpleDungeonCrawler.loc.y > 0) {
+				SimpleDungeonCrawler.loc.y--;
+			}
 			SimpleDungeonCrawler.eventChangeRooms("right");
 			SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
 			successful = true;

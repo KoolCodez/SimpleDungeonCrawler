@@ -51,7 +51,7 @@ public class InventoryPanel extends JPanel {
 			rImage.x += SCALED_100;
 			if (rImage.x >= (int) (900 * SCALE_FACTOR)) {
 				rImage.x -= (int) (900 * SCALE_FACTOR);
-				rImage.y += (int) (140 * SCALE_FACTOR);
+				rImage.y += SCALED_140;
 			}
 		}
 	}
@@ -92,7 +92,15 @@ public class InventoryPanel extends JPanel {
 	}
 
 	private void selectItem(Point point) {
-		selectedItemNumber = (point.x - (point.x % SCALED_100)) / SCALED_100 + 9 * ((point.y - (point.y % SCALED_140)) / SCALED_140);
+		point.x -= 10 * SCALE_FACTOR * SCALE_FACTOR;
+		point.y -= 30 * SCALE_FACTOR * SCALE_FACTOR;
+		System.out.println(point.y);
+		int trunkatedX = point.x - (point.x % SCALED_100);
+		int trunkatedY = point.y - (point.y % SCALED_140);
+		System.out.println(point.x);
+		int itemX = trunkatedX / SCALED_100;
+		int itemY = 9 * (trunkatedY / SCALED_140);
+		selectedItemNumber = itemX + itemY;
 		refreshItem();
 	}
 	
