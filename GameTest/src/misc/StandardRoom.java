@@ -1,9 +1,10 @@
 package misc;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class StandardRoom {
+public class StandardRoom implements Serializable {
 	public static final String BATTLE_TAG = "battle";
 	public static final String PUZZLE_TAG = "puzzle";
 	public static final String TREASURE_TAG = "treasure";

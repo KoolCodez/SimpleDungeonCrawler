@@ -3,6 +3,7 @@ package misc;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,7 +11,7 @@ import java.util.Random;
 import items.GenericItem;
 import items.GenericWeapon;
 
-public class Entity implements Comparable<Entity>{ // extend this class with specific entity-classes.
+public class Entity implements Comparable<Entity>, Serializable { // extend this class with specific entity-classes.
 	private String entityType;
 	private Point2D location;
 	private List<GenericItem> inventory;
@@ -21,14 +22,14 @@ public class Entity implements Comparable<Entity>{ // extend this class with spe
 	private Point2D battleLoc;
 	private String name = "Entity";
 	private Utilities utilities = new Utilities();
-	private Image image;
+	private int imageIndex;
 	
-	public Image getImage() {
-		return image;
+	public int getImage() {
+		return imageIndex;
 	}
 
-	public void setImage(Image image) {
-		this.image = image;
+	public void setImage(int index) {
+		this.imageIndex = index;
 	}
 
 	public Entity() {

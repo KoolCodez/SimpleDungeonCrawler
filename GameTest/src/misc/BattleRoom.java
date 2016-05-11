@@ -23,7 +23,7 @@ public class BattleRoom extends StandardRoom {
 			Random rand = new Random();
 			temp.setLocation(250,  250);
 			temp.setType("Enemy");
-			temp.setImage(Images.charFront);
+			temp.setImage(Images.battleGoblin);
 			entities.add(temp);
 			
 		}

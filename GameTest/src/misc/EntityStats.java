@@ -1,6 +1,8 @@
 package misc;
 
-public class EntityStats {
+import java.io.Serializable;
+
+public class EntityStats implements Serializable {
 	private double str;
 	private double dex;
 	private double con;

@@ -8,51 +8,53 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Images {
+	public static Image[] array;
 	//Arrows\\
-	public static Image rightArrow;
-	public static Image leftArrow;
-	public static Image bottomArrow;
-	public static Image topArrow;
-	public static Image rightArrowOn;
-	public static Image leftArrowOn;
-	public static Image bottomArrowOn;
-	public static Image topArrowOn;
-	public static Image rightArrowOff;
-	public static Image leftArrowOff;
-	public static Image bottomArrowOff;
-	public static Image topArrowOff;
+	public static int rightArrow;
+	public static int leftArrow;
+	public static int bottomArrow;
+	public static int topArrow;
+	public static int rightArrowOn;
+	public static int leftArrowOn;
+	public static int bottomArrowOn;
+	public static int topArrowOn;
+	public static int rightArrowOff;
+	public static int leftArrowOff;
+	public static int bottomArrowOff;
+	public static int topArrowOff;
 	//Buttons\\
-	public static Image bagButton;
-	public static Image fightButton;
-	public static Image fleeButton;
-	public static Image moveButton;
-	public static Image resumeButton;
+	public static int bagButton;
+	public static int fightButton;
+	public static int fleeButton;
+	public static int moveButton;
+	public static int resumeButton;
 	//Characters\\
-	public static Image charImg;
-	public static Image charFront;
-	public static Image charLeft;
-	public static Image charRight;
-	public static Image charLeftOpArm;
-	public static Image charRightOpArm;
-	public static Image battleChar;
+	public static int charImg;
+	public static int charFront;
+	public static int charLeft;
+	public static int charRight;
+	public static int charLeftOpArm;
+	public static int charRightOpArm;
+	public static int battleChar;
 	//Enemies\\
-	public static Image battleGoblin;
+	public static int battleGoblinIndex;
 	//Grounds\\
-	public static Image backgroundImg;
+	public static int backgroundImg;
 	//Items\\
-	public static Image stickItem;
-	public static Image stickItem2;
-	public static Image stickItem3;
-	public static Image stickItem4;
-	public static Image stickItem5;
+	public static int stickItem;
+	public static int stickItem2;
+	public static int stickItem3;
+	public static int stickItem4;
+	public static int stickItem5;
 	//Menus\\
-	public static Image battleMenu;
-	public static Image mainMenu;
-	public static Image pauseMenu;
+	public static int battleMenu;
+	public static int mainMenu;
+	public static int pauseMenu;
 	
 	private static double scale = SimpleDungeonCrawler.SCALE_FACTOR;
 	
 	public static void createImages() throws IOException {
+		array = new Image[33];
 		arrows();
 		buttons();
 		characters();
@@ -100,24 +102,26 @@ public class Images {
 	}
 	
 	public static void characters() throws IOException {
-		charFront = ImageIO.read(new File("src\\Textures\\Characters\\MainCharFront.jpg"));
+		Image charFront = ImageIO.read(new File("src\\Textures\\Characters\\MainCharFront.jpg"));
 		charFront = charFront.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		charLeft = ImageIO.read(new File("src\\Textures\\Characters\\MainCharLeft.jpg"));
+		array[charFrontIndex] = charFront;
+		Image charLeft = ImageIO.read(new File("src\\Textures\\Characters\\MainCharLeft.jpg"));
 		charLeft = charLeft.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		charRight = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRight.jpg"));
+		Image charRight = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRight.jpg"));
 		charRight = charRight.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		charLeftOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharLeftRightArmUp.jpg"));
+		Image charLeftOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharLeftRightArmUp.jpg"));
 		charLeftOpArm = charLeftOpArm.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		charRightOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRightLeftArmUp.jpg"));
+		Image charRightOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRightLeftArmUp.jpg"));
 		charRightOpArm = charRightOpArm.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		charImg = charFront;
-		battleChar = ImageIO.read(new File("src\\Textures\\Characters\\BattleMainChar.jpg"));
+		Image charImg = charFront;
+		Image battleChar = ImageIO.read(new File("src\\Textures\\Characters\\BattleMainChar.jpg"));
 		battleChar = battleChar.getScaledInstance((int) (72 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
 	}
 	
 	public static void enemies() throws IOException {
-		battleGoblin = ImageIO.read(new File("src\\Textures\\Enemies\\BattleGoblin.jpg"));
-		battleGoblin = battleGoblin.getScaledInstance((int) (200 * scale), (int) (300 * scale), Image.SCALE_SMOOTH);
+		Image battleGoblin = ImageIO.read(new File("src\\Textures\\Enemies\\BattleGoblin.jpg"));
+		battleGoblin = battleGoblin.getScaledInstance((int) (72 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		array[battleGoblinIndex] = battleGoblin;
 	}
 	
 	public static void grounds() throws IOException { //I AM THE GROUNDS KEEPER

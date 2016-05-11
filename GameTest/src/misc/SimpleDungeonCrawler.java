@@ -51,6 +51,8 @@ import java.awt.event.MouseListener;
 import java.io.*;
 
 public class SimpleDungeonCrawler extends JPanel {
+	private static final String ROOM_ARRAY_SAVE_TAG = "roomArray";
+	private static final String CHARACTER_SAVE_TAG = "character";
 	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
 	public static Point loc = new Point(0, 0);
 	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
@@ -88,6 +90,35 @@ public class SimpleDungeonCrawler extends JPanel {
 		StandardRoom current = new StandardRoom();
 		current.typeOfRoom = "Standard";
 		roomArray[0][0] = current;
+	}
+	
+	public static void saveAllImportantStuff() throws IOException {
+		saveObject(SimpleDungeonCrawler.character, CHARACTER_SAVE_TAG);
+		saveObject(roomArray, ROOM_ARRAY_SAVE_TAG);
+	}
+	
+	public static void loadAllImportantStuff() throws ClassNotFoundException, IOException {
+		character = (Entity) loadObject(CHARACTER_SAVE_TAG);
+		roomArray = (StandardRoom[][]) loadObject(ROOM_ARRAY_SAVE_TAG);
+	}
+	
+	public static void saveObject(Object object, String name) throws IOException {
+		FileOutputStream fileOutput = new FileOutputStream("src\\save\\" + name);
+		ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+		objectOutput.writeObject(object);
+		objectOutput.close();
+		fileOutput.close();
+		System.out.println("Object " + name + " saved.");
+	}
+	
+	public static Object loadObject(String name) throws ClassNotFoundException, IOException {
+		FileInputStream fileInput = new FileInputStream("src\\save\\" + name);
+		ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+		Object object = objectInput.readObject();
+		objectInput.close();
+		fileInput.close();
+		System.out.println("Object " + name + " loaded.");
+		return object;
 	}
 
 	public static void checkIfLeavingRoom() {
