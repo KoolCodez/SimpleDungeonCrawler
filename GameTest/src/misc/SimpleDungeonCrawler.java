@@ -219,20 +219,20 @@ public class SimpleDungeonCrawler extends JPanel {
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		}
 		if (loc.x == 0) {
-			Images.leftArrow = Images.leftArrowOff;
+			Images.leftArrowIndex = Images.leftArrowOffIndex;
 		} else if (loc.x == 9) {
-			Images.rightArrow = Images.rightArrowOff;
+			Images.rightArrowIndex = Images.rightArrowOffIndex;
 		} else {
-			Images.rightArrow = Images.rightArrowOn;
-			Images.leftArrow = Images.leftArrowOn;
+			Images.rightArrowIndex = Images.rightArrowOnIndex;
+			Images.leftArrowIndex = Images.leftArrowOnIndex;
 		}
 		if (loc.y == 0) {
-			Images.topArrow = Images.topArrowOff;
+			Images.topArrowIndex = Images.topArrowOffIndex;
 		} else if (loc.y == 9) {
-			Images.bottomArrow = Images.bottomArrowOff;
+			Images.bottomArrowIndex = Images.bottomArrowOffIndex;
 		} else {
-			Images.topArrow = Images.topArrowOn;
-			Images.bottomArrow = Images.bottomArrowOn;
+			Images.topArrowIndex = Images.topArrowOnIndex;
+			Images.bottomArrowIndex = Images.bottomArrowOnIndex;
 		}
 		if (door.equals("left")) {
 			character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);

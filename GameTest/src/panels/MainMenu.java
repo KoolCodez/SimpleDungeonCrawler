@@ -29,7 +29,7 @@ public class MainMenu extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.drawImage(Images.mainMenu, (int) (0 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), SimpleDungeonCrawler.MENU_SIZE,
+		g.drawImage(Images.array[Images.mainMenuIndex], (int) (0 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), SimpleDungeonCrawler.MENU_SIZE,
 				SimpleDungeonCrawler.MENU_SIZE, null);
 
 	}

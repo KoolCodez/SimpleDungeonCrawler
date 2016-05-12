@@ -12,9 +12,9 @@ public class MoveRight extends Thread {
 					SimpleDungeonCrawler.movePlayer(speed, 0);
 					count++;
 					if (count % 10 < 5) {
-						Images.charImg = Images.charRightOpArm;
+						Images.charImgIndex = Images.charRightOpArmIndex;
 					} else {
-						Images.charImg = Images.charRight;
+						Images.charImgIndex = Images.charRightIndex;
 					}
 				}
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);

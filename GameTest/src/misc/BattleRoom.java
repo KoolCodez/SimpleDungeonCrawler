@@ -15,7 +15,7 @@ public class BattleRoom extends StandardRoom {
 		typeOfRoom = BATTLE_TAG;
 		for (int i = 0; i <= enemies; i++) {
 			Entity temp = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
-			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
+			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
 			weapon.damage = 1.0;
 			weapon.ranged = false;
 			weapon.speed = 1.0;
@@ -23,7 +23,7 @@ public class BattleRoom extends StandardRoom {
 			Random rand = new Random();
 			temp.setLocation(250,  250);
 			temp.setType("Enemy");
-			temp.setImage(Images.battleGoblin);
+			temp.setImage(Images.battleGoblinIndex);
 			entities.add(temp);
 			
 		}

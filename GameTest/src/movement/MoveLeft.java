@@ -12,9 +12,9 @@ public class MoveLeft extends Thread{
 					SimpleDungeonCrawler.movePlayer(-speed, 0);
 					count++;
 					if (count % 10 < 5) {
-						Images.charImg = Images.charLeftOpArm;
+						Images.charImgIndex = Images.charLeftOpArmIndex;
 					} else {
-						Images.charImg = Images.charLeft;
+						Images.charImgIndex = Images.charLeftIndex;
 					}
 				}
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);

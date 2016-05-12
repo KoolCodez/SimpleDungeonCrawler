@@ -32,18 +32,18 @@ public class BattleTurnPanel extends JPanel {
 		
 		@Override
 		public void paintComponent(Graphics g) {
-			g.drawImage(Images.battleMenu, 0, 0, MENU_SIZE, MENU_SIZE, null);
+			g.drawImage(Images.array[Images.battleMenuIndex], 0, 0, MENU_SIZE, MENU_SIZE, null);
 			g.setColor(Color.red);
 			g.fillRect((int) (214 * SCALE_FACTOR), (int) (932 * SCALE_FACTOR), (int) (440 * SCALE_FACTOR
 					* SimpleDungeonCrawler.character.stats.getHealth() / SimpleDungeonCrawler.character.stats.getMaxHealth()),
 					(int) (36 * SCALE_FACTOR));
 			g.setColor(Color.black);
-			g.drawImage(Images.battleChar, (int) (300 * SCALE_FACTOR), (int) (600 * SCALE_FACTOR),
+			g.drawImage(Images.array[Images.battleCharIndex], (int) (300 * SCALE_FACTOR), (int) (600 * SCALE_FACTOR),
 					(int) (200 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR), null);
 			StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 			for (int i = 0; i < current.entities.size(); i++) {
 				Point2D point = current.entities.get(i).getBattleLoc();
-				g.drawImage(Images.battleGoblin, (int) point.getX(), (int) point.getY(), (int) (200 * SCALE_FACTOR),
+				g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (200 * SCALE_FACTOR),
 						(int) (100 * SCALE_FACTOR), null);
 			}
 			g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50, 50);
@@ -70,7 +70,7 @@ public class BattleTurnPanel extends JPanel {
 				}
 			});
 			bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (552 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-			bagButton.setIcon(new ImageIcon(Images.bagButton));
+			bagButton.setIcon(new ImageIcon(Images.array[Images.bagButtonIndex]));
 			add(bagButton);
 		}
 		
@@ -90,7 +90,7 @@ public class BattleTurnPanel extends JPanel {
 				}
 			});
 			fightButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-			fightButton.setIcon(new ImageIcon(Images.fightButton));
+			fightButton.setIcon(new ImageIcon(Images.array[Images.fightButtonIndex]));
 			add(fightButton);
 		}
 		
@@ -110,7 +110,7 @@ public class BattleTurnPanel extends JPanel {
 				}
 			});
 			moveButton.setBounds((int) (698 * SCALE_FACTOR), (int) (348 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-			moveButton.setIcon(new ImageIcon(Images.moveButton));
+			moveButton.setIcon(new ImageIcon(Images.array[Images.moveButtonIndex]));
 			add(moveButton);
 		}
 
@@ -124,7 +124,7 @@ public class BattleTurnPanel extends JPanel {
 				}
 			});
 			fleeButton.setBounds((int) (698 * SCALE_FACTOR), (int) (752 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-			fleeButton.setIcon(new ImageIcon(Images.fleeButton));
+			fleeButton.setIcon(new ImageIcon(Images.array[Images.fleeButtonIndex]));
 			add(fleeButton);
 		}
 

@@ -37,17 +37,17 @@ public class CoreGameplayPanel extends JPanel{
 	}
 	
 	private void drawPanel(Graphics g) {
-		g.drawImage(Images.backgroundImg, 0, 0, null);
-		g.drawImage(Images.charImg, (int) SimpleDungeonCrawler.character.getLocation().getX(),
+		g.drawImage(Images.array[Images.backgroundImgIndex], 0, 0, null);
+		g.drawImage(Images.array[Images.charImgIndex], (int) SimpleDungeonCrawler.character.getLocation().getX(),
 				(int) SimpleDungeonCrawler.character.getLocation().getY(), null);
-		g.drawImage(Images.rightArrow, (int) (948 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
-		g.drawImage(Images.leftArrow, (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
-		g.drawImage(Images.bottomArrow, (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR), null);
-		g.drawImage(Images.topArrow, (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), null);
+		g.drawImage(Images.array[Images.rightArrowIndex], (int) (948 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
+		g.drawImage(Images.array[Images.leftArrowIndex], (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
+		g.drawImage(Images.array[Images.bottomArrowIndex], (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR), null);
+		g.drawImage(Images.array[Images.topArrowIndex], (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), null);
 		StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		for (int i = 0; i < current.entities.size(); i++) {
 			Entity entity = current.entities.get(i);
-			g.drawImage(entity.getImage(), (int) entity.getLocation().getX(), (int) entity.getLocation().getY(), null);
+			g.drawImage(Images.array[entity.getImage()], (int) entity.getLocation().getX(), (int) entity.getLocation().getY(), null);
 		}
 	}
 	
