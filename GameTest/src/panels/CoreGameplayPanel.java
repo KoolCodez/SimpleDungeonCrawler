@@ -2,8 +2,11 @@ package panels;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -11,6 +14,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import combatSystem.Battle;
+import combatSystem.FallingDamageNumber;
 import misc.Entity;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
@@ -23,12 +27,15 @@ public class CoreGameplayPanel extends JPanel{
 	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
 	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
+	private ArrayList<FallingDamageNumber> damageNumbers;
 
 	public CoreGameplayPanel() {
 		MovementController movementController = new MovementController(this);
+		createTestDamageButton();
 		createMenuButton();
 		createAttackButton();
 		setLayout(null);
+		damageNumbers = new ArrayList<FallingDamageNumber>();
 	}
 	
 	@Override
@@ -49,6 +56,33 @@ public class CoreGameplayPanel extends JPanel{
 			Entity entity = current.entities.get(i);
 			g.drawImage(Images.array[entity.getImage()], (int) entity.getLocation().getX(), (int) entity.getLocation().getY(), null);
 		}
+		for (int i = 0; i < damageNumbers.size(); i++) {
+			FallingDamageNumber currentNum = damageNumbers.get(i);
+			Point point = currentNum.getPoint();
+			g.drawString(currentNum.getDamage() + "", point.x, point.y);
+		}
+	}
+	
+	private void createTestDamageButton() {
+		System.out.println("working");
+		JButton testDamage = new JButton("DAMAGE");
+		testDamage.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				/*double damage = 3;
+				Point2D doublePoint = SimpleDungeonCrawler.character.getLocation();
+				Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
+				FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
+				damageNumbers.add(currentFallingDamage);
+				currentFallingDamage.start();*/
+			}
+		});
+		testDamage.setBounds((int) (700 * SCALE_FACTOR), (int) (200 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+
+		testDamage.setFont(SimpleDungeonCrawler.font);
+		add(testDamage);
+		System.out.println("created");
+				
 	}
 	
 	private void createMenuButton() {

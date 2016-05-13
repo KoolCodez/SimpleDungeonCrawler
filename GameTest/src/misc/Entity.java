@@ -46,7 +46,7 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
 	}
 	
-	public void attack(Entity enemy) {
+	public double attack(Entity enemy) {
 		System.out.println(name + entityType + " Attack!");
 		// does it hit
 		if (enemy.stats.getDex() - stats.getDex() + 10 < utilities.r20()) {
@@ -56,8 +56,10 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 			// subtract damage
 			enemy.stats.setHealth(-damage);
 			System.out.println("He Hit For " + damage + "Damage!");
+			return damage;
 		} else {
 			System.out.println("He Missed!");
+			return 0;
 		}
 	}
 	
