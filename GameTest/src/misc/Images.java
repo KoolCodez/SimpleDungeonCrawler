@@ -67,7 +67,7 @@ public class Images {
 	}
 	
 	public static void arrows() throws IOException {
-		Image rightArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\RightArrowOn.jpg"));
+		Image rightArrowOn = ImageIO.read(new File("src/Textures/Arrows/RightArrowOn.jpg"));
 		rightArrowOn = rightArrowOn.getScaledInstance((int) (50 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
 		array[rightArrowOnIndex] = rightArrowOn;
 		Image leftArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\LeftArrowOn.jpg"));

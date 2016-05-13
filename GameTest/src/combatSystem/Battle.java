@@ -91,7 +91,7 @@ public class Battle {
 	}
 	
 	private void setDefaultWeapon() { //TODO this is temporary, should go away when inventory is fixed
-		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.stickItem), "weapon");
+		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
 		weapon.damage = 1.0;
 		weapon.ranged = false;
 		weapon.speed = 1.0;
