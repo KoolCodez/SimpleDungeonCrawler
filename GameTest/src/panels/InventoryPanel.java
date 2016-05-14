@@ -94,10 +94,8 @@ public class InventoryPanel extends JPanel {
 	private void selectItem(Point point) {
 		point.x -= 10 * SCALE_FACTOR * SCALE_FACTOR;
 		point.y -= 30 * SCALE_FACTOR * SCALE_FACTOR;
-		System.out.println(point.y);
 		int trunkatedX = point.x - (point.x % SCALED_100);
 		int trunkatedY = point.y - (point.y % SCALED_140);
-		System.out.println(point.x);
 		int itemX = trunkatedX / SCALED_100;
 		int itemY = 9 * (trunkatedY / SCALED_140);
 		selectedItemNumber = itemX + itemY;
@@ -109,7 +107,6 @@ public class InventoryPanel extends JPanel {
 		deleteItemButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(selectedItemNumber);
 				List<GenericItem> inventory = SimpleDungeonCrawler.character.getInventory();
 				int inventorySize = inventory.size();
 				inventory.remove(inventorySize - selectedItemNumber - 1);

@@ -8,13 +8,15 @@ public class FallingDamageNumber extends Thread {
 	
 	private double damage;
 	private Point startingLocation;
-	private Point velocity;
-	private final double acceleration = -3;
+	private double velocityX;
+	private double velocityY;
+	private final double acceleration = 1;
 	
 	public FallingDamageNumber(double damage, Point startLoc) {
 		this.damage = damage;
 		startingLocation = startLoc;
-		velocity = new Point(12, (int) (Math.random() * 2 - 1));
+		velocityX = (Math.random() - .5) * 12;
+		velocityY = -8;
 	}
 	
 	public Point getPoint() {
@@ -29,11 +31,11 @@ public class FallingDamageNumber extends Thread {
 	
 	public void run() {
 		try {
-			for (int i = 0; i < 100; i++) {
-				startingLocation.x += velocity.x;
-				startingLocation.y += velocity.y;
-				velocity.y += acceleration;
-				Thread.sleep(SimpleDungeonCrawler.refreshRate);
+			for (int i = 0; i < 50; i++) {
+				startingLocation.x += velocityX;
+				startingLocation.y += velocityY;
+				velocityY += acceleration;
+				Thread.sleep(SimpleDungeonCrawler.refreshRate * 2);
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

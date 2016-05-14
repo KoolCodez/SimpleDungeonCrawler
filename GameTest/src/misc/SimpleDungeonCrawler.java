@@ -53,15 +53,14 @@ import java.io.*;
 public class SimpleDungeonCrawler extends JPanel {
 	private static final String ROOM_ARRAY_SAVE_TAG = "roomArray";
 	private static final String CHARACTER_SAVE_TAG = "character";
-	public static StandardRoom[][] roomArray = new StandardRoom[10][10];
-	public static Point loc = new Point(0, 0);
-	// public static Point2D character.getLocation() = new Point2D.Double(250.0,
-	// 250.0);
+	private static final String LOC_SAVE_TAG = "loc";
 	public static final double SCALE_FACTOR = .75;
 	public static final int SCALED_100 = (int) (100 * SCALE_FACTOR);
 	public static final int MENU_SIZE = (int) (1000 * SCALE_FACTOR);
 	public static final int BUTTON_HEIGHT = (int) (100 * SCALE_FACTOR);
 	public static final int BUTTON_WIDTH = (int) (300 * SCALE_FACTOR);
+	public static StandardRoom[][] roomArray;
+	public static Point loc;
 	public static Entity character;
 	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
@@ -71,35 +70,68 @@ public class SimpleDungeonCrawler extends JPanel {
 	public static JFrame frame;
 	public static Font font = new Font("Harrington", Font.BOLD, 18);
 
-	public static void main(String[] args) throws InterruptedException, IOException {
+	public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
 		//String current = System.getProperty("user.dir");
 		// System.out.println("Current working directory in Java : " + current);
+		frameSetup();
+		Images.createImages();
+		createCharacter();
+		createRoomArray();
+		createLoc();
+		Refresh r1 = new Refresh();
+		r1.start();
+		refreshArrows();
+	}
+	
+	private static void frameSetup() {
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize((int) (1000 * SCALE_FACTOR + 16), (int) (1000 * SCALE_FACTOR + 38));
 		frame.setVisible(true);
-		g =frame.getGraphics();
-		g.setColor(Color.white);
-		character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
-		character.setType("Friendly");
-		Images.createImages();
-		character.addItem(new Stick());
 		frame.add(new MainMenu());
-		Refresh r1 = new Refresh();
-		r1.start();
-		StandardRoom current = new StandardRoom();
-		current.typeOfRoom = "Standard";
-		roomArray[0][0] = current;
+		g = frame.getGraphics();
+		g.setColor(Color.white);
+	}
+	
+	private static void createLoc() throws ClassNotFoundException, IOException {
+		if (new File("src\\save\\" + LOC_SAVE_TAG).exists()) {
+			loc = (Point) loadObject(LOC_SAVE_TAG);
+		} else {
+			loc = new Point(0, 0);
+		}
+	}
+	
+	private static void createCharacter() throws ClassNotFoundException, IOException {
+		if (new File("src\\save\\" + CHARACTER_SAVE_TAG).exists()) {
+			character = (Entity) loadObject(CHARACTER_SAVE_TAG);
+		} else {
+			character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
+			character.setType("Friendly");
+			character.addItem(new Stick());
+		}
+	}
+	
+	private static void createRoomArray() throws ClassNotFoundException, IOException {
+		if (new File("src\\save\\" + ROOM_ARRAY_SAVE_TAG).exists()) {
+			roomArray = (StandardRoom[][]) loadObject(ROOM_ARRAY_SAVE_TAG);
+		} else {
+			roomArray = new StandardRoom[10][10];
+			StandardRoom current = new StandardRoom();
+			current.typeOfRoom = "Standard";
+			roomArray[0][0] = current;
+		}
 	}
 	
 	public static void saveAllImportantStuff() throws IOException {
 		saveObject(SimpleDungeonCrawler.character, CHARACTER_SAVE_TAG);
 		saveObject(roomArray, ROOM_ARRAY_SAVE_TAG);
+		saveObject(loc, LOC_SAVE_TAG);
 	}
 	
 	public static void loadAllImportantStuff() throws ClassNotFoundException, IOException {
 		character = (Entity) loadObject(CHARACTER_SAVE_TAG);
 		roomArray = (StandardRoom[][]) loadObject(ROOM_ARRAY_SAVE_TAG);
+		loc = (Point) loadObject(LOC_SAVE_TAG);
 	}
 	
 	public static void saveObject(Object object, String name) throws IOException {
@@ -112,13 +144,13 @@ public class SimpleDungeonCrawler extends JPanel {
 	}
 	
 	public static Object loadObject(String name) throws ClassNotFoundException, IOException {
-		FileInputStream fileInput = new FileInputStream("src\\save\\" + name);
-		ObjectInputStream objectInput = new ObjectInputStream(fileInput);
-		Object object = objectInput.readObject();
-		objectInput.close();
-		fileInput.close();
-		System.out.println("Object " + name + " loaded.");
-		return object;
+			FileInputStream fileInput = new FileInputStream("src\\save\\" + name);
+			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+			Object object = objectInput.readObject();
+			objectInput.close();
+			fileInput.close();
+			System.out.println("Object " + name + " loaded.");
+			return object;
 	}
 
 	public static void checkIfLeavingRoom() {
@@ -218,6 +250,22 @@ public class SimpleDungeonCrawler extends JPanel {
 			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		}
+		refreshArrows();
+		if (door.equals("left")) {
+			character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+		} else if (door.equals("right")) {
+			character.getLocation().setLocation(800 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+		} else if (door.equals("top")) {
+			character.getLocation().setLocation(500 * SCALE_FACTOR, 100 * SCALE_FACTOR);
+		} else if (door.equals("bottom")) {
+			character.getLocation().setLocation(500 * SCALE_FACTOR, 800 * SCALE_FACTOR);
+		} else {
+			character.getLocation().setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+		}
+		
+	}
+
+	private static void refreshArrows() {
 		if (loc.x == 0) {
 			Images.leftArrowIndex = Images.leftArrowOffIndex;
 		} else if (loc.x == 9) {
@@ -234,17 +282,5 @@ public class SimpleDungeonCrawler extends JPanel {
 			Images.topArrowIndex = Images.topArrowOnIndex;
 			Images.bottomArrowIndex = Images.bottomArrowOnIndex;
 		}
-		if (door.equals("left")) {
-			character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
-		} else if (door.equals("right")) {
-			character.getLocation().setLocation(800 * SCALE_FACTOR, 500 * SCALE_FACTOR);
-		} else if (door.equals("top")) {
-			character.getLocation().setLocation(500 * SCALE_FACTOR, 100 * SCALE_FACTOR);
-		} else if (door.equals("bottom")) {
-			character.getLocation().setLocation(500 * SCALE_FACTOR, 800 * SCALE_FACTOR);
-		} else {
-			character.getLocation().setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
-		}
-		
 	}
 }

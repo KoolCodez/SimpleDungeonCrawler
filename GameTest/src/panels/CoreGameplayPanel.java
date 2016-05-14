@@ -1,5 +1,6 @@
 package panels;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -56,33 +57,33 @@ public class CoreGameplayPanel extends JPanel{
 			Entity entity = current.entities.get(i);
 			g.drawImage(Images.array[entity.getImage()], (int) entity.getLocation().getX(), (int) entity.getLocation().getY(), null);
 		}
+		g.setColor(Color.red);
 		for (int i = 0; i < damageNumbers.size(); i++) {
 			FallingDamageNumber currentNum = damageNumbers.get(i);
 			Point point = currentNum.getPoint();
+			g.setFont(SimpleDungeonCrawler.font);
 			g.drawString(currentNum.getDamage() + "", point.x, point.y);
 		}
+		g.setColor(Color.black);
 	}
 	
 	private void createTestDamageButton() {
-		System.out.println("working");
 		JButton testDamage = new JButton("DAMAGE");
 		testDamage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*double damage = 3;
+				double damage = 10.0 * Math.random();
 				Point2D doublePoint = SimpleDungeonCrawler.character.getLocation();
 				Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
 				FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
 				damageNumbers.add(currentFallingDamage);
-				currentFallingDamage.start();*/
+				currentFallingDamage.start();
 			}
 		});
 		testDamage.setBounds((int) (700 * SCALE_FACTOR), (int) (200 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 
 		testDamage.setFont(SimpleDungeonCrawler.font);
 		add(testDamage);
-		System.out.println("created");
-				
 	}
 	
 	private void createMenuButton() {
