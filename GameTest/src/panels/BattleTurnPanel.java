@@ -2,9 +2,11 @@ package panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import combatSystem.Battle;
+import combatSystem.FallingDamageNumber;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
@@ -23,10 +26,12 @@ public class BattleTurnPanel extends JPanel {
 		private static int MENU_SIZE = SimpleDungeonCrawler.MENU_SIZE;
 		private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 		private Battle battle;
+		private ArrayList<FallingDamageNumber> damageNumbers;
 		
 		public BattleTurnPanel(Battle battle) {
 			this.battle = battle;
 			setLayout(null);
+			damageNumbers = new ArrayList<FallingDamageNumber>();
 			//addButtonsToTurnPanel();
 		}
 		
@@ -45,6 +50,11 @@ public class BattleTurnPanel extends JPanel {
 				Point2D point = current.entities.get(i).getBattleLoc();
 				g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (200 * SCALE_FACTOR),
 						(int) (100 * SCALE_FACTOR), null);
+			}
+			for (int i = 0; i < damageNumbers.size(); i++) {
+				FallingDamageNumber currentNum = damageNumbers.get(i);
+				Point point = currentNum.getPoint();
+				g.drawString(currentNum.getDamage() + "", point.x, point.y);
 			}
 			g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50, 50);
 			// g.drawString(console1.get(console1.size() - 1), 10, 100);
@@ -81,9 +91,14 @@ public class BattleTurnPanel extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					if (battle.waitForTurn.getTurnPoints() >= 3) {
 						battle.waitForTurn.setTurnPoints(-3);
-						SimpleDungeonCrawler.character.attack(
+						double damage = SimpleDungeonCrawler.character.attack(
 								SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
 										.get(SimpleDungeonCrawler.character.getSelectedEntity()));
+						Point2D doublePoint = SimpleDungeonCrawler.character.getLocation();
+						Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
+						FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
+						damageNumbers.add(currentFallingDamage);
+						currentFallingDamage.start();
 					} else {
 						System.out.println("Not enough turn points");
 					}
