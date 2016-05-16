@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import combatSystem.Battle;
+import combatSystem.EntityShaker;
 import combatSystem.FallingDamageNumber;
 import misc.Entity;
 import misc.Images;
@@ -78,6 +79,9 @@ public class CoreGameplayPanel extends JPanel{
 				FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
 				damageNumbers.add(currentFallingDamage);
 				currentFallingDamage.start();
+				
+				EntityShaker eShake = new EntityShaker(SimpleDungeonCrawler.character);
+				eShake.start();
 			}
 		});
 		testDamage.setBounds((int) (700 * SCALE_FACTOR), (int) (200 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
