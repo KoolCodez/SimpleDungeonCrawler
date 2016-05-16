@@ -51,11 +51,14 @@ public class BattleTurnPanel extends JPanel {
 				g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (200 * SCALE_FACTOR),
 						(int) (100 * SCALE_FACTOR), null);
 			}
+			g.setColor(Color.red);
 			for (int i = 0; i < damageNumbers.size(); i++) {
 				FallingDamageNumber currentNum = damageNumbers.get(i);
 				Point point = currentNum.getPoint();
+				g.setFont(SimpleDungeonCrawler.font);
 				g.drawString(currentNum.getDamage() + "", point.x, point.y);
 			}
+			g.setColor(Color.black);
 			g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50, 50);
 			// g.drawString(console1.get(console1.size() - 1), 10, 100);
 		}
