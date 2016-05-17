@@ -2,6 +2,7 @@ package combatSystem;
 
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 import misc.Utilities;
 import panels.BattleTurnPanel;
+import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
 import misc.*;
 
@@ -47,6 +49,22 @@ public class Battle {
 			SimpleDungeonCrawler.frame.validate();
 			SimpleDungeonCrawler.frame.repaint();
 			System.out.println("New Turn"); //TODO reward for less rounds?
+		}
+	}
+	
+	public void characterAttack(BattleViewPanel battleView) {
+		if (waitForTurn.getTurnPoints() >= 3) {
+			waitForTurn.setTurnPoints(-3);
+			double damage = SimpleDungeonCrawler.character.attack(
+					SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
+							.get(SimpleDungeonCrawler.character.getSelectedEntity()));
+			Point2D doublePoint = SimpleDungeonCrawler.character.getLocation();
+			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
+			FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
+			battleView.addDamageNumber(currentFallingDamage);
+			currentFallingDamage.start();
+		} else {
+			System.out.println("Not enough turn points");
 		}
 	}
 

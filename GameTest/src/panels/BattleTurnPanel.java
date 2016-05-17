@@ -26,12 +26,12 @@ public class BattleTurnPanel extends JPanel {
 		private static int MENU_SIZE = SimpleDungeonCrawler.MENU_SIZE;
 		private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 		private Battle battle;
-		private ArrayList<FallingDamageNumber> damageNumbers;
+		private BattleViewPanel battleView;
 		
 		public BattleTurnPanel(Battle battle) {
 			this.battle = battle;
 			setLayout(null);
-			damageNumbers = new ArrayList<FallingDamageNumber>();
+			
 			//addButtonsToTurnPanel();
 		}
 		
@@ -43,22 +43,8 @@ public class BattleTurnPanel extends JPanel {
 					* SimpleDungeonCrawler.character.stats.getHealth() / SimpleDungeonCrawler.character.stats.getMaxHealth()),
 					(int) (36 * SCALE_FACTOR));
 			g.setColor(Color.black);
-			g.drawImage(Images.array[Images.battleCharIndex], (int) (300 * SCALE_FACTOR), (int) (600 * SCALE_FACTOR),
-					(int) (200 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR), null);
-			StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
-			for (int i = 0; i < current.entities.size(); i++) {
-				Point2D point = current.entities.get(i).getBattleLoc();
-				g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (200 * SCALE_FACTOR),
-						(int) (100 * SCALE_FACTOR), null);
-			}
-			g.setColor(Color.red);
-			for (int i = 0; i < damageNumbers.size(); i++) {
-				FallingDamageNumber currentNum = damageNumbers.get(i);
-				Point point = currentNum.getPoint();
-				g.setFont(SimpleDungeonCrawler.font);
-				g.drawString(currentNum.getDamage() + "", point.x, point.y);
-			}
-			g.setColor(Color.black);
+			
+			
 			g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50, 50);
 			// g.drawString(console1.get(console1.size() - 1), 10, 100);
 		}
@@ -69,6 +55,11 @@ public class BattleTurnPanel extends JPanel {
 			createMoveButton();
 			createBagButton();
 			createFleeButton();
+		}
+		
+		private void createBattleViewPanel() {
+			battleView = new BattleViewPanel(battle);
+			add(battleView);
 		}
 		
 		private void createBagButton() {
@@ -92,19 +83,7 @@ public class BattleTurnPanel extends JPanel {
 			fightButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (battle.waitForTurn.getTurnPoints() >= 3) {
-						battle.waitForTurn.setTurnPoints(-3);
-						double damage = SimpleDungeonCrawler.character.attack(
-								SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
-										.get(SimpleDungeonCrawler.character.getSelectedEntity()));
-						Point2D doublePoint = SimpleDungeonCrawler.character.getLocation();
-						Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
-						FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
-						damageNumbers.add(currentFallingDamage);
-						currentFallingDamage.start();
-					} else {
-						System.out.println("Not enough turn points");
-					}
+					battle.characterAttack(battleView);
 				}
 			});
 			fightButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
