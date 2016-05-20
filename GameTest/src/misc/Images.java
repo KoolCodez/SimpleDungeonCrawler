@@ -35,6 +35,7 @@ public class Images {
 	public static final int battleGoblinIndex = 20;
 	//Grounds\\
 	public static final int backgroundImgIndex = 21;
+	public static final int battleViewBackgroundIndex = 30;
 	//Items\\
 	public static final int stickItemIndex = 22;
 	public static final int stickItem2Index = 23;
@@ -56,7 +57,7 @@ public class Images {
 	private static double scale = SimpleDungeonCrawler.SCALE_FACTOR;
 	
 	public static void createImages() throws IOException {
-		array = new Image[30];
+		array = new Image[31];
 		arrows();
 		buttons();
 		characters();
@@ -151,6 +152,9 @@ public class Images {
 		Image backgroundImg = ImageIO.read(new File("src\\Textures\\Grounds\\BasicGround.jpg"));
 		backgroundImg = backgroundImg.getScaledInstance((int) (1000 * scale), (int) (1000 * scale), Image.SCALE_SMOOTH);
 		array[backgroundImgIndex] = backgroundImg;
+		Image battleViewBackground = ImageIO.read(new File("src\\Textures\\Grounds\\BasicGround.jpg"));
+		battleViewBackground = battleViewBackground.getScaledInstance((int) (697 * scale), (int) (710 * scale), Image.SCALE_SMOOTH);
+		array[battleViewBackgroundIndex] = battleViewBackground;
 	}
 	
 	public static void items() throws IOException {

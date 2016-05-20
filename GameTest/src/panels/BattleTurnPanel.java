@@ -31,7 +31,7 @@ public class BattleTurnPanel extends JPanel {
 		public BattleTurnPanel(Battle battle) {
 			this.battle = battle;
 			setLayout(null);
-			
+			createBattleViewPanel();
 			//addButtonsToTurnPanel();
 		}
 		
