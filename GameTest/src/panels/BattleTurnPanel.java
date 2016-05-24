@@ -49,6 +49,10 @@ public class BattleTurnPanel extends JPanel {
 			// g.drawString(console1.get(console1.size() - 1), 10, 100);
 		}
 		
+		public void addBattleViewPanel() {
+			createBattleViewPanel();
+		}
+		
 		public void addButtonsToTurnPanel() {
 			createFightButton();
 			createEndTurnButton();

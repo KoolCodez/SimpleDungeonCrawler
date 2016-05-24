@@ -55,10 +55,10 @@ public class Battle {
 	public void characterAttack(BattleViewPanel battleView) {
 		if (waitForTurn.getTurnPoints() >= 3) {
 			waitForTurn.setTurnPoints(-3);
-			double damage = SimpleDungeonCrawler.character.attack(
-					SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
-							.get(SimpleDungeonCrawler.character.getSelectedEntity()));
-			Point2D doublePoint = SimpleDungeonCrawler.character.getLocation();
+			Entity targetedEntity = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
+					.get(SimpleDungeonCrawler.character.getSelectedEntity());
+			double damage = SimpleDungeonCrawler.character.attack(targetedEntity);
+			Point2D doublePoint = targetedEntity.getLocation();
 			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
 			FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
 			battleView.addDamageNumber(currentFallingDamage);
@@ -88,6 +88,7 @@ public class Battle {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				battleTurnPanel.removeAll();
+				battleTurnPanel.addBattleViewPanel();
 			}
 		});
 	}

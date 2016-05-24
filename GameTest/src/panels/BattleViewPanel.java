@@ -25,7 +25,6 @@ public class BattleViewPanel extends JPanel {
 		battle = b;
 		damageNumbers = new ArrayList<FallingDamageNumber>();
 		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR)); //TODO fix pls
-		System.out.println("created battleViewPanel");
 	}
 	
 	public void addDamageNumber(FallingDamageNumber n) {
@@ -37,12 +36,12 @@ public class BattleViewPanel extends JPanel {
 		g.drawImage(Images.array[Images.battleViewBackgroundIndex], 0, 0, (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR), null);
 		Point2D charLoc = character.getBattleLoc();
 		g.drawImage(Images.array[Images.battleCharIndex], (int) charLoc.getX(), (int) charLoc.getY(),
-				(int) (200 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR), null);
+				(int) (100 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR), null);
 		StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		for (int i = 0; i < current.entities.size(); i++) {
 			Point2D point = current.entities.get(i).getBattleLoc();
-			g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (200 * SCALE_FACTOR),
-					(int) (100 * SCALE_FACTOR), null);
+			g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (100 * SCALE_FACTOR),
+					(int) (50 * SCALE_FACTOR), null);
 		}
 		g.setColor(Color.red);
 		for (int i = 0; i < damageNumbers.size(); i++) {
