@@ -184,31 +184,7 @@ public class Battle {
 		}
 	}
 
-	public void move() {
-		MouseClick mouse = new MouseClick();
-		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
-		synchronized (mouse) {
-			try {
-				mouse.wait();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-		}
-		Point point = mouse.getLocation();
-		double x = character.getBattleLoc().getX();
-		double y = character.getBattleLoc().getY();
-		if (Math.abs(x - point.x) * (1 / SCALED_100) + Math.abs(y - point.y) * (1 / SCALED_100) < waitForTurn
-				.getTurnPoints()) {
-			// TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
-			// possibly make setBattleLocation change location in a backwards
-			// orientation?
-			// ALSO THIS IS GLITCHING, so...
-			System.out.println("legalClick");
-		} else {
-			System.out.println("illegal, u r haxor");
-		}
-		// TODO MOVEMENT
-	}
+	
 
 	public static void bag() {
 
@@ -225,7 +201,7 @@ public class Battle {
 			} else if (SimpleDungeonCrawler.loc.y > 0) {
 				SimpleDungeonCrawler.loc.y--;
 			}
-			SimpleDungeonCrawler.eventChangeRooms("right");
+			//SimpleDungeonCrawler.eventChangeRooms("right");
 			SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
 			successful = true;
 		}

@@ -20,8 +20,10 @@ public class BattleViewPanel extends JPanel {
 	private Battle battle;
 	private ArrayList<FallingDamageNumber> damageNumbers;
 	private Entity character = SimpleDungeonCrawler.character;
+	public double moveRadius;
 	
 	public BattleViewPanel(Battle b) {
+		moveRadius = 0;
 		battle = b;
 		damageNumbers = new ArrayList<FallingDamageNumber>();
 		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR)); //TODO fix pls
@@ -50,6 +52,9 @@ public class BattleViewPanel extends JPanel {
 			g.setFont(SimpleDungeonCrawler.font);
 			g.drawString(currentNum.getDamage() + "", point.x, point.y);
 		}
+		Point2D p = SimpleDungeonCrawler.character.getBattleLoc();
+		g.drawOval((int) (p.getX() - moveRadius/2), (int) (p.getY() - moveRadius/2), (int) moveRadius, (int) moveRadius);
 		g.setColor(Color.black);
+		
 	}
 }
