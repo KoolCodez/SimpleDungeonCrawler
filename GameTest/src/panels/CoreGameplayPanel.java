@@ -110,9 +110,8 @@ public class CoreGameplayPanel extends JPanel{
 			@Override
 			protected Integer doInBackground() throws Exception {
 				System.out.println("new battle");
-				battle = new Battle();
-				battle.battleSequence();
-				battle.flee = false;
+				BattleTurnPanel battleTurnPanel = new BattleTurnPanel();
+				SimpleDungeonCrawler.frame.add(battleTurnPanel);
 				return 0;
 			}
 		};

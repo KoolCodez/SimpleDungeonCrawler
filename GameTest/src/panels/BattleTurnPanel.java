@@ -7,19 +7,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import combatSystem.AttackSequencePhase;
 import combatSystem.Battle;
 import combatSystem.FallingDamageNumber;
+import combatSystem.PlayerTurnPhase;
 import misc.Entity;
 import misc.Images;
 import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
+import misc.Utilities;
 
 public class BattleTurnPanel extends JPanel {
 		private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
@@ -27,17 +34,131 @@ public class BattleTurnPanel extends JPanel {
 		private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
 		private static int MENU_SIZE = SimpleDungeonCrawler.MENU_SIZE;
 		private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
-		
+		private Utilities utilities = new Utilities();
 		private Battle battle;
 		private BattleViewPanel battleView;
+		public boolean flee = false;
 		
-		public BattleTurnPanel(Battle battle) {
+		public BattleTurnPanel() {
 			
-			this.battle = battle;
+			battle = new Battle();
+			AttackSequencePhase attackSequence = new AttackSequencePhase();
+			flee = false;
 			setLayout(null);
 			createBattleViewPanel();
 			//addButtonsToTurnPanel();
 		}
+		
+		
+		private void battleSequence() {
+			StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+			List<Entity> initList = setInitiative(currentRoom);
+			while (checkLiving(currentRoom) && !flee) {
+				runThroughBattleQueue(initList);
+				checkLiving(currentRoom);
+				SimpleDungeonCrawler.frame.validate();
+				SimpleDungeonCrawler.frame.repaint();
+				System.out.println("New Turn"); //TODO reward for less rounds?
+			}
+		}
+		
+		private void runThroughBattleQueue(List<Entity> initList) {
+			for (int i = 0; i < initList.size(); i++) {
+				Entity currentEntity = initList.get(i);
+				if (isEnemy(currentEntity) && !flee) {
+					currentEntity.attack(SimpleDungeonCrawler.character);
+				} else if (isFriendly(currentEntity) && !flee) {
+					switchToTurnPhase();
+					if (flee) {
+						if (flee(initList)) {
+							return;
+						}
+					}
+					switchToAttackPhase();
+				} else {
+					printEntityError(initList.get(i));
+				}
+				sleep(1000);
+				// checkHealth(currentRoom);
+			}
+		}
+		
+		public boolean checkLiving(StandardRoom current) {
+			boolean fAlive = false;
+			boolean eAlive = false;
+			if (SimpleDungeonCrawler.character.stats.getHealth() <= 0) {
+				fAlive = true;
+			}
+			for (int i = 0; i < current.entities.size(); i++) {
+				if (current.entities.get(i).stats.getHealth() <= 0) {
+					eAlive = true;
+				}
+			}
+			if (fAlive && !eAlive) {
+				// System.out.println("VICTORY!");
+				return false;
+			} else if (!fAlive && eAlive) {
+				// System.out.println("DEFEAT");
+				return false;
+			} else {
+				// System.out.println("CONTINUE THE BATTLE");
+				return true;
+			}
+		}
+		
+		public List<Entity> setInitiative(StandardRoom current) {
+			ArrayList<Entity> initList = new ArrayList<Entity>();
+			for (int i = 0; i < current.entities.size(); i++) {
+				int r = utilities.r6();
+				current.entities.get(i).setInitiative(r);
+				initList.add(current.entities.get(i));
+			}
+			int r = utilities.r6();
+			SimpleDungeonCrawler.character.setInitiative(r);
+			initList.add(SimpleDungeonCrawler.character);
+			Collections.sort(initList);
+			return initList;
+		}
+		
+		private boolean isEnemy(Entity ent) {
+			return ent.getType().equals("Enemy");
+		}
+
+		private boolean isFriendly(Entity ent) {
+			return ent.getType().equals("Friendly");
+		}
+		
+		private void printEntityError(Entity ent) {
+			System.out.print("invalid entity");
+			System.out.println(ent.getClass().toString());
+		}
+		
+		private void sleep(int millis) {
+			try {
+				TimeUnit.MILLISECONDS.sleep(millis);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		public boolean flee(List<Entity> list) {
+			boolean successful = false;
+			flee = false;
+			if (utilities.r20() > 10 + (list.size() - 1) - (SimpleDungeonCrawler.character.stats.getDex() / 10)) {
+				flee = true;
+				setVisible(false);
+				if (SimpleDungeonCrawler.loc.x > 0) {
+					SimpleDungeonCrawler.loc.x--; //TODO this is probably not right
+				} else if (SimpleDungeonCrawler.loc.y > 0) {
+					SimpleDungeonCrawler.loc.y--;
+				}
+				//SimpleDungeonCrawler.eventChangeRooms("right");
+				SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
+				successful = true;
+			}
+			return successful;
+		}
+		
 		
 		@Override
 		public void paintComponent(Graphics g) {
@@ -47,10 +168,7 @@ public class BattleTurnPanel extends JPanel {
 					* SimpleDungeonCrawler.character.stats.getHealth() / SimpleDungeonCrawler.character.stats.getMaxHealth()),
 					(int) (36 * SCALE_FACTOR));
 			g.setColor(Color.black);
-			
-			
-			
-			g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50, 50);
+			//g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50, 50);
 			// g.drawString(console1.get(console1.size() - 1), 10, 100);
 		}
 		
@@ -64,6 +182,19 @@ public class BattleTurnPanel extends JPanel {
 			createMoveButton();
 			createBagButton();
 			createFleeButton();
+		}
+		
+		private void switchToTurnPhase() {
+			PlayerTurnPhase turn = new PlayerTurnPhase(this);
+		}
+		
+		private void switchToAttackPhase() {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					removeAll();
+					addBattleViewPanel();
+				}
+			});
 		}
 		
 		private void createBattleViewPanel() {
@@ -108,7 +239,7 @@ public class BattleTurnPanel extends JPanel {
 					SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 						@Override
 						protected Integer doInBackground() throws Exception {
-							move(battle.waitForTurn.getTurnPoints());
+							move(waitForTurn.getTurnPoints());
 							return 0;
 						}
 					};
@@ -125,8 +256,8 @@ public class BattleTurnPanel extends JPanel {
 			fleeButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					battle.flee = true;
-					battle.waitForTurn.endTurn();
+					flee = true;
+					waitForTurn.endTurn();
 				}
 			});
 			fleeButton.setBounds((int) (698 * SCALE_FACTOR), (int) (752 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
