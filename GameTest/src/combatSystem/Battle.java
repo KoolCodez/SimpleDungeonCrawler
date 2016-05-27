@@ -36,6 +36,8 @@ public class Battle {
 		character = SimpleDungeonCrawler.character;
 	}
 	
+	
+	
 	public void characterAttack(BattleViewPanel battleView) {
 		if (waitForTurn.getTurnPoints() >= 3) {
 			waitForTurn.setTurnPoints(-3);
