@@ -29,7 +29,7 @@ public class Battle {
 	private double SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 	private Utilities utilities = new Utilities();
 	private Entity character;
-	public TurnWait waitForTurn = new TurnWait();
+	
 	public boolean flee = false;
 	BattleTurnPanel battleTurnPanel = new BattleTurnPanel(this);
 
@@ -41,74 +41,14 @@ public class Battle {
 	public void battleSequence() {
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		List<Entity> initList = setInitiative(currentRoom);
+		BattleQueue battleQueue = new BattleQueue(battleTurnPanel, initList);
 		while (checkLiving(currentRoom) && !flee) {
-			waitForTurn.reset();
+			
 			setDefaultWeapon();
-			runThroughBattleQueue(initList);
+			battleQueue.start();
 			checkLiving(currentRoom);
-			SimpleDungeonCrawler.frame.validate();
-			SimpleDungeonCrawler.frame.repaint();
-			System.out.println("New Turn"); //TODO reward for less rounds?
+			System.out.println("New Turn"); //TODO xp reward for less rounds?
 		}
-	}
-	
-	
-	
-	public void characterAttack(BattleViewPanel battleView) {
-		if (waitForTurn.getTurnPoints() >= 3) {
-			waitForTurn.setTurnPoints(-3);
-			Entity targetedEntity = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
-					.get(SimpleDungeonCrawler.character.getSelectedEntity());
-			double damage = SimpleDungeonCrawler.character.attack(targetedEntity);
-			Point2D doublePoint = targetedEntity.getLocation();
-			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
-			FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
-			battleView.addDamageNumber(currentFallingDamage);
-			currentFallingDamage.start();
-		} else {
-			System.out.println("Not enough turn points");
-		}
-	}
-
-	private boolean isEnemy(Entity ent) {
-		return ent.getType().equals("Enemy");
-	}
-
-	private boolean isFriendly(Entity ent) {
-		return ent.getType().equals("Friendly");
-	}
-
-	private void switchToTurnPhase() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				battleTurnPanel.addButtonsToTurnPanel();
-			}
-		});
-	}
-	
-	private void switchToAttackPhase() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				battleTurnPanel.removeAll();
-				battleTurnPanel.addBattleViewPanel();
-			}
-		});
-	}
-	
-	private void letPlayerTakeTurn() {
-		synchronized (waitForTurn) {
-			try {
-				System.out.println("wait");
-				waitForTurn.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private void printEntityError(Entity ent) {
-		System.out.print("invalid entity");
-		System.out.println(ent.getClass().toString());
 	}
 	
 	private void setDefaultWeapon() { //TODO this is temporary, should go away when inventory is fixed
@@ -119,36 +59,6 @@ public class Battle {
 		character.setWeapon(weapon);
 	}
 	
-	private void sleep(int millis) {
-		try {
-			TimeUnit.MILLISECONDS.sleep(millis);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-	}
-	
-	private void runThroughBattleQueue(List<Entity> initList) {
-		for (int i = 0; i < initList.size(); i++) {
-			Entity currentEntity = initList.get(i);
-			if (isEnemy(currentEntity) && !flee) {
-				currentEntity.attack(character);
-			} else if (isFriendly(currentEntity) && !flee) {
-				switchToTurnPhase();
-				letPlayerTakeTurn();
-				if (flee) {
-					if (flee(initList)) {
-						return;
-					}
-				}
-				switchToAttackPhase();
-			} else {
-				printEntityError(initList.get(i));
-			}
-			sleep(1000);
-			// checkHealth(currentRoom);
-		}
-	}
-
 	public List<Entity> setInitiative(StandardRoom current) {
 		ArrayList<Entity> initList = new ArrayList<Entity>();
 		for (int i = 0; i < current.entities.size(); i++) {
@@ -187,27 +97,4 @@ public class Battle {
 	}
 
 	
-
-	public static void bag() {
-
-	}
-
-	public boolean flee(List<Entity> list) {
-		boolean successful = false;
-		flee = false;
-		if (utilities.r20() > 10 + (list.size() - 1) - (character.stats.getDex() / 10)) {
-			flee = true;
-			battleTurnPanel.setVisible(false);
-			if (SimpleDungeonCrawler.loc.x > 0) {
-				SimpleDungeonCrawler.loc.x--; //TODO this is probably not right
-			} else if (SimpleDungeonCrawler.loc.y > 0) {
-				SimpleDungeonCrawler.loc.y--;
-			}
-			//SimpleDungeonCrawler.eventChangeRooms("right");
-			SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
-			successful = true;
-		}
-		return successful;
-	}
-
 }
