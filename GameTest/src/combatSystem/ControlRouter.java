@@ -1,49 +1,38 @@
 package combatSystem;
 
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import items.GenericWeapon;
 import misc.Entity;
 import misc.Images;
-import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 import misc.Utilities;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
-import panels.CoreGameplayPanel;
-import misc.*;
 
-public class Battle {
-	private double SCALED_100 = SimpleDungeonCrawler.SCALED_100;
+public class ControlRouter {
+	private BattleViewPanel battleView;
+	private BattleTurnPanel battleTurnPanel;
+	private BattleQueue battleQueue;
 	private Utilities utilities = new Utilities();
 	private Entity character;
 	
-	public boolean flee = false;
-	BattleTurnPanel battleTurnPanel = new BattleTurnPanel(this);
-
-	public Battle() {
+	public ControlRouter(BattleTurnPanel p) {
+		battleTurnPanel = p;
 		character = SimpleDungeonCrawler.character;
-		SimpleDungeonCrawler.frame.add(battleTurnPanel);
 	}
 	
-	public void battleSequence() {
+	public void startBattleQueue() {
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		List<Entity> initList = setInitiative(currentRoom);
-		BattleQueue battleQueue = new BattleQueue(battleTurnPanel, initList);
-		while (checkLiving(currentRoom) && !flee) {
-			
+		battleQueue = new BattleQueue(this, initList);
+		while (checkLiving(currentRoom)/* && !flee*/) {
 			setDefaultWeapon();
 			battleQueue.start();
 			checkLiving(currentRoom);
@@ -51,12 +40,34 @@ public class Battle {
 		}
 	}
 	
-	private void setDefaultWeapon() { //TODO this is temporary, should go away when inventory is fixed
-		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
-		weapon.damage = 1.0;
-		weapon.ranged = false;
-		weapon.speed = 1.0;
-		character.setWeapon(weapon);
+	public void switchToAttackPhase() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				battleTurnPanel.removeAll();
+				displayBattle();
+			}
+		});
+	}
+	
+	public void switchToTurnPhase() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				battleTurnPanel.addButtonsToTurnPanel();
+			}
+		});
+	}
+	
+	public void characterAttack() {
+		
+	}
+	
+	public void enemyAttack() {
+		
+	}
+	
+	public void displayBattle() {
+		battleView = new BattleViewPanel();
+		SimpleDungeonCrawler.frame.add(battleView);
 	}
 	
 	public List<Entity> setInitiative(StandardRoom current) {
@@ -95,6 +106,12 @@ public class Battle {
 			return true;
 		}
 	}
-
 	
+	private void setDefaultWeapon() { //TODO this is temporary, should go away when inventory is fixed
+		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
+		weapon.damage = 1.0;
+		weapon.ranged = false;
+		weapon.speed = 1.0;
+		character.setWeapon(weapon);
+	}
 }

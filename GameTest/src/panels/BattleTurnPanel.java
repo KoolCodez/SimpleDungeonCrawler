@@ -7,19 +7,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
-import combatSystem.Battle;
+import combatSystem.BattleQueue;
 import combatSystem.FallingDamageNumber;
+import items.GenericWeapon;
 import misc.Entity;
 import misc.Images;
 import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
+import misc.Utilities;
 
 public class BattleTurnPanel extends JPanel {
 		private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
@@ -28,14 +32,13 @@ public class BattleTurnPanel extends JPanel {
 		private static int MENU_SIZE = SimpleDungeonCrawler.MENU_SIZE;
 		private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
 		
-		private Battle battle;
-		private BattleViewPanel battleView;
 		
-		public BattleTurnPanel(Battle battle) {
-			
-			this.battle = battle;
+		private BattleViewPanel battleView;
+
+		
+		public BattleTurnPanel() {
 			setLayout(null);
-			createBattleViewPanel();
+			SimpleDungeonCrawler.frame.add(this);
 			//addButtonsToTurnPanel();
 		}
 		
@@ -47,15 +50,8 @@ public class BattleTurnPanel extends JPanel {
 					* SimpleDungeonCrawler.character.stats.getHealth() / SimpleDungeonCrawler.character.stats.getMaxHealth()),
 					(int) (36 * SCALE_FACTOR));
 			g.setColor(Color.black);
-			
-			
-			
 			//g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50, 50);
-			// g.drawString(console1.get(console1.size() - 1), 10, 100);
-		}
-		
-		public void addBattleViewPanel() {
-			createBattleViewPanel();
+			//g.drawString(console1.get(console1.size() - 1), 10, 100);
 		}
 		
 		public void addButtonsToTurnPanel() {
@@ -66,11 +62,6 @@ public class BattleTurnPanel extends JPanel {
 			createFleeButton();
 		}
 		
-		private void createBattleViewPanel() {
-			battleView = new BattleViewPanel(battle);
-			add(battleView);
-		}
-		
 		private void createBagButton() {
 			JButton bagButton = new JButton();
 			JPanel current = this;
@@ -79,7 +70,7 @@ public class BattleTurnPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
-					SimpleDungeonCrawler.frame.add(new BagPanel(battle, current).getPanel());
+					SimpleDungeonCrawler.frame.add(new BagPanel(battleQueue.waitForTurn.getTurnPoints(), current).getPanel());
 				}
 			});
 			bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (552 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -92,7 +83,7 @@ public class BattleTurnPanel extends JPanel {
 			fightButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					battle.characterAttack(battleView);
+					battleQueue.characterAttack(battleView);
 				}
 			});
 			fightButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -108,7 +99,7 @@ public class BattleTurnPanel extends JPanel {
 					SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 						@Override
 						protected Integer doInBackground() throws Exception {
-							move(battle.waitForTurn.getTurnPoints());
+							move(battleQueue.waitForTurn.getTurnPoints());
 							return 0;
 						}
 					};
@@ -125,8 +116,8 @@ public class BattleTurnPanel extends JPanel {
 			fleeButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					battle.flee = true;
-					battle.waitForTurn.endTurn();
+					battleQueue.flee = true;
+					battleQueue.waitForTurn.endTurn();
 				}
 			});
 			fleeButton.setBounds((int) (698 * SCALE_FACTOR), (int) (752 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -139,7 +130,7 @@ public class BattleTurnPanel extends JPanel {
 			endTurnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					battle.waitForTurn.endTurn();
+					battleQueue.waitForTurn.endTurn();
 				}
 			});
 			endTurnButton.setBounds((int) (698 * SCALE_FACTOR), (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

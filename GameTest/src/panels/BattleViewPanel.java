@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import combatSystem.Battle;
 import combatSystem.FallingDamageNumber;
 import misc.Entity;
 import misc.Images;
@@ -17,16 +16,18 @@ import misc.StandardRoom;
 
 public class BattleViewPanel extends JPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private Battle battle;
 	private ArrayList<FallingDamageNumber> damageNumbers;
 	private Entity character = SimpleDungeonCrawler.character;
 	public double moveRadius;
 	
-	public BattleViewPanel(Battle b) {
+	public BattleViewPanel() {
 		moveRadius = 0;
-		battle = b;
 		damageNumbers = new ArrayList<FallingDamageNumber>();
 		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR)); //TODO fix pls
+	}
+	
+	public void showAttack() {
+		
 	}
 	
 	public void addDamageNumber(FallingDamageNumber n) {

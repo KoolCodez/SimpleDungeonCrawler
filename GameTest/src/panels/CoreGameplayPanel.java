@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import combatSystem.Battle;
 import combatSystem.EntityShaker;
 import combatSystem.FallingDamageNumber;
 import misc.Entity;
@@ -106,13 +105,11 @@ public class CoreGameplayPanel extends JPanel{
 	
 	private void createBattle() {
 		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-			Battle battle;
+			BattleTurnPanel battleTurn;
 			@Override
 			protected Integer doInBackground() throws Exception {
 				System.out.println("new battle");
-				battle = new Battle();
-				battle.battleSequence();
-				battle.flee = false;
+				battleTurn = new BattleTurnPanel();
 				return 0;
 			}
 		};
