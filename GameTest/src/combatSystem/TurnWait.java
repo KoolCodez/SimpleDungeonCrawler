@@ -1,7 +1,7 @@
 package combatSystem;
 
 public class TurnWait {
-	private int turnPoints;
+	private int turnPoints = 5;
 	public TurnWait() {
 		
 	}

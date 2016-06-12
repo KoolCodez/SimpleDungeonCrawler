@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import combatSystem.BattleQueue;
+import combatSystem.ControlRouter;
 import combatSystem.FallingDamageNumber;
 import items.GenericWeapon;
 import misc.Entity;
@@ -34,11 +35,12 @@ public class BattleTurnPanel extends JPanel {
 		
 		
 		private BattleViewPanel battleView;
-
+		private ControlRouter control;
 		
-		public BattleTurnPanel() {
+		public BattleTurnPanel(ControlRouter c) {
 			setLayout(null);
 			SimpleDungeonCrawler.frame.add(this);
+			control = c;
 			//addButtonsToTurnPanel();
 		}
 		
@@ -70,7 +72,7 @@ public class BattleTurnPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
-					SimpleDungeonCrawler.frame.add(new BagPanel(battleQueue.waitForTurn.getTurnPoints(), current).getPanel());
+					SimpleDungeonCrawler.frame.add(new BagPanel(control.waitForTurn.getTurnPoints(), current).getPanel());
 				}
 			});
 			bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (552 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -83,7 +85,7 @@ public class BattleTurnPanel extends JPanel {
 			fightButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					battleQueue.characterAttack(battleView);
+					control.characterAttack(battleView);//TODO
 				}
 			});
 			fightButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -99,7 +101,7 @@ public class BattleTurnPanel extends JPanel {
 					SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 						@Override
 						protected Integer doInBackground() throws Exception {
-							move(battleQueue.waitForTurn.getTurnPoints());
+							move(control.waitForTurn.getTurnPoints());
 							return 0;
 						}
 					};
@@ -116,8 +118,7 @@ public class BattleTurnPanel extends JPanel {
 			fleeButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					battleQueue.flee = true;
-					battleQueue.waitForTurn.endTurn();
+					control.flee();
 				}
 			});
 			fleeButton.setBounds((int) (698 * SCALE_FACTOR), (int) (752 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -130,7 +131,7 @@ public class BattleTurnPanel extends JPanel {
 			endTurnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					battleQueue.waitForTurn.endTurn();
+					control.waitForTurn.endTurn();
 				}
 			});
 			endTurnButton.setBounds((int) (698 * SCALE_FACTOR), (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

@@ -1,5 +1,7 @@
 package combatSystem;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +17,7 @@ import misc.StandardRoom;
 import misc.Utilities;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
+import panels.CoreGameplayPanel;
 
 public class ControlRouter {
 	private BattleViewPanel battleView;
@@ -22,24 +25,67 @@ public class ControlRouter {
 	private BattleQueue battleQueue;
 	private Utilities utilities = new Utilities();
 	private Entity character;
-	
-	public ControlRouter(BattleTurnPanel p) {
-		battleTurnPanel = p;
+	public TurnWait waitForTurn = new TurnWait();
+	public boolean flee = false;
+
+	public ControlRouter() {
+		battleTurnPanel = new BattleTurnPanel(this);
+		displayBattle();
 		character = SimpleDungeonCrawler.character;
+		startBattleQueue();
 	}
-	
+
 	public void startBattleQueue() {
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		List<Entity> initList = setInitiative(currentRoom);
 		battleQueue = new BattleQueue(this, initList);
-		while (checkLiving(currentRoom)/* && !flee*/) {
-			setDefaultWeapon();
-			battleQueue.start();
-			checkLiving(currentRoom);
-			System.out.println("New Turn"); //TODO xp reward for less rounds?
+		setDefaultWeapon();
+		battleQueue.start();
+
+	}
+
+	public void playerTurn() {
+		switchToTurnPhase();
+		letPlayerTakeTurn();
+		waitForTurn.reset();
+	}
+
+	private void letPlayerTakeTurn() {
+		synchronized (waitForTurn) {
+			try {
+				System.out.println("wait");
+				waitForTurn.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
+	public boolean flee() {
+		List<Entity> list = battleQueue.initList;
+		boolean successful = false;
+		flee = false;
+		if (utilities.r20() > 10 + (list.size() - 1) - (SimpleDungeonCrawler.character.stats.getDex() / 10)) {
+			flee = true;
+			fleeBattle();
+			successful = true;
+		}
+		waitForTurn.endTurn();
+		return successful;
+	}
+
+	public void fleeBattle() {
+		battleTurnPanel.setVisible(false);
+		if (SimpleDungeonCrawler.loc.x > 0) {
+			SimpleDungeonCrawler.loc.x--; // TODO this is probably not right
+		} else if (SimpleDungeonCrawler.loc.y > 0) {
+			SimpleDungeonCrawler.loc.y--;
+		}
+		// SimpleDungeonCrawler.eventChangeRooms("right");
+		SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
+
+	}
+
 	public void switchToAttackPhase() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -48,7 +94,7 @@ public class ControlRouter {
 			}
 		});
 	}
-	
+
 	public void switchToTurnPhase() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -56,20 +102,30 @@ public class ControlRouter {
 			}
 		});
 	}
-	
-	public void characterAttack() {
-		
+
+	public void characterAttack(BattleViewPanel battleView) {
+		if (waitForTurn.getTurnPoints() >= 3) {
+			waitForTurn.setTurnPoints(-3);
+			Entity targetedEntity = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
+					.get(SimpleDungeonCrawler.character.getSelectedEntity());
+			double damage = SimpleDungeonCrawler.character.attack(targetedEntity);
+			System.out.println(damage);
+			Point2D doublePoint = targetedEntity.getLocation();
+			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
+			System.out.println(location.toString());
+			FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
+			battleView.addDamageNumber(currentFallingDamage);
+			currentFallingDamage.start();
+		} else {
+			System.out.println("Not enough turn points");
+		}
 	}
-	
-	public void enemyAttack() {
-		
-	}
-	
+
 	public void displayBattle() {
 		battleView = new BattleViewPanel();
-		SimpleDungeonCrawler.frame.add(battleView);
+		battleTurnPanel.add(battleView);
 	}
-	
+
 	public List<Entity> setInitiative(StandardRoom current) {
 		ArrayList<Entity> initList = new ArrayList<Entity>();
 		for (int i = 0; i < current.entities.size(); i++) {
@@ -84,30 +140,8 @@ public class ControlRouter {
 		return initList;
 	}
 
-	public boolean checkLiving(StandardRoom current) {
-		boolean fAlive = false;
-		boolean eAlive = false;
-		if (character.stats.getHealth() <= 0) {
-			fAlive = true;
-		}
-		for (int i = 0; i < current.entities.size(); i++) {
-			if (current.entities.get(i).stats.getHealth() <= 0) {
-				eAlive = true;
-			}
-		}
-		if (fAlive && !eAlive) {
-			// System.out.println("VICTORY!");
-			return false;
-		} else if (!fAlive && eAlive) {
-			// System.out.println("DEFEAT");
-			return false;
-		} else {
-			// System.out.println("CONTINUE THE BATTLE");
-			return true;
-		}
-	}
-	
-	private void setDefaultWeapon() { //TODO this is temporary, should go away when inventory is fixed
+	private void setDefaultWeapon() { // TODO this is temporary, should go away
+										// when inventory is fixed
 		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
 		weapon.damage = 1.0;
 		weapon.ranged = false;

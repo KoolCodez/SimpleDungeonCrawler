@@ -90,7 +90,7 @@ public class InventoryPanel extends JPanel {
 		};
 		worker.execute();
 	}
-
+	
 	private void selectItem(Point point) {
 		point.x -= 10 * SCALE_FACTOR * SCALE_FACTOR;
 		point.y -= 30 * SCALE_FACTOR * SCALE_FACTOR;
