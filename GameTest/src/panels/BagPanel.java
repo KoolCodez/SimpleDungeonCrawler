@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import combatSystem.Battle;
 import misc.SimpleDungeonCrawler;
 
 public class BagPanel {
@@ -16,13 +15,13 @@ public class BagPanel {
 	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
 	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
-	private Battle battle;
 	private JPanel bagPanel;
+	private int turnPoints;
 	JPanel previousPanel;
 	
-	public BagPanel(Battle battle, JPanel previousPanel) {
-		this.battle = battle;
+	public BagPanel(int turnPoints, JPanel previousPanel) {
 		this.previousPanel = previousPanel;
+		this.turnPoints = turnPoints;
 		createBagPanel();
 		createReturnButton();
 		createSelectWeaponButton();
@@ -51,7 +50,7 @@ public class BagPanel {
 		selectWeapon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (battle.waitForTurn.getTurnPoints() > 2) {
+				if (turnPoints > 2) {
 					//TODO choose weapon method
 				}
 			}

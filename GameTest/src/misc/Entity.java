@@ -72,9 +72,11 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 	}
 	
 	public Point2D getBattleLoc() {
-		double battleRatioX = 696*SimpleDungeonCrawler.SCALE_FACTOR / (1000*SimpleDungeonCrawler.SCALE_FACTOR);
-		double battleRatioY = 703*SimpleDungeonCrawler.SCALE_FACTOR / (1000*SimpleDungeonCrawler.SCALE_FACTOR);
-		battleLoc = new Point2D.Double(this.location.getX() * (battleRatioX), this.location.getY() * (battleRatioY) + 149); 
+		double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
+		double battleRatioX = (696 * SCALE_FACTOR) / (1000 * SCALE_FACTOR); //battle size / normal size
+		double battleRatioY = (703 * SCALE_FACTOR) / (1000 * SCALE_FACTOR);
+		battleLoc = new Point2D.Double(this.location.getX() * (battleRatioX),
+				this.location.getY() * (battleRatioY)); 
 		//(0,149)(696, 149)(0,852)(696,852) 696, 703
 		return battleLoc;
 	}

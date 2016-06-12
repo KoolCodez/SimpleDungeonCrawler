@@ -54,7 +54,7 @@ public class SimpleDungeonCrawler extends JPanel {
 	private static final String ROOM_ARRAY_SAVE_TAG = "roomArray";
 	private static final String CHARACTER_SAVE_TAG = "character";
 	private static final String LOC_SAVE_TAG = "loc";
-	public static final double SCALE_FACTOR = 1;
+	public static final double SCALE_FACTOR = .75;
 	public static final int SCALED_100 = (int) (100 * SCALE_FACTOR);
 	public static final int MENU_SIZE = (int) (1000 * SCALE_FACTOR);
 	public static final int BUTTON_HEIGHT = (int) (100 * SCALE_FACTOR);
