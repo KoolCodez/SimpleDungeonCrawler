@@ -30,8 +30,10 @@ public class BattleViewPanel extends JPanel {
 		
 	}
 	
-	public void addDamageNumber(FallingDamageNumber n) {
+	public void displayDamage(double damage, Point point) {
+		FallingDamageNumber n = new FallingDamageNumber(damage, point);
 		damageNumbers.add(n);
+		n.start();
 	}
 	
 	@Override

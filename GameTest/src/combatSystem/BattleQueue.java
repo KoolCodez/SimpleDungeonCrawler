@@ -33,7 +33,7 @@ public class BattleQueue extends Thread {
 				Entity currentEntity = initList.get(i);
 				if (control.flee) {return;}
 				if (isEnemy(currentEntity)) {
-					currentEntity.attack(SimpleDungeonCrawler.character);
+					control.attack(currentEntity, SimpleDungeonCrawler.character);
 				} else if (isFriendly(currentEntity)) {
 					control.playerTurn();
 					control.switchToAttackPhase();

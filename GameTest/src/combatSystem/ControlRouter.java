@@ -20,7 +20,7 @@ import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
 
 public class ControlRouter {
-	private BattleViewPanel battleView;
+	public BattleViewPanel battleView;
 	private BattleTurnPanel battleTurnPanel;
 	private BattleQueue battleQueue;
 	private Utilities utilities = new Utilities();
@@ -103,22 +103,16 @@ public class ControlRouter {
 		});
 	}
 
-	public void characterAttack(BattleViewPanel battleView) {
-		if (waitForTurn.getTurnPoints() >= 3) {
-			waitForTurn.setTurnPoints(-3);
-			Entity targetedEntity = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
-					.get(SimpleDungeonCrawler.character.getSelectedEntity());
-			double damage = SimpleDungeonCrawler.character.attack(targetedEntity);
-			System.out.println(damage);
-			Point2D doublePoint = targetedEntity.getLocation();
-			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
-			System.out.println(location.toString());
-			FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
-			battleView.addDamageNumber(currentFallingDamage);
-			currentFallingDamage.start();
-		} else {
-			System.out.println("Not enough turn points");
-		}
+	public void attack(Entity attacker, Entity target) {
+		double damage = attacker.attack(target);
+		Point2D doublePoint = target.getLocation();
+		Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				battleView.displayDamage(damage, location);
+
+			}
+		});
 	}
 
 	public void displayBattle() {
