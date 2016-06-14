@@ -13,13 +13,12 @@ import items.GenericWeapon;
 
 public class Entity implements Comparable<Entity>, Serializable { // extend this class with specific entity-classes.
 	private String entityType;
-	private Point2D location;
+	public Point2D location;
 	private List<GenericItem> inventory;
 	public EntityStats stats = new EntityStats();
 	private int initiative;
 	private GenericWeapon selectedWeapon;
 	private int selectedEntity;
-	private Point2D battleLoc;
 	private String name = "Entity";
 	private Utilities utilities = new Utilities();
 	private int imageIndex;
@@ -69,16 +68,6 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public Point2D getBattleLoc() {
-		double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-		double battleRatioX = (696 * SCALE_FACTOR) / (1000 * SCALE_FACTOR); //battle size / normal size
-		double battleRatioY = (703 * SCALE_FACTOR) / (1000 * SCALE_FACTOR);
-		battleLoc = new Point2D.Double(this.location.getX() * (battleRatioX),
-				this.location.getY() * (battleRatioY)); 
-		//(0,149)(696, 149)(0,852)(696,852) 696, 703
-		return battleLoc;
 	}
 	
 	public int getSelectedEntity() {

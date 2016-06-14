@@ -110,7 +110,7 @@ public class BattleTurnPanel extends JPanel {
 				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 					@Override
 					protected Integer doInBackground() throws Exception {
-						move(control.waitForTurn.getTurnPoints());
+						control.move(control.waitForTurn.getTurnPoints());
 						return 0;
 					}
 				};
@@ -147,34 +147,5 @@ public class BattleTurnPanel extends JPanel {
 		add(endTurnButton);
 	}
 
-	public void move(int turnPoints) {
-		MouseClick mouse = new MouseClick();
-		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
-		Entity character = SimpleDungeonCrawler.character;
-		battleView.moveRadius = turnPoints * SCALED_100;
-		synchronized (mouse) {
-			try {
-				mouse.wait();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-		}
-		Point point = mouse.getLocation();
-		double x = character.getBattleLoc().getX();
-		double y = character.getBattleLoc().getY();
-		double deltaX = x - point.x;
-		double deltaY = y - point.y;
-		if (Math.abs(deltaX) + Math.abs(deltaY) < turnPoints * SCALED_100) {
-			character.setLocation(deltaX / (10 / 7), deltaY / (10 / 7));
-
-			// TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
-			// possibly make setBattleLocation change location in a backwards
-			// orientation?
-			// ALSO THIS IS GLITCHING, so...
-			System.out.println("legalClick");
-		} else {
-			System.out.println("illegal, u r haxor");
-		}
-		battleView.moveRadius = 0;
-	}
+	
 }

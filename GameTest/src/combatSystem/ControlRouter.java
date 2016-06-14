@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import items.GenericWeapon;
 import misc.Entity;
 import misc.Images;
+import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 import misc.Utilities;
@@ -105,14 +106,48 @@ public class ControlRouter {
 
 	public void attack(Entity attacker, Entity target) {
 		double damage = attacker.attack(target);
-		Point2D doublePoint = target.getLocation();
-		Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				battleView.displayDamage(damage, location);
-
+		if (damage > 0) {
+			Point2D doublePoint = target.getLocation();
+			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					battleView.displayDamage(damage, location);
+				}
+			});
+		}
+	}
+	
+	public void move(int turnPoints) {
+		MouseClick mouse = new MouseClick();
+		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
+		Entity character = SimpleDungeonCrawler.character;
+		int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
+		battleView.moveRadius = turnPoints * SCALED_100;
+		synchronized (mouse) {
+			try {
+				mouse.wait();
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
 			}
-		});
+		}
+		Point point = mouse.getLocation();
+		Point2D pBattle= battleView.getBattleLoc(character);
+		double x = pBattle.getX();
+		double y = pBattle.getY();
+		double deltaX = x - point.x;
+		double deltaY = y - point.y;
+		double distMoved = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+		if (distMoved < turnPoints * SCALED_100) {
+			character.setLocation(deltaX * (10 / 7), deltaY * (10 / 7));
+
+			// TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
+			// possibly make setBattleLocation change location in a backwards
+			// orientation?
+			System.out.println("legalClick");
+		} else {
+			System.out.println("illegal, u r haxor");
+		}
+		battleView.moveRadius = 0;
 	}
 
 	public void displayBattle() {

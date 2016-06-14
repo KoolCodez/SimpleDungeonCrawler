@@ -39,15 +39,10 @@ public class BattleViewPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(Images.array[Images.battleViewBackgroundIndex], 0, 0, (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR), null);
-		Point2D charLoc = character.getBattleLoc();
+		Point2D charLoc = getBattleLoc(character);
 		g.drawImage(Images.array[Images.battleCharIndex], (int) charLoc.getX(), (int) charLoc.getY(),
 				(int) (100 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR), null);
-		StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
-		for (int i = 0; i < current.entities.size(); i++) {
-			Point2D point = current.entities.get(i).getBattleLoc();
-			g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (100 * SCALE_FACTOR),
-					(int) (50 * SCALE_FACTOR), null);
-		}
+		drawEntities(g);
 		g.setColor(Color.red);
 		for (int i = 0; i < damageNumbers.size(); i++) {
 			FallingDamageNumber currentNum = damageNumbers.get(i);
@@ -55,9 +50,28 @@ public class BattleViewPanel extends JPanel {
 			g.setFont(SimpleDungeonCrawler.font);
 			g.drawString(currentNum.getDamage() + "", point.x, point.y);
 		}
-		Point2D p = SimpleDungeonCrawler.character.getBattleLoc();
+		Point2D p = getBattleLoc(SimpleDungeonCrawler.character);
 		g.drawOval((int) (p.getX() - moveRadius/2), (int) (p.getY() - moveRadius/2), (int) moveRadius, (int) moveRadius);
 		g.setColor(Color.black);
 		
+	}
+	
+	private void drawEntities(Graphics g) {
+		StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		for (int i = 0; i < current.entities.size(); i++) {
+			Point2D point = getBattleLoc(current.entities.get(i));
+			g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (100 * SCALE_FACTOR),
+					(int) (50 * SCALE_FACTOR), null);
+		}
+	}
+	
+	public Point2D getBattleLoc(Entity ent) {
+		double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
+		double battleRatioX = (696 * SCALE_FACTOR) / (1000 * SCALE_FACTOR); //battle size / normal size
+		double battleRatioY = (703 * SCALE_FACTOR) / (1000 * SCALE_FACTOR);
+		Point2D battleLoc = new Point2D.Double(ent.location.getX() * (battleRatioX),
+				ent.location.getY() * (battleRatioY)); 
+		//(0,149)(696, 149)(0,852)(696,852) 696, 703
+		return battleLoc;
 	}
 }
