@@ -117,7 +117,8 @@ public class ControlRouter {
 		}
 	}
 	
-	public void move(int turnPoints) {
+	public void move() {
+		int turnPoints = waitForTurn.getTurnPoints();
 		MouseClick mouse = new MouseClick();
 		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
 		Entity character = SimpleDungeonCrawler.character;
@@ -130,16 +131,21 @@ public class ControlRouter {
 				e1.printStackTrace();
 			}
 		}
-		Point point = mouse.getLocation();
-		Point2D pBattle= battleView.getBattleLoc(character);
-		double x = pBattle.getX();
-		double y = pBattle.getY();
-		double deltaX = x - point.x;
-		double deltaY = y - point.y;
-		double distMoved = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-		if (distMoved < turnPoints * SCALED_100) {
-			character.setLocation(deltaX * (10 / 7), deltaY * (10 / 7));
-
+		Point mousePoint = mouse.getLocation();
+		System.out.println(mousePoint.toString());
+		Point mouseInPanel = new Point((int) (mousePoint.getX()), (int) (mousePoint.getY() - 149));
+		Point2D charPoint= character.getLocation();
+		System.out.println(charPoint.toString());
+		double deltaX = charPoint.getX() - mouseInPanel.x;
+		double deltaY = charPoint.getY() - mouseInPanel.y;
+		double newX = charPoint.getX() + deltaX;
+		double newY = charPoint.getY() + deltaY;
+		boolean xWithinBounds = newX > 0 && newX < 696;
+		boolean yWithinBounds = newY > 0 && newY < 703;
+		boolean distWithinMaxDist = mouseInPanel.distance(charPoint) < turnPoints*SCALED_100;
+		if (xWithinBounds && yWithinBounds && distWithinMaxDist) {
+			turnPoints -= Math.ceil(mouseInPanel.distance(charPoint));
+			character.setBattleLoc(newX, newY);
 			// TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
 			// possibly make setBattleLocation change location in a backwards
 			// orientation?
@@ -151,7 +157,7 @@ public class ControlRouter {
 	}
 
 	public void displayBattle() {
-		battleView = new BattleViewPanel();
+		battleView = new BattleViewPanel(this);
 		battleTurnPanel.add(battleView);
 	}
 

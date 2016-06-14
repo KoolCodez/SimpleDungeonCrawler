@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import combatSystem.ControlRouter;
 import combatSystem.FallingDamageNumber;
 import misc.Entity;
 import misc.Images;
@@ -19,11 +20,13 @@ public class BattleViewPanel extends JPanel {
 	private ArrayList<FallingDamageNumber> damageNumbers;
 	private Entity character = SimpleDungeonCrawler.character;
 	public double moveRadius;
+	private ControlRouter control;
 	
-	public BattleViewPanel() {
+	public BattleViewPanel(ControlRouter c) {
 		moveRadius = 0;
 		damageNumbers = new ArrayList<FallingDamageNumber>();
 		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR)); //TODO fix pls
+		control = c;
 	}
 	
 	public void showAttack() {
@@ -39,7 +42,7 @@ public class BattleViewPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(Images.array[Images.battleViewBackgroundIndex], 0, 0, (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR), null);
-		Point2D charLoc = getBattleLoc(character);
+		Point2D charLoc = character.getBattleLoc();
 		g.drawImage(Images.array[Images.battleCharIndex], (int) charLoc.getX(), (int) charLoc.getY(),
 				(int) (100 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR), null);
 		drawEntities(g);
@@ -52,7 +55,8 @@ public class BattleViewPanel extends JPanel {
 		}
 		Point2D p = getBattleLoc(SimpleDungeonCrawler.character);
 		g.drawOval((int) (p.getX() - moveRadius/2), (int) (p.getY() - moveRadius/2), (int) moveRadius, (int) moveRadius);
-		g.setColor(Color.black);
+		g.setColor(Color.white);
+		g.drawString("Turn Points Remining: " + control.waitForTurn.getTurnPoints(), 10, 10);
 		
 	}
 	
@@ -70,7 +74,7 @@ public class BattleViewPanel extends JPanel {
 		double battleRatioX = (696 * SCALE_FACTOR) / (1000 * SCALE_FACTOR); //battle size / normal size
 		double battleRatioY = (703 * SCALE_FACTOR) / (1000 * SCALE_FACTOR);
 		Point2D battleLoc = new Point2D.Double(ent.location.getX() * (battleRatioX),
-				ent.location.getY() * (battleRatioY)); 
+				ent.location.getY() * (battleRatioY) + 149); 
 		//(0,149)(696, 149)(0,852)(696,852) 696, 703
 		return battleLoc;
 	}

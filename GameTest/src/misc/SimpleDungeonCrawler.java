@@ -214,8 +214,7 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	public static void movePlayer(double deltaX, double deltaY) {
 		if (legalMove(deltaX, deltaY)) {
-			character.getLocation().setLocation(character.getLocation().getX() + deltaX,
-					character.getLocation().getY() + deltaY);
+			character.moveLocation(deltaX, deltaY);
 			checkIfLeavingRoom();
 		}
 		checkIfLeavingRoom();

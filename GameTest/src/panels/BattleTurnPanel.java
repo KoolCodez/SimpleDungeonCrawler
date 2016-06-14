@@ -110,7 +110,7 @@ public class BattleTurnPanel extends JPanel {
 				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 					@Override
 					protected Integer doInBackground() throws Exception {
-						control.move(control.waitForTurn.getTurnPoints());
+						control.move();
 						return 0;
 					}
 				};
