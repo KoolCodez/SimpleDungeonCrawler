@@ -33,6 +33,7 @@ public class ControlRouter {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle();
 		character = SimpleDungeonCrawler.character;
+		setLocationForBattle(character);
 		startBattleQueue();
 	}
 
@@ -78,13 +79,13 @@ public class ControlRouter {
 	public void fleeBattle() {
 		battleTurnPanel.setVisible(false);
 		if (SimpleDungeonCrawler.loc.x > 0) {
-			SimpleDungeonCrawler.loc.x--; // TODO this is probably not right
+			SimpleDungeonCrawler.loc.x--;
 		} else if (SimpleDungeonCrawler.loc.y > 0) {
 			SimpleDungeonCrawler.loc.y--;
 		}
 		// SimpleDungeonCrawler.eventChangeRooms("right");
 		SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
-
+		setLocationFromBattle(character);
 	}
 
 	public void switchToAttackPhase() {
@@ -132,20 +133,20 @@ public class ControlRouter {
 			}
 		}
 		Point mousePoint = mouse.getLocation();
-		System.out.println(mousePoint.toString());
-		Point mouseInPanel = new Point((int) (mousePoint.getX()), (int) (mousePoint.getY() - 149));
+		
+		Point mouseInPanel = new Point((int) (mousePoint.getX() - 10), (int) (mousePoint.getY() - 139));
 		Point2D charPoint= character.getLocation();
-		System.out.println(charPoint.toString());
-		double deltaX = charPoint.getX() - mouseInPanel.x;
-		double deltaY = charPoint.getY() - mouseInPanel.y;
+		double deltaX = -(charPoint.getX() - mouseInPanel.x);
+		double deltaY = -(charPoint.getY() - mouseInPanel.y);
 		double newX = charPoint.getX() + deltaX;
 		double newY = charPoint.getY() + deltaY;
 		boolean xWithinBounds = newX > 0 && newX < 696;
 		boolean yWithinBounds = newY > 0 && newY < 703;
 		boolean distWithinMaxDist = mouseInPanel.distance(charPoint) < turnPoints*SCALED_100;
 		if (xWithinBounds && yWithinBounds && distWithinMaxDist) {
-			turnPoints -= Math.ceil(mouseInPanel.distance(charPoint));
-			character.setBattleLoc(newX, newY);
+			double pointsBasedOnDist = Math.abs(mouseInPanel.distance(charPoint))/ SCALED_100;
+			waitForTurn.setTurnPoints((int) Math.ceil(pointsBasedOnDist) * -1);
+			character.setLocation(newX, newY);
 			// TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
 			// possibly make setBattleLocation change location in a backwards
 			// orientation?
@@ -154,6 +155,18 @@ public class ControlRouter {
 			System.out.println("illegal, u r haxor");
 		}
 		battleView.moveRadius = 0;
+	}
+	
+	private void setLocationForBattle(Entity ent) {
+		double xFactor = 703.0 / 1000.0;
+		double yFactor = 696.0 / 1000.0;
+		ent.setLocation(ent.location.getX() * xFactor, ent.location.getY() * yFactor);
+	}
+	
+	private void setLocationFromBattle(Entity ent) {
+		double xFactor = 1000 / 703;
+		double yFactor = 1000 / 696;
+		ent.setLocation(ent.location.getX() * xFactor, ent.location.getY() * yFactor);
 	}
 
 	public void displayBattle() {
@@ -183,4 +196,5 @@ public class ControlRouter {
 		weapon.speed = 1.0;
 		character.setWeapon(weapon);
 	}
+	
 }

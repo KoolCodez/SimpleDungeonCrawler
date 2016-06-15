@@ -14,7 +14,6 @@ import items.GenericWeapon;
 public class Entity implements Comparable<Entity>, Serializable { // extend this class with specific entity-classes.
 	private String entityType;
 	public Point2D location;
-	private Point2D battleLoc;
 	private List<GenericItem> inventory;
 	public EntityStats stats = new EntityStats();
 	private int initiative;
@@ -36,7 +35,6 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 		inventory = new ArrayList<GenericItem>();
 		entityType = "Generic Entity";
 		location = new Point2D.Double(250, 250);
-		battleLoc = new Point2D.Double(250 * 7/10, 250 * 7/10);
 	}
 
 	public Entity(double health, double strength, double dexterity, double constitution, double intelligence,
@@ -44,7 +42,6 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 		inventory = new ArrayList<GenericItem>();
 		entityType = "Generic Entity";
 		location = new Point2D.Double(250, 250);
-		battleLoc = new Point2D.Double(250 * 7/10, 250 * 7/10);
 		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
 	}
 	
@@ -99,14 +96,6 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 	
 	public Point2D getLocation() {
 		return location;
-	}
-	
-	public Point2D getBattleLoc() {
-		return battleLoc;
-	}
-
-	public void setBattleLoc(double newX, double newY) {
-		battleLoc = new Point2D.Double(newX, newY);
 	}
 	
 	public List<GenericItem> getInventory() {

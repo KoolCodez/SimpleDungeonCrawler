@@ -25,7 +25,7 @@ public class BattleViewPanel extends JPanel {
 	public BattleViewPanel(ControlRouter c) {
 		moveRadius = 0;
 		damageNumbers = new ArrayList<FallingDamageNumber>();
-		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR)); //TODO fix pls
+		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR));
 		control = c;
 	}
 	
@@ -42,8 +42,7 @@ public class BattleViewPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(Images.array[Images.battleViewBackgroundIndex], 0, 0, (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR), null);
-		Point2D charLoc = character.getBattleLoc();
-		g.drawImage(Images.array[Images.battleCharIndex], (int) charLoc.getX(), (int) charLoc.getY(),
+		g.drawImage(Images.array[Images.battleCharIndex], (int) character.location.getX(), (int) character.location.getY(),
 				(int) (100 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR), null);
 		drawEntities(g);
 		g.setColor(Color.red);
@@ -53,7 +52,7 @@ public class BattleViewPanel extends JPanel {
 			g.setFont(SimpleDungeonCrawler.font);
 			g.drawString(currentNum.getDamage() + "", point.x, point.y);
 		}
-		Point2D p = getBattleLoc(SimpleDungeonCrawler.character);
+		Point2D p = character.location;
 		g.drawOval((int) (p.getX() - moveRadius/2), (int) (p.getY() - moveRadius/2), (int) moveRadius, (int) moveRadius);
 		g.setColor(Color.white);
 		g.drawString("Turn Points Remining: " + control.waitForTurn.getTurnPoints(), 10, 10);
