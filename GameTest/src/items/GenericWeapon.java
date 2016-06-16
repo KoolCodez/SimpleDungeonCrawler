@@ -9,5 +9,6 @@ public class GenericWeapon extends GenericItem{
 	public boolean ranged;
 	public double damage;
 	public double speed;
+	public double reach;
 	public String ammoType;
 }

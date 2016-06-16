@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import items.GenericWeapon;
 
 public class BattleRoom extends StandardRoom {
-	
+	private final double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
 	public BattleRoom(int enemies) {
 		super();
 		typeOfRoom = BATTLE_TAG;
@@ -19,9 +19,9 @@ public class BattleRoom extends StandardRoom {
 			weapon.damage = 1.0;
 			weapon.ranged = false;
 			weapon.speed = 1.0;
+			weapon.reach = 90;
 			temp.setWeapon(weapon);
-			Random rand = new Random();
-			temp.setLocation(250,  250);
+			temp.setLocation(700*SCALE_FACTOR*Math.random() + 50,  700*SCALE_FACTOR*Math.random() + 50);
 			temp.setType("Enemy");
 			temp.setImage(Images.battleGoblinIndex);
 			entities.add(temp);

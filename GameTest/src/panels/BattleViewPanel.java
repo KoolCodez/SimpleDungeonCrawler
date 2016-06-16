@@ -16,14 +16,16 @@ import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 
 public class BattleViewPanel extends JPanel {
-	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
+	private final int CHAR_X_ADJUST = (int) (50 * SCALE_FACTOR);
+	private final int CHAR_Y_ADJUST = (int) (25 * SCALE_FACTOR);
+	private static final double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
 	private ArrayList<FallingDamageNumber> damageNumbers;
 	private Entity character = SimpleDungeonCrawler.character;
 	public double moveRadius;
 	private ControlRouter control;
 	
 	public BattleViewPanel(ControlRouter c) {
-		moveRadius = 0;
+		moveRadius = -1;
 		damageNumbers = new ArrayList<FallingDamageNumber>();
 		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR));
 		control = c;
@@ -42,7 +44,8 @@ public class BattleViewPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(Images.array[Images.battleViewBackgroundIndex], 0, 0, (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR), null);
-		g.drawImage(Images.array[Images.battleCharIndex], (int) character.location.getX(), (int) character.location.getY(),
+		g.drawImage(Images.array[Images.battleCharIndex], 
+				(int) character.location.getX() - CHAR_X_ADJUST, (int) character.location.getY() - CHAR_Y_ADJUST,
 				(int) (100 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR), null);
 		drawEntities(g);
 		g.setColor(Color.red);
@@ -53,7 +56,7 @@ public class BattleViewPanel extends JPanel {
 			g.drawString(currentNum.getDamage() + "", point.x, point.y);
 		}
 		Point2D p = character.location;
-		g.drawOval((int) (p.getX() - moveRadius/2), (int) (p.getY() - moveRadius/2), (int) moveRadius, (int) moveRadius);
+		g.drawOval((int) (p.getX() - moveRadius), (int) (p.getY() - moveRadius), (int) moveRadius*2, (int) moveRadius*2);
 		g.setColor(Color.white);
 		g.drawString("Turn Points Remining: " + control.waitForTurn.getTurnPoints(), 10, 10);
 		
@@ -62,9 +65,10 @@ public class BattleViewPanel extends JPanel {
 	private void drawEntities(Graphics g) {
 		StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		for (int i = 0; i < current.entities.size(); i++) {
-			Point2D point = getBattleLoc(current.entities.get(i));
-			g.drawImage(Images.array[Images.battleGoblinIndex], (int) point.getX(), (int) point.getY(), (int) (100 * SCALE_FACTOR),
-					(int) (50 * SCALE_FACTOR), null);
+			Point2D point = current.entities.get(i).location;
+			g.drawImage(Images.array[Images.battleGoblinIndex], 
+					(int) point.getX() - CHAR_X_ADJUST, (int) point.getY() - CHAR_Y_ADJUST, 
+					(int) (100 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR), null);
 		}
 	}
 	

@@ -33,7 +33,12 @@ public class ControlRouter {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle();
 		character = SimpleDungeonCrawler.character;
+		setDefaultWeapon();
 		setLocationForBattle(character);
+		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities;
+		for (int i = 0; i < currentRoomEnts.size(); i++) {
+			setLocationForBattle(currentRoomEnts.get(i));
+		}
 		startBattleQueue();
 	}
 
@@ -41,7 +46,6 @@ public class ControlRouter {
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
 		List<Entity> initList = setInitiative(currentRoom);
 		battleQueue = new BattleQueue(this, initList);
-		setDefaultWeapon();
 		battleQueue.start();
 
 	}
@@ -86,6 +90,10 @@ public class ControlRouter {
 		// SimpleDungeonCrawler.eventChangeRooms("right");
 		SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
 		setLocationFromBattle(character);
+		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities;
+		for (int i = 0; i < currentRoomEnts.size(); i++) {
+			setLocationFromBattle(currentRoomEnts.get(i));
+		}
 	}
 
 	public void switchToAttackPhase() {
@@ -106,7 +114,7 @@ public class ControlRouter {
 	}
 
 	public void attack(Entity attacker, Entity target) {
-		double damage = attacker.attack(target);
+		double damage = attacker.meleeAttack(target);
 		if (damage > 0) {
 			Point2D doublePoint = target.getLocation();
 			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
@@ -154,7 +162,7 @@ public class ControlRouter {
 		} else {
 			System.out.println("illegal, u r haxor");
 		}
-		battleView.moveRadius = 0;
+		battleView.moveRadius = -1;
 	}
 	
 	private void setLocationForBattle(Entity ent) {
@@ -194,7 +202,9 @@ public class ControlRouter {
 		weapon.damage = 1.0;
 		weapon.ranged = false;
 		weapon.speed = 1.0;
+		weapon.reach = 100;
 		character.setWeapon(weapon);
+		System.out.println("Char weapon set: " + weapon);
 	}
 	
 }
