@@ -22,7 +22,7 @@ public class EntityShaker extends Thread {
 				double deltaY = Math.random() * 5;
 				entity.moveLocation(deltaX, deltaY);
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);
-				entity.setLocation(-deltaX, -deltaY);
+				entity.moveLocation(-deltaX, -deltaY);
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

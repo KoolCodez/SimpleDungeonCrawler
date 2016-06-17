@@ -47,7 +47,6 @@ public class ControlRouter {
 		List<Entity> initList = setInitiative(currentRoom);
 		battleQueue = new BattleQueue(this, initList);
 		battleQueue.start();
-
 	}
 
 	public void playerTurn() {
@@ -59,7 +58,6 @@ public class ControlRouter {
 	private void letPlayerTakeTurn() {
 		synchronized (waitForTurn) {
 			try {
-				System.out.println("wait");
 				waitForTurn.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -121,9 +119,43 @@ public class ControlRouter {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					battleView.displayDamage(damage, location);
+					EntityShaker shaker = new EntityShaker(target);
+					shaker.run();
 				}
 			});
 		}
+	}
+	
+	public void selectEntity() {
+		MouseClick mouse = new MouseClick();
+		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
+		Entity character = SimpleDungeonCrawler.character;
+		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		System.out.println("1");
+		synchronized (mouse) {
+			try {
+				mouse.wait();
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
+		System.out.println("2");
+		Point mousePoint = mouse.getLocation();
+		Point mouseInPanel = new Point((int) (mousePoint.getX() - 10), (int) (mousePoint.getY() - 139));
+		Entity target = currentRoom.entities.get(0);
+		double lastDist = mouseInPanel.distance(target.location);
+		for (int i = 1; i < currentRoom.entities.size(); i++) {
+			Point2D enemyLoc = currentRoom.entities.get(i).location;
+			if (mouseInPanel.distance(enemyLoc) < lastDist) {
+				target = currentRoom.entities.get(i);
+				lastDist = mouseInPanel.distance(enemyLoc);
+			}
+		}
+		character.setSelectedEntity(target);
+	}
+	
+	public void highlight(Entity ent) {
+		battleView.highlight(ent);
 	}
 	
 	public void move() {
@@ -204,7 +236,6 @@ public class ControlRouter {
 		weapon.speed = 1.0;
 		weapon.reach = 100;
 		character.setWeapon(weapon);
-		System.out.println("Char weapon set: " + weapon);
 	}
 	
 }

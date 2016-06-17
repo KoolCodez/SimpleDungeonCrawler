@@ -3,6 +3,7 @@ package panels;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -23,12 +24,14 @@ public class BattleViewPanel extends JPanel {
 	private Entity character = SimpleDungeonCrawler.character;
 	public double moveRadius;
 	private ControlRouter control;
+	private Point2D rectLoc;
 	
 	public BattleViewPanel(ControlRouter c) {
 		moveRadius = -1;
 		damageNumbers = new ArrayList<FallingDamageNumber>();
 		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR));
 		control = c;
+		rectLoc = new Point2D.Double(-100, -100);
 	}
 	
 	public void showAttack() {
@@ -39,6 +42,10 @@ public class BattleViewPanel extends JPanel {
 		FallingDamageNumber n = new FallingDamageNumber(damage, point);
 		damageNumbers.add(n);
 		n.start();
+	}
+	
+	public void highlight(Entity ent) {
+		rectLoc.setLocation(ent.location);
 	}
 	
 	@Override
@@ -57,6 +64,7 @@ public class BattleViewPanel extends JPanel {
 		}
 		Point2D p = character.location;
 		g.drawOval((int) (p.getX() - moveRadius), (int) (p.getY() - moveRadius), (int) moveRadius*2, (int) moveRadius*2);
+		g.drawRect((int) (rectLoc.getX()), (int) (rectLoc.getY()), 100, 50);
 		g.setColor(Color.white);
 		g.drawString("Turn Points Remining: " + control.waitForTurn.getTurnPoints(), 10, 10);
 		

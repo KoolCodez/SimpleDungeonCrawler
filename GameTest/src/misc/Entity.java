@@ -18,7 +18,7 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 	public EntityStats stats = new EntityStats();
 	private int initiative;
 	private GenericWeapon weapon;
-	private int selectedEntity;
+	private Entity selectedEntity;
 	private String name = "Entity";
 	private Utilities utilities = new Utilities();
 	private int imageIndex;
@@ -78,11 +78,11 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 		this.name = name;
 	}
 	
-	public int getSelectedEntity() {
+	public Entity getSelectedEntity() {
 		return selectedEntity;
 	}
 
-	public void setSelectedEntity(int selectedEntity) {
+	public void setSelectedEntity(Entity selectedEntity) {
 		this.selectedEntity = selectedEntity;
 	}
 	
