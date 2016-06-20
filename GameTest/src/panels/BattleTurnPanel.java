@@ -87,26 +87,7 @@ public class BattleTurnPanel extends JPanel {
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Entity targetedEntity = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities
-						.get(0);
-				control.highlight(targetedEntity);
-				
-				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-					@Override
-					protected Integer doInBackground() throws Exception {
-						control.selectEntity();
-						return 0;
-					}
-				};
-				worker.execute();
-				control.highlight(targetedEntity);
-				if (control.waitForTurn.getTurnPoints() >= 3) {
-					control.waitForTurn.setTurnPoints(-3);
-					control.attack(SimpleDungeonCrawler.character, targetedEntity);
-					System.out.println("3");
-				} else {
-					System.out.println("Not enough turn points");
-				}
+				control.switchToAttackPhase();
 			}
 		});
 		fightButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

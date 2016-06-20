@@ -36,7 +36,7 @@ public class BattleQueue extends Thread {
 					control.attack(currentEntity, SimpleDungeonCrawler.character);
 				} else if (isFriendly(currentEntity)) {
 					control.playerTurn();
-					control.switchToAttackPhase();
+					control.switchToQueuePhase();
 				} else {
 					printEntityError(initList.get(i));
 				}

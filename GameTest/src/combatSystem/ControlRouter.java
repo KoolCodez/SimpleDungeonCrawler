@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import items.GenericWeapon;
@@ -16,6 +17,7 @@ import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 import misc.Utilities;
+import panels.BattleAttackPanel;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
@@ -23,6 +25,7 @@ import panels.CoreGameplayPanel;
 public class ControlRouter {
 	public BattleViewPanel battleView;
 	private BattleTurnPanel battleTurnPanel;
+	private BattleAttackPanel attackPanel;
 	private BattleQueue battleQueue;
 	private Utilities utilities = new Utilities();
 	private Entity character;
@@ -31,7 +34,7 @@ public class ControlRouter {
 
 	public ControlRouter() {
 		battleTurnPanel = new BattleTurnPanel(this);
-		displayBattle();
+		displayBattle(battleTurnPanel);
 		character = SimpleDungeonCrawler.character;
 		setDefaultWeapon();
 		setLocationForBattle(character);
@@ -94,11 +97,11 @@ public class ControlRouter {
 		}
 	}
 
-	public void switchToAttackPhase() {
+	public void switchToQueuePhase() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				battleTurnPanel.removeAll();
-				displayBattle();
+				displayBattle(battleTurnPanel);
 			}
 		});
 	}
@@ -106,9 +109,17 @@ public class ControlRouter {
 	public void switchToTurnPhase() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				battleTurnPanel.setVisible(true);
 				battleTurnPanel.addButtonsToTurnPanel();
+				battleTurnPanel.add(battleView);
 			}
 		});
+	}
+	
+	public void switchToAttackPhase() {
+		battleTurnPanel.setVisible(false);
+		attackPanel = new BattleAttackPanel(this);
+		attackPanel.add(battleView);
 	}
 
 	public void attack(Entity attacker, Entity target) {
@@ -127,11 +138,12 @@ public class ControlRouter {
 	}
 	
 	public void selectEntity() {
+		
 		MouseClick mouse = new MouseClick();
 		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
 		Entity character = SimpleDungeonCrawler.character;
+		battleView.attackRadius = character.getWeapon().reach;
 		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
-		System.out.println("1");
 		synchronized (mouse) {
 			try {
 				mouse.wait();
@@ -139,7 +151,6 @@ public class ControlRouter {
 				e1.printStackTrace();
 			}
 		}
-		System.out.println("2");
 		Point mousePoint = mouse.getLocation();
 		Point mouseInPanel = new Point((int) (mousePoint.getX() - 10), (int) (mousePoint.getY() - 139));
 		Entity target = currentRoom.entities.get(0);
@@ -152,6 +163,8 @@ public class ControlRouter {
 			}
 		}
 		character.setSelectedEntity(target);
+		battleView.highlight(target);
+		battleView.attackRadius = -1.0;
 	}
 	
 	public void highlight(Entity ent) {
@@ -209,9 +222,9 @@ public class ControlRouter {
 		ent.setLocation(ent.location.getX() * xFactor, ent.location.getY() * yFactor);
 	}
 
-	public void displayBattle() {
+	public void displayBattle(JPanel panel) {
 		battleView = new BattleViewPanel(this);
-		battleTurnPanel.add(battleView);
+		panel.add(battleView);
 	}
 
 	public List<Entity> setInitiative(StandardRoom current) {
