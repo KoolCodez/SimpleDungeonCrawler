@@ -13,6 +13,7 @@ import combatSystem.ControlRouter;
 import misc.Entity;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
+import misc.StandardRoom;
 
 public class BattleAttackPanel extends JPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
@@ -56,7 +57,7 @@ public class BattleAttackPanel extends JPanel {
 			System.out.println("Not enough turn points");
 		}
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(300);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,6 +81,8 @@ public class BattleAttackPanel extends JPanel {
 	}
 	
 	private void createSelectButton() {
+		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		SimpleDungeonCrawler.character.setSelectedEntity(currentRoom.entities.get(0));
 		JButton selectButton = new JButton("Select Enemy");
 		selectButton.addActionListener(new ActionListener() {
 			@Override

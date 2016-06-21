@@ -193,8 +193,8 @@ public class ControlRouter {
 		double deltaY = -(charPoint.getY() - mouseInPanel.y);
 		double newX = charPoint.getX() + deltaX;
 		double newY = charPoint.getY() + deltaY;
-		boolean xWithinBounds = newX > 0 && newX < 696;
-		boolean yWithinBounds = newY > 0 && newY < 703;
+		boolean xWithinBounds = newX > 40 && newX < 656;
+		boolean yWithinBounds = newY > 40 && newY < 663;
 		boolean distWithinMaxDist = mouseInPanel.distance(charPoint) < turnPoints*SCALED_100;
 		if (xWithinBounds && yWithinBounds && distWithinMaxDist) {
 			double pointsBasedOnDist = Math.abs(mouseInPanel.distance(charPoint))/ SCALED_100;
