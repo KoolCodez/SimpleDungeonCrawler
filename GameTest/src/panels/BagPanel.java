@@ -1,5 +1,6 @@
 package panels;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,41 +9,34 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import combatSystem.ControlRouter;
+import misc.Images;
 import misc.SimpleDungeonCrawler;
 
-public class BagPanel {
+public class BagPanel extends JPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
 	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
 	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
-	private JPanel bagPanel;
 	private int turnPoints;
-	JPanel previousPanel;
+	ControlRouter control;;
 	
-	public BagPanel(int turnPoints, JPanel previousPanel) {
-		this.previousPanel = previousPanel;
-		this.turnPoints = turnPoints;
-		createBagPanel();
+	public BagPanel(ControlRouter c) {
+		setLayout(null);
+		SimpleDungeonCrawler.frame.add(this);
+		JLabel weaponLabel = new JLabel(SimpleDungeonCrawler.character.getWeapon().getImage());
+		weaponLabel.setBounds(0, 0, SCALED_100, SCALED_100);
+		add(weaponLabel);
+		control = c;
+		turnPoints = control.waitForTurn.getTurnPoints();
 		createReturnButton();
 		createSelectWeaponButton();
 	}
 	
-	public JPanel getPanel() {
-		return bagPanel;
-	}
-	
-	public void createBagPanel() {
-		bagPanel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawString("SELECTED WEAPON", 0, (int) (118*SCALE_FACTOR));
-			}
-		};
-		bagPanel.setLayout(null);
-		JLabel weaponLabel = new JLabel(SimpleDungeonCrawler.character.getWeapon().getImage());
-		weaponLabel.setBounds(0, 0, SCALED_100, SCALED_100);
-		bagPanel.add(weaponLabel);
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawString("SELECTED WEAPON", 0, (int) (118*SCALE_FACTOR));
 	}
 	
 	public void createSelectWeaponButton() {
@@ -56,7 +50,7 @@ public class BagPanel {
 			}
 		});
 		selectWeapon.setBounds((int) (0*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		bagPanel.add(selectWeapon);
+		add(selectWeapon);
 	}
 	
 	public void createReturnButton() {
@@ -64,11 +58,11 @@ public class BagPanel {
 		returnButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				previousPanel.setVisible(true); //TODO
-				SimpleDungeonCrawler.frame.remove(bagPanel);
+				setVisible(false);
+				control.switchToTurnPhase();
 			}
 		});
 		returnButton.setBounds((int) (700*SCALE_FACTOR), (int) (900*SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		bagPanel.add(returnButton);
+		add(returnButton);
 	}
 }

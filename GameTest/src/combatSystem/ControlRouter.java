@@ -17,6 +17,7 @@ import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
 import misc.StandardRoom;
 import misc.Utilities;
+import panels.BagPanel;
 import panels.BattleAttackPanel;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
@@ -26,6 +27,7 @@ public class ControlRouter {
 	public BattleViewPanel battleView;
 	private BattleTurnPanel battleTurnPanel;
 	private BattleAttackPanel attackPanel;
+	BagPanel bagPanel;
 	private BattleQueue battleQueue;
 	private Utilities utilities = new Utilities();
 	private Entity character;
@@ -120,6 +122,11 @@ public class ControlRouter {
 		battleTurnPanel.setVisible(false);
 		attackPanel = new BattleAttackPanel(this);
 		attackPanel.add(battleView);
+	}
+	
+	public void switchToBagPanel() {
+		battleTurnPanel.setVisible(false);
+		bagPanel = new BagPanel(this);
 	}
 
 	public void attack(Entity attacker, Entity target) {
