@@ -5,11 +5,21 @@ import java.awt.event.MouseListener;
 import javax.swing.event.MouseInputListener;
 
 public class MouseClick implements MouseInputListener{
+	private Point location;
+	public Point getLocation() {
+		return location;
+	}
+
+	public void setLocation(Point location) {
+		this.location = location;
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		location = e.getLocationOnScreen();
+		synchronized (this) {
+			this.notifyAll();
+		}
 	}
 
 	@Override
@@ -30,7 +40,10 @@ public class MouseClick implements MouseInputListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		location = e.getLocationOnScreen();
+		synchronized (this) {
+			this.notify();
+		}
 		
 	}
 

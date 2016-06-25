@@ -6,15 +6,15 @@ public class MoveRight extends Thread {
 	public void run() {
 		int count = 0;
 		try {
-			while (SimpleDungeonCrawler.movingRight) {
-				if (!SimpleDungeonCrawler.movingDown && !SimpleDungeonCrawler.movingUp) {
-					int speed = SimpleDungeonCrawler.playerSpeed;
+			while (MovementController.movingRight) {
+				if (!MovementController.movingDown && !MovementController.movingUp) {
+					double speed = SimpleDungeonCrawler.playerSpeed;
 					SimpleDungeonCrawler.movePlayer(speed, 0);
 					count++;
 					if (count % 10 < 5) {
-						Images.charImg = Images.charRightOpArm;
+						Images.charImgIndex = Images.charRightOpArmIndex;
 					} else {
-						Images.charImg = Images.charRight;
+						Images.charImgIndex = Images.charRightIndex;
 					}
 				}
 				Thread.sleep(SimpleDungeonCrawler.refreshRate);
