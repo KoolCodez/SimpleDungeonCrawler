@@ -9,11 +9,11 @@ import javax.swing.SwingUtilities;
 
 import misc.Entity;
 import misc.SimpleDungeonCrawler;
-import misc.StandardRoom;
 import misc.Utilities;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
+import rooms.StandardRoom;
 
 public class BattleQueue extends Thread {
 	ControlRouter control;

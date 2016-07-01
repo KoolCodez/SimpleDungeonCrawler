@@ -1,4 +1,4 @@
-package misc;
+package rooms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,9 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 import items.GenericWeapon;
+import misc.Entity;
+import misc.Images;
+import misc.SimpleDungeonCrawler;
 
 public class BattleRoom extends StandardRoom {
 	private final double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;

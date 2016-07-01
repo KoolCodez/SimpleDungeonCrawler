@@ -1,8 +1,10 @@
-package misc;
+package rooms;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import misc.Entity;
 
 public class StandardRoom implements Serializable {
 	public static final String BATTLE_TAG = "battle";

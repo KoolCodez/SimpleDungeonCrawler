@@ -23,8 +23,8 @@ import misc.Entity;
 import misc.Images;
 import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
-import misc.StandardRoom;
 import misc.Utilities;
+import rooms.StandardRoom;
 
 public class BattleTurnPanel extends JPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;

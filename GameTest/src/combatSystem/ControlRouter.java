@@ -15,13 +15,13 @@ import misc.Entity;
 import misc.Images;
 import misc.MouseClick;
 import misc.SimpleDungeonCrawler;
-import misc.StandardRoom;
 import misc.Utilities;
 import panels.BagPanel;
 import panels.BattleAttackPanel;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
+import rooms.StandardRoom;
 
 public class ControlRouter {
 	public BattleViewPanel battleView;

@@ -20,8 +20,8 @@ import combatSystem.FallingDamageNumber;
 import misc.Entity;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
-import misc.StandardRoom;
 import movement.MovementController;
+import rooms.StandardRoom;
 
 public class CoreGameplayPanel extends JPanel{
 

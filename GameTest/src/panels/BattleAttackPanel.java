@@ -13,7 +13,7 @@ import combatSystem.ControlRouter;
 import misc.Entity;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
-import misc.StandardRoom;
+import rooms.StandardRoom;
 
 public class BattleAttackPanel extends JPanel {
 	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;

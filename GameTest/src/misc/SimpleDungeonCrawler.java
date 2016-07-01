@@ -34,6 +34,10 @@ import movement.MoveUp;
 import movement.MoveUpLeft;
 import movement.MoveUpRight;
 import panels.MainMenu;
+import rooms.BattleRoom;
+import rooms.HomeRoom;
+import rooms.StandardRoom;
+import rooms.TreasureRoom;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -116,7 +120,7 @@ public class SimpleDungeonCrawler extends JPanel {
 			roomArray = (StandardRoom[][]) loadObject(ROOM_ARRAY_SAVE_TAG);
 		} else {
 			roomArray = new StandardRoom[10][10];
-			StandardRoom current = new StandardRoom();
+			StandardRoom current = new HomeRoom();
 			current.typeOfRoom = "Standard";
 			roomArray[0][0] = current;
 		}

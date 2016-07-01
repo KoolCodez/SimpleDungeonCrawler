@@ -1,4 +1,4 @@
-package misc;
+package rooms;
 
 public class TreasureRoom extends StandardRoom {
 	public TreasureRoom() {

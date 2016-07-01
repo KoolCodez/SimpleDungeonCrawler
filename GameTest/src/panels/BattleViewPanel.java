@@ -14,7 +14,7 @@ import combatSystem.FallingDamageNumber;
 import misc.Entity;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
-import misc.StandardRoom;
+import rooms.StandardRoom;
 
 public class BattleViewPanel extends JPanel {
 	private final int CHAR_X_ADJUST = (int) (50 * SCALE_FACTOR);
