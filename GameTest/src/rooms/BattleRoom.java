@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 
 import items.GenericWeapon;
 import misc.Entity;
+import misc.Goblin;
 import misc.Images;
 import misc.SimpleDungeonCrawler;
 
@@ -17,7 +18,7 @@ public class BattleRoom extends StandardRoom {
 		super();
 		typeOfRoom = BATTLE_TAG;
 		for (int i = 0; i <= enemies; i++) {
-			Entity temp = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
+			Entity temp = new Goblin();
 			GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
 			weapon.damage = 1.0;
 			weapon.ranged = false;
@@ -25,7 +26,6 @@ public class BattleRoom extends StandardRoom {
 			weapon.reach = 90;
 			temp.setWeapon(weapon);
 			temp.setLocation(700*SCALE_FACTOR*Math.random() + 50,  700*SCALE_FACTOR*Math.random() + 50);
-			temp.setType("Enemy");
 			temp.setImage(Images.battleGoblinIndex);
 			entities.add(temp);
 			

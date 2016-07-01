@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 
 import misc.Entity;
+import misc.Goblin;
 import misc.SimpleDungeonCrawler;
 import misc.Utilities;
 import panels.BattleTurnPanel;
@@ -33,7 +34,7 @@ public class BattleQueue extends Thread {
 				Entity currentEntity = initList.get(i);
 				if (control.flee) {return;}
 				if (isEnemy(currentEntity)) {
-					control.attack(currentEntity, SimpleDungeonCrawler.character);
+					control.enemyTurn((Goblin) currentEntity);
 				} else if (isFriendly(currentEntity)) {
 					control.playerTurn();
 					control.switchToQueuePhase();
@@ -59,10 +60,10 @@ public class BattleQueue extends Thread {
 			}
 		}
 		if (fAlive && !eAlive) {
-			// System.out.println("VICTORY!");
+			control.victory();
 			return false;
 		} else if (!fAlive && eAlive) {
-			// System.out.println("DEFEAT");
+			control.defeat();
 			return false;
 		} else {
 			// System.out.println("CONTINUE THE BATTLE");
