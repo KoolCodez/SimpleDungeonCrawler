@@ -24,13 +24,21 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 	private String name = "Entity";
 	private Utilities utilities = new Utilities();
 	private int imageIndex;
+	private int deadImageIndex;
 	
 	public int getImage() {
-		return imageIndex;
+		if (stats.getHealth() > 0) {
+			return imageIndex;
+		}
+		return deadImageIndex;
 	}
 
 	public void setImage(int index) {
 		this.imageIndex = index;
+	}
+	
+	public void setDeadImage(int index) {
+		deadImageIndex = index;
 	}
 
 	public Entity() {

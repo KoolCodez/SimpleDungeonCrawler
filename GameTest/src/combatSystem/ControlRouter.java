@@ -11,7 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import items.GenericWeapon;
+import misc.BattleAI;
 import misc.Entity;
+import misc.Goblin;
 import misc.Images;
 import misc.MouseClick;
 import misc.SDC;
@@ -21,6 +23,7 @@ import panels.BattleAttackPanel;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
+import rooms.HomeRoom;
 import rooms.StandardRoom;
 
 public class ControlRouter {
@@ -53,6 +56,24 @@ public class ControlRouter {
 		battleQueue = new BattleQueue(this, initList);
 		battleQueue.start();
 	}
+	
+	public void enemyTurn(Goblin currentEntity) {
+		int turnPoints = 5;
+		while (turnPoints > 0) {
+			String nextMove = currentEntity.battleAI.getNextMove();
+			switch(nextMove) {
+			case BattleAI.ATTACK_TAG:
+				attack(currentEntity, SDC.character);
+				break;
+			case BattleAI.MOVE_TOWARD_TAG:
+				//moveToward();
+				break;
+			default:
+				attack(currentEntity, SDC.character);
+				break;
+			}
+		}
+	}
 
 	public void playerTurn() {
 		switchToTurnPhase();
@@ -67,6 +88,24 @@ public class ControlRouter {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void victory() {
+		System.out.println("Victory!");
+		exitBattle();
+	}
+	
+	public void defeat() {
+		HomeRoom home = (HomeRoom) SDC.roomArray[0][0];
+		if (home.villagers.size() > 0) {
+			home.villagers.remove((int) (Math.random() * home.villagers.size()));
+			Entity character = SDC.character;
+			character.stats.setHealth(character.stats.getMaxHealth());
+			SDC.loc = new Point(0,0);
+			exitBattle();
+		} else {
+			//"game over" screen
 		}
 	}
 
@@ -92,6 +131,12 @@ public class ControlRouter {
 		}
 		character.setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 		// SimpleDungeonCrawler.eventChangeRooms("right");
+
+		exitBattle();
+	}
+	
+	private void exitBattle() {
+		battleTurnPanel.setVisible(false);
 		SDC.frame.add(new CoreGameplayPanel());
 		setLocationFromBattle(character);
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
