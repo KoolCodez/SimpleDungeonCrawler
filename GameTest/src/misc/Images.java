@@ -54,7 +54,7 @@ public class Images {
 	public static int topArrowIndex;
 	public static int charImgIndex;
 	
-	private static double scale = SimpleDungeonCrawler.SCALE_FACTOR;
+	private static double scale = SDC.SCALE_FACTOR;
 	
 	public static void createImages() throws IOException {
 		array = new Image[31];

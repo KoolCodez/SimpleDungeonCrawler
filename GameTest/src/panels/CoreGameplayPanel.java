@@ -19,16 +19,16 @@ import combatSystem.EntityShaker;
 import combatSystem.FallingDamageNumber;
 import misc.Entity;
 import misc.Images;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 import movement.MovementController;
 import rooms.StandardRoom;
 
 public class CoreGameplayPanel extends JPanel{
 
-	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
-	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
+	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;
+	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
+	private static int SCALED_100 = SDC.SCALED_100;
 	private ArrayList<FallingDamageNumber> damageNumbers;
 
 	public CoreGameplayPanel() {
@@ -47,13 +47,13 @@ public class CoreGameplayPanel extends JPanel{
 	
 	private void drawPanel(Graphics g) {
 		g.drawImage(Images.array[Images.backgroundImgIndex], 0, 0, null);
-		g.drawImage(Images.array[Images.charImgIndex], (int) SimpleDungeonCrawler.character.getLocation().getX(),
-				(int) SimpleDungeonCrawler.character.getLocation().getY(), null);
+		g.drawImage(Images.array[Images.charImgIndex], (int) SDC.character.getLocation().getX(),
+				(int) SDC.character.getLocation().getY(), null);
 		g.drawImage(Images.array[Images.rightArrowIndex], (int) (948 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.leftArrowIndex], (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.bottomArrowIndex], (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.topArrowIndex], (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), null);
-		StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		for (int i = 0; i < current.entities.size(); i++) {
 			Entity entity = current.entities.get(i);
 			g.drawImage(Images.array[entity.getImage()], (int) entity.getLocation().getX(), (int) entity.getLocation().getY(), null);
@@ -62,7 +62,7 @@ public class CoreGameplayPanel extends JPanel{
 		for (int i = 0; i < damageNumbers.size(); i++) {
 			FallingDamageNumber currentNum = damageNumbers.get(i);
 			Point point = currentNum.getPoint();
-			g.setFont(SimpleDungeonCrawler.font);
+			g.setFont(SDC.font);
 			g.drawString(currentNum.getDamage() + "", point.x, point.y);
 		}
 		g.setColor(Color.black);
@@ -74,19 +74,19 @@ public class CoreGameplayPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				double damage = 10.0 * Math.random();
-				Point2D doublePoint = SimpleDungeonCrawler.character.getLocation();
+				Point2D doublePoint = SDC.character.getLocation();
 				Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
 				FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
 				damageNumbers.add(currentFallingDamage);
 				currentFallingDamage.start();
 				
-				EntityShaker eShake = new EntityShaker(SimpleDungeonCrawler.character);
+				EntityShaker eShake = new EntityShaker(SDC.character);
 				eShake.start();
 			}
 		});
 		testDamage.setBounds((int) (700 * SCALE_FACTOR), (int) (200 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 
-		testDamage.setFont(SimpleDungeonCrawler.font);
+		testDamage.setFont(SDC.font);
 		add(testDamage);
 	}
 	
@@ -96,11 +96,11 @@ public class CoreGameplayPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				SimpleDungeonCrawler.frame.add(new PauseMenuPanel());
+				SDC.frame.add(new PauseMenuPanel());
 			}
 		});
 		menuButton.setBounds((int) (700 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		menuButton.setFont(SimpleDungeonCrawler.font);
+		menuButton.setFont(SDC.font);
 		add(menuButton);
 	}
 	
@@ -122,13 +122,13 @@ public class CoreGameplayPanel extends JPanel{
 		atkButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Component[] variables = SimpleDungeonCrawler.frame.getContentPane().getComponents();
+				Component[] variables = SDC.frame.getContentPane().getComponents();
 				setVisible(false);
 				createBattle();
 			}
 		});
 		atkButton.setBounds((int) (700 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		atkButton.setFont(SimpleDungeonCrawler.font);
+		atkButton.setFont(SDC.font);
 		add(atkButton);
 	}
 

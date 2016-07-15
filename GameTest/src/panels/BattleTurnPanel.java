@@ -22,23 +22,23 @@ import items.GenericWeapon;
 import misc.Entity;
 import misc.Images;
 import misc.MouseClick;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 import misc.Utilities;
 import rooms.StandardRoom;
 
 public class BattleTurnPanel extends JPanel {
-	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
-	private static int MENU_SIZE = SimpleDungeonCrawler.MENU_SIZE;
-	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
+	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;
+	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
+	private static int MENU_SIZE = SDC.MENU_SIZE;
+	private static int SCALED_100 = SDC.SCALED_100;
 
 	private BattleViewPanel battleView;
 	private ControlRouter control;
 
 	public BattleTurnPanel(ControlRouter c) {
 		setLayout(null);
-		SimpleDungeonCrawler.frame.add(this);
+		SDC.frame.add(this);
 		control = c;
 		battleView = control.battleView;
 		// addButtonsToTurnPanel();
@@ -49,8 +49,8 @@ public class BattleTurnPanel extends JPanel {
 		g.drawImage(Images.array[Images.battleMenuIndex], 0, 0, MENU_SIZE, MENU_SIZE, null);
 		g.setColor(Color.red);
 		g.fillRect((int) (214 * SCALE_FACTOR), (int) (932 * SCALE_FACTOR),
-				(int) (440 * SCALE_FACTOR * SimpleDungeonCrawler.character.stats.getHealth()
-						/ SimpleDungeonCrawler.character.stats.getMaxHealth()),
+				(int) (440 * SCALE_FACTOR * SDC.character.stats.getHealth()
+						/ SDC.character.stats.getMaxHealth()),
 				(int) (36 * SCALE_FACTOR));
 		g.setColor(Color.black);
 		// g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50,

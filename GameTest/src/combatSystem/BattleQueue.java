@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 
 import misc.Entity;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 import misc.Utilities;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
@@ -27,13 +27,13 @@ public class BattleQueue extends Thread {
 	}
 
 	public void run() {
-		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		while (checkLiving(currentRoom) && !control.flee) {
 			for (int i = 0; i < initList.size(); i++) {
 				Entity currentEntity = initList.get(i);
 				if (control.flee) {return;}
 				if (isEnemy(currentEntity)) {
-					control.attack(currentEntity, SimpleDungeonCrawler.character);
+					control.attack(currentEntity, SDC.character);
 				} else if (isFriendly(currentEntity)) {
 					control.playerTurn();
 					control.switchToQueuePhase();
@@ -50,7 +50,7 @@ public class BattleQueue extends Thread {
 	private boolean checkLiving(StandardRoom current) {
 		boolean fAlive = false;
 		boolean eAlive = false;
-		if (SimpleDungeonCrawler.character.stats.getHealth() <= 0) {
+		if (SDC.character.stats.getHealth() <= 0) {
 			fAlive = true;
 		}
 		for (int i = 0; i < current.entities.size(); i++) {

@@ -19,14 +19,14 @@ import javax.swing.SwingWorker;
 import items.GenericItem;
 import items.Stick;
 import misc.MouseClick;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 
 public class InventoryPanel extends JPanel {
-	private static final double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static final int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
-	private static final int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+	private static final double SCALE_FACTOR = SDC.SCALE_FACTOR;
+	private static final int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
+	private static final int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	private static final int SCALED_140 = (int) (140 * SCALE_FACTOR);
-	private static final int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
+	private static final int SCALED_100 = SDC.SCALED_100;
 	private static final int SCALED_40 = (int) (40 * SCALE_FACTOR);
 	private Point selectedLocation;
 	private boolean endMouseListener;
@@ -43,8 +43,8 @@ public class InventoryPanel extends JPanel {
 	private void drawInv(Graphics g) {
 		Rectangle rText = new Rectangle(0, SCALED_100, SCALED_100, SCALED_40);
 		Rectangle rImage = new Rectangle(0, 0, SCALED_100, SCALED_100);
-		for (int i = SimpleDungeonCrawler.character.getInventory().size() - 1; i >= 0; i--) {
-			GenericItem item = SimpleDungeonCrawler.character.getInventory().get(i);
+		for (int i = SDC.character.getInventory().size() - 1; i >= 0; i--) {
+			GenericItem item = SDC.character.getInventory().get(i);
 			g.drawImage(item.itemImage.getImage(), rImage.x, rImage.y, null);
 			g.setFont(new Font("Harrington", Font.BOLD, 18));
 			g.drawString(item.itemName, rImage.x, rImage.y + (int) (120 * SCALE_FACTOR));
@@ -57,7 +57,7 @@ public class InventoryPanel extends JPanel {
 	}
 
 	public InventoryPanel() {
-		inventory = SimpleDungeonCrawler.character.getInventory();
+		inventory = SDC.character.getInventory();
 		selectedLocation = new Point(0, 0);
 		selectedItemNumber = 0;
 		endMouseListener = false;
@@ -107,20 +107,20 @@ public class InventoryPanel extends JPanel {
 		deleteItemButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<GenericItem> inventory = SimpleDungeonCrawler.character.getInventory();
+				List<GenericItem> inventory = SDC.character.getInventory();
 				int inventorySize = inventory.size();
 				inventory.remove(inventorySize - selectedItemNumber - 1);
 				refreshItem();
 			}
 		});
 		deleteItemButton.setBounds(BUTTON_WIDTH, (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		deleteItemButton.setFont(SimpleDungeonCrawler.font);
+		deleteItemButton.setFont(SDC.font);
 		add(deleteItemButton);
 	}
 	
 	private void refreshItem() {
-		if (selectedItemNumber > SimpleDungeonCrawler.character.getInventory().size() - 1) {
-			selectedItemNumber = SimpleDungeonCrawler.character.getInventory().size() - 1;
+		if (selectedItemNumber > SDC.character.getInventory().size() - 1) {
+			selectedItemNumber = SDC.character.getInventory().size() - 1;
 		}
 		Point newPoint = new Point((int) ((selectedItemNumber % 9) * SCALED_100),
 				(int) (((selectedItemNumber - selectedItemNumber % 9) / 9)) * SCALED_140);
@@ -133,10 +133,10 @@ public class InventoryPanel extends JPanel {
 		addStick.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (SimpleDungeonCrawler.character.getInventory().size() < 20) {
+				if (SDC.character.getInventory().size() < 20) {
 					Stick stick = new Stick();
 					stick.getImage();
-					SimpleDungeonCrawler.character.addItem(stick);
+					SDC.character.addItem(stick);
 					/*removeAll();
 					add(addStick);
 					createExitButton();
@@ -145,7 +145,7 @@ public class InventoryPanel extends JPanel {
 			}
 		});
 		addStick.setBounds((int) (0 * SCALE_FACTOR), (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		addStick.setFont(SimpleDungeonCrawler.font);
+		addStick.setFont(SDC.font);
 		add(addStick);
 	}
 
@@ -156,11 +156,11 @@ public class InventoryPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				endMouseListener = true;
 				setVisible(false);
-				SimpleDungeonCrawler.frame.getContentPane().add(new PauseMenuPanel());
+				SDC.frame.getContentPane().add(new PauseMenuPanel());
 			}
 		});
 		exitButton.setBounds((int) (700 * SCALE_FACTOR), (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		exitButton.setFont(SimpleDungeonCrawler.font);
+		exitButton.setFont(SDC.font);
 		add(exitButton);
 	}
 

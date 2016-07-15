@@ -12,14 +12,14 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import misc.Images;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 
 public class PauseMenuPanel extends JPanel {
-	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
-	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
-	private static Font font = SimpleDungeonCrawler.font;
+	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;
+	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
+	private static int SCALED_100 = SDC.SCALED_100;
+	private static Font font = SDC.font;
 	Point menuCoord = new Point((int) (350*SCALE_FACTOR), (int) (250*SCALE_FACTOR));
 	
 	public PauseMenuPanel() {
@@ -42,7 +42,7 @@ public class PauseMenuPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				SimpleDungeonCrawler.frame.add(new MainMenu());
+				SDC.frame.add(new MainMenu());
 			}
 		});
 		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -56,7 +56,7 @@ public class PauseMenuPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					SimpleDungeonCrawler.saveAllImportantStuff();
+					SDC.saveAllImportantStuff();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -76,7 +76,7 @@ public class PauseMenuPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				InventoryPanel inventoryPanel = new InventoryPanel();
-				SimpleDungeonCrawler.frame.add(inventoryPanel);
+				SDC.frame.add(inventoryPanel);
 			}
 		});
 		invButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -91,7 +91,7 @@ public class PauseMenuPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				SimpleDungeonCrawler.frame.add(new CharacterPanel());
+				SDC.frame.add(new CharacterPanel());
 			}
 		});
 		charButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -106,7 +106,7 @@ public class PauseMenuPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
+				SDC.frame.add(new CoreGameplayPanel());
 			}
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);

@@ -14,7 +14,7 @@ import items.GenericWeapon;
 import misc.Entity;
 import misc.Images;
 import misc.MouseClick;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 import misc.Utilities;
 import panels.BagPanel;
 import panels.BattleAttackPanel;
@@ -37,10 +37,10 @@ public class ControlRouter {
 	public ControlRouter() {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
-		character = SimpleDungeonCrawler.character;
+		character = SDC.character;
 		setDefaultWeapon();
 		setLocationForBattle(character);
-		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities;
+		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		for (int i = 0; i < currentRoomEnts.size(); i++) {
 			setLocationForBattle(currentRoomEnts.get(i));
 		}
@@ -48,7 +48,7 @@ public class ControlRouter {
 	}
 
 	public void startBattleQueue() {
-		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		List<Entity> initList = setInitiative(currentRoom);
 		battleQueue = new BattleQueue(this, initList);
 		battleQueue.start();
@@ -74,7 +74,7 @@ public class ControlRouter {
 		List<Entity> list = battleQueue.initList;
 		boolean successful = false;
 		flee = false;
-		if (utilities.r20() > 10 + (list.size() - 1) - (SimpleDungeonCrawler.character.stats.getDex() / 10)) {
+		if (utilities.r20() > 10 + (list.size() - 1) - (SDC.character.stats.getDex() / 10)) {
 			flee = true;
 			fleeBattle();
 			successful = true;
@@ -85,15 +85,16 @@ public class ControlRouter {
 
 	public void fleeBattle() {
 		battleTurnPanel.setVisible(false);
-		if (SimpleDungeonCrawler.loc.x > 0) {
-			SimpleDungeonCrawler.loc.x--;
-		} else if (SimpleDungeonCrawler.loc.y > 0) {
-			SimpleDungeonCrawler.loc.y--;
+		if (SDC.loc.x > 0) {
+			SDC.loc.x--;
+		} else if (SDC.loc.y > 0) {
+			SDC.loc.y--;
 		}
+		character.setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 		// SimpleDungeonCrawler.eventChangeRooms("right");
-		SimpleDungeonCrawler.frame.add(new CoreGameplayPanel());
+		SDC.frame.add(new CoreGameplayPanel());
 		setLocationFromBattle(character);
-		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y].entities;
+		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		for (int i = 0; i < currentRoomEnts.size(); i++) {
 			setLocationFromBattle(currentRoomEnts.get(i));
 		}
@@ -147,10 +148,10 @@ public class ControlRouter {
 	public void selectEntity() {
 		
 		MouseClick mouse = new MouseClick();
-		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
-		Entity character = SimpleDungeonCrawler.character;
+		SDC.frame.getContentPane().addMouseListener(mouse);
+		Entity character = SDC.character;
 		battleView.attackRadius = character.getWeapon().reach;
-		StandardRoom currentRoom = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		synchronized (mouse) {
 			try {
 				mouse.wait();
@@ -181,9 +182,9 @@ public class ControlRouter {
 	public void move() {
 		int turnPoints = waitForTurn.getTurnPoints();
 		MouseClick mouse = new MouseClick();
-		SimpleDungeonCrawler.frame.getContentPane().addMouseListener(mouse);
-		Entity character = SimpleDungeonCrawler.character;
-		int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
+		SDC.frame.getContentPane().addMouseListener(mouse);
+		Entity character = SDC.character;
+		int SCALED_100 = SDC.SCALED_100;
 		battleView.moveRadius = turnPoints * SCALED_100;
 		synchronized (mouse) {
 			try {

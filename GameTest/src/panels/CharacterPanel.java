@@ -8,13 +8,13 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import misc.Entity;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 
 public class CharacterPanel extends JPanel {
-	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
-	Entity character = SimpleDungeonCrawler.character;
+	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;
+	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
+	Entity character = SDC.character;
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -41,7 +41,7 @@ public class CharacterPanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
-						SimpleDungeonCrawler.frame.getContentPane().add(new PauseMenuPanel());
+						SDC.frame.getContentPane().add(new PauseMenuPanel());
 					}
 				});
 				exitButton.setBounds(350, 100, 150, 50);

@@ -11,20 +11,20 @@ import javax.swing.JPanel;
 
 import combatSystem.ControlRouter;
 import misc.Images;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 
 public class BagPanel extends JPanel {
-	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
-	private static int SCALED_100 = SimpleDungeonCrawler.SCALED_100;
+	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;
+	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
+	private static int SCALED_100 = SDC.SCALED_100;
 	private int turnPoints;
 	ControlRouter control;;
 	
 	public BagPanel(ControlRouter c) {
 		setLayout(null);
-		SimpleDungeonCrawler.frame.add(this);
-		JLabel weaponLabel = new JLabel(SimpleDungeonCrawler.character.getWeapon().getImage());
+		SDC.frame.add(this);
+		JLabel weaponLabel = new JLabel(SDC.character.getWeapon().getImage());
 		weaponLabel.setBounds(0, 0, SCALED_100, SCALED_100);
 		add(weaponLabel);
 		control = c;

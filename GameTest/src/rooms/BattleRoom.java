@@ -9,10 +9,10 @@ import javax.swing.ImageIcon;
 import items.GenericWeapon;
 import misc.Entity;
 import misc.Images;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 
 public class BattleRoom extends StandardRoom {
-	private final double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
+	private final double SCALE_FACTOR = SDC.SCALE_FACTOR;
 	public BattleRoom(int enemies) {
 		super();
 		typeOfRoom = BATTLE_TAG;

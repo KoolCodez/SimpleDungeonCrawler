@@ -1,0 +1,74 @@
+package misc;
+
+import java.awt.Rectangle;
+import java.awt.geom.Point2D;
+
+import rooms.StandardRoom;
+
+public class Thing {
+	public Point2D location;
+	public Rectangle outline;
+	public StandardRoom currentRoom;
+	
+	public Thing() {
+		location = new Point2D.Double(250 * SDC.SCALE_FACTOR, 250 * SDC.SCALE_FACTOR);
+		outline = new Rectangle();
+	}
+	
+	public void move(double deltaX, double deltaY) {
+		if (legalMove(deltaX, deltaY)) {
+			location.setLocation(location.getX() + deltaX, location.getY() + deltaY);
+			outline.setLocation((int) (location.getX()), (int) (location.getY()));
+			SDC.checkIfLeavingRoom();
+		}
+	}
+	
+	public void setLocation(double newX, double newY) {
+		location.setLocation(newX, newY);
+		outline.setLocation((int) (location.getX()), (int) (location.getY()));
+	}
+	
+	public void setRoom(StandardRoom r) {
+		currentRoom = r;
+	}
+	
+	public Point2D getLocation() {
+		return location;
+	}
+	
+	public void setSize(int w, int l) {
+		outline.setSize(w, l);
+	}
+	
+	public boolean legalMove(double deltaX, double deltaY) {
+		Rectangle rect = outline;
+		rect.setLocation((int) (location.getX() + deltaX), (int) (location.getY() + deltaY));
+		for (int i = 0; i < currentRoom.things.size(); i++) {
+			if (rect.intersects(currentRoom.things.get(i).outline)) {
+				
+				return false;
+			}
+		}
+		return rectIsInsideRoom(rect);
+	}
+	
+	private boolean rectIsInsideRoom(Rectangle rect) {
+		double top = rect.getY();
+		double left = rect.getX();
+		double bottom = rect.getY() + rect.getHeight();
+		double right = rect.getX() + rect.getWidth();
+		if (top < 0) {
+			return false;
+		}
+		if (left < 0) {
+			return false;
+		}
+		if (bottom > 1000*SDC.SCALE_FACTOR) {
+			return false;
+		}
+		if (right > 1000*SDC.SCALE_FACTOR) {
+			return false;
+		}
+		return true;
+	}
+}

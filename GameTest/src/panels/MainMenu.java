@@ -11,13 +11,13 @@ import javax.swing.JPanel;
 
 import misc.Entity;
 import misc.Images;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 
 public class MainMenu extends JPanel{
 
-	private static double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
-	private static int BUTTON_WIDTH = SimpleDungeonCrawler.BUTTON_WIDTH;
-	private static int BUTTON_HEIGHT = SimpleDungeonCrawler.BUTTON_HEIGHT;
+	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;
+	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
+	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	Point menuCoord = new Point((int) (350 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR));
 
 	public MainMenu() {
@@ -29,8 +29,8 @@ public class MainMenu extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.drawImage(Images.array[Images.mainMenuIndex], (int) (0 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), SimpleDungeonCrawler.MENU_SIZE,
-				SimpleDungeonCrawler.MENU_SIZE, null);
+		g.drawImage(Images.array[Images.mainMenuIndex], (int) (0 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), SDC.MENU_SIZE,
+				SDC.MENU_SIZE, null);
 
 	}
 	
@@ -44,7 +44,7 @@ public class MainMenu extends JPanel{
 		});
 		exitButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuCoord.y += BUTTON_HEIGHT;
-		exitButton.setFont(SimpleDungeonCrawler.font);
+		exitButton.setFont(SDC.font);
 		add(exitButton);
 	}
 	
@@ -53,13 +53,13 @@ public class MainMenu extends JPanel{
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDungeonCrawler.frame.getContentPane().add(new CoreGameplayPanel());
+				SDC.frame.getContentPane().add(new CoreGameplayPanel());
 				setVisible(false);
 			}
 		});
 		startButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuCoord.y += BUTTON_HEIGHT;
-		startButton.setFont(SimpleDungeonCrawler.font);
+		startButton.setFont(SDC.font);
 		add(startButton);
 	}
 	
@@ -69,7 +69,7 @@ public class MainMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					SimpleDungeonCrawler.loadAllImportantStuff();
+					SDC.loadAllImportantStuff();
 				} catch (ClassNotFoundException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -78,7 +78,7 @@ public class MainMenu extends JPanel{
 		});
 		loadButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuCoord.y += BUTTON_HEIGHT;
-		loadButton.setFont(SimpleDungeonCrawler.font);
+		loadButton.setFont(SDC.font);
 		add(loadButton);
 	}
 }

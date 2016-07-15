@@ -54,17 +54,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
 
-public class SimpleDungeonCrawler extends JPanel {
+public class SDC extends JPanel { //SimpleDungeonCrawler
 	private static final String ROOM_ARRAY_SAVE_TAG = "roomArray";
 	private static final String CHARACTER_SAVE_TAG = "character";
 	private static final String LOC_SAVE_TAG = "loc";
-	public static final double SCALE_FACTOR = .75;
+	public static final double SCALE_FACTOR = .5;
 	public static final int SCALED_100 = (int) (100 * SCALE_FACTOR);
 	public static final int MENU_SIZE = (int) (1000 * SCALE_FACTOR);
 	public static final int BUTTON_HEIGHT = (int) (100 * SCALE_FACTOR);
 	public static final int BUTTON_WIDTH = (int) (300 * SCALE_FACTOR);
 	public static StandardRoom[][] roomArray;
-	public static Point loc;
+	public static Point loc = new Point(0,0);
 	public static Entity character;
 	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
@@ -79,9 +79,9 @@ public class SimpleDungeonCrawler extends JPanel {
 		// System.out.println("Current working directory in Java : " + current);
 		frameSetup();
 		Images.createImages();
-		createCharacter();
 		createRoomArray();
 		createLoc();
+		createCharacter();
 		Refresh r1 = new Refresh();
 		r1.start();
 		refreshArrows();
@@ -112,6 +112,8 @@ public class SimpleDungeonCrawler extends JPanel {
 			character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
 			character.setType("Friendly");
 			character.addItem(new Stick());
+			character.setSize((int) (72 * SCALE_FACTOR), (int) (92 * SCALE_FACTOR));
+			character.setRoom(roomArray[loc.x][loc.y]);
 		}
 	}
 	
@@ -123,11 +125,12 @@ public class SimpleDungeonCrawler extends JPanel {
 			StandardRoom current = new HomeRoom();
 			current.typeOfRoom = "Standard";
 			roomArray[0][0] = current;
+			System.out.println(current.things.size());
 		}
 	}
 	
 	public static void saveAllImportantStuff() throws IOException {
-		saveObject(SimpleDungeonCrawler.character, CHARACTER_SAVE_TAG);
+		saveObject(SDC.character, CHARACTER_SAVE_TAG);
 		saveObject(roomArray, ROOM_ARRAY_SAVE_TAG);
 		saveObject(loc, LOC_SAVE_TAG);
 	}
@@ -184,46 +187,6 @@ public class SimpleDungeonCrawler extends JPanel {
 
 	}
 
-	public static boolean legalMove(double deltaX, double deltaY) { // character
-																	// 46
-		// tall, 36
-		// wide // wall 34
-		boolean isLegal = false;
-		double x = character.getLocation().getX() + deltaX;
-		double y = character.getLocation().getY() + deltaY;
-		double left = x;
-		double right = x + 72 * SCALE_FACTOR;
-		double top = y;
-		double bottom = y + 92 * SCALE_FACTOR;
-		if (bottom <= (int) (928*SCALE_FACTOR) && top >= (int) (72*SCALE_FACTOR) && right <= (int) (928*SCALE_FACTOR) && left >= (int) (72*SCALE_FACTOR)) { // main
-																		// room
-																		// box
-			isLegal = true;
-		}
-		if (bottom <= (int) (600*SCALE_FACTOR) && top >= (int) (400*SCALE_FACTOR) && right <= (int) (1000*SCALE_FACTOR) && left >= (int) (0*SCALE_FACTOR)) { // right
-																		// and
-																		// left
-																		// doors
-			isLegal = true;
-		}
-		if (bottom <= (int) (1000*SCALE_FACTOR) && top >= (int) (0*SCALE_FACTOR) && right <= (int) (600*SCALE_FACTOR) && left >= (int) (400*SCALE_FACTOR)) { // top
-																		// and
-																		// bottom
-																		// doors
-			isLegal = true;
-		}
-
-		return isLegal;
-	}
-
-	public static void movePlayer(double deltaX, double deltaY) {
-		if (legalMove(deltaX, deltaY)) {
-			character.moveLocation(deltaX, deltaY);
-			checkIfLeavingRoom();
-		}
-		checkIfLeavingRoom();
-	}
-
 	public static void eventChangeRooms(String door) {
 		if (roomArray[loc.x][loc.y] == null) {
 			StandardRoom current = new StandardRoom();
@@ -265,7 +228,7 @@ public class SimpleDungeonCrawler extends JPanel {
 		} else {
 			character.getLocation().setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
 		}
-		
+		character.setRoom(roomArray[loc.x][loc.y]);
 	}
 
 	private static void refreshArrows() {

@@ -2,7 +2,7 @@ package combatSystem;
 
 import java.awt.Point;
 
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 
 public class FallingDamageNumber extends Thread {
 	
@@ -35,7 +35,7 @@ public class FallingDamageNumber extends Thread {
 				startingLocation.x += velocityX;
 				startingLocation.y += velocityY;
 				velocityY += acceleration;
-				Thread.sleep(SimpleDungeonCrawler.refreshRate * 2);
+				Thread.sleep(SDC.refreshRate * 2);
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

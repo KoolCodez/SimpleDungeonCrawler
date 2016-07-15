@@ -2,6 +2,7 @@ package misc;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,10 +11,11 @@ import java.util.Random;
 
 import items.GenericItem;
 import items.GenericWeapon;
+import rooms.StandardRoom;
 
-public class Entity implements Comparable<Entity>, Serializable { // extend this class with specific entity-classes.
+public class Entity extends Thing implements Comparable<Entity>, Serializable { // extend this class with specific entity-classes.
 	private String entityType;
-	public Point2D location;
+	
 	private List<GenericItem> inventory = new ArrayList<GenericItem>();
 	public EntityStats stats = new EntityStats();
 	private int initiative;
@@ -38,8 +40,8 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 
 	public Entity(double health, double strength, double dexterity, double constitution, double intelligence,
 			double wisdom, double charisma, int AC) {
+		super();
 		entityType = "Generic Entity";
-		location = new Point2D.Double(250, 250);
 		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
 	}
 	
@@ -90,18 +92,6 @@ public class Entity implements Comparable<Entity>, Serializable { // extend this
 	
 	public String getType() {
 		return entityType;
-	}
-	
-	public void moveLocation(double deltaX, double deltaY) {
-		location.setLocation(location.getX() + deltaX, location.getY() + deltaY);
-	}
-	
-	public void setLocation(double newX, double newY) {
-		location.setLocation(newX, newY);
-	}
-	
-	public Point2D getLocation() {
-		return location;
 	}
 	
 	public List<GenericItem> getInventory() {

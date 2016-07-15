@@ -13,15 +13,15 @@ import combatSystem.ControlRouter;
 import combatSystem.FallingDamageNumber;
 import misc.Entity;
 import misc.Images;
-import misc.SimpleDungeonCrawler;
+import misc.SDC;
 import rooms.StandardRoom;
 
 public class BattleViewPanel extends JPanel {
 	private final int CHAR_X_ADJUST = (int) (50 * SCALE_FACTOR);
 	private final int CHAR_Y_ADJUST = (int) (25 * SCALE_FACTOR);
-	private static final double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
+	private static final double SCALE_FACTOR = SDC.SCALE_FACTOR;
 	private ArrayList<FallingDamageNumber> damageNumbers;
-	private Entity character = SimpleDungeonCrawler.character;
+	private Entity character = SDC.character;
 	public double moveRadius;
 	public double attackRadius;
 	private ControlRouter control;
@@ -57,7 +57,7 @@ public class BattleViewPanel extends JPanel {
 		for (int i = 0; i < damageNumbers.size(); i++) {
 			FallingDamageNumber currentNum = damageNumbers.get(i);
 			Point point = currentNum.getPoint();
-			g.setFont(SimpleDungeonCrawler.font);
+			g.setFont(SDC.font);
 			g.drawString(currentNum.getDamage() + "", point.x, point.y);
 		}
 		Point2D p = character.location;
@@ -72,7 +72,7 @@ public class BattleViewPanel extends JPanel {
 	}
 	
 	private void drawEntities(Graphics g) {
-		StandardRoom current = SimpleDungeonCrawler.roomArray[SimpleDungeonCrawler.loc.x][SimpleDungeonCrawler.loc.y];
+		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		for (int i = 0; i < current.entities.size(); i++) {
 			Point2D point = current.entities.get(i).location;
 			g.drawImage(Images.array[Images.battleGoblinIndex], 
@@ -82,7 +82,7 @@ public class BattleViewPanel extends JPanel {
 	}
 	
 	public Point2D getBattleLoc(Entity ent) {
-		double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
+		double SCALE_FACTOR = SDC.SCALE_FACTOR;
 		double battleRatioX = (696 * SCALE_FACTOR) / (1000 * SCALE_FACTOR); //battle size / normal size
 		double battleRatioY = (703 * SCALE_FACTOR) / (1000 * SCALE_FACTOR);
 		Point2D battleLoc = new Point2D.Double(ent.location.getX() * (battleRatioX),

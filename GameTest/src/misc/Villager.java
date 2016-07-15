@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import items.GenericItem;
 
 public class Villager extends Entity {
-	double SCALE_FACTOR = SimpleDungeonCrawler.SCALE_FACTOR;
+	double SCALE_FACTOR = SDC.SCALE_FACTOR;
 	public Villager() {
 		stats.setStats(Math.random() * 10, Math.random() * 10, Math.random() * 10, Math.random() * 10,
 				Math.random() * 10, Math.random() * 10, Math.random() * 10, (int) (Math.random() * 10));
