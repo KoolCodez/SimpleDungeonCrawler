@@ -14,5 +14,6 @@ public class HomeRoom extends StandardRoom {
 		Entity villager = new Villager();
 		villagers.add(villager);
 		entities.add(villager);
+		things.add(villager);
 	}
 }

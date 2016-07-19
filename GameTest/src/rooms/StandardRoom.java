@@ -22,7 +22,6 @@ public class StandardRoom implements Serializable {
 		entities = new ArrayList<Entity>();
 		things = new ArrayList<Thing>();
 		things.addAll(entities);
-		
 		createWalls();
 	}
 
@@ -31,7 +30,6 @@ public class StandardRoom implements Serializable {
 		tl.setLocation(0, 0);
 		tl.setSize((int) (400 * SCALE_FACTOR), (int) (72 * SCALE_FACTOR));
 		things.add(tl);
-		System.out.println("tl = " + tl.toString());
 		
 		Thing tr = new Thing();
 		tr.setLocation(600*SCALE_FACTOR, 0);

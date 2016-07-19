@@ -13,6 +13,8 @@ public class Villager extends Entity {
 		setType("Villager");
 		location = new Point2D.Double(randomLoc(), randomLoc());
 		setImage(18);
+		this.setSize((int) (72 * SCALE_FACTOR), (int) (92 * SCALE_FACTOR));
+		this.setLocation(location.getX(), location.getY());
 	}
 	
 	private double randomLoc() {
