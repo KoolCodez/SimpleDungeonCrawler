@@ -63,16 +63,53 @@ public class ControlRouter {
 			String nextMove = currentEntity.battleAI.getNextMove();
 			switch(nextMove) {
 			case BattleAI.ATTACK_TAG:
-				attack(currentEntity, SDC.character);
+				if (turnPoints >= 2) {
+					attack(currentEntity, SDC.character);
+					turnPoints -= 2;
+				} else {
+					turnPoints = 0;
+				}
 				break;
 			case BattleAI.MOVE_TOWARD_TAG:
-				//moveToward();
+				turnPoints -= enemyMoveToward(currentEntity, SDC.character, turnPoints);
 				break;
 			default:
 				attack(currentEntity, SDC.character);
+				turnPoints -= 2;
 				break;
 			}
 		}
+	}
+	
+	private int enemyMoveToward(Entity enemy, Entity character, int turnPoints) {
+		double xDist = character.location.getX() - enemy.location.getX();
+		xDist = xDistAdjust(xDist);
+		double yDist = character.location.getY() - enemy.location.getY();
+		yDist = yDistAdjust(yDist);
+		double totalDist = Math.sqrt((xDist*xDist) + (yDist*yDist));
+		double theta = Math.atan2(yDist, xDist); //TODO might be wrong
+		if ((turnPoints*SDC.SCALED_100) < totalDist) {
+			totalDist = turnPoints * SDC.SCALED_100;
+			xDist = totalDist * Math.cos(theta);
+			yDist = totalDist * Math.sin(theta);
+		}
+		Thread t = new Move(enemy, xDist, yDist);
+		t.start();
+		return (int) Math.ceil(Math.abs(totalDist) / SDC.SCALED_100);
+	}
+	
+	private double xDistAdjust(double dist) {
+		if (Math.abs(dist) / dist == 1) {
+			return dist - 80 * SDC.SCALE_FACTOR;
+		}
+		return dist;
+	}
+	
+	private double yDistAdjust(double dist) {
+		if (Math.abs(dist) / dist == 1) {
+			return dist - 100 * SDC.SCALE_FACTOR;
+		}
+		return dist;
 	}
 
 	public void playerTurn() {

@@ -19,7 +19,7 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 	private List<GenericItem> inventory = new ArrayList<GenericItem>();
 	public EntityStats stats = new EntityStats();
 	private int initiative;
-	private GenericWeapon weapon;
+	protected GenericWeapon weapon;
 	private Entity selectedEntity;
 	private String name = "Entity";
 	private Utilities utilities = new Utilities();
