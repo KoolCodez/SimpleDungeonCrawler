@@ -21,6 +21,13 @@ public class MovementController {
 	public static boolean movingUp = false;
 	public static boolean movingDown = false;
 	
+	public void stopMovement() {
+		movingLeft = false;
+		movingRight = false;
+		movingUp = false;
+		movingDown = false;
+	}
+	
 	public MovementController(JPanel coreGameplayPanel) {
 		InputMap inMap = coreGameplayPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = coreGameplayPanel.getActionMap();
@@ -161,5 +168,7 @@ public class MovementController {
 		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true), "stop move down");
 		acMap.put("stop move down", stopMoveDown);
 	}
+	
+	
 	
 }

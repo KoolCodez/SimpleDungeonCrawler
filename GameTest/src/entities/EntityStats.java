@@ -1,4 +1,4 @@
-package misc;
+package entities;
 
 import java.io.Serializable;
 

@@ -7,10 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
-import misc.Entity;
-
+import entities.Entity;
+import entities.Goblin;
 import misc.SDC;
-import misc.Goblin;
 import misc.Utilities;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;

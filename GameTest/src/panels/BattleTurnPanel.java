@@ -18,8 +18,8 @@ import javax.swing.SwingWorker;
 import combatSystem.BattleQueue;
 import combatSystem.ControlRouter;
 import combatSystem.FallingDamageNumber;
+import entities.Entity;
 import items.GenericWeapon;
-import misc.Entity;
 import misc.Images;
 import misc.MouseClick;
 import misc.SDC;
@@ -63,7 +63,6 @@ public class BattleTurnPanel extends JPanel {
 		createEndTurnButton();
 		createMoveButton();
 		createBagButton();
-		createFleeButton();
 	}
 
 	private void createBagButton() {
@@ -110,19 +109,6 @@ public class BattleTurnPanel extends JPanel {
 		moveButton.setBounds((int) (698 * SCALE_FACTOR), (int) (348 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		moveButton.setIcon(new ImageIcon(Images.array[Images.moveButtonIndex]));
 		add(moveButton);
-	}
-
-	private void createFleeButton() {
-		JButton fleeButton = new JButton();
-		fleeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				control.flee();
-			}
-		});
-		fleeButton.setBounds((int) (698 * SCALE_FACTOR), (int) (752 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		fleeButton.setIcon(new ImageIcon(Images.array[Images.fleeButtonIndex]));
-		add(fleeButton);
 	}
 
 	private void createEndTurnButton() {

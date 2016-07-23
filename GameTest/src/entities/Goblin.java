@@ -1,6 +1,7 @@
-package misc;
+package entities;
 
 import items.Club;
+import misc.SDC;
 
 public class Goblin extends Entity {
 	public BattleAI battleAI;
@@ -10,6 +11,6 @@ public class Goblin extends Entity {
 		setType("Enemy");
 		setWeapon(new Club());
 		setSelectedEntity(SDC.character);
+		setSize((int) (72 * SDC.SCALE_FACTOR), (int) (92 * SDC.SCALE_FACTOR));
 	}
-
 }

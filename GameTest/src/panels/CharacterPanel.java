@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import misc.Entity;
+import entities.Entity;
 import misc.SDC;
 
 public class CharacterPanel extends JPanel {

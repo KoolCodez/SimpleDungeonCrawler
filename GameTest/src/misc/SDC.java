@@ -2,6 +2,7 @@ package misc;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -22,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
+import combatSystem.ControlRouter;
+import entities.Entity;
 import items.GenericItem;
 import items.GenericWeapon;
 import items.Stick;
@@ -33,6 +36,7 @@ import movement.MoveRight;
 import movement.MoveUp;
 import movement.MoveUpLeft;
 import movement.MoveUpRight;
+import panels.CoreGameplayPanel;
 import panels.MainMenu;
 import rooms.BattleRoom;
 import rooms.HomeRoom;
@@ -188,26 +192,8 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 
 	public static void eventChangeRooms(String door) {
 		if (roomArray[loc.x][loc.y] == null) {
-			StandardRoom current = new StandardRoom();
-			//current.typeOfRoom = "Standard";
-			roomArray[loc.x][loc.y] = current;
-			Random rand = new Random();
-			int typeNum = rand.nextInt(10);
-			if (typeNum >= 0 && typeNum <= 2) {
-				current = new TreasureRoom();
-			} else if(typeNum >= 3 && typeNum <= 7) {
-				int randomness = rand.nextInt(3);
-				current = new BattleRoom(randomness);
-				System.out.println(randomness);
-			} else if(typeNum >= 8 || typeNum <= 9) {
-				current = new PuzzleRoom();
-			} else {
-				current = new StandardRoom();
-			}
-			roomArray[loc.x][loc.y] = current;
-			System.out.println(current.entities.size());
-			System.out.println(current.typeOfRoom);
-			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
+			createRoom();
+			//g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		} else {
 			StandardRoom current = roomArray[loc.x][loc.y];
@@ -216,18 +202,56 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		}
 		refreshArrows();
-		if (door.equals("left")) {
-			character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
-		} else if (door.equals("right")) {
-			character.getLocation().setLocation(800 * SCALE_FACTOR, 500 * SCALE_FACTOR);
-		} else if (door.equals("top")) {
-			character.getLocation().setLocation(500 * SCALE_FACTOR, 100 * SCALE_FACTOR);
-		} else if (door.equals("bottom")) {
-			character.getLocation().setLocation(500 * SCALE_FACTOR, 800 * SCALE_FACTOR);
+		if (roomArray[loc.x][loc.y].typeOfRoom.equals("battle")) {
+			Component[] panels = frame.getContentPane().getComponents();
+			for (int i = 0; i < panels.length; i++) {
+				if (panels[i].getClass().getName().equals("panels.CoreGameplayPanel")) {
+					CoreGameplayPanel panel = (CoreGameplayPanel) panels[i];
+					panel.movementController.stopMovement();
+					panels[i].setVisible(false);
+				}
+			}
+			character.setRoom(roomArray[loc.x][loc.y]);
+			ControlRouter control = new ControlRouter();
+			control.setLocationForBattle(door);
+			character.setImage(19);
 		} else {
-			character.getLocation().setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+			switch (door) {
+			case "left": character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+				break;
+			case "right": character.getLocation().setLocation(800 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+				break;
+			case "top": character.getLocation().setLocation(500 * SCALE_FACTOR, 100 * SCALE_FACTOR);
+				break;
+			case "bottom": character.getLocation().setLocation(500 * SCALE_FACTOR, 800 * SCALE_FACTOR);
+				break;
+			default: character.getLocation().setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+				break;
+			}
+			character.setRoom(roomArray[loc.x][loc.y]);
 		}
-		character.setRoom(roomArray[loc.x][loc.y]);
+	}
+	
+	private static void createRoom() {
+		StandardRoom current = new StandardRoom();
+		//current.typeOfRoom = "Standard";
+		roomArray[loc.x][loc.y] = current;
+		Random rand = new Random();
+		int typeNum = rand.nextInt(10);
+		if (typeNum >= 0 && typeNum <= 2) {
+			current = new TreasureRoom();
+		} else if(typeNum >= 3 && typeNum <= 7) {
+			int randomness = rand.nextInt(3);
+			current = new BattleRoom(randomness);
+			System.out.println(randomness);
+		} else if(typeNum >= 8 || typeNum <= 9) {
+			current = new PuzzleRoom();
+		} else {
+			current = new StandardRoom();
+		}
+		roomArray[loc.x][loc.y] = current;
+		System.out.println(current.entities.size());
+		System.out.println(current.typeOfRoom);
 	}
 
 	private static void refreshArrows() {

@@ -17,7 +17,7 @@ import javax.swing.SwingWorker;
 import combatSystem.ControlRouter;
 import combatSystem.EntityShaker;
 import combatSystem.FallingDamageNumber;
-import misc.Entity;
+import entities.Entity;
 import misc.Images;
 import misc.SDC;
 import movement.MovementController;
@@ -30,9 +30,10 @@ public class CoreGameplayPanel extends JPanel{
 	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	private static int SCALED_100 = SDC.SCALED_100;
 	private ArrayList<FallingDamageNumber> damageNumbers;
+	public MovementController movementController;
 
 	public CoreGameplayPanel() {
-		MovementController movementController = new MovementController(this);
+		movementController = new MovementController(this);
 		createTestDamageButton();
 		createMenuButton();
 		createAttackButton();
@@ -122,8 +123,8 @@ public class CoreGameplayPanel extends JPanel{
 		atkButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Component[] variables = SDC.frame.getContentPane().getComponents();
 				setVisible(false);
+				movementController.stopMovement();
 				createBattle();
 			}
 		});

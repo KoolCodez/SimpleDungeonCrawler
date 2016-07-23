@@ -1,6 +1,6 @@
 package combatSystem;
 
-import misc.Entity;
+import entities.Entity;
 import misc.SDC;
 
 public class Move extends Thread {
@@ -19,10 +19,15 @@ public class Move extends Thread {
 		double totalDist = Math.sqrt((deltaY * deltaY) * (deltaX * deltaX));
 		double xSpeed = deltaX / 30;
 		double ySpeed = deltaY / 30;
+		double prevX = ent.location.getX();
+		double prevY = ent.location.getY();
 		for (int i = 0; i < 30; i++) {
 			try {
-				ent.move(xSpeed, ySpeed);
+				//ent.battleMove(xSpeed, ySpeed);
 				sleep(SDC.refreshRate);
+				if (prevX == ent.location.getX() && prevY == ent.location.getY()) {
+					return;
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

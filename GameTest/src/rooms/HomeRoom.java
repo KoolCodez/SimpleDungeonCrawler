@@ -3,8 +3,8 @@ package rooms;
 import java.util.ArrayList;
 import java.util.List;
 
-import misc.Entity;
-import misc.Villager;
+import entities.Entity;
+import entities.Villager;
 
 public class HomeRoom extends StandardRoom {
 	public List<Entity> villagers = new ArrayList<Entity>();

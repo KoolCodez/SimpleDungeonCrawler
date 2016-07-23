@@ -6,9 +6,9 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
+import entities.Entity;
+import entities.Goblin;
 import items.GenericWeapon;
-import misc.Entity;
-import misc.Goblin;
 import misc.Images;
 import misc.SDC;
 
@@ -23,7 +23,7 @@ public class BattleRoom extends StandardRoom {
 			temp.setImage(Images.battleGoblinIndex);
 			temp.setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 			entities.add(temp);
-			
+			things.add(temp);
 		}
 	}
 

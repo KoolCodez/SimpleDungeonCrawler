@@ -1,4 +1,4 @@
-package misc;
+package entities;
 
 import java.awt.Image;
 import java.awt.Point;
@@ -11,11 +11,12 @@ import java.util.Random;
 
 import items.GenericItem;
 import items.GenericWeapon;
+import misc.Utilities;
 import rooms.StandardRoom;
 
 public class Entity extends Thing implements Comparable<Entity>, Serializable { // extend this class with specific entity-classes.
 	private String entityType;
-	
+	public Point battleLoc;
 	private List<GenericItem> inventory = new ArrayList<GenericItem>();
 	public EntityStats stats = new EntityStats();
 	private int initiative;
@@ -44,6 +45,7 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 	public Entity() {
 		entityType = "Generic Entity";
 		location = new Point2D.Double(250, 250);
+		battleLoc = new Point(0,0);
 	}
 
 	public Entity(double health, double strength, double dexterity, double constitution, double intelligence,
@@ -51,6 +53,7 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		super();
 		entityType = "Generic Entity";
 		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
+		battleLoc = new Point(0,0);
 	}
 	
 	public double meleeAttack(Entity enemy) {
@@ -76,6 +79,11 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		double dist = location.distance(enemyLoc) - 50;
 		double reach = weapon.reach;
 		return dist < reach;
+	}
+	
+	public void setRoom(StandardRoom r) {
+		super.setRoom(r);
+		r.entities.add(this);
 	}
 	
 	public String getName() {

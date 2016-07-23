@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import misc.Entity;
+import entities.Entity;
+import entities.Thing;
 import misc.SDC;
-import misc.Thing;
 
 public class StandardRoom implements Serializable {
 	public static final String BATTLE_TAG = "battle";

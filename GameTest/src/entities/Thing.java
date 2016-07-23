@@ -1,8 +1,9 @@
-package misc;
+package entities;
 
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
+import misc.SDC;
 import rooms.StandardRoom;
 
 public class Thing {
@@ -16,7 +17,7 @@ public class Thing {
 	}
 	
 	public void move(double deltaX, double deltaY) {
-		if (legalMove(deltaX, deltaY)) {
+		if (legalMove(deltaX, deltaY, outline)) {
 			location.setLocation(location.getX() + deltaX, location.getY() + deltaY);
 			outline.setLocation((int) (location.getX()), (int) (location.getY()));
 			SDC.checkIfLeavingRoom();
@@ -29,6 +30,7 @@ public class Thing {
 	}
 	
 	public void setRoom(StandardRoom r) {
+		r.things.add(this);
 		currentRoom = r;
 	}
 	
@@ -40,11 +42,10 @@ public class Thing {
 		outline.setSize(w, l);
 	}
 	
-	public boolean legalMove(double deltaX, double deltaY) {
-		Rectangle rect = outline;
+	public boolean legalMove(double deltaX, double deltaY, Rectangle rect) {
 		rect.setLocation((int) (location.getX() + deltaX), (int) (location.getY() + deltaY));
 		for (int i = 0; i < currentRoom.things.size(); i++) {
-			if (rect.intersects(currentRoom.things.get(i).outline)) {
+			if (rect.intersects(currentRoom.things.get(i).outline) && this != currentRoom.things.get(i)) {
 				
 				return false;
 			}

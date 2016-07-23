@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import misc.Entity;
+import entities.Entity;
 import misc.Images;
 import misc.SDC;
 

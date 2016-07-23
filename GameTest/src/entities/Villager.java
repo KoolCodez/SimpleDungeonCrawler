@@ -1,9 +1,10 @@
-package misc;
+package entities;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import items.GenericItem;
+import misc.SDC;
 
 public class Villager extends Entity {
 	double SCALE_FACTOR = SDC.SCALE_FACTOR;

@@ -3,7 +3,7 @@ package combatSystem;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
-import misc.Entity;
+import entities.Entity;
 import misc.SDC;
 
 public class EntityShaker extends Thread {

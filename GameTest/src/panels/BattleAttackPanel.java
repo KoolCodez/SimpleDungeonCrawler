@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import combatSystem.ControlRouter;
-import misc.Entity;
+import entities.Entity;
 import misc.Images;
 import misc.SDC;
 import rooms.StandardRoom;

@@ -1,4 +1,4 @@
-package misc;
+package entities;
 
 public class BattleAI {
 	public static final String MOVE_TOWARD_TAG = "move toward";
