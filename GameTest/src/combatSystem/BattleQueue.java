@@ -34,7 +34,8 @@ public class BattleQueue extends Thread {
 				Entity currentEntity = initList.get(i);
 				if (control.flee) {return;}
 				if (isEnemy(currentEntity)) {
-					control.enemyTurn((Goblin) currentEntity);
+					//control.enemyTurn((Goblin) currentEntity);
+					System.out.println("myah!");
 				} else if (isFriendly(currentEntity)) {
 					control.playerTurn();
 					control.switchToQueuePhase();

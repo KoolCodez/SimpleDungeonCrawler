@@ -81,21 +81,6 @@ public class ControlRouter {
 		}
 	}
 
-	private int enemyMoveToward(Entity enemy, Entity character, int turnPoints) {
-		double xDist = character.location.getX() - enemy.location.getX();
-		double yDist = character.location.getY() - enemy.location.getY();
-		double totalDist = Math.sqrt((xDist * xDist) + (yDist * yDist));
-		double theta = Math.atan2(yDist, xDist); // TODO might be wrong
-		if ((turnPoints * SDC.SCALED_100) < totalDist) {
-			totalDist = turnPoints * SDC.SCALED_100;
-			xDist = totalDist * Math.cos(theta);
-			yDist = totalDist * Math.sin(theta);
-		}
-		Thread t = new Move(enemy, xDist, yDist);
-		t.start();
-		return (int) Math.ceil(Math.abs(totalDist) / SDC.SCALED_100);
-	}
-
 	public void playerTurn() {
 		switchToTurnPhase();
 		letPlayerTakeTurn();
@@ -130,16 +115,36 @@ public class ControlRouter {
 		}
 	}
 
-	private void exitBattle(String direction) {
+	private void exitBattle(String door) {
+		System.out.println("exitBattle");
 		waitForTurn.endTurn();
-		character.setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
+		if (!door.equals("")) {
+			SDC.roomArray[SDC.loc.x][SDC.loc.y].entities.remove(SDC.character);
+			SDC.roomArray[SDC.loc.x][SDC.loc.y].things.remove(SDC.character);
+			entTable[character.battleLoc.x][character.battleLoc.y] = null;
+			SDC.eventChangeRooms(door);
+		}
+		switch (door) {
+		case "left": SDC.loc.x--;
+			break;
+		case "right": SDC.loc.x++;
+			break;
+		case "top": SDC.loc.y--;
+			break;
+		case "bottom": SDC.loc.y++;
+			break;
+		default:
+			break;
+		}
 		battleTurnPanel.setVisible(false);
 		SDC.frame.add(new CoreGameplayPanel());
 		setLocationFromBattle(character);
+		
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		for (int i = 0; i < currentRoomEnts.size(); i++) {
 			setLocationFromBattle(currentRoomEnts.get(i));
 		}
+		flee = true;
 	}
 
 	public void switchToQueuePhase() {
@@ -172,57 +177,56 @@ public class ControlRouter {
 		bagPanel = new BagPanel(this);
 	}
 
-	public int battleMove(String direction, Point loc, int turnPoints) {
-		int xChange = 0;
-		int yChange = 0;
-		switch (direction) {
-		case "left":
-			xChange = -1;
-			break;
-		case "right":
-			xChange = 1;
-			break;
-		case "down":
-			yChange = 1;
-			break;
-		case "up":
-			yChange = -1;
-			break;
-		default:
-			break;
-		}
-
-		if (legalBattleMove(new Point(loc.x + xChange, loc.y + yChange))) {
-			entTable[loc.x + xChange][loc.y + yChange] = entTable[loc.x][loc.y];
-			entTable[loc.x][loc.y] = null;
-			turnPoints -= 3;
+	public int battleMove(int xChange, int yChange, Entity ent, int turnPoints) {
+		// int xChange = 0;
+		// int yChange = 0;
+		/*
+		 * switch (direction) { case "left": xChange = -1; break; case "right":
+		 * xChange = 1; break; case "down": yChange = 1; break; case "up":
+		 * yChange = -1; break; default: break; }
+		 */
+		Point loc = ent.battleLoc;
+		if (turnPoints >= 3) {
+			if (legalBattleMove(new Point(loc.x + xChange, loc.y + yChange))) {
+				entTable[loc.x + xChange][loc.y + yChange] = entTable[loc.x][loc.y];
+				entTable[loc.x][loc.y] = null;
+				ent.battleLoc = new Point(loc.x + xChange, loc.y + yChange);
+				turnPoints -= 3;
+				System.out.println(waitForTurn.getTurnPoints() + "-3=" + turnPoints);
+			} else {
+				System.out.println("There's a person in that space! You kinky devil you!");
+			}
 		} else {
-			System.out.println("There's a person in that space! You kinky devil you!");
+			System.out.println("out of turnpoints");
 		}
 		return turnPoints;
 	}
 
 	public boolean legalBattleMove(Point destination) {
-		Entity ent = entTable[destination.x][destination.y];
+		
 		if (destination.y == 2) {
 			if (destination.x == -1) {
 				exitBattle("left");
+				return false;
 			}
 			if (destination.x == 5) {
 				exitBattle("right");
+				return false;
 			}
 		}
 		if (destination.x == 2) {
 			if (destination.y == -1) {
 				exitBattle("top");
+				return false;
 			}
 			if (destination.y == -1) {
 				exitBattle("bottom");
+				return false;
 			}
 		}
+		Entity ent = entTable[destination.x][destination.y];
 		return ent == null;
 	}
-	
 
 	public void attack(Entity attacker, Entity target) {
 		double damage = attacker.meleeAttack(target);
@@ -239,72 +243,33 @@ public class ControlRouter {
 		}
 	}
 
-	public void selectEntity() {
-		MouseClick mouse = new MouseClick();
-		SDC.frame.getContentPane().addMouseListener(mouse);
-		Entity character = SDC.character;
-		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		synchronized (mouse) {
-			try {
-				mouse.wait();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-		}
-		Point mousePoint = mouse.getLocation();
-		Point mouseInPanel = new Point((int) (mousePoint.getX() - 10), (int) (mousePoint.getY() - 139));
-		Entity target = currentRoom.entities.get(0);
-		double lastDist = mouseInPanel.distance(target.location);
-		for (int i = 1; i < currentRoom.entities.size(); i++) {
-			Point2D enemyLoc = currentRoom.entities.get(i).location;
-			if (mouseInPanel.distance(enemyLoc) < lastDist) {
-				target = currentRoom.entities.get(i);
-				lastDist = mouseInPanel.distance(enemyLoc);
-			}
-		}
-		character.setSelectedEntity(target);
-		battleView.highlight(target);
+	public void select(Point point) {
+
 	}
 
 	public void highlight(Entity ent) {
 		battleView.highlight(ent);
 	}
 
-	public void move() {
-		int turnPoints = waitForTurn.getTurnPoints();
-		MouseClick mouse = new MouseClick();
-		SDC.frame.getContentPane().addMouseListener(mouse);
-		Entity character = SDC.character;
-		int SCALED_100 = SDC.SCALED_100;
-		synchronized (mouse) {
-			try {
-				mouse.wait();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
+	public void move(String direction) {
+		int newTurnPoints = 0;
+		switch (direction) {
+		case "left":
+			newTurnPoints = battleMove(-1, 0, character, waitForTurn.getTurnPoints());
+			break;
+		case "right":
+			newTurnPoints = battleMove(1, 0, character, waitForTurn.getTurnPoints());
+			break;
+		case "up":
+			newTurnPoints = battleMove(0, -1, character, waitForTurn.getTurnPoints());
+			break;
+		case "down":
+			newTurnPoints = battleMove(0, 1, character, waitForTurn.getTurnPoints());
+			break;
+		default:
+			break;
 		}
-		Point mousePoint = mouse.getLocation();
-
-		Point mouseInPanel = new Point((int) (mousePoint.getX() - 10), (int) (mousePoint.getY() - 139));
-		Point2D charPoint = character.getLocation();
-		double deltaX = -(charPoint.getX() - mouseInPanel.x);
-		double deltaY = -(charPoint.getY() - mouseInPanel.y);
-		double newX = charPoint.getX() + deltaX;
-		double newY = charPoint.getY() + deltaY;
-		boolean xWithinBounds = newX > 40 && newX < 656;
-		boolean yWithinBounds = newY > 40 && newY < 663;
-		boolean distWithinMaxDist = mouseInPanel.distance(charPoint) < turnPoints * SCALED_100;
-		if (xWithinBounds && yWithinBounds && distWithinMaxDist) {
-			double pointsBasedOnDist = Math.abs(mouseInPanel.distance(charPoint)) / SCALED_100;
-			waitForTurn.setTurnPoints((int) Math.ceil(pointsBasedOnDist) * -1);
-			character.setLocation(newX, newY);
-			// TODO MAKE THIS CHANGE LOCATION AND OR BATTLE LOCATION
-			// possibly make setBattleLocation change location in a backwards
-			// orientation?
-			System.out.println("legalClick");
-		} else {
-			System.out.println("illegal, u r haxor");
-		}
+		waitForTurn.setTurnPoints(newTurnPoints);
 	}
 
 	public void setLocationForBattle(String direction) {

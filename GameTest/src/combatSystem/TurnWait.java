@@ -10,8 +10,15 @@ public class TurnWait {
 		turnPoints = 5;
 	}
 	
-	public void setTurnPoints(int deltaPoints) {
+	public void changeTurnPoints(int deltaPoints) {
 		turnPoints += deltaPoints;
+		if (turnPoints == 0) {
+			this.endTurn();
+		}
+	}
+	
+	public void setTurnPoints(int newPoints) {
+		turnPoints = newPoints;
 		if (turnPoints == 0) {
 			this.endTurn();
 		}

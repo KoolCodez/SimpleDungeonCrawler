@@ -31,7 +31,7 @@ public class BattleAttackPanel extends JPanel {
 		control = c;
 		battleView = control.battleView;
 		createAttackButton();
-		createSelectButton();
+		//createSelectButton();
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class BattleAttackPanel extends JPanel {
 	
 	private void attack() {
 		if (control.waitForTurn.getTurnPoints() >= 3) {
-			control.waitForTurn.setTurnPoints(-3);
+			control.waitForTurn.changeTurnPoints(-3);
 			control.attack(SDC.character, SDC.character.getSelectedEntity());
 			System.out.println("3");
 		} else {
@@ -80,7 +80,7 @@ public class BattleAttackPanel extends JPanel {
 		add(attackButton);
 	}
 	
-	private void createSelectButton() {
+	/*private void createSelectButton() {
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		SDC.character.setSelectedEntity(currentRoom.entities.get(0));
 		JButton selectButton = new JButton("Select Enemy");
@@ -115,5 +115,5 @@ public class BattleAttackPanel extends JPanel {
 		};
 		worker.execute();
 		control.highlight(targetedEntity);
-	}
+	}*/
 }

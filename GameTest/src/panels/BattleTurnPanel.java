@@ -49,8 +49,7 @@ public class BattleTurnPanel extends JPanel {
 		g.drawImage(Images.array[Images.battleMenuIndex], 0, 0, MENU_SIZE, MENU_SIZE, null);
 		g.setColor(Color.red);
 		g.fillRect((int) (214 * SCALE_FACTOR), (int) (932 * SCALE_FACTOR),
-				(int) (440 * SCALE_FACTOR * SDC.character.stats.getHealth()
-						/ SDC.character.stats.getMaxHealth()),
+				(int) (440 * SCALE_FACTOR * SDC.character.stats.getHealth() / SDC.character.stats.getMaxHealth()),
 				(int) (36 * SCALE_FACTOR));
 		g.setColor(Color.black);
 		// g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50,
@@ -61,7 +60,7 @@ public class BattleTurnPanel extends JPanel {
 	public void addButtonsToTurnPanel() {
 		createFightButton();
 		createEndTurnButton();
-		createMoveButton();
+		createMoveButtons();
 		createBagButton();
 	}
 
@@ -91,24 +90,80 @@ public class BattleTurnPanel extends JPanel {
 		add(fightButton);
 	}
 
-	private void createMoveButton() {
-		JButton moveButton = new JButton();
-		moveButton.addActionListener(new ActionListener() {
+	private void createMoveButtons() {
+		// leftMove.setIcon(new
+		// ImageIcon(Images.array[Images.moveButtonIndex]));
+		JButton leftMove = new JButton();
+		leftMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 					@Override
 					protected Integer doInBackground() throws Exception {
-						control.move();
+						control.move("left");
 						return 0;
 					}
 				};
 				worker.execute();
 			}
 		});
-		moveButton.setBounds((int) (698 * SCALE_FACTOR), (int) (348 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		moveButton.setIcon(new ImageIcon(Images.array[Images.moveButtonIndex]));
-		add(moveButton);
+		leftMove.setBounds((int) (775 * SCALE_FACTOR), (int) (400 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR),
+				(int) (50 * SCALE_FACTOR));
+		add(leftMove);
+		
+		JButton rightMove = new JButton();
+		rightMove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
+					@Override
+					protected Integer doInBackground() throws Exception {
+						control.move("right");
+						return 0;
+					}
+				};
+				worker.execute();
+			}
+		});
+		rightMove.setBounds((int) (875 * SCALE_FACTOR), (int) (400 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR),
+				(int) (50 * SCALE_FACTOR));
+		add(rightMove);
+		
+		JButton upMove = new JButton();
+		upMove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
+					@Override
+					protected Integer doInBackground() throws Exception {
+						control.move("up");
+						return 0;
+					}
+				};
+				worker.execute();
+			}
+		});
+		upMove.setBounds((int) (825 * SCALE_FACTOR), (int) (350 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR),
+				(int) (50 * SCALE_FACTOR));
+		add(upMove);
+		
+		JButton downMove = new JButton();
+		downMove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
+					@Override
+					protected Integer doInBackground() throws Exception {
+						control.move("down");
+						return 0;
+					}
+				};
+				worker.execute();
+			}
+		});
+		downMove.setBounds((int) (825 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), (int) (50 * SCALE_FACTOR),
+				(int) (50 * SCALE_FACTOR));
+		add(downMove);
 	}
 
 	private void createEndTurnButton() {
@@ -123,5 +178,4 @@ public class BattleTurnPanel extends JPanel {
 		add(endTurnButton);
 	}
 
-	
 }
