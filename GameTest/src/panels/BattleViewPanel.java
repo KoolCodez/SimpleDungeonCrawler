@@ -89,9 +89,7 @@ public class BattleViewPanel extends JPanel {
 	private void drawEntities(Graphics g, StandardRoom current, int i) {
 		//System.out.println(current.entities.size());
 		Entity ent = current.entities.get(i);
-		int scale = (int) (140 * SCALE_FACTOR);
-		int scaled30 = (int) (30*SCALE_FACTOR);
-		g.drawImage(Images.array[ent.getImage()], ent.battleLoc.x * scale + scaled30, ent.battleLoc.y * scale + scaled30, null);
+		g.drawImage(Images.array[ent.getImage()], (int) ent.location.getX(), (int) ent.location.getY(), null);
 	}
 	
 	private void drawDamageNumbers(Graphics g) {

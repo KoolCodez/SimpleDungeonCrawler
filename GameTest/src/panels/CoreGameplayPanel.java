@@ -48,7 +48,7 @@ public class CoreGameplayPanel extends JPanel{
 	
 	private void drawPanel(Graphics g) {
 		g.drawImage(Images.array[Images.backgroundImgIndex], 0, 0, null);
-		g.drawImage(Images.array[Images.charImgIndex], (int) SDC.character.getLocation().getX(),
+		g.drawImage(Images.array[SDC.character.getImage()], (int) SDC.character.getLocation().getX(),
 				(int) SDC.character.getLocation().getY(), null);
 		g.drawImage(Images.array[Images.rightArrowIndex], (int) (948 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.leftArrowIndex], (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
@@ -97,6 +97,7 @@ public class CoreGameplayPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
+				movementController.stopMovement();
 				SDC.frame.add(new PauseMenuPanel());
 			}
 		});

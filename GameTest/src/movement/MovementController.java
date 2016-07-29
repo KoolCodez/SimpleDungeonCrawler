@@ -34,7 +34,7 @@ public class MovementController {
 		Action pause = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				SDC.frame.remove(coreGameplayPanel);
-				//createMenu(); //TODO
+				stopMovement();
 				SDC.frame.add(new PauseMenuPanel());
 			}
 		};

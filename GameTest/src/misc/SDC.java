@@ -118,6 +118,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 			character.addItem(new Stick());
 			character.setSize((int) (72 * SCALE_FACTOR), (int) (92 * SCALE_FACTOR));
 			character.setRoom(roomArray[loc.x][loc.y]);
+			character.setImage(Images.charFrontIndex);
 		}
 	}
 	
@@ -203,6 +204,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		}
 		refreshArrows();
 		if (roomArray[loc.x][loc.y].typeOfRoom.equals("battle")) {
+			System.out.println("starting battle");
 			Component[] panels = frame.getContentPane().getComponents();
 			for (int i = 0; i < panels.length; i++) {
 				if (panels[i].getClass().getName().equals("panels.CoreGameplayPanel")) {
@@ -211,10 +213,10 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 					panels[i].setVisible(false);
 				}
 			}
+			
 			character.setRoom(roomArray[loc.x][loc.y]);
 			ControlRouter control = new ControlRouter();
 			control.setLocationForBattle(door);
-			character.setImage(19);
 		} else {
 			switch (door) {
 			case "left": character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);

@@ -12,9 +12,9 @@ public class MoveLeft extends Thread{
 					SDC.character.move(-speed, 0);
 					count++;
 					if (count % 10 < 5) {
-						Images.charImgIndex = Images.charLeftOpArmIndex;
+						SDC.character.setImage(Images.charLeftOpArmIndex);
 					} else {
-						Images.charImgIndex = Images.charLeftIndex;
+						SDC.character.setImage(Images.charLeftIndex);
 					}
 				}
 				Thread.sleep(SDC.refreshRate);

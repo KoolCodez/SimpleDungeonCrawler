@@ -42,6 +42,7 @@ public class ControlRouter {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
 		character = SDC.character;
+		character.setImage(Images.battleCharIndex);
 		setDefaultWeapon();
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		startBattleQueue();
@@ -122,28 +123,35 @@ public class ControlRouter {
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].entities.remove(SDC.character);
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].things.remove(SDC.character);
 			entTable[character.battleLoc.x][character.battleLoc.y] = null;
-			SDC.eventChangeRooms(door);
 		}
+		character.setImage(Images.charFrontIndex);
 		switch (door) {
 		case "left": SDC.loc.x--;
+			door = "right";
 			break;
 		case "right": SDC.loc.x++;
+			door = "left";
 			break;
 		case "top": SDC.loc.y--;
+			door = "bottom";
 			break;
 		case "bottom": SDC.loc.y++;
+			door = "top";
 			break;
 		default:
 			break;
 		}
+		battleView.setVisible(false);
 		battleTurnPanel.setVisible(false);
 		SDC.frame.add(new CoreGameplayPanel());
-		setLocationFromBattle(character);
-		
-		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
-		for (int i = 0; i < currentRoomEnts.size(); i++) {
-			setLocationFromBattle(currentRoomEnts.get(i));
+		setLocationFromBattle(character, door);
+		if (!door.equals("")) {
+			SDC.eventChangeRooms(door);
 		}
+		//ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
+		//for (int i = 0; i < currentRoomEnts.size(); i++) {
+			//setLocationFromBattle(currentRoomEnts.get(i));
+		//}
 		flee = true;
 	}
 
@@ -177,56 +185,7 @@ public class ControlRouter {
 		bagPanel = new BagPanel(this);
 	}
 
-	public int battleMove(int xChange, int yChange, Entity ent, int turnPoints) {
-		// int xChange = 0;
-		// int yChange = 0;
-		/*
-		 * switch (direction) { case "left": xChange = -1; break; case "right":
-		 * xChange = 1; break; case "down": yChange = 1; break; case "up":
-		 * yChange = -1; break; default: break; }
-		 */
-		Point loc = ent.battleLoc;
-		if (turnPoints >= 3) {
-			if (legalBattleMove(new Point(loc.x + xChange, loc.y + yChange))) {
-				entTable[loc.x + xChange][loc.y + yChange] = entTable[loc.x][loc.y];
-				entTable[loc.x][loc.y] = null;
-				ent.battleLoc = new Point(loc.x + xChange, loc.y + yChange);
-				turnPoints -= 3;
-				System.out.println(waitForTurn.getTurnPoints() + "-3=" + turnPoints);
-			} else {
-				System.out.println("There's a person in that space! You kinky devil you!");
-			}
-		} else {
-			System.out.println("out of turnpoints");
-		}
-		return turnPoints;
-	}
-
-	public boolean legalBattleMove(Point destination) {
-		
-		if (destination.y == 2) {
-			if (destination.x == -1) {
-				exitBattle("left");
-				return false;
-			}
-			if (destination.x == 5) {
-				exitBattle("right");
-				return false;
-			}
-		}
-		if (destination.x == 2) {
-			if (destination.y == -1) {
-				exitBattle("top");
-				return false;
-			}
-			if (destination.y == -1) {
-				exitBattle("bottom");
-				return false;
-			}
-		}
-		Entity ent = entTable[destination.x][destination.y];
-		return ent == null;
-	}
+	
 
 	public void attack(Entity attacker, Entity target) {
 		double damage = attacker.meleeAttack(target);
@@ -271,6 +230,57 @@ public class ControlRouter {
 		}
 		waitForTurn.setTurnPoints(newTurnPoints);
 	}
+	
+	private int battleMove(int xChange, int yChange, Entity ent, int turnPoints) {
+		// int xChange = 0;
+		// int yChange = 0;
+		/*
+		 * switch (direction) { case "left": xChange = -1; break; case "right":
+		 * xChange = 1; break; case "down": yChange = 1; break; case "up":
+		 * yChange = -1; break; default: break; }
+		 */
+		Point loc = ent.battleLoc;
+		if (turnPoints >= 3) {
+			if (legalBattleMove(new Point(loc.x + xChange, loc.y + yChange))) {
+				entTable[loc.x + xChange][loc.y + yChange] = entTable[loc.x][loc.y];
+				entTable[loc.x][loc.y] = null;
+				ent.battleLoc = new Point(loc.x + xChange, loc.y + yChange);
+				turnPoints -= 3;
+				setEntLocation(ent);
+			} else {
+				System.out.println("There's a person in that space! You kinky devil you!");
+			}
+		} else {
+			System.out.println("out of turnpoints");
+		}
+		return turnPoints;
+	}
+
+	private boolean legalBattleMove(Point destination) {
+		
+		if (destination.y == 2) {
+			if (destination.x == -1) {
+				exitBattle("left");
+				return false;
+			}
+			if (destination.x == 5) {
+				exitBattle("right");
+				return false;
+			}
+		}
+		if (destination.x == 2) {
+			if (destination.y == -1) {
+				exitBattle("top");
+				return false;
+			}
+			if (destination.y == 5) {
+				exitBattle("bottom");
+				return false;
+			}
+		}
+		Entity ent = entTable[destination.x][destination.y];
+		return ent == null;
+	}
 
 	public void setLocationForBattle(String direction) {
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
@@ -312,9 +322,16 @@ public class ControlRouter {
 				temp.battleLoc = new Point(friendlyPoint.x, friendlyPoint.y);
 				friendlyPoint = nextPoint(friendlyPoint, horizontal);
 			}
+			setEntLocation(temp);
 			entTable[temp.battleLoc.x][temp.battleLoc.y] = temp;
-			System.out.println("set " + temp.toString() + " at " + temp.battleLoc.toString());
+			//System.out.println("set " + temp.toString() + " at " + temp.battleLoc.toString());
 		}
+	}
+	
+	private void setEntLocation(Entity ent) {
+		int scale = (int) (140 * SDC.SCALE_FACTOR);
+		int scaled30 = (int) (30*SDC.SCALE_FACTOR);
+		ent.setLocation(ent.battleLoc.x * scale + scaled30, ent.battleLoc.y * scale + scaled30);
 	}
 
 	private Point nextPoint(Point point, boolean horizontal) {
@@ -346,10 +363,19 @@ public class ControlRouter {
 		return point;
 	}
 
-	private void setLocationFromBattle(Entity ent) {
-		double xFactor = 1000 / 703;
-		double yFactor = 1000 / 696;
-		ent.setLocation(ent.location.getX() * xFactor, ent.location.getY() * yFactor);
+	private void setLocationFromBattle(Entity ent, String door) {
+		switch (door) {
+		case "left": character.getLocation().setLocation(100 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+			break;
+		case "right": character.getLocation().setLocation(800 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+			break;
+		case "top": character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
+			break;
+		case "bottom": character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 800 * SDC.SCALE_FACTOR);
+			break;
+		default: character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+			break;
+		}
 	}
 
 	public void displayBattle(JPanel panel) {
