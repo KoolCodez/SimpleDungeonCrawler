@@ -56,31 +56,6 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		battleLoc = new Point(0,0);
 	}
 	
-	public double meleeAttack(Entity enemy) {
-		if (withinRange(enemy.location)) {
-		System.out.println(name + entityType + " Attack!");
-			if (enemy.stats.getDex() - stats.getDex() + 10 < utilities.r20()) {
-				double damage = 0.0;
-				damage = (stats.getStr() / enemy.stats.getStr() * weapon.damage) / enemy.stats.getAC();
-				enemy.stats.setHealth(-damage);
-				System.out.println("He Hit For " + damage + "Damage!");
-				return damage;
-			} else {
-				System.out.println("He Missed!");
-				return 0;
-			}
-		} else {
-			System.out.println("Out of Reach!");
-			return 0;
-		}
-	}
-	
-	private boolean withinRange(Point2D enemyLoc) {
-		double dist = location.distance(enemyLoc) - 50;
-		double reach = weapon.reach;
-		return dist < reach;
-	}
-	
 	public void setRoom(StandardRoom r) {
 		super.setRoom(r);
 		r.entities.add(this);

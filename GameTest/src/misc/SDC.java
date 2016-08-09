@@ -239,7 +239,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		//current.typeOfRoom = "Standard";
 		roomArray[loc.x][loc.y] = current;
 		Random rand = new Random();
-		int typeNum = rand.nextInt(10);
+		int typeNum = rand.nextInt(4) + 3;
 		if (typeNum >= 0 && typeNum <= 2) {
 			current = new TreasureRoom();
 		} else if(typeNum >= 3 && typeNum <= 7) {

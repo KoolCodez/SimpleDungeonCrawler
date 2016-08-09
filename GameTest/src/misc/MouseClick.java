@@ -16,7 +16,7 @@ public class MouseClick implements MouseInputListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		location = e.getLocationOnScreen();
+		location = e.getPoint();
 		synchronized (this) {
 			this.notifyAll();
 		}
@@ -40,7 +40,7 @@ public class MouseClick implements MouseInputListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		location = e.getLocationOnScreen();
+		location = e.getPoint();
 		synchronized (this) {
 			this.notify();
 		}

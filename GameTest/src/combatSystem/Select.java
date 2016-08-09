@@ -3,6 +3,7 @@ package combatSystem;
 import java.awt.Point;
 
 import misc.MouseClick;
+import misc.SDC;
 import panels.BattleViewPanel;
 
 public class Select extends Thread {
@@ -30,8 +31,9 @@ public class Select extends Thread {
 			Point adjustedPoint = new Point();
 			int x = mousePoint.x;
 			int y = mousePoint.y;
-			adjustedPoint.x = (x - (x % 140)) / 140;
-			adjustedPoint.y = (y - (y % 140)) / 140;
+			int scaled140 = (int) (140 * SDC.SCALE_FACTOR);
+			adjustedPoint.x = (x - (x % scaled140)) / scaled140;
+			adjustedPoint.y = (y - (y % scaled140)) / scaled140;
 			control.select(adjustedPoint);
 		}
 	}
