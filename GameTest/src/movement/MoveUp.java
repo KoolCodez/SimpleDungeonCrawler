@@ -8,6 +8,7 @@ public class MoveUp extends Thread {
 				if (!MovementController.movingRight && !MovementController.movingLeft) {
 					double speed = SDC.playerSpeed;
 					SDC.character.move(0, -speed);
+					SDC.character.setAngle(0);
 				}					
 				Thread.sleep(SDC.refreshRate);
 			}

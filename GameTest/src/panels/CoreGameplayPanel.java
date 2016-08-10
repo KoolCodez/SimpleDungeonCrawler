@@ -39,6 +39,7 @@ public class CoreGameplayPanel extends JPanel{
 		createAttackButton();
 		setLayout(null);
 		damageNumbers = new ArrayList<FallingDamageNumber>();
+		this.setOpaque(false);
 	}
 	
 	@Override
@@ -48,9 +49,9 @@ public class CoreGameplayPanel extends JPanel{
 	}
 	
 	private void drawPanel(Graphics g) {
-		g.drawImage(Images.array[Images.backgroundImgIndex], 0, 0, null);
 		g.drawImage(SDC.character.getImage(), (int) SDC.character.getLocation().getX(),
 				(int) SDC.character.getLocation().getY(), null);
+		g.drawImage(Images.array[Images.backgroundImgIndex], 0, 0, null);
 		g.drawImage(Images.array[Images.rightArrowIndex], (int) (948 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.leftArrowIndex], (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.bottomArrowIndex], (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR), null);

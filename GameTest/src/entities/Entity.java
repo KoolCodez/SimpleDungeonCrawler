@@ -22,6 +22,7 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 	private String name = "Entity";
 	public Point battleLoc;
 	public Image finalImage;
+	private int rotation = 0;
 	private List<Item> inventory = new ArrayList<Item>();
 	public EntityStats stats = new EntityStats();
 	private int initiative;
@@ -31,6 +32,7 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 	private int deadImageIndex;
 	
 	public Image getImage() {
+		//return super.image;
 		return finalImage;
 	}
 	
@@ -40,6 +42,13 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		ArrayList<Image> images = new ArrayList<Image>();
 		images.add(i);
 		finalImage = ig.compileImage(images);
+	}
+	
+	public void setAngle(int degrees) {
+		int deltaAngle = degrees - rotation;
+		rotation = degrees;
+		TextureGenerator ig = new TextureGenerator();
+		finalImage = ig.rotate(finalImage, deltaAngle);
 	}
 	
 	public void setDeadImage(int index) {

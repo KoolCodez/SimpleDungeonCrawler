@@ -1,5 +1,6 @@
 package misc;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -137,7 +138,10 @@ public class Images {
 		array[charRightOpArmIndex] = charRightOpArm;
 		Image battleChar = ImageIO.read(new File("src\\Textures\\Characters\\MainCharTestClear.png"));
 		battleChar = battleChar.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
-		array[battleCharIndex] = battleChar;
+		BufferedImage bi = new BufferedImage((int) (100 * scale), (int) (100 * scale), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bi.createGraphics();
+        g.drawImage(battleChar, 0, 0, null);
+		array[battleCharIndex] = bi;
 	}
 	
 	public static void enemies() throws IOException {

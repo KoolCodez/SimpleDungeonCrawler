@@ -44,7 +44,6 @@ public class ControlRouter {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
 		character = SDC.character;
-		character.setImage(Images.array[Images.battleCharIndex]);
 		setDefaultWeapon();
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		startBattleQueue();
