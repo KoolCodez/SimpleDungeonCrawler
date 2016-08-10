@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 import misc.Images;
 
-public class Club extends GenericWeapon{
+public class Club extends Weapon{
 
 	public Club() {
 		super(new ImageIcon(Images.array[Images.stickItemIndex]), "Club");

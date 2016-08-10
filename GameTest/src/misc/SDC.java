@@ -25,8 +25,8 @@ import javax.swing.*;
 
 import combatSystem.ControlRouter;
 import entities.Entity;
-import items.GenericItem;
-import items.GenericWeapon;
+import items.Item;
+import items.Weapon;
 import items.Stick;
 import movement.MoveDown;
 import movement.MoveDownLeft;
@@ -118,7 +118,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 			character.addItem(new Stick());
 			character.setSize((int) (72 * SCALE_FACTOR), (int) (92 * SCALE_FACTOR));
 			character.setRoom(roomArray[loc.x][loc.y]);
-			character.setImage(Images.charFrontIndex);
+			character.setImage(Images.array[Images.battleCharIndex]);
 		}
 	}
 	

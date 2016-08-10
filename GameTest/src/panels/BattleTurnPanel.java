@@ -19,7 +19,7 @@ import combatSystem.BattleQueue;
 import combatSystem.ControlRouter;
 import combatSystem.FallingDamageNumber;
 import entities.Entity;
-import items.GenericWeapon;
+import items.Weapon;
 import misc.Images;
 import misc.MouseClick;
 import misc.SDC;

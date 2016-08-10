@@ -5,10 +5,10 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class GenericItem implements Serializable {
+public class Item implements Serializable {
 	public String itemName;
 	public ImageIcon itemImage;
-	public GenericItem(ImageIcon image, String name) {
+	public Item(ImageIcon image, String name) {
 		itemImage = image;
 		itemName = name;
 	}

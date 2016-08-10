@@ -14,7 +14,7 @@ import javax.swing.SwingWorker;
 import entities.BattleAI;
 import entities.Entity;
 import entities.Goblin;
-import items.GenericWeapon;
+import items.Weapon;
 import misc.Images;
 import misc.MouseClick;
 import misc.SDC;
@@ -44,7 +44,7 @@ public class ControlRouter {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
 		character = SDC.character;
-		character.setImage(Images.battleCharIndex);
+		character.setImage(Images.array[Images.battleCharIndex]);
 		setDefaultWeapon();
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		startBattleQueue();
@@ -126,7 +126,7 @@ public class ControlRouter {
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].things.remove(SDC.character);
 			entTable[character.battleLoc.x][character.battleLoc.y] = null;
 		}
-		character.setImage(Images.charFrontIndex);
+		character.setImage(Images.array[Images.charFrontIndex]);
 		switch (door) {
 		case "left":
 			SDC.loc.x--;
@@ -438,7 +438,7 @@ public class ControlRouter {
 
 	private void setDefaultWeapon() { // TODO this is temporary, should go away
 										// when inventory is fixed
-		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
+		Weapon weapon = new Weapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
 		weapon.damage = 1.0;
 		weapon.ranged = false;
 		weapon.speed = 1.0;

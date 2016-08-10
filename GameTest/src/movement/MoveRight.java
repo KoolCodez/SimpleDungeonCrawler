@@ -12,9 +12,9 @@ public class MoveRight extends Thread {
 					SDC.character.move(speed, 0);
 					count++;
 					if (count % 10 < 5) {
-						SDC.character.setImage(Images.charRightOpArmIndex);
+						SDC.character.setImage(Images.array[Images.charRightOpArmIndex]);
 					} else {
-						SDC.character.setImage(Images.charRightIndex);
+						SDC.character.setImage(Images.array[Images.charRightIndex]);
 					}
 				}
 				Thread.sleep(SDC.refreshRate);

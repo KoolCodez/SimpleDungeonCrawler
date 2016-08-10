@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 import misc.Images;
 
-public class Stick extends GenericItem {
+public class Stick extends Item {
 	static ImageIcon image = new ImageIcon(Images.array[Images.stickItemIndex]);
 	static String name = "Stick";
 	

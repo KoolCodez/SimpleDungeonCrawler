@@ -135,8 +135,8 @@ public class Images {
 		Image charRightOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRightLeftArmUp.jpg"));
 		charRightOpArm = charRightOpArm.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
 		array[charRightOpArmIndex] = charRightOpArm;
-		Image battleChar = ImageIO.read(new File("src\\Textures\\Characters\\BattleMainChar.jpg"));
-		battleChar = battleChar.getScaledInstance((int) (72 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image battleChar = ImageIO.read(new File("src\\Textures\\Characters\\MainCharTestClear.png"));
+		battleChar = battleChar.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
 		array[battleCharIndex] = battleChar;
 	}
 	

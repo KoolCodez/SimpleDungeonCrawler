@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
-import items.GenericItem;
+import items.Item;
 import items.Stick;
 import misc.MouseClick;
 import misc.SDC;
@@ -31,7 +31,7 @@ public class InventoryPanel extends JPanel {
 	private Point selectedLocation;
 	private boolean endMouseListener;
 	private int selectedItemNumber;
-	private List<GenericItem> inventory;
+	private List<Item> inventory;
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -44,7 +44,7 @@ public class InventoryPanel extends JPanel {
 		Rectangle rText = new Rectangle(0, SCALED_100, SCALED_100, SCALED_40);
 		Rectangle rImage = new Rectangle(0, 0, SCALED_100, SCALED_100);
 		for (int i = SDC.character.getInventory().size() - 1; i >= 0; i--) {
-			GenericItem item = SDC.character.getInventory().get(i);
+			Item item = SDC.character.getInventory().get(i);
 			g.drawImage(item.itemImage.getImage(), rImage.x, rImage.y, null);
 			g.setFont(new Font("Harrington", Font.BOLD, 18));
 			g.drawString(item.itemName, rImage.x, rImage.y + (int) (120 * SCALE_FACTOR));
@@ -107,7 +107,7 @@ public class InventoryPanel extends JPanel {
 		deleteItemButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<GenericItem> inventory = SDC.character.getInventory();
+				List<Item> inventory = SDC.character.getInventory();
 				int inventorySize = inventory.size();
 				inventory.remove(inventorySize - selectedItemNumber - 1);
 				refreshItem();

@@ -9,7 +9,7 @@ public class MoveDown extends Thread {
 				if (!MovementController.movingLeft && ! MovementController.movingRight) {
 					double speed = SDC.playerSpeed;
 					SDC.character.move(0, speed);
-					SDC.character.setImage(Images.charFrontIndex);
+					SDC.character.setImage(Images.array[Images.battleCharIndex]);
 				}
 				Thread.sleep(SDC.refreshRate);
 			}

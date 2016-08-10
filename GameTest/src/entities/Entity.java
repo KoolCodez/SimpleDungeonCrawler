@@ -9,33 +9,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import items.GenericItem;
-import items.GenericWeapon;
+import items.Item;
+import items.Weapon;
+import misc.TextureGenerator;
 import misc.Utilities;
 import rooms.StandardRoom;
 
 public class Entity extends Thing implements Comparable<Entity>, Serializable { // extend this class with specific entity-classes.
+	private Utilities utilities = new Utilities();
+	
 	private String entityType;
+	private String name = "Entity";
 	public Point battleLoc;
-	private List<GenericItem> inventory = new ArrayList<GenericItem>();
+	public Image finalImage;
+	private List<Item> inventory = new ArrayList<Item>();
 	public EntityStats stats = new EntityStats();
 	private int initiative;
-	protected GenericWeapon weapon;
-	private Entity selectedEntity;
-	private String name = "Entity";
-	private Utilities utilities = new Utilities();
+	protected Weapon weapon;
+	
 	private int imageIndex;
 	private int deadImageIndex;
 	
-	public int getImage() {
-		if (stats.getHealth() > 0) {
-			return imageIndex;
-		}
-		return deadImageIndex;
+	public Image getImage() {
+		return finalImage;
 	}
-
-	public void setImage(int index) {
-		this.imageIndex = index;
+	
+	public void setImage(Image i) {
+		super.setImage(i);
+		TextureGenerator ig = new TextureGenerator();
+		ArrayList<Image> images = new ArrayList<Image>();
+		images.add(i);
+		finalImage = ig.compileImage(images);
 	}
 	
 	public void setDeadImage(int index) {
@@ -69,14 +73,6 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		this.name = name;
 	}
 	
-	public Entity getSelectedEntity() {
-		return selectedEntity;
-	}
-
-	public void setSelectedEntity(Entity selectedEntity) {
-		this.selectedEntity = selectedEntity;
-	}
-	
 	public void setType(String newType) {
 		entityType = newType;
 	}
@@ -85,11 +81,11 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		return entityType;
 	}
 	
-	public List<GenericItem> getInventory() {
+	public List<Item> getInventory() {
 		return inventory;
 	}
 	
-	public void addItem(GenericItem item) {
+	public void addItem(Item item) {
 		inventory.add(item);
 	}
 	
@@ -101,11 +97,11 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		return initiative;
 	}
 	
-	public void setWeapon(GenericWeapon weapon) {
+	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
 	}
 	
-	public GenericWeapon getWeapon() {
+	public Weapon getWeapon() {
 		return weapon;
 	}
 	
