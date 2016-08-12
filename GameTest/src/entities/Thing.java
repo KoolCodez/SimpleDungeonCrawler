@@ -18,6 +18,20 @@ public class Thing {
 		outline = new Rectangle();
 	}
 	
+	public Thing(Image i) {
+		image = i;
+	}
+	
+	public Thing(Image i, double x, double y) {
+		image = i;
+		setLocation(x, y);
+	}
+	
+	public Thing(double x, double y, int w, int l) {
+		setLocation(x, y);
+		setSize(w, l);
+	}
+	
 	public void setImage(Image i) {
 		image = i;
 	}

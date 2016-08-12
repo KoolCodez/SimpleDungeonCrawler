@@ -1,10 +1,12 @@
 package items;
 
+import java.awt.Image;
+
 import javax.swing.ImageIcon;
 
 public class Weapon extends Item{
-	public Weapon(ImageIcon image, String name) {
-		super(image, name);
+	public Weapon(ImageIcon inventoryImage, Image gameplayImage, String name) {
+		super(inventoryImage, gameplayImage, name);
 	}
 	public boolean ranged;
 	public double damage;

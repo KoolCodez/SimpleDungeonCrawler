@@ -116,7 +116,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 			character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
 			character.setType("Friendly");
 			character.addItem(new Stick());
-			character.setSize((int) (72 * SCALE_FACTOR), (int) (92 * SCALE_FACTOR));
+			character.setSize((int) (90 * SCALE_FACTOR), (int) (90 * SCALE_FACTOR));
 			character.setRoom(roomArray[loc.x][loc.y]);
 			character.setImage(Images.array[Images.battleCharIndex]);
 		}

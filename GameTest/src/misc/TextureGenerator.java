@@ -15,8 +15,9 @@ public class TextureGenerator {
 		BufferedImage compiledImage = new BufferedImage(scaled100, scaled100, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = compiledImage.createGraphics();
 		for (int i = 0; i < images.size(); i++) {
-			g.drawImage(images.get(0), 0, 0, null);
+			g.drawImage(images.get(i), 0, 0, null);
 		}
+		
 		return compiledImage;
 	}
 	

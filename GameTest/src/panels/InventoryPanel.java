@@ -45,7 +45,7 @@ public class InventoryPanel extends JPanel {
 		Rectangle rImage = new Rectangle(0, 0, SCALED_100, SCALED_100);
 		for (int i = SDC.character.getInventory().size() - 1; i >= 0; i--) {
 			Item item = SDC.character.getInventory().get(i);
-			g.drawImage(item.itemImage.getImage(), rImage.x, rImage.y, null);
+			g.drawImage(item.inventoryImage.getImage(), rImage.x, rImage.y, null);
 			g.setFont(new Font("Harrington", Font.BOLD, 18));
 			g.drawString(item.itemName, rImage.x, rImage.y + (int) (120 * SCALE_FACTOR));
 			rImage.x += SCALED_100;
@@ -135,7 +135,7 @@ public class InventoryPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (SDC.character.getInventory().size() < 20) {
 					Stick stick = new Stick();
-					stick.getImage();
+					stick.getInventoryImage();
 					SDC.character.addItem(stick);
 					/*removeAll();
 					add(addStick);

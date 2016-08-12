@@ -44,7 +44,6 @@ public class ControlRouter {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
 		character = SDC.character;
-		setDefaultWeapon();
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		startBattleQueue();
 	}
@@ -125,7 +124,7 @@ public class ControlRouter {
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].things.remove(SDC.character);
 			entTable[character.battleLoc.x][character.battleLoc.y] = null;
 		}
-		character.setImage(Images.array[Images.charFrontIndex]);
+		//character.setImage(Images.array[Images.battleCharIndex]);
 		switch (door) {
 		case "left":
 			SDC.loc.x--;
@@ -254,15 +253,19 @@ public class ControlRouter {
 		switch (direction) {
 		case "left":
 			newTurnPoints = battleMove(-1, 0, character, waitForTurn.getTurnPoints());
+			character.setAngle(-90);
 			break;
 		case "right":
 			newTurnPoints = battleMove(1, 0, character, waitForTurn.getTurnPoints());
+			character.setAngle(90);
 			break;
 		case "up":
 			newTurnPoints = battleMove(0, -1, character, waitForTurn.getTurnPoints());
+			character.setAngle(0);
 			break;
 		case "down":
 			newTurnPoints = battleMove(0, 1, character, waitForTurn.getTurnPoints());
+			character.setAngle(180);
 			break;
 		default:
 			break;
@@ -434,15 +437,4 @@ public class ControlRouter {
 		Collections.sort(initList);
 		return initList;
 	}
-
-	private void setDefaultWeapon() { // TODO this is temporary, should go away
-										// when inventory is fixed
-		Weapon weapon = new Weapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
-		weapon.damage = 1.0;
-		weapon.ranged = false;
-		weapon.speed = 1.0;
-		weapon.reach = 1;
-		character.setWeapon(weapon);
-	}
-
 }

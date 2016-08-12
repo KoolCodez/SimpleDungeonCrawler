@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
+import items.Fists;
 import items.Item;
 import items.Weapon;
+import misc.Images;
 import misc.TextureGenerator;
 import misc.Utilities;
 import rooms.StandardRoom;
@@ -27,9 +31,28 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 	public EntityStats stats = new EntityStats();
 	private int initiative;
 	protected Weapon weapon;
+	protected ArmorSet armor;
 	
 	private int imageIndex;
 	private int deadImageIndex;
+	
+	public Entity() {
+		armor = new ArmorSet();
+		weapon = new Fists();
+		entityType = "Generic Entity";
+		location = new Point2D.Double(250, 250);
+		battleLoc = new Point(0,0);
+	}
+
+	public Entity(double health, double strength, double dexterity, double constitution, double intelligence,
+			double wisdom, double charisma, int AC) {
+		super();
+		armor = new ArmorSet();
+		weapon = new Fists();
+		entityType = "Generic Entity";
+		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
+		battleLoc = new Point(0,0);
+	}
 	
 	public Image getImage() {
 		//return super.image;
@@ -41,6 +64,12 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		TextureGenerator ig = new TextureGenerator();
 		ArrayList<Image> images = new ArrayList<Image>();
 		images.add(i);
+		//images.add(armor.body.getImage());
+		//images.add(armor.feet.getImage());
+		//images.add(armor.hands.getImage());
+		//images.add(armor.legs.getImage());
+		//images.add(weapon.getImage());
+		//images.add(armor.head.getImage());
 		finalImage = ig.compileImage(images);
 	}
 	
@@ -55,19 +84,7 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		deadImageIndex = index;
 	}
 
-	public Entity() {
-		entityType = "Generic Entity";
-		location = new Point2D.Double(250, 250);
-		battleLoc = new Point(0,0);
-	}
-
-	public Entity(double health, double strength, double dexterity, double constitution, double intelligence,
-			double wisdom, double charisma, int AC) {
-		super();
-		entityType = "Generic Entity";
-		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
-		battleLoc = new Point(0,0);
-	}
+	
 	
 	public void setRoom(StandardRoom r) {
 		super.setRoom(r);

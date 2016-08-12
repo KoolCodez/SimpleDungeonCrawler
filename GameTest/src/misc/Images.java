@@ -43,6 +43,8 @@ public class Images {
 	public static final int stickItem3Index = 24;
 	public static final int stickItem4Index = 25;
 	public static final int stickItem5Index = 26;
+	public static final int headArmor1Index = 31;
+	public static final int blankLayerIndex = 32;
 	//Menus\\
 	public static final int battleMenuIndex = 27;
 	public static final int mainMenuIndex = 28;
@@ -56,8 +58,20 @@ public class Images {
 	
 	private static double scale = SDC.SCALE_FACTOR;
 	
+	public static Image loadImage(String pathFromTextures, int width, int height) {
+		Image i;
+		try {
+			i = ImageIO.read(new File("src\\Textures\\" + pathFromTextures));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return array[blankLayerIndex];
+		}
+		i = i.getScaledInstance((int) (width * scale), (int) (height * scale), Image.SCALE_SMOOTH);
+		return i;
+	}
+	
 	public static void createImages() throws IOException {
-		array = new Image[31];
+		array = new Image[33];
 		arrows();
 		buttons();
 		characters();
@@ -175,6 +189,12 @@ public class Images {
 		Image stickItem5 = ImageIO.read(new File("src\\Textures\\Items\\Stick5.jpg"));
 		stickItem5 = stickItem5.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
 		array[stickItem5Index] = stickItem5;
+		Image headArmor1 = ImageIO.read(new File("src\\Textures\\Items\\headArmor.png"));
+		headArmor1 = headArmor1.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		array[headArmor1Index] = headArmor1;
+		Image blankLayer = ImageIO.read(new File("src\\Textures\\Items\\BlankLayer.png"));
+		blankLayer = blankLayer.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		array[blankLayerIndex] = blankLayer;
 	}
 	
 	public static void menus() throws IOException {

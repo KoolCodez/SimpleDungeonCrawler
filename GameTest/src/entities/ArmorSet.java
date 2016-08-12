@@ -1,10 +1,15 @@
 package entities;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import items.Armor;
+import misc.Images;
 import misc.SDC;
 
 public class ArmorSet {
@@ -29,12 +34,13 @@ public class ArmorSet {
 	}
 	
 	private void setDefaultArmor() {
-		int scaled100 = (int) (100 * SDC.SCALE_FACTOR);
-		ImageIcon noImage = new ImageIcon(new BufferedImage(scaled100, scaled100, BufferedImage.TYPE_3BYTE_BGR));
-		head = new Armor(noImage, "noHelmetArmor", 0.0);
-		body = new Armor(noImage, "noBodyArmor", 0.0);
-		legs = new Armor(noImage, "noLegsArmor", 0.0);
-		feet = new Armor(noImage, "noFeetArmor", 0.0);
-		hands = new Armor(noImage, "noHandsArmor", 0.0);
+		Image image = Images.array[Images.blankLayerIndex];
+		ImageIcon noImage = new ImageIcon(image);
+		noImage.setImage(image);
+		head = new Armor(noImage, image, "noHelmetArmor", 0.0);
+		body = new Armor(noImage, image, "noBodyArmor", 0.0);
+		legs = new Armor(noImage, image, "noLegsArmor", 0.0);
+		feet = new Armor(noImage, image, "noFeetArmor", 0.0);
+		hands = new Armor(noImage, image, "noHandsArmor", 0.0);
 	}
 }
