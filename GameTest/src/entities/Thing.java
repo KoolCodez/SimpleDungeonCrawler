@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
@@ -10,10 +11,29 @@ public class Thing {
 	public Point2D location;
 	public Rectangle outline;
 	public StandardRoom currentRoom;
+	public Image image;
 	
 	public Thing() {
 		location = new Point2D.Double(250 * SDC.SCALE_FACTOR, 250 * SDC.SCALE_FACTOR);
 		outline = new Rectangle();
+	}
+	
+	public Thing(Image i) {
+		image = i;
+	}
+	
+	public Thing(Image i, double x, double y) {
+		image = i;
+		setLocation(x, y);
+	}
+	
+	public Thing(double x, double y, int w, int l) {
+		setLocation(x, y);
+		setSize(w, l);
+	}
+	
+	public void setImage(Image i) {
+		image = i;
 	}
 	
 	public void move(double deltaX, double deltaY) {

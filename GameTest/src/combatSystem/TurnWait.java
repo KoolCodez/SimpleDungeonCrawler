@@ -1,13 +1,15 @@
 package combatSystem;
 
 public class TurnWait {
-	private int turnPoints = 5;
+	public static final int DEFAULT_TURNPOINTS = 6;
+	private int turnPoints = DEFAULT_TURNPOINTS;
+	public int turnPointModifier = 0;
 	public TurnWait() {
 		
 	}
 	
 	public void reset() {
-		turnPoints = 5;
+		turnPoints = DEFAULT_TURNPOINTS + turnPointModifier;
 	}
 	
 	public void changeTurnPoints(int deltaPoints) {

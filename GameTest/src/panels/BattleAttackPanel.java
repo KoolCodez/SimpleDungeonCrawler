@@ -51,8 +51,7 @@ public class BattleAttackPanel extends JPanel {
 	private void attack() {
 		if (control.waitForTurn.getTurnPoints() >= 3) {
 			control.waitForTurn.changeTurnPoints(-3);
-			control.attack(SDC.character, SDC.character.getSelectedEntity());
-			System.out.println("3");
+			control.charAttack();
 		} else {
 			System.out.println("Not enough turn points");
 		}
@@ -71,7 +70,6 @@ public class BattleAttackPanel extends JPanel {
 		attackButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Entity character = SDC.character;
 				attack();
 			
 			}
@@ -79,41 +77,4 @@ public class BattleAttackPanel extends JPanel {
 		attackButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		add(attackButton);
 	}
-	
-	/*private void createSelectButton() {
-		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		SDC.character.setSelectedEntity(currentRoom.entities.get(0));
-		JButton selectButton = new JButton("Select Enemy");
-		selectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-					@Override
-					protected Integer doInBackground() throws Exception {
-						control.selectEntity();;
-						return 0;
-					}
-				};
-				worker.execute();
-			}
-		});
-		selectButton.setBounds((int) (698 * SCALE_FACTOR), (int) (348 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		add(selectButton);
-	}
-	
-	private void selectEntity() {
-		Entity targetedEntity = SDC.roomArray[SDC.loc.x][SDC.loc.y].entities
-				.get(0);
-		control.highlight(targetedEntity);
-		
-		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-			@Override
-			protected Integer doInBackground() throws Exception {
-				control.selectEntity();
-				return 0;
-			}
-		};
-		worker.execute();
-		control.highlight(targetedEntity);
-	}*/
 }

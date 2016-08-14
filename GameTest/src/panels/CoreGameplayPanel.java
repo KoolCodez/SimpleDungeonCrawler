@@ -18,6 +18,7 @@ import combatSystem.ControlRouter;
 import combatSystem.EntityShaker;
 import combatSystem.FallingDamageNumber;
 import entities.Entity;
+import entities.Thing;
 import misc.Images;
 import misc.SDC;
 import movement.MovementController;
@@ -39,25 +40,29 @@ public class CoreGameplayPanel extends JPanel{
 		createAttackButton();
 		setLayout(null);
 		damageNumbers = new ArrayList<FallingDamageNumber>();
+		this.setOpaque(false);
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		this.setBackground(Color.white);
 		drawPanel(g);
 	}
 	
 	private void drawPanel(Graphics g) {
 		g.drawImage(Images.array[Images.backgroundImgIndex], 0, 0, null);
-		g.drawImage(Images.array[SDC.character.getImage()], (int) SDC.character.getLocation().getX(),
-				(int) SDC.character.getLocation().getY(), null);
 		g.drawImage(Images.array[Images.rightArrowIndex], (int) (948 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.leftArrowIndex], (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.bottomArrowIndex], (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.topArrowIndex], (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), null);
+		g.drawImage(SDC.character.getImage(), (int) SDC.character.getLocation().getX(),
+				(int) SDC.character.getLocation().getY(), null);
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		for (int i = 0; i < current.entities.size(); i++) {
-			Entity entity = current.entities.get(i);
-			g.drawImage(Images.array[entity.getImage()], (int) entity.getLocation().getX(), (int) entity.getLocation().getY(), null);
+		for (int i = 0; i < current.things.size(); i++) {
+			Thing t = current.things.get(i);
+			if (t.image != null && t != SDC.character) {
+				g.drawImage(t.image, (int) t.getLocation().getX(), (int) t.getLocation().getY(), null);
+			}
 		}
 		g.setColor(Color.red);
 		for (int i = 0; i < damageNumbers.size(); i++) {

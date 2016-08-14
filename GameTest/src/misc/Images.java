@@ -1,5 +1,6 @@
 package misc;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -42,6 +43,8 @@ public class Images {
 	public static final int stickItem3Index = 24;
 	public static final int stickItem4Index = 25;
 	public static final int stickItem5Index = 26;
+	public static final int headArmor1Index = 31;
+	public static final int blankLayerIndex = 32;
 	//Menus\\
 	public static final int battleMenuIndex = 27;
 	public static final int mainMenuIndex = 28;
@@ -55,8 +58,20 @@ public class Images {
 	
 	private static double scale = SDC.SCALE_FACTOR;
 	
+	public static Image loadImage(String pathFromTextures, int width, int height) {
+		Image i;
+		try {
+			i = ImageIO.read(new File("src\\Textures\\" + pathFromTextures));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return array[blankLayerIndex];
+		}
+		i = i.getScaledInstance((int) (width * scale), (int) (height * scale), Image.SCALE_SMOOTH);
+		return i;
+	}
+	
 	public static void createImages() throws IOException {
-		array = new Image[31];
+		array = new Image[33];
 		arrows();
 		buttons();
 		characters();
@@ -135,9 +150,12 @@ public class Images {
 		Image charRightOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRightLeftArmUp.jpg"));
 		charRightOpArm = charRightOpArm.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
 		array[charRightOpArmIndex] = charRightOpArm;
-		Image battleChar = ImageIO.read(new File("src\\Textures\\Characters\\BattleMainChar.jpg"));
-		battleChar = battleChar.getScaledInstance((int) (72 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
-		array[battleCharIndex] = battleChar;
+		Image battleChar = ImageIO.read(new File("src\\Textures\\Characters\\MainCharTestClear.png"));
+		battleChar = battleChar.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		BufferedImage bi = new BufferedImage((int) (100 * scale), (int) (100 * scale), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bi.createGraphics();
+        g.drawImage(battleChar, 0, 0, null);
+		array[battleCharIndex] = bi;
 	}
 	
 	public static void enemies() throws IOException {
@@ -171,6 +189,12 @@ public class Images {
 		Image stickItem5 = ImageIO.read(new File("src\\Textures\\Items\\Stick5.jpg"));
 		stickItem5 = stickItem5.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
 		array[stickItem5Index] = stickItem5;
+		Image headArmor1 = ImageIO.read(new File("src\\Textures\\Items\\headArmor.png"));
+		headArmor1 = headArmor1.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		array[headArmor1Index] = headArmor1;
+		Image blankLayer = ImageIO.read(new File("src\\Textures\\Items\\BlankLayer.png"));
+		blankLayer = blankLayer.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		array[blankLayerIndex] = blankLayer;
 	}
 	
 	public static void menus() throws IOException {

@@ -3,7 +3,8 @@ package entities;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import items.GenericItem;
+import items.Item;
+import misc.Images;
 import misc.SDC;
 
 public class Villager extends Entity {
@@ -13,7 +14,7 @@ public class Villager extends Entity {
 				Math.random() * 10, Math.random() * 10, Math.random() * 10, (int) (Math.random() * 10));
 		setType("Villager");
 		location = new Point2D.Double(randomLoc(), randomLoc());
-		setImage(18);
+		setImage(Images.array[18]);
 		this.setSize((int) (72 * SCALE_FACTOR), (int) (92 * SCALE_FACTOR));
 		this.setLocation(location.getX(), location.getY());
 	}

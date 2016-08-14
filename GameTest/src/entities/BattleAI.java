@@ -8,9 +8,9 @@ public class BattleAI {
 		host = h;
 	}
 	public String getNextMove() {
-		if (host.getWeapon().reach > host.location.distance(host.getSelectedEntity().getLocation())) {
-			return ATTACK_TAG;
-		}
+		//if (host.getWeapon().reach > host.location.distance(host.getSelectedEntity().getLocation())) {
+			//return ATTACK_TAG;
+		//}
 		return MOVE_TOWARD_TAG;
 	}
 }

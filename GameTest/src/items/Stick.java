@@ -6,16 +6,16 @@ import javax.swing.ImageIcon;
 
 import misc.Images;
 
-public class Stick extends GenericItem {
+public class Stick extends Item {
 	static ImageIcon image = new ImageIcon(Images.array[Images.stickItemIndex]);
 	static String name = "Stick";
 	
 	public Stick() {
-		super(image, name);
+		super(image, image.getImage(), name);//TODO get real stick gameplay picture
 	}
 	
 	@Override
-	public ImageIcon getImage() {
+	public ImageIcon getInventoryImage() {
 		Random rand = new Random();
 		int random = rand.nextInt(5) + 1;
 		if (random == 1) {

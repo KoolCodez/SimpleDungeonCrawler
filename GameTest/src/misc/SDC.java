@@ -25,8 +25,8 @@ import javax.swing.*;
 
 import combatSystem.ControlRouter;
 import entities.Entity;
-import items.GenericItem;
-import items.GenericWeapon;
+import items.Item;
+import items.Weapon;
 import items.Stick;
 import movement.MoveDown;
 import movement.MoveDownLeft;
@@ -116,9 +116,9 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 			character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
 			character.setType("Friendly");
 			character.addItem(new Stick());
-			character.setSize((int) (72 * SCALE_FACTOR), (int) (92 * SCALE_FACTOR));
+			character.setSize((int) (90 * SCALE_FACTOR), (int) (90 * SCALE_FACTOR));
 			character.setRoom(roomArray[loc.x][loc.y]);
-			character.setImage(Images.charFrontIndex);
+			character.setImage(Images.array[Images.battleCharIndex]);
 		}
 	}
 	
@@ -239,7 +239,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		//current.typeOfRoom = "Standard";
 		roomArray[loc.x][loc.y] = current;
 		Random rand = new Random();
-		int typeNum = rand.nextInt(10);
+		int typeNum = rand.nextInt(4) + 3;
 		if (typeNum >= 0 && typeNum <= 2) {
 			current = new TreasureRoom();
 		} else if(typeNum >= 3 && typeNum <= 7) {

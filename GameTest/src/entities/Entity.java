@@ -9,40 +9,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import items.GenericItem;
-import items.GenericWeapon;
+import javax.swing.ImageIcon;
+
+import items.Fists;
+import items.Item;
+import items.Weapon;
+import misc.Images;
+import misc.TextureGenerator;
 import misc.Utilities;
 import rooms.StandardRoom;
 
 public class Entity extends Thing implements Comparable<Entity>, Serializable { // extend this class with specific entity-classes.
+	private Utilities utilities = new Utilities();
+	
 	private String entityType;
+	private String name = "Entity";
 	public Point battleLoc;
-	private List<GenericItem> inventory = new ArrayList<GenericItem>();
+	public Image finalImage;
+	private int rotation = 0;
+	private List<Item> inventory = new ArrayList<Item>();
 	public EntityStats stats = new EntityStats();
 	private int initiative;
-	protected GenericWeapon weapon;
-	private Entity selectedEntity;
-	private String name = "Entity";
-	private Utilities utilities = new Utilities();
+	protected Weapon weapon;
+	protected ArmorSet armor;
+	
 	private int imageIndex;
 	private int deadImageIndex;
 	
-	public int getImage() {
-		if (stats.getHealth() > 0) {
-			return imageIndex;
-		}
-		return deadImageIndex;
-	}
-
-	public void setImage(int index) {
-		this.imageIndex = index;
-	}
-	
-	public void setDeadImage(int index) {
-		deadImageIndex = index;
-	}
-
 	public Entity() {
+		armor = new ArmorSet();
+		weapon = new Fists();
 		entityType = "Generic Entity";
 		location = new Point2D.Double(250, 250);
 		battleLoc = new Point(0,0);
@@ -51,35 +47,44 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 	public Entity(double health, double strength, double dexterity, double constitution, double intelligence,
 			double wisdom, double charisma, int AC) {
 		super();
+		armor = new ArmorSet();
+		weapon = new Fists();
 		entityType = "Generic Entity";
 		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
 		battleLoc = new Point(0,0);
 	}
 	
-	public double meleeAttack(Entity enemy) {
-		if (withinRange(enemy.location)) {
-		System.out.println(name + entityType + " Attack!");
-			if (enemy.stats.getDex() - stats.getDex() + 10 < utilities.r20()) {
-				double damage = 0.0;
-				damage = (stats.getStr() / enemy.stats.getStr() * weapon.damage) / enemy.stats.getAC();
-				enemy.stats.setHealth(-damage);
-				System.out.println("He Hit For " + damage + "Damage!");
-				return damage;
-			} else {
-				System.out.println("He Missed!");
-				return 0;
-			}
-		} else {
-			System.out.println("Out of Reach!");
-			return 0;
-		}
+	public Image getImage() {
+		//return super.image;
+		return finalImage;
 	}
 	
-	private boolean withinRange(Point2D enemyLoc) {
-		double dist = location.distance(enemyLoc) - 50;
-		double reach = weapon.reach;
-		return dist < reach;
+	public void setImage(Image i) {
+		super.setImage(i);
+		TextureGenerator ig = new TextureGenerator();
+		ArrayList<Image> images = new ArrayList<Image>();
+		images.add(i);
+		//images.add(armor.body.getImage());
+		//images.add(armor.feet.getImage());
+		//images.add(armor.hands.getImage());
+		//images.add(armor.legs.getImage());
+		//images.add(weapon.getImage());
+		//images.add(armor.head.getImage());
+		finalImage = ig.compileImage(images);
 	}
+	
+	public void setAngle(int degrees) {
+		int deltaAngle = degrees - rotation;
+		rotation = degrees;
+		TextureGenerator ig = new TextureGenerator();
+		finalImage = ig.rotate(finalImage, deltaAngle);
+	}
+	
+	public void setDeadImage(int index) {
+		deadImageIndex = index;
+	}
+
+	
 	
 	public void setRoom(StandardRoom r) {
 		super.setRoom(r);
@@ -94,14 +99,6 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		this.name = name;
 	}
 	
-	public Entity getSelectedEntity() {
-		return selectedEntity;
-	}
-
-	public void setSelectedEntity(Entity selectedEntity) {
-		this.selectedEntity = selectedEntity;
-	}
-	
 	public void setType(String newType) {
 		entityType = newType;
 	}
@@ -110,11 +107,11 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		return entityType;
 	}
 	
-	public List<GenericItem> getInventory() {
+	public List<Item> getInventory() {
 		return inventory;
 	}
 	
-	public void addItem(GenericItem item) {
+	public void addItem(Item item) {
 		inventory.add(item);
 	}
 	
@@ -126,11 +123,11 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 		return initiative;
 	}
 	
-	public void setWeapon(GenericWeapon weapon) {
+	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
 	}
 	
-	public GenericWeapon getWeapon() {
+	public Weapon getWeapon() {
 		return weapon;
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import entities.Entity;
 import entities.Thing;
+import items.Item;
 import misc.SDC;
 
 public class StandardRoom implements Serializable {
@@ -17,11 +18,13 @@ public class StandardRoom implements Serializable {
 	public String typeOfRoom;
 	public List<Entity> entities;
 	public List<Thing> things;
+	public List<Item> items;
 	
 	public StandardRoom() {
 		entities = new ArrayList<Entity>();
 		things = new ArrayList<Thing>();
 		things.addAll(entities);
+		items = new ArrayList<Item>();
 		createWalls();
 	}
 

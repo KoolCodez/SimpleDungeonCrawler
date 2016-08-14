@@ -9,11 +9,12 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import entities.BattleAI;
 import entities.Entity;
 import entities.Goblin;
-import items.GenericWeapon;
+import items.Weapon;
 import misc.Images;
 import misc.MouseClick;
 import misc.SDC;
@@ -37,13 +38,12 @@ public class ControlRouter {
 	public TurnWait waitForTurn = new TurnWait();
 	private Entity[][] entTable;
 	public boolean flee = false;
+	public Point selected;
 
 	public ControlRouter() {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
 		character = SDC.character;
-		character.setImage(Images.battleCharIndex);
-		setDefaultWeapon();
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		startBattleQueue();
 	}
@@ -124,18 +124,22 @@ public class ControlRouter {
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].things.remove(SDC.character);
 			entTable[character.battleLoc.x][character.battleLoc.y] = null;
 		}
-		character.setImage(Images.charFrontIndex);
+		//character.setImage(Images.array[Images.battleCharIndex]);
 		switch (door) {
-		case "left": SDC.loc.x--;
+		case "left":
+			SDC.loc.x--;
 			door = "right";
 			break;
-		case "right": SDC.loc.x++;
+		case "right":
+			SDC.loc.x++;
 			door = "left";
 			break;
-		case "top": SDC.loc.y--;
+		case "top":
+			SDC.loc.y--;
 			door = "bottom";
 			break;
-		case "bottom": SDC.loc.y++;
+		case "bottom":
+			SDC.loc.y++;
 			door = "top";
 			break;
 		default:
@@ -148,10 +152,11 @@ public class ControlRouter {
 		if (!door.equals("")) {
 			SDC.eventChangeRooms(door);
 		}
-		//ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
-		//for (int i = 0; i < currentRoomEnts.size(); i++) {
-			//setLocationFromBattle(currentRoomEnts.get(i));
-		//}
+		// ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>)
+		// SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
+		// for (int i = 0; i < currentRoomEnts.size(); i++) {
+		// setLocationFromBattle(currentRoomEnts.get(i));
+		// }
 		flee = true;
 	}
 
@@ -185,29 +190,62 @@ public class ControlRouter {
 		bagPanel = new BagPanel(this);
 	}
 
-	
+	public void charAttack() {
+		Entity target = entTable[selected.x][selected.y];
+		attack(character, target);
+	}
 
 	public void attack(Entity attacker, Entity target) {
-		double damage = attacker.meleeAttack(target);
+		double damage = 0.0;
+		if (target != null) {
+			if (legalAttack(attacker, target)) {
+				System.out.println(attacker.getName() + attacker.getType() + " Attack!");
+				if (target.stats.getDex() - attacker.stats.getDex() + 10 < utilities.r20()) {
+					damage = (attacker.stats.getStr() / target.stats.getStr() * attacker.getWeapon().damage)
+							/ target.stats.getAC();
+					target.stats.setHealth(-damage);
+					System.out.println("He Hit For " + damage + "Damage!");
+				} else {
+					System.out.println("He Missed!");
+				}
+			} else {
+				System.out.println("Out of reach!");
+			}
+		}
 		if (damage > 0) {
+			final double d = damage;
 			Point2D doublePoint = target.getLocation();
-			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					battleView.displayDamage(damage, location);
+			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY() + 10);
+			SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
+				@Override
+				protected Integer doInBackground() throws Exception {
+					battleView.displayDamage(d, location);
 					EntityShaker shaker = new EntityShaker(target);
 					shaker.run();
+					return 0;
 				}
-			});
+			};
+			worker.execute();
 		}
 	}
 
-	public void select(Point point) {
-
+	private boolean legalAttack(Entity attacker, Entity target) {
+		int xDist = Math.abs(attacker.battleLoc.x - target.battleLoc.x);
+		int yDist = Math.abs(attacker.battleLoc.y - target.battleLoc.y);
+		if (attacker.getType().equals(target.getType())) {
+			return false;
+		}
+		if (attacker.getWeapon().ranged) {
+			return Math.sqrt((xDist * xDist) * (yDist * yDist)) <= attacker.getWeapon().reach;
+		} else {
+			return xDist + yDist <= 1;
+		}
 	}
 
-	public void highlight(Entity ent) {
-		battleView.highlight(ent);
+	public void select(Point p) {
+		selected = p;
+		Point scaledPoint = new Point((int) (p.x * 140 * SDC.SCALE_FACTOR), (int) (p.y * 140 * SDC.SCALE_FACTOR));
+		battleView.highlight(scaledPoint);
 	}
 
 	public void move(String direction) {
@@ -215,30 +253,27 @@ public class ControlRouter {
 		switch (direction) {
 		case "left":
 			newTurnPoints = battleMove(-1, 0, character, waitForTurn.getTurnPoints());
+			character.setAngle(-90);
 			break;
 		case "right":
 			newTurnPoints = battleMove(1, 0, character, waitForTurn.getTurnPoints());
+			character.setAngle(90);
 			break;
 		case "up":
 			newTurnPoints = battleMove(0, -1, character, waitForTurn.getTurnPoints());
+			character.setAngle(0);
 			break;
 		case "down":
 			newTurnPoints = battleMove(0, 1, character, waitForTurn.getTurnPoints());
+			character.setAngle(180);
 			break;
 		default:
 			break;
 		}
 		waitForTurn.setTurnPoints(newTurnPoints);
 	}
-	
+
 	private int battleMove(int xChange, int yChange, Entity ent, int turnPoints) {
-		// int xChange = 0;
-		// int yChange = 0;
-		/*
-		 * switch (direction) { case "left": xChange = -1; break; case "right":
-		 * xChange = 1; break; case "down": yChange = 1; break; case "up":
-		 * yChange = -1; break; default: break; }
-		 */
 		Point loc = ent.battleLoc;
 		if (turnPoints >= 3) {
 			if (legalBattleMove(new Point(loc.x + xChange, loc.y + yChange))) {
@@ -257,7 +292,7 @@ public class ControlRouter {
 	}
 
 	private boolean legalBattleMove(Point destination) {
-		
+
 		if (destination.y == 2) {
 			if (destination.x == -1) {
 				exitBattle("left");
@@ -324,13 +359,14 @@ public class ControlRouter {
 			}
 			setEntLocation(temp);
 			entTable[temp.battleLoc.x][temp.battleLoc.y] = temp;
-			//System.out.println("set " + temp.toString() + " at " + temp.battleLoc.toString());
+			// System.out.println("set " + temp.toString() + " at " +
+			// temp.battleLoc.toString());
 		}
 	}
-	
+
 	private void setEntLocation(Entity ent) {
 		int scale = (int) (140 * SDC.SCALE_FACTOR);
-		int scaled30 = (int) (30*SDC.SCALE_FACTOR);
+		int scaled30 = (int) (30 * SDC.SCALE_FACTOR);
 		ent.setLocation(ent.battleLoc.x * scale + scaled30, ent.battleLoc.y * scale + scaled30);
 	}
 
@@ -365,15 +401,20 @@ public class ControlRouter {
 
 	private void setLocationFromBattle(Entity ent, String door) {
 		switch (door) {
-		case "left": character.getLocation().setLocation(100 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+		case "left":
+			character.getLocation().setLocation(100 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
 			break;
-		case "right": character.getLocation().setLocation(800 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+		case "right":
+			character.getLocation().setLocation(800 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
 			break;
-		case "top": character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
+		case "top":
+			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
 			break;
-		case "bottom": character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 800 * SDC.SCALE_FACTOR);
+		case "bottom":
+			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 800 * SDC.SCALE_FACTOR);
 			break;
-		default: character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+		default:
+			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
 			break;
 		}
 	}
@@ -396,15 +437,4 @@ public class ControlRouter {
 		Collections.sort(initList);
 		return initList;
 	}
-
-	private void setDefaultWeapon() { // TODO this is temporary, should go away
-										// when inventory is fixed
-		GenericWeapon weapon = new GenericWeapon(new ImageIcon(Images.array[Images.stickItemIndex]), "weapon");
-		weapon.damage = 1.0;
-		weapon.ranged = false;
-		weapon.speed = 1.0;
-		weapon.reach = 100;
-		character.setWeapon(weapon);
-	}
-
 }

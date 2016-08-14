@@ -19,7 +19,7 @@ import combatSystem.BattleQueue;
 import combatSystem.ControlRouter;
 import combatSystem.FallingDamageNumber;
 import entities.Entity;
-import items.GenericWeapon;
+import items.Weapon;
 import misc.Images;
 import misc.MouseClick;
 import misc.SDC;
@@ -51,9 +51,9 @@ public class BattleTurnPanel extends JPanel {
 		g.fillRect((int) (214 * SCALE_FACTOR), (int) (932 * SCALE_FACTOR),
 				(int) (440 * SCALE_FACTOR * SDC.character.stats.getHealth() / SDC.character.stats.getMaxHealth()),
 				(int) (36 * SCALE_FACTOR));
-		g.setColor(Color.black);
-		// g.drawString("Turn Points" + battle.waitForTurn.getTurnPoints(), 50,
-		// 50);
+		g.setColor(Color.green);
+		
+		 g.drawString("Turn Points: " + control.waitForTurn.getTurnPoints(), (int) (800 * SCALE_FACTOR), (int) (800 * SCALE_FACTOR));
 		// g.drawString(console1.get(console1.size() - 1), 10, 100);
 	}
 

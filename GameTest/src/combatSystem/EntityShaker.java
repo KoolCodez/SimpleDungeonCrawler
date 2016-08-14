@@ -16,10 +16,10 @@ public class EntityShaker extends Thread {
 	}
 
 	public void run() {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 15; i++) {
 			try {
-				double deltaX = Math.random() * 5;
-				double deltaY = Math.random() * 5;
+				double deltaX = Math.random() * 10;
+				double deltaY = Math.random() * 10;
 				entity.move(deltaX, deltaY);
 				Thread.sleep(SDC.refreshRate);
 				entity.move(-deltaX, -deltaY);

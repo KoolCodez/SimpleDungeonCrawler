@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import combatSystem.ControlRouter;
 import combatSystem.FallingDamageNumber;
+import combatSystem.Select;
 import entities.Entity;
 import misc.Images;
 import misc.SDC;
@@ -30,6 +31,8 @@ public class BattleViewPanel extends JPanel {
 		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR));
 		control = c;
 		rectLoc = new Point2D.Double(-100, -100);
+		Select s = new Select(this, control);
+		s.start();
 	}
 	
 	public void displayDamage(double damage, Point point) {
@@ -38,8 +41,8 @@ public class BattleViewPanel extends JPanel {
 		n.start();
 	}
 	
-	public void highlight(Entity ent) {
-		rectLoc.setLocation(ent.location);
+	public void highlight(Point p) {
+		rectLoc.setLocation(p);
 	}
 	
 	public Point2D getBattleLoc(Entity ent) {
@@ -62,8 +65,8 @@ public class BattleViewPanel extends JPanel {
 		}
 		
 		drawDamageNumbers(g);
-		g.drawRect((int) (rectLoc.getX()) - CHAR_X_ADJUST, (int) (rectLoc.getY()) - CHAR_Y_ADJUST,
-				(int) (100 * SCALE_FACTOR),(int) (50 * SCALE_FACTOR));
+		g.drawRect((int) rectLoc.getX(), (int) (rectLoc.getY()),
+				(int) (140 * SCALE_FACTOR),(int) (140 * SCALE_FACTOR));
 		g.setColor(Color.white);
 		g.drawString("Turn Points Remining: " + control.waitForTurn.getTurnPoints(), 10, 10);
 		
@@ -89,7 +92,7 @@ public class BattleViewPanel extends JPanel {
 	private void drawEntities(Graphics g, StandardRoom current, int i) {
 		//System.out.println(current.entities.size());
 		Entity ent = current.entities.get(i);
-		g.drawImage(Images.array[ent.getImage()], (int) ent.location.getX(), (int) ent.location.getY(), null);
+		g.drawImage(ent.getImage(), (int) ent.location.getX(), (int) ent.location.getY(), null);
 	}
 	
 	private void drawDamageNumbers(Graphics g) {

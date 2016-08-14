@@ -8,6 +8,7 @@ public class MoveUpRight extends Thread{
 				double speed = SDC.diagSpeed;
 				SDC.character.move(speed, 0);
 				SDC.character.move(0, -speed);
+				//SDC.character.setAngle(45);
 				Thread.sleep(SDC.refreshRate);
 			}
 

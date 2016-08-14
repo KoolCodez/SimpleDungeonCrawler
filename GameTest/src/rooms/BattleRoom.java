@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 
 import entities.Entity;
 import entities.Goblin;
-import items.GenericWeapon;
+import items.Weapon;
 import misc.Images;
 import misc.SDC;
 
@@ -20,7 +20,7 @@ public class BattleRoom extends StandardRoom {
 		for (int i = 0; i <= enemies; i++) {
 			Entity temp = new Goblin();
 			temp.setLocation(700*SCALE_FACTOR*Math.random() + 50,  700*SCALE_FACTOR*Math.random() + 50);
-			temp.setImage(Images.battleGoblinIndex);
+			temp.setImage(Images.array[Images.battleGoblinIndex]);
 			temp.setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 			entities.add(temp);
 			things.add(temp);
