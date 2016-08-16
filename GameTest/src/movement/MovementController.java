@@ -31,13 +31,6 @@ public class MovementController {
 	public MovementController(JPanel coreGameplayPanel) {
 		InputMap inMap = coreGameplayPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap acMap = coreGameplayPanel.getActionMap();
-		Action pause = new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				SDC.frame.remove(coreGameplayPanel);
-				stopMovement();
-				SDC.frame.add(new PauseMenuPanel());
-			}
-		};
 
 		Action moveLeft = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
@@ -144,9 +137,6 @@ public class MovementController {
 				SDC.frame.getContentPane().repaint();
 			}
 		};
-
-		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "pause");
-		acMap.put("pause", pause);
 
 		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "move left");
 		acMap.put("move left", moveLeft);

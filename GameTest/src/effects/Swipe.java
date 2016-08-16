@@ -31,7 +31,7 @@ public class Swipe extends Effect {
 	}
 
 	private Image getImage() {
-		Image i = Images.loadImage("Characters//swipe.png", (int) (200*SDC.SCALE_FACTOR), (int) (200*SDC.SCALE_FACTOR));
+		Image i = Images.loadImage("Characters//swipe.png", (int) (100*SDC.SCALE_FACTOR), (int) (100*SDC.SCALE_FACTOR));
 		return i;
 	}
 	
@@ -56,22 +56,22 @@ public class Swipe extends Effect {
 		Point tLoc = target.battleLoc;
 		if (aLoc.x > tLoc.x) {
 			image = tg.rotate(image, -90);
-			location = new Point((int) (attacker.location.getX() + 20*SDC.SCALE_FACTOR),
+			location = new Point((int) (attacker.location.getX() - 40*SDC.SCALE_FACTOR),
 					(int) (attacker.location.getY()));
 		} else if(aLoc.x < tLoc.x) {
 			image = tg.rotate(image, 90);
-			location = new Point((int) (attacker.location.getX() + 50*SDC.SCALE_FACTOR),
+			location = new Point((int) (attacker.location.getX() + 60*SDC.SCALE_FACTOR),
 					(int) (attacker.location.getY()));
 		}
 		
 		if (aLoc.y > tLoc.y) {
 			image = tg.rotate(image, 0);
 			location = new Point((int) (attacker.location.getX()),
-					(int) (attacker.location.getY() + 20*SDC.SCALE_FACTOR));
+					(int) (attacker.location.getY() - 60*SDC.SCALE_FACTOR));
 		} else if(aLoc.y < tLoc.y) {
 			image = tg.rotate(image, 180);
-			location = new Point((int) (attacker.location.getX() + 50*SDC.SCALE_FACTOR),
-					(int) (attacker.location.getY()));
+			location = new Point((int) (attacker.location.getX()),
+					(int) (attacker.location.getY() + 40*SDC.SCALE_FACTOR));
 		}
 	}
 }

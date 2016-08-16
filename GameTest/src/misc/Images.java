@@ -66,7 +66,7 @@ public class Images {
 			e.printStackTrace();
 			return array[blankLayerIndex];
 		}
-		i = i.getScaledInstance((int) (width * scale), (int) (height * scale), Image.SCALE_SMOOTH);
+		i = i.getScaledInstance((int) (width), (int) (height), Image.SCALE_SMOOTH);
 		return i;
 	}
 	

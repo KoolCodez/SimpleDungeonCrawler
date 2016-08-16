@@ -6,11 +6,18 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
@@ -36,6 +43,7 @@ public class CoreGameplayPanel extends JPanel{
 
 	public CoreGameplayPanel() {
 		movementController = new MovementController(this);
+		createKeybinds();
 		createTestDamageButton();
 		createMenuButton();
 		createAttackButton();
@@ -43,6 +51,52 @@ public class CoreGameplayPanel extends JPanel{
 		effects = new ArrayList<Effect>();
 		this.setOpaque(false);
 	}
+	
+	public void createKeybinds() {
+		InputMap inMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap acMap = this.getActionMap();
+		JPanel p = this;
+		Action pause = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				SDC.frame.remove(p);
+				movementController.stopMovement();
+				SDC.frame.add(new PauseMenuPanel());
+			}
+		};
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "pause");
+		acMap.put("pause", pause);
+		
+		Action pickup = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				Thing t = findNearest();
+				System.out.println(t);
+			}
+		};
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0, false), "pickup");
+		acMap.put("pickup", pickup);
+	}
+	
+	private Thing findNearest() {
+		int pickupRadius = (int) (100 * SDC.SCALE_FACTOR);
+		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
+		ArrayList<Thing> things = new ArrayList<Thing>();
+		things.addAll(currentRoom.things);
+		things.remove(SDC.character);
+		Point2D charLoc = SDC.character.location;
+		charLoc = new Point2D.Double(charLoc.getX() + 50*SDC.SCALE_FACTOR, charLoc.getY() + 50*SDC.SCALE_FACTOR);
+		Thing nearest = new Thing();
+		System.out.println(nearest);
+		nearest.setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		for (int i = 0; i < things.size(); i++) {
+			Thing t = things.get(i);
+			double dist = charLoc.distance(t.location);
+			if (dist <= pickupRadius && dist < charLoc.distance(nearest.location)) {
+				nearest = t;
+			}
+		}
+		return nearest;
+	}
+	
 	
 	@Override
 	public void paintComponent(Graphics g) {
