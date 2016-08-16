@@ -1,16 +1,22 @@
 package combatSystem;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import effects.FallingDamageNumber;
+import effects.Swipe;
 import entities.BattleAI;
 import entities.Entity;
 import entities.Goblin;
@@ -41,6 +47,7 @@ public class ControlRouter {
 	public Point selected;
 
 	public ControlRouter() {
+		
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
 		character = SDC.character;
@@ -50,11 +57,32 @@ public class ControlRouter {
 
 	public void startBattleQueue() {
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		List<Entity> initList = setInitiative(currentRoom);
+		ArrayBlockingQueue<Entity> queue = setInitiative(currentRoom);
 		entTable = new Entity[5][5];
 
-		battleQueue = new BattleQueue(this, initList);
+		battleQueue = new BattleQueue(this, queue);
 		battleQueue.start();
+	}
+	
+	private void displayBattle(JPanel panel) {
+		battleView = new BattleViewPanel(this);
+		panel.add(battleView);
+	}
+
+	public void drawQueue(Graphics g) {
+		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
+		Point loc = new Point((int) (800 * SDC.SCALE_FACTOR), (int) (550 * SDC.SCALE_FACTOR));
+		ArrayBlockingQueue<Entity> list = new ArrayBlockingQueue<Entity>(battleQueue.initList.size());
+		//list.addAll(battleQueue.initList);
+		for (int i = 0; i < current.entities.size(); i++) {
+			Entity e = battleQueue.initList.remove();
+			Image image = e.getImage();
+			image = image.getScaledInstance((int) (50 * SDC.SCALE_FACTOR), (int) (50 * SDC.SCALE_FACTOR),
+					Image.SCALE_SMOOTH);
+			g.drawImage(image, loc.x, loc.y, null);
+			loc.y += (int) (60 * SDC.SCALE_FACTOR);
+			battleQueue.initList.add(e);
+		}
 	}
 
 	public void enemyTurn(Goblin currentEntity) {
@@ -117,14 +145,14 @@ public class ControlRouter {
 	}
 
 	private void exitBattle(String door) {
-		System.out.println("exitBattle");
+		System.out.println("exitBattle: " + door);
 		waitForTurn.endTurn();
 		if (!door.equals("")) {
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].entities.remove(SDC.character);
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].things.remove(SDC.character);
 			entTable[character.battleLoc.x][character.battleLoc.y] = null;
 		}
-		//character.setImage(Images.array[Images.battleCharIndex]);
+		// character.setImage(Images.array[Images.battleCharIndex]);
 		switch (door) {
 		case "left":
 			SDC.loc.x--;
@@ -163,8 +191,9 @@ public class ControlRouter {
 	public void switchToQueuePhase() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				battleTurnPanel.removeAll();
-				displayBattle(battleTurnPanel);
+				battleTurnPanel.disableButtons();
+				// battleTurnPanel.removeAll();
+				// displayBattle(battleTurnPanel);
 			}
 		});
 	}
@@ -173,8 +202,9 @@ public class ControlRouter {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				battleTurnPanel.setVisible(true);
-				battleTurnPanel.addButtonsToTurnPanel();
+				// battleTurnPanel.addButtonsToTurnPanel();
 				battleTurnPanel.add(battleView);
+				battleTurnPanel.enableButtons();
 			}
 		});
 	}
@@ -200,7 +230,8 @@ public class ControlRouter {
 		if (target != null) {
 			if (legalAttack(attacker, target)) {
 				System.out.println(attacker.getName() + attacker.getType() + " Attack!");
-				if (target.stats.getDex() - attacker.stats.getDex() + 10 < utilities.r20()) {
+				if (target.stats.getDex() - attacker.stats.getDex()
+						+ 10 < 20/* utilities.r20() */) {
 					damage = (attacker.stats.getStr() / target.stats.getStr() * attacker.getWeapon().damage)
 							/ target.stats.getAC();
 					target.stats.setHealth(-damage);
@@ -212,14 +243,19 @@ public class ControlRouter {
 				System.out.println("Out of reach!");
 			}
 		}
+		Point2D doublePoint = attacker.getLocation();
+		Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY() + 10);
+		Swipe s = new Swipe(location);
+		s.fixLocation(attacker, target);
+		battleView.addEffect(s);
 		if (damage > 0) {
 			final double d = damage;
-			Point2D doublePoint = target.getLocation();
-			Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY() + 10);
+			Point2D doublePointEnemy = target.getLocation();
+			Point locationEnemy = new Point((int) doublePointEnemy.getX(), (int) doublePointEnemy.getY() + 10);
 			SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
 				@Override
 				protected Integer doInBackground() throws Exception {
-					battleView.displayDamage(d, location);
+					battleView.addEffect(new FallingDamageNumber(d, locationEnemy));
 					EntityShaker shaker = new EntityShaker(target);
 					shaker.run();
 					return 0;
@@ -283,7 +319,7 @@ public class ControlRouter {
 				turnPoints -= 3;
 				setEntLocation(ent);
 			} else {
-				System.out.println("There's a person in that space! You kinky devil you!");
+				System.out.println("Illegal Move");
 			}
 		} else {
 			System.out.println("out of turnpoints");
@@ -314,7 +350,13 @@ public class ControlRouter {
 			}
 		}
 		Entity ent = entTable[destination.x][destination.y];
-		return ent == null;
+		if (ent == null) {
+			return true;
+		} else {
+			System.out.println("There's a person in that space! You kinky devil you!");
+			return false;
+		}
+		
 	}
 
 	public void setLocationForBattle(String direction) {
@@ -366,8 +408,8 @@ public class ControlRouter {
 
 	private void setEntLocation(Entity ent) {
 		int scale = (int) (140 * SDC.SCALE_FACTOR);
-		int scaled30 = (int) (30 * SDC.SCALE_FACTOR);
-		ent.setLocation(ent.battleLoc.x * scale + scaled30, ent.battleLoc.y * scale + scaled30);
+		int scaled20 = (int) (20 * SDC.SCALE_FACTOR);
+		ent.setLocation(ent.battleLoc.x * scale + scaled20, ent.battleLoc.y * scale + scaled20);
 	}
 
 	private Point nextPoint(Point point, boolean horizontal) {
@@ -419,22 +461,18 @@ public class ControlRouter {
 		}
 	}
 
-	public void displayBattle(JPanel panel) {
-		battleView = new BattleViewPanel(this);
-		panel.add(battleView);
-	}
-
-	public List<Entity> setInitiative(StandardRoom current) {
-		ArrayList<Entity> initList = new ArrayList<Entity>();
-		for (int i = 0; i < current.entities.size(); i++) {
-			int r = utilities.r6();
-			current.entities.get(i).setInitiative(r);
-			initList.add(current.entities.get(i));
+	private ArrayBlockingQueue<Entity> setInitiative(StandardRoom current) {
+		ArrayBlockingQueue<Entity> q = new ArrayBlockingQueue<Entity>(current.entities.size());
+		List<Entity> eList = new ArrayList<Entity>();
+		eList.addAll(current.entities);
+		System.out.println(current.entities.toString());
+		int size = eList.size();
+		for (int i = 0; i < size; i++) {
+			Entity randomE = eList.get((int) (Math.random() * (eList.size()) - 1));
+			System.out.println(randomE);
+			eList.remove(randomE);
+			q.add(randomE);
 		}
-		int r = utilities.r6();
-		character.setInitiative(r);
-		initList.add(character);
-		Collections.sort(initList);
-		return initList;
+		return q;
 	}
 }

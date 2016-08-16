@@ -3,6 +3,7 @@ package combatSystem;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
@@ -18,21 +19,24 @@ import rooms.StandardRoom;
 
 public class BattleQueue extends Thread {
 	ControlRouter control;
-	List<Entity> initList;
+	ArrayBlockingQueue<Entity> initList;
 
 	Utilities utilities = new Utilities();
 
-	public BattleQueue(ControlRouter p, List<Entity> i) {
+	public BattleQueue(ControlRouter p, ArrayBlockingQueue<Entity> i) {
 		control = p;
 		initList = i;
 	}
 
 	public void run() {
+		control.switchToQueuePhase();
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		while (checkLiving(currentRoom) && !control.flee) {
 			for (int i = 0; i < initList.size(); i++) {
-				Entity currentEntity = initList.get(i);
-				if (control.flee) {return;}
+				Entity currentEntity = initList.peek();
+				if (control.flee) {
+					return;
+				}
 				if (isEnemy(currentEntity)) {
 					//control.enemyTurn((Goblin) currentEntity);
 					System.out.println("myah!");
@@ -40,12 +44,14 @@ public class BattleQueue extends Thread {
 					control.playerTurn();
 					control.switchToQueuePhase();
 				} else {
-					printEntityError(initList.get(i));
+					printEntityError(currentEntity);
 				}
+				Entity e = initList.remove();
+				initList.add(e);
 				sleep(1000);
 				// checkHealth(currentRoom);
 			}
-			System.out.println("New Turn"); // TODO xp reward for less rounds?
+			// TODO xp reward for less rounds?
 		}
 	}
 

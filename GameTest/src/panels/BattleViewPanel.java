@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import combatSystem.ControlRouter;
-import combatSystem.FallingDamageNumber;
 import combatSystem.Select;
+import effects.Effect;
+import effects.FallingDamageNumber;
 import entities.Entity;
 import misc.Images;
 import misc.SDC;
@@ -21,13 +22,13 @@ public class BattleViewPanel extends JPanel {
 	private final int CHAR_X_ADJUST = (int) (50 * SCALE_FACTOR);
 	private final int CHAR_Y_ADJUST = (int) (25 * SCALE_FACTOR);
 	private static final double SCALE_FACTOR = SDC.SCALE_FACTOR;
-	private ArrayList<FallingDamageNumber> damageNumbers;
+	private ArrayList<Effect> effects;
 	private Entity character = SDC.character;
 	private ControlRouter control;
 	private Point2D rectLoc;
 	
 	public BattleViewPanel(ControlRouter c) {
-		damageNumbers = new ArrayList<FallingDamageNumber>();
+		effects = new ArrayList<Effect>();
 		this.setBounds(0, (int) (148 * SCALE_FACTOR), (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR));
 		control = c;
 		rectLoc = new Point2D.Double(-100, -100);
@@ -35,10 +36,9 @@ public class BattleViewPanel extends JPanel {
 		s.start();
 	}
 	
-	public void displayDamage(double damage, Point point) {
-		FallingDamageNumber n = new FallingDamageNumber(damage, point);
-		damageNumbers.add(n);
-		n.start();
+	public void addEffect(Effect e) {
+		effects.add(e);
+		e.start();
 	}
 	
 	public void highlight(Point p) {
@@ -58,13 +58,19 @@ public class BattleViewPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		//g.drawImage(Images.array[Images.battleViewBackgroundIndex], 0, 0, (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR), null);
+		g.fillRect(0, 0, 1000, 1000);
+		g.setColor(Color.white);
 		drawGrid(g);
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		for (int i = 0; i < current.entities.size(); i++) {
 			drawEntities(g, current, i);
 		}
-		
-		drawDamageNumbers(g);
+		for (int i = 0; i < effects.size(); i++) {
+			Effect e = effects.get(i);
+			e.draw(g);
+		}
+		//drawEffects(g);
+		g.setColor(Color.yellow);
 		g.drawRect((int) rectLoc.getX(), (int) (rectLoc.getY()),
 				(int) (140 * SCALE_FACTOR),(int) (140 * SCALE_FACTOR));
 		g.setColor(Color.white);
@@ -95,14 +101,8 @@ public class BattleViewPanel extends JPanel {
 		g.drawImage(ent.getImage(), (int) ent.location.getX(), (int) ent.location.getY(), null);
 	}
 	
-	private void drawDamageNumbers(Graphics g) {
-		g.setColor(Color.red);
-		for (int i = 0; i < damageNumbers.size(); i++) {
-			FallingDamageNumber currentNum = damageNumbers.get(i);
-			Point point = currentNum.getPoint();
-			g.setFont(SDC.font);
-			g.drawString(currentNum.getDamage() + "", point.x, point.y);
-		}
+	private void drawEffects(Graphics g) {
+		
 	}
 	
 }

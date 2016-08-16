@@ -17,7 +17,7 @@ import javax.swing.SwingWorker;
 
 import combatSystem.BattleQueue;
 import combatSystem.ControlRouter;
-import combatSystem.FallingDamageNumber;
+import effects.FallingDamageNumber;
 import entities.Entity;
 import items.Weapon;
 import misc.Images;
@@ -35,13 +35,40 @@ public class BattleTurnPanel extends JPanel {
 
 	private BattleViewPanel battleView;
 	private ControlRouter control;
+	JButton fightButton;
+	JButton endTurnButton;
+	JButton bagButton;
+	JButton leftMove;
+	JButton rightMove;
+	JButton upMove;
+	JButton downMove;
 
 	public BattleTurnPanel(ControlRouter c) {
 		setLayout(null);
 		SDC.frame.add(this);
 		control = c;
 		battleView = control.battleView;
-		// addButtonsToTurnPanel();
+		addButtonsToTurnPanel();
+	}
+	
+	public void disableButtons() {
+		fightButton.setEnabled(false);
+		endTurnButton.setEnabled(false);
+		bagButton.setEnabled(false);
+		leftMove.setEnabled(false);
+		rightMove.setEnabled(false);
+		upMove.setEnabled(false);
+		downMove.setEnabled(false);
+	}
+	
+	public void enableButtons() {
+		fightButton.setEnabled(true);
+		endTurnButton.setEnabled(true);
+		bagButton.setEnabled(true);
+		leftMove.setEnabled(true);
+		rightMove.setEnabled(true);
+		upMove.setEnabled(true);
+		downMove.setEnabled(true);
 	}
 
 	@Override
@@ -52,7 +79,7 @@ public class BattleTurnPanel extends JPanel {
 				(int) (440 * SCALE_FACTOR * SDC.character.stats.getHealth() / SDC.character.stats.getMaxHealth()),
 				(int) (36 * SCALE_FACTOR));
 		g.setColor(Color.green);
-		
+		control.drawQueue(g);
 		 g.drawString("Turn Points: " + control.waitForTurn.getTurnPoints(), (int) (800 * SCALE_FACTOR), (int) (800 * SCALE_FACTOR));
 		// g.drawString(console1.get(console1.size() - 1), 10, 100);
 	}
@@ -65,20 +92,20 @@ public class BattleTurnPanel extends JPanel {
 	}
 
 	private void createBagButton() {
-		JButton bagButton = new JButton();
+		bagButton = new JButton();
 		bagButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				control.switchToBagPanel();
 			}
 		});
-		bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (552 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (248 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		bagButton.setIcon(new ImageIcon(Images.array[Images.bagButtonIndex]));
 		add(bagButton);
 	}
 
 	private void createFightButton() {
-		JButton fightButton = new JButton();
+		fightButton = new JButton();
 		fightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -93,7 +120,7 @@ public class BattleTurnPanel extends JPanel {
 	private void createMoveButtons() {
 		// leftMove.setIcon(new
 		// ImageIcon(Images.array[Images.moveButtonIndex]));
-		JButton leftMove = new JButton();
+		leftMove = new JButton();
 		leftMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -111,7 +138,7 @@ public class BattleTurnPanel extends JPanel {
 				(int) (50 * SCALE_FACTOR));
 		add(leftMove);
 		
-		JButton rightMove = new JButton();
+		rightMove = new JButton();
 		rightMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -129,7 +156,7 @@ public class BattleTurnPanel extends JPanel {
 				(int) (50 * SCALE_FACTOR));
 		add(rightMove);
 		
-		JButton upMove = new JButton();
+		upMove = new JButton();
 		upMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -147,7 +174,7 @@ public class BattleTurnPanel extends JPanel {
 				(int) (50 * SCALE_FACTOR));
 		add(upMove);
 		
-		JButton downMove = new JButton();
+		downMove = new JButton();
 		downMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -167,7 +194,7 @@ public class BattleTurnPanel extends JPanel {
 	}
 
 	private void createEndTurnButton() {
-		JButton endTurnButton = new JButton("END TURN");
+		endTurnButton = new JButton("END TURN");
 		endTurnButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

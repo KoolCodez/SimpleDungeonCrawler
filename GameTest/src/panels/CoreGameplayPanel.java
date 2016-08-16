@@ -16,7 +16,8 @@ import javax.swing.SwingWorker;
 
 import combatSystem.ControlRouter;
 import combatSystem.EntityShaker;
-import combatSystem.FallingDamageNumber;
+import effects.Effect;
+import effects.FallingDamageNumber;
 import entities.Entity;
 import entities.Thing;
 import misc.Images;
@@ -30,7 +31,7 @@ public class CoreGameplayPanel extends JPanel{
 	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	private static int SCALED_100 = SDC.SCALED_100;
-	private ArrayList<FallingDamageNumber> damageNumbers;
+	private ArrayList<Effect> effects;
 	public MovementController movementController;
 
 	public CoreGameplayPanel() {
@@ -39,7 +40,7 @@ public class CoreGameplayPanel extends JPanel{
 		createMenuButton();
 		createAttackButton();
 		setLayout(null);
-		damageNumbers = new ArrayList<FallingDamageNumber>();
+		effects = new ArrayList<Effect>();
 		this.setOpaque(false);
 	}
 	
@@ -65,11 +66,8 @@ public class CoreGameplayPanel extends JPanel{
 			}
 		}
 		g.setColor(Color.red);
-		for (int i = 0; i < damageNumbers.size(); i++) {
-			FallingDamageNumber currentNum = damageNumbers.get(i);
-			Point point = currentNum.getPoint();
-			g.setFont(SDC.font);
-			g.drawString(currentNum.getDamage() + "", point.x, point.y);
+		for (int i = 0; i < effects.size(); i++) {
+			effects.get(i).draw(g);
 		}
 		g.setColor(Color.black);
 	}
@@ -83,8 +81,8 @@ public class CoreGameplayPanel extends JPanel{
 				Point2D doublePoint = SDC.character.getLocation();
 				Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
 				FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
-				damageNumbers.add(currentFallingDamage);
-				currentFallingDamage.start();
+				effects.add(currentFallingDamage);
+				//currentFallingDamage.start();
 				
 				EntityShaker eShake = new EntityShaker(SDC.character);
 				eShake.start();
