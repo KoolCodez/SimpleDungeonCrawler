@@ -94,7 +94,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 	private static void frameSetup() {
 		frame = new JFrame("Simple Dungeon Crawler");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize((int) (1000 * SCALE_FACTOR + 16), (int) (1000 * SCALE_FACTOR + 38));
+		frame.setSize((int) (1300 * SCALE_FACTOR + 16), (int) (1000 * SCALE_FACTOR + 38));
 		frame.setVisible(true);
 		frame.add(new MainMenu());
 		g = frame.getGraphics();
@@ -113,7 +113,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		if (new File("src\\save\\" + CHARACTER_SAVE_TAG).exists()) {
 			character = (Entity) loadObject(CHARACTER_SAVE_TAG);
 		} else {
-			character = new Entity(5, 10, 10, 10, 10, 10, 10, 1);
+			character = new Entity(5, 10, 10, 10, 10, 10, 10, 1, playerSpeed);
 			character.setType("Friendly");
 			character.addItem(new Stick());
 			character.setSize((int) (90 * SCALE_FACTOR), (int) (90 * SCALE_FACTOR));

@@ -10,7 +10,7 @@ public class Weapon extends Item{
 	}
 	public boolean ranged;
 	public double damage;
-	public double speed;
+	public int speed;
 	public double reach;
 	public String ammoType;
 }

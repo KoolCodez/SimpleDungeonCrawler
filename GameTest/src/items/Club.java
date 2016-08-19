@@ -12,8 +12,8 @@ public class Club extends Weapon{
 		super(new ImageIcon(i), i, "Club");
 		damage = 1.0;
 		ranged = false;
-		speed = 1.0;
-		reach = 100;
+		speed = 3;
+		reach = 1;
 	}
 	
 }

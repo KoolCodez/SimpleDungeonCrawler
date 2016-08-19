@@ -12,6 +12,7 @@ public class EntityStats implements Serializable {
 	private double AC;
 	private double health;
 	private double maxHealth;
+	private double speed;
 	
 	public EntityStats() {
 		maxHealth = health;
@@ -23,10 +24,11 @@ public class EntityStats implements Serializable {
 		wis = 10;
 		chr = 10;
 		AC = 10;
+		speed = 3;
 	}
 	
 	public void setStats(double health, double strength, double dexterity, double constitution, double intelligence,
-			double wisdom, double charisma, int AC) {
+			double wisdom, double charisma, int AC, double spd) {
 		maxHealth = health;
 		this.health = maxHealth;
 		str = strength;
@@ -36,8 +38,17 @@ public class EntityStats implements Serializable {
 		wis = wisdom;
 		chr = charisma;
 		this.AC = AC;
+		speed = spd;
 	}
 	
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
 	public void setStr(double strength) {
 		this.str += strength;
 	}

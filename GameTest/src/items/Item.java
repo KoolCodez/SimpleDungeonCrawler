@@ -6,6 +6,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import entities.Entity;
 import entities.Thing;
 
 public class Item extends Thing implements Serializable {
@@ -26,5 +27,10 @@ public class Item extends Thing implements Serializable {
 	}
 	public void setImage(Image i) {
 		inventoryImage.setImage(i);
+	}
+	
+	@Override
+	public void interact(Entity interactor) {
+		interactor.getInventory().add(this);
 	}
 }

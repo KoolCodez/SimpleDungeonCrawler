@@ -16,10 +16,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import effects.FallingDamageNumber;
+import effects.FallingMiss;
 import effects.Swipe;
 import entities.BattleAI;
 import entities.Entity;
 import entities.Goblin;
+import entities.Nothing;
 import items.Weapon;
 import misc.Images;
 import misc.MouseClick;
@@ -27,6 +29,7 @@ import misc.SDC;
 import misc.Utilities;
 import panels.BagPanel;
 import panels.BattleAttackPanel;
+import panels.BattleSideBar;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
@@ -38,6 +41,7 @@ public class ControlRouter {
 	private BattleTurnPanel battleTurnPanel;
 	private BattleAttackPanel attackPanel;
 	BagPanel bagPanel;
+	private BattleSideBar sideBar;
 	private BattleQueue battleQueue;
 	private Utilities utilities = new Utilities();
 	private Entity character;
@@ -50,6 +54,7 @@ public class ControlRouter {
 		
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
+		sideBar = new BattleSideBar(this, new Nothing());
 		character = SDC.character;
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		startBattleQueue();
@@ -84,28 +89,20 @@ public class ControlRouter {
 			battleQueue.initList.add(e);
 		}
 	}
+	
+	public Entity getSelectedEnt() {
+		return entTable[selected.x][selected.y];
+	}
 
 	public void enemyTurn(Goblin currentEntity) {
-		int turnPoints = 5;
+		int turnPoints = 6;
 		while (turnPoints > 0) {
-			String nextMove = currentEntity.battleAI.getNextMove();
-			switch (nextMove) {
-			case BattleAI.ATTACK_TAG:
-				if (turnPoints >= 2) {
-					attack(currentEntity, SDC.character);
-					turnPoints -= 2;
-				} else {
-					turnPoints = 0;
-				}
-				break;
-			case BattleAI.MOVE_TOWARD_TAG:
-				// turnPoints -= enemyMoveToward(currentEntity, SDC.character,
-				// turnPoints);
-				break;
-			default:
-				attack(currentEntity, SDC.character);
-				turnPoints -= 2;
-				break;
+			turnPoints = currentEntity.battleAI.nextMove(turnPoints, entTable, this);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
@@ -174,6 +171,7 @@ public class ControlRouter {
 			break;
 		}
 		battleView.setVisible(false);
+		sideBar.setVisible(false);
 		battleTurnPanel.setVisible(false);
 		SDC.frame.add(new CoreGameplayPanel());
 		setLocationFromBattle(character, door);
@@ -221,28 +219,97 @@ public class ControlRouter {
 	}
 
 	public void charAttack() {
-		Entity target = entTable[selected.x][selected.y];
+		Entity target = getSelectedEnt();
 		attack(character, target);
 	}
 
 	public void attack(Entity attacker, Entity target) {
-		double damage = 0.0;
+		
 		if (target != null) {
 			if (legalAttack(attacker, target)) {
 				System.out.println(attacker.getName() + attacker.getType() + " Attack!");
 				if (target.stats.getDex() - attacker.stats.getDex()
-						+ 10 < 20/* utilities.r20() */) {
+						+ 10 < utilities.r20()) {
+					double damage = 0.0;
 					damage = (attacker.stats.getStr() / target.stats.getStr() * attacker.getWeapon().damage)
 							/ target.stats.getAC();
 					target.stats.setHealth(-damage);
 					System.out.println("He Hit For " + damage + "Damage!");
+					displayDamage(damage, attacker, target);
 				} else {
 					System.out.println("He Missed!");
+					displayMiss(attacker);
 				}
 			} else {
 				System.out.println("Out of reach!");
 			}
 		}
+	}
+
+	private boolean legalAttack(Entity attacker, Entity target) {
+		int xDist = Math.abs(attacker.battleLoc.x - target.battleLoc.x);
+		int yDist = Math.abs(attacker.battleLoc.y - target.battleLoc.y);
+		if (attacker.getType().equals(target.getType())) {
+			return false;
+		}
+		if (attacker.getWeapon().ranged) {
+			return Math.sqrt((xDist * xDist) * (yDist * yDist)) <= attacker.getWeapon().reach;
+		} else {
+			return xDist + yDist <= 1;
+		}
+	}
+	
+	public void shove(Entity attacker, Entity target) {
+		if (target != null) {
+			if (legalShove(attacker, target)) {
+				System.out.println(attacker.getName() + attacker.getType() + " Shove!");
+				if (target.stats.getDex() - attacker.stats.getDex()
+						+ 8 < utilities.r20()) {
+					push(attacker, target);
+					System.out.println("Shove Succesful!");
+				} else {
+					System.out.println("He Missed!");
+					displayMiss(attacker);
+				}
+				//double damage = 0.0;
+				//if (attacker.stats.getDex() - target.stats.getDex()
+					//	+ 10 < 20/* utilities.r20() */) {
+					/*damage = (target.stats.getStr() / attacker.stats.getStr() * target.getWeapon().damage)
+							/ attacker.stats.getAC();
+					attacker.stats.setHealth(-damage);
+					System.out.println(target.toString() + " Hit For " + damage + "Damage!");
+					displayDamage(damage, target, attacker);
+					//Note, target and attacker are reversed here, 
+					//since that is the direction damage is dealt
+				} else {
+					System.out.println(target.toString() + " Missed!");
+				}*/
+			} else {
+				System.out.println("Out of reach!");
+			}
+		}
+		
+		
+	}
+	
+	private boolean legalShove(Entity attacker, Entity target) {
+		int xDist = Math.abs(attacker.battleLoc.x - target.battleLoc.x);
+		int yDist = Math.abs(attacker.battleLoc.y - target.battleLoc.y);
+		return xDist + yDist <= 1;
+	}
+	
+	private void push(Entity attacker, Entity target) {
+		int xDist = target.battleLoc.x - attacker.battleLoc.x;
+		int yDist = target.battleLoc.y - attacker.battleLoc.y;
+		Entity target2 = entTable[target.battleLoc.x + xDist][target.battleLoc.y + yDist];
+		if (target2 != null) {
+			push(target, target2);
+		} else {
+			battleMove(xDist, yDist, target, 3);
+		}
+	}
+	
+	private void displayDamage(double damage, Entity attacker, Entity target) {
 		Point2D doublePoint = attacker.getLocation();
 		Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY() + 10);
 		Swipe s = new Swipe(location);
@@ -264,24 +331,31 @@ public class ControlRouter {
 			worker.execute();
 		}
 	}
-
-	private boolean legalAttack(Entity attacker, Entity target) {
-		int xDist = Math.abs(attacker.battleLoc.x - target.battleLoc.x);
-		int yDist = Math.abs(attacker.battleLoc.y - target.battleLoc.y);
-		if (attacker.getType().equals(target.getType())) {
-			return false;
-		}
-		if (attacker.getWeapon().ranged) {
-			return Math.sqrt((xDist * xDist) * (yDist * yDist)) <= attacker.getWeapon().reach;
-		} else {
-			return xDist + yDist <= 1;
-		}
+	
+	private void displayMiss(Entity attacker) {
+		Point2D doublePoint = attacker.getLocation();
+		Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY() + 10);
+		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
+			@Override
+			protected Integer doInBackground() throws Exception {
+				battleView.addEffect(new FallingMiss(location));
+				return 0;
+			}
+		};
+		worker.execute();
 	}
 
 	public void select(Point p) {
 		selected = p;
 		Point scaledPoint = new Point((int) (p.x * 140 * SDC.SCALE_FACTOR), (int) (p.y * 140 * SDC.SCALE_FACTOR));
 		battleView.highlight(scaledPoint);
+		Entity ent = entTable[p.x][p.y];
+		SDC.frame.remove(sideBar);
+		if (ent != null) {
+			sideBar = new BattleSideBar(this, ent);
+		} else {
+			sideBar = new BattleSideBar(this, new Nothing());
+		}
 	}
 
 	public void move(String direction) {
@@ -309,7 +383,7 @@ public class ControlRouter {
 		waitForTurn.setTurnPoints(newTurnPoints);
 	}
 
-	private int battleMove(int xChange, int yChange, Entity ent, int turnPoints) {
+	public int battleMove(int xChange, int yChange, Entity ent, int turnPoints) {
 		Point loc = ent.battleLoc;
 		if (turnPoints >= 3) {
 			if (legalBattleMove(new Point(loc.x + xChange, loc.y + yChange))) {
@@ -468,7 +542,7 @@ public class ControlRouter {
 		System.out.println(current.entities.toString());
 		int size = eList.size();
 		for (int i = 0; i < size; i++) {
-			Entity randomE = eList.get((int) (Math.random() * (eList.size()) - 1));
+			Entity randomE = eList.get((int) (Math.random() * (eList.size() - 1)));
 			System.out.println(randomE);
 			eList.remove(randomE);
 			q.add(randomE);

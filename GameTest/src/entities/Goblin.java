@@ -6,7 +6,7 @@ import misc.SDC;
 public class Goblin extends Entity {
 	public BattleAI battleAI;
 	public Goblin() {
-		super(5, 10, 10, 10, 10, 10, 10, 1);
+		super(5, 10, 10, 10, 10, 10, 10, 1, 3);
 		battleAI = new BattleAI(this);
 		setType("Enemy");
 		setWeapon(new Club());

@@ -13,9 +13,9 @@ public class Fists extends Weapon {
 	public Fists() {
 		super(invI, i, "Fists");
 		ranged = false;
-		damage = 1.0;
-		speed = 10;
-		reach = 1.0;
+		damage = .2;
+		speed = 1;
+		reach = 1;
 		
 	}
 }

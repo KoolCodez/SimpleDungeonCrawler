@@ -31,7 +31,8 @@ public class BattleAttackPanel extends JPanel {
 		control = c;
 		battleView = control.battleView;
 		createAttackButton();
-		//createSelectButton();
+		createShoveButton();
+		createBackButton();
 	}
 	
 	@Override
@@ -48,23 +49,6 @@ public class BattleAttackPanel extends JPanel {
 		// g.drawString(console1.get(console1.size() - 1), 10, 100);
 	}
 	
-	private void attack() {
-		if (control.waitForTurn.getTurnPoints() >= 3) {
-			control.waitForTurn.changeTurnPoints(-3);
-			control.charAttack();
-		} else {
-			System.out.println("Not enough turn points");
-		}
-		try {
-			Thread.sleep(300);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		this.setVisible(false);
-		control.switchToTurnPhase();
-	}
-	
 	private void createAttackButton() {
 		JButton attackButton = new JButton("ATTACK");
 		attackButton.addActionListener(new ActionListener() {
@@ -76,5 +60,71 @@ public class BattleAttackPanel extends JPanel {
 		});
 		attackButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		add(attackButton);
+	}
+	
+	private void attack() {
+		if (control.waitForTurn.getTurnPoints() >= 3) {
+			control.charAttack();
+			control.waitForTurn.changeTurnPoints(-3);
+			if (control.waitForTurn.getTurnPoints() == 0) {
+				setVisible(false);
+				control.switchToTurnPhase();
+				control.switchToQueuePhase();
+			}
+			
+		} else {
+			System.out.println("Not enough turn points");
+		}
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void createShoveButton() {
+		JButton shoveButton = new JButton("SHOVE");
+		shoveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				shove();
+			}
+		});
+		shoveButton.setBounds((int) (698 * SCALE_FACTOR), (int) (248 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		add(shoveButton);
+	}
+	
+	private void shove() {
+		if (control.waitForTurn.getTurnPoints() >= 3) {
+			back();
+			control.shove(SDC.character, control.getSelectedEnt());
+			control.waitForTurn.changeTurnPoints(-3);
+		} else {
+			System.out.println("Not enough turn points");
+		}
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void createBackButton() {
+		JButton backButton = new JButton("BACK");
+		backButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				back();
+			}
+		});
+		backButton.setBounds((int) (698 * SCALE_FACTOR), (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		add(backButton);
+	}
+	
+	private void back() {
+		this.setVisible(false);
+		control.switchToTurnPhase();
 	}
 }

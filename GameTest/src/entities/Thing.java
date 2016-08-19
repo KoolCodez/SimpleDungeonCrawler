@@ -36,6 +36,14 @@ public class Thing {
 		image = i;
 	}
 	
+	public Image getImage() {
+		return image;
+	}
+	
+	public void interact(Entity interactor) {
+		System.out.println("This is a thing");
+	}
+	
 	public void move(double deltaX, double deltaY) {
 		if (legalMove(deltaX, deltaY, outline)) {
 			location.setLocation(location.getX() + deltaX, location.getY() + deltaY);

@@ -44,9 +44,7 @@ public class CoreGameplayPanel extends JPanel{
 	public CoreGameplayPanel() {
 		movementController = new MovementController(this);
 		createKeybinds();
-		createTestDamageButton();
 		createMenuButton();
-		createAttackButton();
 		setLayout(null);
 		effects = new ArrayList<Effect>();
 		this.setOpaque(false);
@@ -126,28 +124,6 @@ public class CoreGameplayPanel extends JPanel{
 		g.setColor(Color.black);
 	}
 	
-	private void createTestDamageButton() {
-		JButton testDamage = new JButton("DAMAGE");
-		testDamage.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				double damage = 10.0 * Math.random();
-				Point2D doublePoint = SDC.character.getLocation();
-				Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY());
-				FallingDamageNumber currentFallingDamage = new FallingDamageNumber(damage, location);
-				effects.add(currentFallingDamage);
-				//currentFallingDamage.start();
-				
-				EntityShaker eShake = new EntityShaker(SDC.character);
-				eShake.start();
-			}
-		});
-		testDamage.setBounds((int) (700 * SCALE_FACTOR), (int) (200 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-
-		testDamage.setFont(SDC.font);
-		add(testDamage);
-	}
-	
 	private void createMenuButton() {
 		JButton menuButton = new JButton("PAUSE");
 		menuButton.addActionListener(new ActionListener() {
@@ -158,37 +134,8 @@ public class CoreGameplayPanel extends JPanel{
 				SDC.frame.add(new PauseMenuPanel());
 			}
 		});
-		menuButton.setBounds((int) (700 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuButton.setBounds((int) (1000 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		menuButton.setFont(SDC.font);
 		add(menuButton);
 	}
-	
-	private void createBattle() {
-		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-			ControlRouter control;
-			@Override
-			protected Integer doInBackground() throws Exception {
-				System.out.println("new battle");
-				control = new ControlRouter();
-				return 0;
-			}
-		};
-		worker.execute();
-	}
-	
-	private void createAttackButton() {
-		JButton atkButton = new JButton("ATTACK");
-		atkButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				movementController.stopMovement();
-				createBattle();
-			}
-		});
-		atkButton.setBounds((int) (700 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		atkButton.setFont(SDC.font);
-		add(atkButton);
-	}
-
 }

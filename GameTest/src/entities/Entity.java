@@ -45,12 +45,12 @@ public class Entity extends Thing implements Comparable<Entity>, Serializable { 
 	}
 
 	public Entity(double health, double strength, double dexterity, double constitution, double intelligence,
-			double wisdom, double charisma, int AC) {
+			double wisdom, double charisma, int AC, double spd) {
 		super();
 		armor = new ArmorSet();
 		weapon = new Fists();
 		entityType = "Generic Entity";
-		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC);
+		stats.setStats(health, strength, dexterity, constitution, intelligence, wisdom, charisma, AC, spd);
 		battleLoc = new Point(0,0);
 	}
 	

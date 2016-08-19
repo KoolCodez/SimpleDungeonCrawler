@@ -38,8 +38,8 @@ public class BattleQueue extends Thread {
 					return;
 				}
 				if (isEnemy(currentEntity)) {
-					//control.enemyTurn((Goblin) currentEntity);
-					System.out.println("myah!");
+					control.enemyTurn((Goblin) currentEntity);
+					//System.out.println("myah!");
 				} else if (isFriendly(currentEntity)) {
 					control.playerTurn();
 					control.switchToQueuePhase();

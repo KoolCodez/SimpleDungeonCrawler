@@ -11,7 +11,7 @@ public class Villager extends Entity {
 	double SCALE_FACTOR = SDC.SCALE_FACTOR;
 	public Villager() {
 		stats.setStats(Math.random() * 10, Math.random() * 10, Math.random() * 10, Math.random() * 10,
-				Math.random() * 10, Math.random() * 10, Math.random() * 10, (int) (Math.random() * 10));
+				Math.random() * 10, Math.random() * 10, Math.random() * 10, (int) (Math.random() * 10), 3);
 		setType("Villager");
 		location = new Point2D.Double(randomLoc(), randomLoc());
 		setImage(Images.array[18]);
