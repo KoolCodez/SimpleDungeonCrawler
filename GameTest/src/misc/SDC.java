@@ -205,15 +205,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		refreshArrows();
 		if (roomArray[loc.x][loc.y].typeOfRoom.equals("battle")) {
 			System.out.println("starting battle");
-			Component[] panels = frame.getContentPane().getComponents();
-			for (int i = 0; i < panels.length; i++) {
-				if (panels[i].getClass().getName().equals("panels.CoreGameplayPanel")) {
-					CoreGameplayPanel panel = (CoreGameplayPanel) panels[i];
-					panel.movementController.stopMovement();
-					panels[i].setVisible(false);
-				}
-			}
-			
+			stopGameplayPanel();
 			character.setRoom(roomArray[loc.x][loc.y]);
 			ControlRouter control = new ControlRouter();
 			control.setLocationForBattle(door);
@@ -234,12 +226,22 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		}
 	}
 	
+	public static void stopGameplayPanel() {
+		Component[] panels = frame.getContentPane().getComponents();
+		for (int i = 0; i < panels.length; i++) {
+			if (panels[i].getClass().getName().equals("panels.CoreGameplayPanel")) {
+				CoreGameplayPanel panel = (CoreGameplayPanel) panels[i];
+				panel.shutdownPanel();
+			}
+		}
+	}
+	
 	private static void createRoom() {
 		StandardRoom current = new StandardRoom();
 		//current.typeOfRoom = "Standard";
 		roomArray[loc.x][loc.y] = current;
 		Random rand = new Random();
-		int typeNum = rand.nextInt(10);
+		int typeNum = rand.nextInt(4) + 3;
 		if (typeNum >= 0 && typeNum <= 2) {
 			current = new TreasureRoom();
 		} else if(typeNum >= 3 && typeNum <= 7) {

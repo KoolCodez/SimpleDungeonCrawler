@@ -1,8 +1,11 @@
 package entities;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+
+import javax.swing.JPanel;
 
 import misc.SDC;
 import rooms.StandardRoom;
@@ -30,6 +33,16 @@ public class Thing {
 	public Thing(double x, double y, int w, int l) {
 		setLocation(x, y);
 		setSize(w, l);
+	}
+	
+	public void displayOnSide(Graphics g) {
+		double scale = SDC.SCALE_FACTOR;
+		Image i = getImage().getScaledInstance((int) (250 * scale), (int) (250 * scale), Image.SCALE_SMOOTH);
+		g.drawImage(i, (int) (1000 * scale), (int) (100 * scale), null);
+	}
+	
+	public void addOptions(JPanel panel) {
+		
 	}
 	
 	public void setImage(Image i) {

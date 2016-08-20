@@ -3,6 +3,7 @@ package panels;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -76,7 +77,13 @@ public class PauseMenuPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				InventoryPanel inventoryPanel = new InventoryPanel();
-				SDC.frame.add(inventoryPanel);
+				inventoryPanel.createDisplay();
+				//SDC.frame.add(inventoryPanel);
+				/*InventoryDisplay display = new InventoryDisplay();
+				display.setInventory(SDC.character.getInventory());
+				display.setRect(new Rectangle(0, 0, (int) (900*SCALE_FACTOR), (int) (900*SCALE_FACTOR)));
+				display.setLocation(new Point(0, 0));*/
+				//SDC.frame.add(display);
 			}
 		});
 		invButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);

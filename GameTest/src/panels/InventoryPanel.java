@@ -28,78 +28,30 @@ public class InventoryPanel extends JPanel {
 	private static final int SCALED_140 = (int) (140 * SCALE_FACTOR);
 	private static final int SCALED_100 = SDC.SCALED_100;
 	private static final int SCALED_40 = (int) (40 * SCALE_FACTOR);
-	private Point selectedLocation;
-	private boolean endMouseListener;
-	private int selectedItemNumber;
 	private List<Item> inventory;
+	private InventoryDisplay display;
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		drawInv(g);
-		g.drawRect(selectedLocation.x, selectedLocation.y, SCALED_100, SCALED_140);
+		display.drawInv(g);
 	}
 	
-	private void drawInv(Graphics g) {
-		Rectangle rText = new Rectangle(0, SCALED_100, SCALED_100, SCALED_40);
-		Rectangle rImage = new Rectangle(0, 0, SCALED_100, SCALED_100);
-		for (int i = SDC.character.getInventory().size() - 1; i >= 0; i--) {
-			Item item = SDC.character.getInventory().get(i);
-			g.drawImage(item.inventoryImage.getImage(), rImage.x, rImage.y, null);
-			g.setFont(new Font("Harrington", Font.BOLD, 18));
-			g.drawString(item.itemName, rImage.x, rImage.y + (int) (120 * SCALE_FACTOR));
-			rImage.x += SCALED_100;
-			if (rImage.x >= (int) (900 * SCALE_FACTOR)) {
-				rImage.x -= (int) (900 * SCALE_FACTOR);
-				rImage.y += SCALED_140;
-			}
-		}
-	}
-
 	public InventoryPanel() {
+		setLayout(null);
 		inventory = SDC.character.getInventory();
-		selectedLocation = new Point(0, 0);
-		selectedItemNumber = 0;
-		endMouseListener = false;
-		startMouseListener();
+		SDC.frame.add(this);
+		
 		createExitButton();
 		createAddStickButton();
 		createDeleteItemButton();
-		setLayout(null);
-	}
-
-	private void startMouseListener() {
-		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-			@Override
-			protected Integer doInBackground() throws Exception {
-				while (!endMouseListener) {
-					MouseClick mouse = new MouseClick();
-					addMouseListener(mouse);
-					synchronized (mouse) {
-						try {
-							mouse.wait();
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-					}
-					Point point = mouse.getLocation();
-					selectItem(point);
-				}
-				return 0;
-			}
-		};
-		worker.execute();
 	}
 	
-	private void selectItem(Point point) {
-		point.x -= 10 * SCALE_FACTOR * SCALE_FACTOR;
-		point.y -= 30 * SCALE_FACTOR * SCALE_FACTOR;
-		int trunkatedX = point.x - (point.x % SCALED_100);
-		int trunkatedY = point.y - (point.y % SCALED_140);
-		int itemX = trunkatedX / SCALED_100;
-		int itemY = 9 * (trunkatedY / SCALED_140);
-		selectedItemNumber = itemX + itemY;
-		refreshItem();
+	public void createDisplay() {
+		display = new InventoryDisplay(this);
+		display.setInventory(SDC.character.getInventory());
+		display.setRect(new Rectangle(0, 0, (int) (900*SCALE_FACTOR), (int) (900*SCALE_FACTOR)));
+		display.setLocation(new Point(0, 0));
 	}
 	
 	private void createDeleteItemButton() {
@@ -108,24 +60,12 @@ public class InventoryPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<Item> inventory = SDC.character.getInventory();
-				int inventorySize = inventory.size();
-				inventory.remove(inventorySize - selectedItemNumber - 1);
-				refreshItem();
+				inventory.remove(display.selectedItem);
 			}
 		});
 		deleteItemButton.setBounds(BUTTON_WIDTH, (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		deleteItemButton.setFont(SDC.font);
 		add(deleteItemButton);
-	}
-	
-	private void refreshItem() {
-		if (selectedItemNumber > SDC.character.getInventory().size() - 1) {
-			selectedItemNumber = SDC.character.getInventory().size() - 1;
-		}
-		Point newPoint = new Point((int) ((selectedItemNumber % 9) * SCALED_100),
-				(int) (((selectedItemNumber - selectedItemNumber % 9) / 9)) * SCALED_140);
-
-		selectedLocation = newPoint;
 	}
 
 	private void createAddStickButton() {
@@ -154,7 +94,6 @@ public class InventoryPanel extends JPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				endMouseListener = true;
 				setVisible(false);
 				SDC.frame.getContentPane().add(new PauseMenuPanel());
 			}

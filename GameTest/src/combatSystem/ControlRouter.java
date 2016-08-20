@@ -51,9 +51,9 @@ public class ControlRouter {
 	public Point selected;
 
 	public ControlRouter() {
-		
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
+		System.out.println("creating panel " + battleTurnPanel);
 		sideBar = new BattleSideBar(this, new Nothing());
 		character = SDC.character;
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
@@ -77,16 +77,14 @@ public class ControlRouter {
 	public void drawQueue(Graphics g) {
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		Point loc = new Point((int) (800 * SDC.SCALE_FACTOR), (int) (550 * SDC.SCALE_FACTOR));
-		ArrayBlockingQueue<Entity> list = new ArrayBlockingQueue<Entity>(battleQueue.initList.size());
-		//list.addAll(battleQueue.initList);
-		for (int i = 0; i < current.entities.size(); i++) {
-			Entity e = battleQueue.initList.remove();
+		Entity[] q = battleQueue.initList.toArray(new Entity[battleQueue.initList.size()]);
+		for (int i = 0; i < q.length; i++) {
+			Entity e = q[i];
 			Image image = e.getImage();
 			image = image.getScaledInstance((int) (50 * SDC.SCALE_FACTOR), (int) (50 * SDC.SCALE_FACTOR),
 					Image.SCALE_SMOOTH);
 			g.drawImage(image, loc.x, loc.y, null);
 			loc.y += (int) (60 * SDC.SCALE_FACTOR);
-			battleQueue.initList.add(e);
 		}
 	}
 	
@@ -542,7 +540,7 @@ public class ControlRouter {
 		System.out.println(current.entities.toString());
 		int size = eList.size();
 		for (int i = 0; i < size; i++) {
-			Entity randomE = eList.get((int) (Math.random() * (eList.size() - 1)));
+			Entity randomE = eList.get((int) Math.round(Math.random() * (eList.size() - 1)));
 			System.out.println(randomE);
 			eList.remove(randomE);
 			q.add(randomE);

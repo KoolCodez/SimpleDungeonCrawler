@@ -26,6 +26,7 @@ import combatSystem.EntityShaker;
 import effects.Effect;
 import effects.FallingDamageNumber;
 import entities.Entity;
+import entities.Nothing;
 import entities.Thing;
 import misc.Images;
 import misc.SDC;
@@ -38,16 +39,23 @@ public class CoreGameplayPanel extends JPanel{
 	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	private static int SCALED_100 = SDC.SCALED_100;
+	public static final double PICKUP_RADIUS = 200 * SDC.SCALE_FACTOR;
 	private ArrayList<Effect> effects;
 	public MovementController movementController;
+	private GameplaySideBar sideBar;
 
 	public CoreGameplayPanel() {
 		movementController = new MovementController(this);
 		createKeybinds();
-		createMenuButton();
 		setLayout(null);
 		effects = new ArrayList<Effect>();
 		this.setOpaque(false);
+		createMenuButton();
+	}
+	
+	public void shutdownPanel() {
+		movementController.stopMovement();
+		setVisible(false);
 	}
 	
 	public void createKeybinds() {
@@ -67,7 +75,9 @@ public class CoreGameplayPanel extends JPanel{
 		Action pickup = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				Thing t = findNearest();
-				System.out.println(t);
+				//SDC.frame.remove(sideBar);
+				
+				sideBar = new GameplaySideBar(t, SDC.character);
 			}
 		};
 		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0, false), "pickup");
@@ -75,20 +85,18 @@ public class CoreGameplayPanel extends JPanel{
 	}
 	
 	private Thing findNearest() {
-		int pickupRadius = (int) (100 * SDC.SCALE_FACTOR);
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		ArrayList<Thing> things = new ArrayList<Thing>();
 		things.addAll(currentRoom.things);
 		things.remove(SDC.character);
 		Point2D charLoc = SDC.character.location;
 		charLoc = new Point2D.Double(charLoc.getX() + 50*SDC.SCALE_FACTOR, charLoc.getY() + 50*SDC.SCALE_FACTOR);
-		Thing nearest = new Thing();
-		System.out.println(nearest);
+		Thing nearest = new Nothing();
 		nearest.setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		for (int i = 0; i < things.size(); i++) {
 			Thing t = things.get(i);
 			double dist = charLoc.distance(t.location);
-			if (dist <= pickupRadius && dist < charLoc.distance(nearest.location)) {
+			if (dist <= PICKUP_RADIUS && dist < charLoc.distance(nearest.location)) {
 				nearest = t;
 			}
 		}
@@ -130,12 +138,13 @@ public class CoreGameplayPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				movementController.stopMovement();
+				SDC.stopGameplayPanel();
 				SDC.frame.add(new PauseMenuPanel());
 			}
 		});
-		menuButton.setBounds((int) (1000 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		menuButton.setBounds((int) (1000 * SDC.SCALE_FACTOR), 0, SDC.BUTTON_WIDTH, SDC.BUTTON_HEIGHT);
 		menuButton.setFont(SDC.font);
 		add(menuButton);
 	}
+	
 }
