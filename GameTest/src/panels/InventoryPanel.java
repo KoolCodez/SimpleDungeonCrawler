@@ -25,10 +25,6 @@ public class InventoryPanel extends JPanel {
 	private static final double SCALE_FACTOR = SDC.SCALE_FACTOR;
 	private static final int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
 	private static final int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
-	private static final int SCALED_140 = (int) (140 * SCALE_FACTOR);
-	private static final int SCALED_100 = SDC.SCALED_100;
-	private static final int SCALED_40 = (int) (40 * SCALE_FACTOR);
-	private List<Item> inventory;
 	private InventoryDisplay display;
 
 	@Override
@@ -39,7 +35,6 @@ public class InventoryPanel extends JPanel {
 	
 	public InventoryPanel() {
 		setLayout(null);
-		inventory = SDC.character.getInventory();
 		SDC.frame.add(this);
 		
 		createExitButton();
@@ -52,6 +47,7 @@ public class InventoryPanel extends JPanel {
 		display.setInventory(SDC.character.getInventory());
 		display.setRect(new Rectangle(0, 0, (int) (900*SCALE_FACTOR), (int) (900*SCALE_FACTOR)));
 		display.setLocation(new Point(0, 0));
+		display.startMouseListener();
 	}
 	
 	private void createDeleteItemButton() {

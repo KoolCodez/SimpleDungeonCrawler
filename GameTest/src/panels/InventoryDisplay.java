@@ -1,5 +1,6 @@
 package panels;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -14,8 +15,8 @@ import misc.MouseClick;
 import misc.SDC;
 
 public class InventoryDisplay {
+	private static final int SCALED_100 = SDC.SCALED_100;
 	private List<Item> inventory;
-	private int size;
 	private Rectangle bounds;
 	private Point location;
 	public Item selectedItem;
@@ -28,7 +29,7 @@ public class InventoryDisplay {
 	int lastLineRemainder;
 
 	public InventoryDisplay(JPanel parent) {
-		startMouseListener();
+		//startMouseListener();
 		selectedLoc = new Point(0,0);
 		parentPanel = parent;
 	}
@@ -39,14 +40,23 @@ public class InventoryDisplay {
 			Item item = inventory.get(i);
 			g.drawImage(item.inventoryImage.getImage(), image.x, image.y, null);
 			g.setFont(new Font("Harrington", Font.BOLD, 18));
-			g.drawString(item.itemName, image.x, image.y + (int) (100*SCALE));
-			image.x += (int) (100*SCALE);
+			g.drawString(item.itemName, image.x, image.y + SCALED_100);
+			image.x += SCALED_100;
 			if (image.x >= bounds.width) {
 				image.x = location.x;
-				image.y += (int) (100*SCALE);
+				image.y += SCALED_100;
 			}
 		}
-		g.drawRect(selectedLoc.x, selectedLoc.y, (int) (100 * SCALE), (int) (100 * SCALE));
+		g.setColor(Color.black);
+		g.drawRect(location.x, location.y, bounds.width, bounds.height);
+		for (int i = 0; i < (int) (bounds.width / SCALED_100); i++) {
+			g.drawLine(location.x + SCALED_100*i, location.y, location.x + SCALED_100*i, location.y + bounds.height);
+		}
+		for (int i = 0; i < (int) (bounds.height / SCALED_100); i++) {
+			g.drawLine(location.x, location.y + SCALED_100*i, location.x + bounds.width, location.y + SCALED_100*i);
+		}
+		g.setColor(Color.green);
+		g.drawRect(selectedLoc.x, selectedLoc.y, SCALED_100, SCALED_100);
 	}
 	
 	public void setInventory(List<Item> items) {
@@ -55,19 +65,17 @@ public class InventoryDisplay {
 	
 	public void setRect(Rectangle rect) {
 		bounds = rect;
-		perLine = (int) (bounds.width / 100*SCALE);
-		lines = size / perLine + 1;
-		lastLineRemainder = size % lines - 1;
+		refreshInvStats();
 	}
 	
 	public void setLocation(Point point) {
 		location = point;
 	}
 
-	private void startMouseListener() {
-		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
+	public void startMouseListener() {
+		Thread t = new Thread() {
 			@Override
-			protected Integer doInBackground() throws Exception {
+			public void run() {
 				while (true) {
 					MouseClick mouse = new MouseClick();
 					parentPanel.addMouseListener(mouse);
@@ -79,12 +87,18 @@ public class InventoryDisplay {
 						}
 					}
 					Point point = mouse.getLocation();
-					System.out.println("clicked at " + point.toString());
+					refreshInvStats();
 					selectItem(point);
 				}
 			}
 		};
-		worker.execute();
+		t.start();
+	}
+	
+	private void refreshInvStats() {
+		perLine = (int) (bounds.width / SCALED_100);
+		lines = inventory.size() / perLine;
+		lastLineRemainder = inventory.size() - (lines*perLine);
 	}
 
 	private void selectItem(Point point) {
@@ -95,22 +109,24 @@ public class InventoryDisplay {
 			point.x -= location.x;
 			point.y -= location.y;
 			
-			
-			if (point.y > lines * 100*SCALE) {
-				point.y = (int) (lines * 100*SCALE);
-			}
-			if (point.x > lastLineRemainder * 100*SCALE) {
-				point.x = (int) (lastLineRemainder * 100*SCALE);
+			if (point.x > lastLineRemainder * SCALED_100 && point.y > lines * SCALED_100) {
+				point.x = (int) ((lastLineRemainder-1) * SCALED_100);
 			}
 			
-			int trunkatedX = (int) (point.x - (point.x % 100*SCALE));
-			int trunkatedY = (int) (point.y - (point.y % 100*SCALE));
-			int itemX = (int) (trunkatedX / SCALE);
-			int itemY = perLine * (int) (trunkatedY / SCALE);
+			if(point.x > perLine * SCALED_100) {
+				point.x = (int) ((point.x-1) * SCALED_100);
+			}
+			
+			if (point.y > lines * SCALED_100) {
+				point.y = (int) (lines * SCALED_100);
+			}
+			int trunkatedX = (int) (point.x - (point.x % SCALED_100));
+			int trunkatedY = (int) (point.y - (point.y % SCALED_100));
+			int itemX = (int) (trunkatedX / SCALED_100);
+			int itemY = perLine * (int) (trunkatedY / SCALED_100);
 			int itemNum = itemX + itemY;
 			selectedItem = inventory.get(itemNum);
 			selectedLoc = new Point(trunkatedX + location.x, trunkatedY + location.y);
-			System.out.println(selectedLoc.toString());
 		}
 	}
 }
