@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -88,15 +89,22 @@ public class CoreGameplayPanel extends JPanel{
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		ArrayList<Thing> things = new ArrayList<Thing>();
 		things.addAll(currentRoom.things);
-		things.remove(SDC.character);
 		Point2D charLoc = SDC.character.location;
-		charLoc = new Point2D.Double(charLoc.getX() + 50*SDC.SCALE_FACTOR, charLoc.getY() + 50*SDC.SCALE_FACTOR);
+		Rectangle r = SDC.character.getSize();
+		charLoc = new Point2D.Double(charLoc.getX() + r.width/2, charLoc.getY() + r.height/2);
 		Thing nearest = new Nothing();
 		nearest.setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		for (int i = 0; i < things.size(); i++) {
 			Thing t = things.get(i);
-			double dist = charLoc.distance(t.location);
-			if (dist <= PICKUP_RADIUS && dist < charLoc.distance(nearest.location)) {
+			Point2D tLoc = t.location;
+			Rectangle tr = t.getSize();
+			tLoc = new Point2D.Double(tLoc.getX() + tr.width/2, tLoc.getY() + tr.height/2);
+			double dist = charLoc.distance(tLoc);
+			
+			Point2D nLoc = nearest.location;
+			Rectangle nr = nearest.getSize();
+			nLoc = new Point2D.Double(nLoc.getX() + nr.width/2, nLoc.getY() + nr.height/2);
+			if (dist <= PICKUP_RADIUS && dist < charLoc.distance(nLoc) && t != SDC.character) {
 				nearest = t;
 			}
 		}

@@ -29,8 +29,10 @@ public class Entity extends Thing implements Serializable { // extend this class
 	private String name;
 	public Point battleLoc;
 	public Image finalImage;
+	public Image deadImage;
 	private int rotation = 0;
 	private List<Item> inventory = new ArrayList<Item>();
+	public int maxItems = 20;
 	public EntityStats stats = new EntityStats();
 	protected Weapon weapon;
 	protected ArmorSet armor;

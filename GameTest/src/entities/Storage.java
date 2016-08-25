@@ -1,8 +1,10 @@
 package entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,57 +18,33 @@ import javax.swing.SwingWorker;
 import items.Item;
 import misc.MouseClick;
 import misc.SDC;
+import panels.InventoryDisplay;
 import panels.PauseMenuPanel;
+import panels.TransferPanel;
 
 public class Storage extends Thing {
 	private List<Item> inventory;
+	private int maxCapacity;
 	private Entity interactor;
-	private Item selectedItem;
-	private Point selectedLoc;
+	private InventoryDisplay display;
+	private boolean displaying;
 	
 	public Storage(Image i, double x, double y, int w, int l) {
-		super(x, y, w, l);
+		super();
+		super.setSize(w, l);
+		super.setLocation(x, y);
 		super.setImage(i);
 		inventory = new ArrayList<Item>();
-		selectedLoc = new Point(0,0);
+		display = new InventoryDisplay();
+		display.setInventory(inventory);
+		display.setRect((int) (1000*SDC.SCALE_FACTOR), (int) (600 * SDC.SCALE_FACTOR), (int) (300*SDC.SCALE_FACTOR), (int) (300*SDC.SCALE_FACTOR));
+		displaying = false;
 	}
 	
 	@Override
 	public void addOptions(JPanel panel) {
 		panel.add(createTakeButton());
-		panel.add(createPutButton());
-		MouseClick mouse = new MouseClick();
-		SwingWorker<Integer, String> worker = new SwingWorker<Integer, String>() {
-			@Override
-			protected Integer doInBackground() throws Exception {
-				while (true) {
-					MouseClick mouse = new MouseClick();
-					panel.addMouseListener(mouse);
-					synchronized (mouse) {
-						try {
-							mouse.wait();
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-					}
-					Point point = mouse.getLocation();
-					selectItem(point);
-				}
-			}
-		};
-		worker.execute();
-	}
-	
-	private void selectItem(Point point) {
-		point.x -= 1000 * SDC.SCALE_FACTOR;
-		point.y -= 500 * SDC.SCALE_FACTOR;
-		int trunkatedX = point.x - (point.x % SDC.SCALED_100);
-		int trunkatedY = point.y - (point.y % (int) (100 * SDC.SCALE_FACTOR));
-		int itemX = trunkatedX / SDC.SCALED_100;
-		int itemY = 9 * (trunkatedY / (int) (SDC.SCALE_FACTOR * 140));
-		int selectedItemNumber = itemX + itemY;
-		selectedItem = inventory.get(selectedItemNumber);
-		selectedLoc = new Point((int) (trunkatedX + 1000*SDC.SCALE_FACTOR), (int) (trunkatedY + 500*SDC.SCALE_FACTOR));
+		panel.add(createTransferButton());
 	}
 	
 	private JButton createTakeButton() {
@@ -74,30 +52,47 @@ public class Storage extends Thing {
 		takeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Item item = display.selectedItem;
+				if (item != null) {
+					if (interactor.getInventory().size() < interactor.maxItems) {
+						inventory.remove(item);
+						interactor.getInventory().add(item);
+					}
+				}
 			}
 		});
 		takeButton.setBounds((int) (1000 * SDC.SCALE_FACTOR), (int) (900 * SDC.SCALE_FACTOR), SDC.BUTTON_WIDTH, SDC.BUTTON_HEIGHT);
 		return takeButton;
 	}
 	
-	private JButton createPutButton() {
-		JButton putButton = new JButton("PUT");
-		putButton.addActionListener(new ActionListener() {
+	private JButton createTransferButton() {
+		JButton transferButton = new JButton("TRANSFER");
+		transferButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				SDC.stopGameplayPanel();
+				SDC.frame.add(new TransferPanel(interactor.getInventory(), interactor.maxItems, inventory, maxCapacity));
 			}
 		});
-		putButton.setBounds((int) (700 * SDC.SCALE_FACTOR), (int) (900 * SDC.SCALE_FACTOR), SDC.BUTTON_WIDTH, SDC.BUTTON_HEIGHT);
-		return putButton;
+		transferButton.setBounds((int) (1000 * SDC.SCALE_FACTOR), (int) (500 * SDC.SCALE_FACTOR), SDC.BUTTON_WIDTH, SDC.BUTTON_HEIGHT);
+		return transferButton;
 	}
 	
 	public void interact(Entity interactor) {
 		this.interactor = interactor;
 	}
 	
-	public void addItem(Item item) {
+	public void setCapacity(int capacity) {
+		maxCapacity = capacity;
+	}
+	
+	public boolean addItem(Item item) {
+		if (inventory.size() == maxCapacity) {
+			System.out.println("Storage at max capacity");
+			return false;
+		}
 		inventory.add(item);
+		return true;
 	}
 	
 	public void addAll(Collection<Item> items) {
@@ -109,17 +104,13 @@ public class Storage extends Thing {
 	}
 	
 	public void displayOnSide(Graphics g) {
-		double scale = SDC.SCALE_FACTOR;
 		super.displayOnSide(g);
-		Point loc = new Point((int) (1000 * scale), (int) (500 * scale));
-		for (Item i : inventory) {
-			g.drawImage(i.getImage(), loc.x, loc.y, null);
-			if (loc.x >= 1200 * scale) {
-				loc.x = (int) (1000 * scale);
-				loc.y += (int) (100 * scale);	
-			} else {
-				loc.x += (int) (100 * scale);
-			}
+		if (!displaying) {
+			display.startMouseListener();
+			displaying = true;
 		}
+		display.drawInv(g);
+		g.setColor(Color.black);
+		g.drawString("Storage Capacity: " + maxCapacity, (int) (1000 * SDC.SCALE_FACTOR), (int) (450 * SDC.SCALE_FACTOR));
 	}
 }

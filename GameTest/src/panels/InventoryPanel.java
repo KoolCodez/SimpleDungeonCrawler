@@ -27,12 +27,6 @@ public class InventoryPanel extends JPanel {
 	private static final int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	private InventoryDisplay display;
 
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		display.drawInv(g);
-	}
-	
 	public InventoryPanel() {
 		setLayout(null);
 		SDC.frame.add(this);
@@ -42,11 +36,16 @@ public class InventoryPanel extends JPanel {
 		createDeleteItemButton();
 	}
 	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		display.drawInv(g);
+	}
+	
 	public void createDisplay() {
-		display = new InventoryDisplay(this);
+		display = new InventoryDisplay();
 		display.setInventory(SDC.character.getInventory());
-		display.setRect(new Rectangle(0, 0, (int) (900*SCALE_FACTOR), (int) (900*SCALE_FACTOR)));
-		display.setLocation(new Point(0, 0));
+		display.setRect((int) (0 * SDC.SCALE_FACTOR), (int) (0 * SDC.SCALE_FACTOR), (int) (700*SCALE_FACTOR), (int) (700*SCALE_FACTOR));
 		display.startMouseListener();
 	}
 	
@@ -69,14 +68,10 @@ public class InventoryPanel extends JPanel {
 		addStick.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (SDC.character.getInventory().size() < 20) {
+				if (SDC.character.getInventory().size() < SDC.character.maxItems) {
 					Stick stick = new Stick();
 					stick.getInventoryImage();
 					SDC.character.addItem(stick);
-					/*removeAll();
-					add(addStick);
-					createExitButton();
-					refreshInv();*/
 				}
 			}
 		});

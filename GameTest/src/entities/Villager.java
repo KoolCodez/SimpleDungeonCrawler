@@ -34,7 +34,7 @@ public class Villager extends Entity {
 				System.out.println("Ouch! Stop That!");
 			}
 		});
-		pokeButton.setBounds((int) (1000 * SDC.SCALE_FACTOR), (int) (900 * SDC.SCALE_FACTOR), SDC.BUTTON_WIDTH, SDC.BUTTON_HEIGHT);
+		pokeButton.setBounds((int) (1000 * SDC.SCALE_FACTOR), (int) (400 * SDC.SCALE_FACTOR), SDC.BUTTON_WIDTH, SDC.BUTTON_HEIGHT);
 		panel.add(pokeButton);
 	}
 	

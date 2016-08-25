@@ -29,7 +29,7 @@ public class GameplaySideBar extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		double scale = SDC.SCALE_FACTOR;
-		g.setColor(Color.gray);
+		g.setColor(Color.white);
 		g.fillRect((int) (1000 * scale), 0, (int) (300 * scale), (int) (1000 * scale));
 		//System.out.println("drawing sideBar: " + thing);
 		//g.drawImage(thing.getImage(), 0, 0, null);

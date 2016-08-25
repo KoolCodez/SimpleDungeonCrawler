@@ -18,45 +18,71 @@ public class InventoryDisplay {
 	private static final int SCALED_100 = SDC.SCALED_100;
 	private List<Item> inventory;
 	private Rectangle bounds;
-	private Point location;
 	public Item selectedItem;
 	private Point selectedLoc;
-	private JPanel parentPanel;
+	JPanel parent;
 	private static final double SCALE = SDC.SCALE_FACTOR;
 	
 	int perLine;
 	int lines;
 	int lastLineRemainder;
 
-	public InventoryDisplay(JPanel parent) {
+	public InventoryDisplay() {
 		//startMouseListener();
 		selectedLoc = new Point(0,0);
-		parentPanel = parent;
+	}
+	
+	public InventoryDisplay(List<Item> inv, Rectangle rect) {
+		inventory = inv;
+		bounds = rect;
 	}
 	
 	public void drawInv(Graphics g) {
-		Point image = new Point(location.x, location.y);
+		Point image = new Point(bounds.x, bounds.y);
 		for (int i = inventory.size() - 1; i >= 0; i--) {
 			Item item = inventory.get(i);
 			g.drawImage(item.inventoryImage.getImage(), image.x, image.y, null);
 			g.setFont(new Font("Harrington", Font.BOLD, 18));
 			g.drawString(item.itemName, image.x, image.y + SCALED_100);
 			image.x += SCALED_100;
-			if (image.x >= bounds.width) {
-				image.x = location.x;
+			if (image.x >= bounds.x + bounds.width) {
+				image.x = bounds.x;
 				image.y += SCALED_100;
 			}
 		}
 		g.setColor(Color.black);
-		g.drawRect(location.x, location.y, bounds.width, bounds.height);
+		g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 		for (int i = 0; i < (int) (bounds.width / SCALED_100); i++) {
-			g.drawLine(location.x + SCALED_100*i, location.y, location.x + SCALED_100*i, location.y + bounds.height);
+			g.drawLine(bounds.x + SCALED_100*i, bounds.y, bounds.x + SCALED_100*i, bounds.y + bounds.height);
 		}
 		for (int i = 0; i < (int) (bounds.height / SCALED_100); i++) {
-			g.drawLine(location.x, location.y + SCALED_100*i, location.x + bounds.width, location.y + SCALED_100*i);
+			g.drawLine(bounds.x, bounds.y + SCALED_100*i, bounds.x + bounds.width, bounds.y + SCALED_100*i);
 		}
 		g.setColor(Color.green);
 		g.drawRect(selectedLoc.x, selectedLoc.y, SCALED_100, SCALED_100);
+		refreshSelected();
+	}
+	
+	private void refreshSelected() {
+		Point trunkated = new Point(selectedLoc.x - bounds.x, selectedLoc.y - bounds.y);
+		int itemX = (int) (trunkated.x / SCALED_100);
+		int itemY = perLine * (int) (trunkated.y / SCALED_100);
+		int itemNum = itemX + itemY;
+		if (inventory.size() == 0) {
+			selectedLoc = new Point(bounds.x, bounds.y);
+			selectedItem = null;
+			return;
+		}
+		if (itemNum >= inventory.size()) {
+			itemNum -= 1;
+			Point newPoint = new Point((int) ((itemNum % perLine) * SCALED_100),
+					(int) (((itemNum - (itemNum % perLine)) / perLine)) * SCALED_100);
+			newPoint.x += bounds.x;
+			newPoint.y += bounds.y;
+			selectedLoc = newPoint;
+			//selectItem(newPoint);
+		}
+		selectItem(selectedLoc);
 	}
 	
 	public void setInventory(List<Item> items) {
@@ -65,11 +91,12 @@ public class InventoryDisplay {
 	
 	public void setRect(Rectangle rect) {
 		bounds = rect;
+		selectedLoc = new Point(bounds.x, bounds.y);
 		refreshInvStats();
 	}
 	
-	public void setLocation(Point point) {
-		location = point;
+	public void setRect(int x, int y, int width, int height) {
+		bounds = new Rectangle(x, y, width, height);
 	}
 
 	public void startMouseListener() {
@@ -78,7 +105,7 @@ public class InventoryDisplay {
 			public void run() {
 				while (true) {
 					MouseClick mouse = new MouseClick();
-					parentPanel.addMouseListener(mouse);
+					SDC.frame.getContentPane().addMouseListener(mouse);
 					synchronized (mouse) {
 						try {
 							mouse.wait();
@@ -102,22 +129,22 @@ public class InventoryDisplay {
 	}
 
 	private void selectItem(Point point) {
-		if (point.x < location.x || point.y < location.y || point.x > location.x + bounds.width
-				|| point.y > location.y + bounds.height) {
-			System.out.println("Out of bounds");
+		if (point.x < bounds.x || point.y < bounds.y || point.x > bounds.x + bounds.width
+				|| point.y > bounds.y + bounds.height) {
+			//System.out.println("Out of bounds");
 		} else {
-			point.x -= location.x;
-			point.y -= location.y;
+			point.x -= bounds.x;
+			point.y -= bounds.y;
 			
-			if (point.x > lastLineRemainder * SCALED_100 && point.y > lines * SCALED_100) {
+			if (point.x >= lastLineRemainder * SCALED_100 && point.y >= (lines) * SCALED_100) {
 				point.x = (int) ((lastLineRemainder-1) * SCALED_100);
 			}
 			
-			if(point.x > perLine * SCALED_100) {
+			if(point.x >= perLine * SCALED_100) {
 				point.x = (int) ((point.x-1) * SCALED_100);
 			}
 			
-			if (point.y > lines * SCALED_100) {
+			if (point.y >= lines * SCALED_100) {
 				point.y = (int) (lines * SCALED_100);
 			}
 			int trunkatedX = (int) (point.x - (point.x % SCALED_100));
@@ -126,7 +153,7 @@ public class InventoryDisplay {
 			int itemY = perLine * (int) (trunkatedY / SCALED_100);
 			int itemNum = itemX + itemY;
 			selectedItem = inventory.get(itemNum);
-			selectedLoc = new Point(trunkatedX + location.x, trunkatedY + location.y);
+			selectedLoc = new Point(trunkatedX + bounds.x, trunkatedY + bounds.y);
 		}
 	}
 }

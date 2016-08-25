@@ -37,7 +37,7 @@ public class Thing {
 	
 	public void displayOnSide(Graphics g) {
 		double scale = SDC.SCALE_FACTOR;
-		Image i = getImage().getScaledInstance((int) (250 * scale), (int) (250 * scale), Image.SCALE_SMOOTH);
+		Image i = getImage().getScaledInstance((int) (300 * scale), (int) (300 * scale), Image.SCALE_SMOOTH);
 		g.drawImage(i, (int) (1000 * scale), (int) (100 * scale), null);
 	}
 	
@@ -66,7 +66,7 @@ public class Thing {
 	}
 	
 	public void setLocation(double newX, double newY) {
-		location.setLocation(newX, newY);
+		location = new Point2D.Double(newX, newY);
 		outline.setLocation((int) (location.getX()), (int) (location.getY()));
 	}
 	
@@ -81,6 +81,10 @@ public class Thing {
 	
 	public void setSize(int w, int l) {
 		outline.setSize(w, l);
+	}
+	
+	public Rectangle getSize() {
+		return outline;
 	}
 	
 	public boolean legalMove(double deltaX, double deltaY, Rectangle rect) {

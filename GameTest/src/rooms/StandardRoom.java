@@ -6,6 +6,7 @@ import java.util.Random;
 
 import entities.Entity;
 import entities.Thing;
+import entities.Wall;
 import items.Item;
 import misc.SDC;
 
@@ -29,42 +30,42 @@ public class StandardRoom implements Serializable {
 	}
 
 	private void createWalls() {
-		Thing tl = new Thing();
+		Thing tl = new Wall();
 		tl.setLocation(0, 0);
 		tl.setSize((int) (400 * SCALE_FACTOR), (int) (72 * SCALE_FACTOR));
 		things.add(tl);
 		
-		Thing tr = new Thing();
+		Thing tr = new Wall();
 		tr.setLocation(600*SCALE_FACTOR, 0);
 		tr.setSize((int) (400 * SCALE_FACTOR), (int) (72 * SCALE_FACTOR));
 		things.add(tr);
 		
-		Thing lt = new Thing();
+		Thing lt = new Wall();
 		lt.setLocation(0, 72*SCALE_FACTOR);
 		lt.setSize((int) (72 * SCALE_FACTOR), (int) (328 * SCALE_FACTOR));
 		things.add(lt);
 		
-		Thing lb = new Thing();
+		Thing lb = new Wall();
 		lb.setLocation(0, 600 * SCALE_FACTOR);
 		lb.setSize((int) (72 * SCALE_FACTOR), (int) (328 * SCALE_FACTOR));
 		things.add(lb);
 		
-		Thing bl = new Thing();
+		Thing bl = new Wall();
 		bl.setLocation(0, 928 * SCALE_FACTOR);
 		bl.setSize((int) (400 * SCALE_FACTOR), (int) (72 * SCALE_FACTOR));
 		things.add(bl);
 		
-		Thing br = new Thing();
+		Thing br = new Wall();
 		br.setLocation(600 * SCALE_FACTOR, 928 * SCALE_FACTOR);
 		br.setSize((int) (400 * SCALE_FACTOR), (int) (72 * SCALE_FACTOR));
 		things.add(br);
 		
-		Thing rb = new Thing();
+		Thing rb = new Wall();
 		rb.setLocation(928 * SCALE_FACTOR, 600 * SCALE_FACTOR);
 		rb.setSize((int) (72 * SCALE_FACTOR), (int) (328 * SCALE_FACTOR));
 		things.add(rb);
 		
-		Thing rt = new Thing();
+		Thing rt = new Wall();
 		rt.setLocation(928 * SCALE_FACTOR, 72 * SCALE_FACTOR);
 		rt.setSize((int) (72 * SCALE_FACTOR), (int) (328 * SCALE_FACTOR));
 		things.add(rt);
