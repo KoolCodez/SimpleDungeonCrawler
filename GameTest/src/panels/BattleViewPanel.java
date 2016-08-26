@@ -14,6 +14,7 @@ import combatSystem.Select;
 import effects.Effect;
 import effects.FallingDamageNumber;
 import entities.Entity;
+import entities.Thing;
 import misc.Images;
 import misc.SDC;
 import rooms.StandardRoom;
@@ -62,14 +63,14 @@ public class BattleViewPanel extends JPanel {
 		g.setColor(Color.white);
 		drawGrid(g);
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		for (int i = 0; i < current.entities.size(); i++) {
-			drawEntities(g, current, i);
+		for (int i = 0; i < current.things.size(); i++) {
+			Thing thing = current.things.get(i);
+			g.drawImage(thing.getImage(), (int) thing.location.getX(), (int) thing.location.getY(), null);
 		}
 		for (int i = 0; i < effects.size(); i++) {
 			Effect e = effects.get(i);
 			e.draw(g);
 		}
-		//drawEffects(g);
 		g.setColor(Color.yellow);
 		g.drawRect((int) rectLoc.getX(), (int) (rectLoc.getY()),
 				(int) (140 * SCALE_FACTOR),(int) (140 * SCALE_FACTOR));
@@ -94,15 +95,4 @@ public class BattleViewPanel extends JPanel {
 		g.drawLine(0, (int) (700*SCALE_FACTOR), (int) (700*SCALE_FACTOR), (int) (700*SCALE_FACTOR));
 		
 	}
-	
-	private void drawEntities(Graphics g, StandardRoom current, int i) {
-		//System.out.println(current.entities.size());
-		Entity ent = current.entities.get(i);
-		g.drawImage(ent.getImage(), (int) ent.location.getX(), (int) ent.location.getY(), null);
-	}
-	
-	private void drawEffects(Graphics g) {
-		
-	}
-	
 }

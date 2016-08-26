@@ -60,12 +60,23 @@ public class Entity extends Thing implements Serializable { // extend this class
 		double scale = SDC.SCALE_FACTOR;
 		super.displayOnSide(g);
 		g.setColor(Color.red);
-		g.fillRect((int) (1000 * scale), (int) (300 * scale), 
-				(int) (350 * stats.getHealth() / stats.getMaxHealth() * scale), (int) (50 * scale));
+		g.fillRect((int) (1000 * scale), (int) (400 * scale), 
+				(int) (300 * stats.getHealth() / stats.getMaxHealth() * scale), (int) (50 * scale));
 		g.setColor(Color.green);
-		g.drawString("Name: " + name, (int) (1000 * scale), (int) (375 * scale));
-		g.drawString("Entity Type: " + entityType, (int) (1000 * scale), (int) (400 * scale));
+		g.drawRect((int) (1000 * scale), (int) (400 * scale), (int) (299 * scale), (int) (50 * scale));
+		g.setColor(Color.black);
+		g.drawString("Name: " + name, (int) (1000 * scale), (int) (475 * scale));
+		g.drawString("Entity Type: " + entityType, (int) (1000 * scale), (int) (495 * scale));
 		
+	}
+	
+	public void damageEnt(double damage) {
+		stats.setHealth(-damage);
+		if (stats.getHealth() <= 0) {
+			this.currentRoom.entities.remove(this);
+			this.currentRoom.things.remove(this);
+			this.currentRoom.things.add(new Corpse(this));
+		}
 	}
 	
 	public Image getImage() {

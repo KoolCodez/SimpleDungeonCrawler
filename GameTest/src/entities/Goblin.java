@@ -1,6 +1,7 @@
 package entities;
 
 import items.Club;
+import misc.Images;
 import misc.SDC;
 
 public class Goblin extends Entity {
@@ -11,6 +12,7 @@ public class Goblin extends Entity {
 		setType("Enemy");
 		setWeapon(new Club());
 		//setSelectedEntity(SDC.character);
-		setSize((int) (72 * SDC.SCALE_FACTOR), (int) (92 * SDC.SCALE_FACTOR));
+		setSize((int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));
+		setImage(Images.loadImage("\\Enemies\\Goblin.png", outline.width, outline.height));
 	}
 }

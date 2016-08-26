@@ -103,6 +103,8 @@ public class ControlRouter {
 				e.printStackTrace();
 			}
 		}
+		Point target = SDC.character.battleLoc;
+		turnToward(target.x, target.y, currentEntity);
 	}
 
 	public void playerTurn() {
@@ -354,6 +356,7 @@ public class ControlRouter {
 		} else {
 			sideBar = new BattleSideBar(this, new Nothing());
 		}
+		turnToward(p.x, p.y, SDC.character);
 	}
 
 	public void move(String direction) {
@@ -361,19 +364,15 @@ public class ControlRouter {
 		switch (direction) {
 		case "left":
 			newTurnPoints = battleMove(-1, 0, character, waitForTurn.getTurnPoints());
-			character.setAngle(-90);
 			break;
 		case "right":
 			newTurnPoints = battleMove(1, 0, character, waitForTurn.getTurnPoints());
-			character.setAngle(90);
 			break;
 		case "up":
 			newTurnPoints = battleMove(0, -1, character, waitForTurn.getTurnPoints());
-			character.setAngle(0);
 			break;
 		case "down":
 			newTurnPoints = battleMove(0, 1, character, waitForTurn.getTurnPoints());
-			character.setAngle(180);
 			break;
 		default:
 			break;
@@ -384,6 +383,7 @@ public class ControlRouter {
 	public int battleMove(int xChange, int yChange, Entity ent, int turnPoints) {
 		Point loc = ent.battleLoc;
 		if (turnPoints >= 3) {
+			turnToward(loc.x + xChange, loc.y + yChange, ent);
 			if (legalBattleMove(new Point(loc.x + xChange, loc.y + yChange))) {
 				entTable[loc.x + xChange][loc.y + yChange] = entTable[loc.x][loc.y];
 				entTable[loc.x][loc.y] = null;
@@ -397,6 +397,25 @@ public class ControlRouter {
 			System.out.println("out of turnpoints");
 		}
 		return turnPoints;
+	}
+	
+	public void turnToward(int xTarget, int yTarget, Entity ent) {
+		int xChange = xTarget - ent.battleLoc.x;
+		int yChange = yTarget - ent.battleLoc.y;
+		if (Math.abs(xChange) > Math.abs(yChange) && xTarget != ent.battleLoc.x) {
+			if (xChange > 0) {
+				ent.setAngle(90);
+			} else if (xChange < 0) {
+				ent.setAngle(-90);
+			}
+		}
+		if(Math.abs(yChange) > Math.abs(xChange) && yTarget != ent.battleLoc.y) {
+			if (yChange > 0) {
+				ent.setAngle(180);
+			} else if (yChange < 0) {
+				ent.setAngle(0);
+			}
+		}
 	}
 
 	private boolean legalBattleMove(Point destination) {

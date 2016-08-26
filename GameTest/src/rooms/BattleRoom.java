@@ -20,7 +20,6 @@ public class BattleRoom extends StandardRoom {
 		for (int i = 0; i <= enemies; i++) {
 			Entity temp = new Goblin();
 			temp.setLocation(700*SCALE_FACTOR*Math.random() + 50,  700*SCALE_FACTOR*Math.random() + 50);
-			temp.setImage(Images.array[Images.battleGoblinIndex]);
 			temp.setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 			entities.add(temp);
 			things.add(temp);

@@ -52,10 +52,12 @@ public class CoreGameplayPanel extends JPanel{
 		effects = new ArrayList<Effect>();
 		this.setOpaque(false);
 		createMenuButton();
+		sideBar = new GameplaySideBar(new Nothing(), null);
 	}
 	
 	public void shutdownPanel() {
 		movementController.stopMovement();
+		SDC.frame.remove(sideBar);
 		setVisible(false);
 	}
 	
@@ -145,7 +147,7 @@ public class CoreGameplayPanel extends JPanel{
 		menuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				
 				SDC.stopGameplayPanel();
 				SDC.frame.add(new PauseMenuPanel());
 			}

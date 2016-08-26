@@ -34,6 +34,7 @@ public class PauseMenuPanel extends JPanel {
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		g.drawImage(Images.array[Images.pauseMenuIndex], 0, 0, null);
 	}
 	

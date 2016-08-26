@@ -97,6 +97,8 @@ public class InventoryDisplay {
 	
 	public void setRect(int x, int y, int width, int height) {
 		bounds = new Rectangle(x, y, width, height);
+		selectedLoc = new Point(bounds.x, bounds.y);
+		refreshInvStats();
 	}
 
 	public void startMouseListener() {
@@ -130,7 +132,7 @@ public class InventoryDisplay {
 
 	private void selectItem(Point point) {
 		if (point.x < bounds.x || point.y < bounds.y || point.x > bounds.x + bounds.width
-				|| point.y > bounds.y + bounds.height) {
+				|| point.y > bounds.y + bounds.height || inventory.size() <= 0) {
 			//System.out.println("Out of bounds");
 		} else {
 			point.x -= bounds.x;
