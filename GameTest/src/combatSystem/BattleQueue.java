@@ -34,7 +34,7 @@ public class BattleQueue extends Thread {
 		while (checkLiving(currentRoom) && !control.flee) {
 			for (int i = 0; i < initList.size(); i++) {
 				Entity currentEntity = initList.peek();
-				if (control.flee) {
+				if (control.flee || !checkLiving(currentRoom)) {
 					return;
 				}
 				if (isEnemy(currentEntity)) {
@@ -50,21 +50,35 @@ public class BattleQueue extends Thread {
 				initList.add(e);
 				sleep(1000);
 				// checkHealth(currentRoom);
+				refreshQueue();
 			}
 			// TODO xp reward for less rounds?
+		}
+	}
+	
+	private void refreshQueue() {
+		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
+		System.out.println(current.entities);
+		for (int i = 0; i < initList.size(); i++) {
+			Entity ent = initList.remove();
+			boolean isAlive = current.entities.contains(ent);
+			if (isAlive || ent.stats.getHealth() > 0) {
+				initList.add(ent);
+			}
 		}
 	}
 
 	private boolean checkLiving(StandardRoom current) {
 		boolean fAlive = false;
 		boolean eAlive = false;
-		if (SDC.character.stats.getHealth() <= 0) {
-			fAlive = true;
-		}
-		for (int i = 0; i < current.entities.size(); i++) {
-			if (current.entities.get(i).stats.getHealth() <= 0) {
+		Entity[] q = initList.toArray(new Entity[initList.size()]);
+		for (int i = 0; i < initList.size(); i++) {
+			if (q[i].getType().equals("Friendly")) {
+				fAlive = true;
+			} else if(q[i].getType().equals("Enemy")) {
 				eAlive = true;
 			}
+				
 		}
 		if (fAlive && !eAlive) {
 			control.victory();
@@ -76,10 +90,6 @@ public class BattleQueue extends Thread {
 			// System.out.println("CONTINUE THE BATTLE");
 			return true;
 		}
-	}
-
-	private void enemyAttack() {
-
 	}
 
 	private boolean isEnemy(Entity ent) {
@@ -101,9 +111,5 @@ public class BattleQueue extends Thread {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	public static void bag() {
-
 	}
 }
