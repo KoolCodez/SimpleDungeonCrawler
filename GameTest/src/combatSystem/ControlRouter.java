@@ -22,6 +22,7 @@ import entities.BattleAI;
 import entities.Entity;
 import entities.Goblin;
 import entities.Nothing;
+import entities.Villager;
 import items.Weapon;
 import misc.Images;
 import misc.MouseClick;
@@ -53,7 +54,6 @@ public class ControlRouter {
 	public ControlRouter() {
 		battleTurnPanel = new BattleTurnPanel(this);
 		displayBattle(battleTurnPanel);
-		System.out.println("creating panel " + battleTurnPanel);
 		sideBar = new BattleSideBar(this, new Nothing());
 		character = SDC.character;
 		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
@@ -131,10 +131,14 @@ public class ControlRouter {
 	public void defeat() {
 		HomeRoom home = (HomeRoom) SDC.roomArray[0][0];
 		if (home.villagers.size() > 0) {
-			home.villagers.remove((int) (Math.random() * home.villagers.size()));
-			Entity character = SDC.character;
-			character.stats.setHealth(character.stats.getMaxHealth());
+			int randIndex = (int) (Math.random() * home.villagers.size());
+			Villager v = home.villagers.get(randIndex);
+			home.villagers.remove(v);
+			home.entities.remove(v);
+			home.things.remove(v);
+			SDC.character.stats.setHealth(character.stats.getMaxHealth());
 			SDC.loc = new Point(0, 0);
+			SDC.character.setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 			exitBattle("");
 		} else {
 			// "game over" screen
@@ -233,7 +237,7 @@ public class ControlRouter {
 					double damage = 0.0;
 					damage = (attacker.stats.getStr() / target.stats.getStr() * attacker.getWeapon().damage)
 							/ target.stats.getAC();
-					target.stats.setHealth(-damage);
+					target.damageEnt(damage);
 					System.out.println("He Hit For " + damage + "Damage!");
 					displayDamage(damage, attacker, target);
 				} else {

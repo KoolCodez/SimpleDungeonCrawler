@@ -25,6 +25,7 @@ import javax.swing.*;
 
 import combatSystem.ControlRouter;
 import entities.Entity;
+import items.GodWeapon;
 import items.Item;
 import items.Weapon;
 import items.Stick;
@@ -119,6 +120,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 			character.setSize((int) (90 * SCALE_FACTOR), (int) (90 * SCALE_FACTOR));
 			character.setRoom(roomArray[loc.x][loc.y]);
 			character.setImage(Images.array[Images.battleCharIndex]);
+			character.setWeapon(new GodWeapon());
 		}
 	}
 	

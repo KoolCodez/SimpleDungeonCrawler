@@ -9,11 +9,11 @@ import entities.Villager;
 import misc.SDC;
 
 public class HomeRoom extends StandardRoom {
-	public List<Entity> villagers = new ArrayList<Entity>();
+	public List<Villager> villagers = new ArrayList<Villager>();
 	
 	public HomeRoom() {
 		super();
-		Entity villager = new Villager();
+		Villager villager = new Villager();
 		villagers.add(villager);
 		entities.add(villager);
 		things.add(villager);

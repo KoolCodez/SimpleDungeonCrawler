@@ -14,5 +14,6 @@ public class Goblin extends Entity {
 		//setSelectedEntity(SDC.character);
 		setSize((int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));
 		setImage(Images.loadImage("\\Enemies\\Goblin.png", outline.width, outline.height));
+		this.deadImage = Images.loadImage("Enemies\\Skull.png", (int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));
 	}
 }
