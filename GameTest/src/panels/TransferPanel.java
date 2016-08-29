@@ -8,8 +8,8 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import items.Item;
 import misc.SDC;
+import things.items.Item;
 
 public class TransferPanel extends JPanel {
 	

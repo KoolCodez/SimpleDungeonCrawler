@@ -7,9 +7,9 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import combatSystem.ControlRouter;
-import entities.Entity;
-import entities.Thing;
 import misc.SDC;
+import things.Thing;
+import things.entities.Entity;
 
 public class BattleSideBar extends JPanel {
 	

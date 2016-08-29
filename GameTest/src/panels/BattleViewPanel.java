@@ -13,11 +13,11 @@ import combatSystem.ControlRouter;
 import combatSystem.Select;
 import effects.Effect;
 import effects.FallingDamageNumber;
-import entities.Entity;
-import entities.Thing;
 import misc.Images;
 import misc.SDC;
 import rooms.StandardRoom;
+import things.Thing;
+import things.entities.Entity;
 
 public class BattleViewPanel extends JPanel {
 	private final int CHAR_X_ADJUST = (int) (50 * SCALE_FACTOR);

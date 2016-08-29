@@ -1,7 +1,7 @@
 package combatSystem;
 
-import entities.Entity;
 import misc.SDC;
+import things.entities.Entity;
 
 public class Move extends Thread {
 	private Entity ent;

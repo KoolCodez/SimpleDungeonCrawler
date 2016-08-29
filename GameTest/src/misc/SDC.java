@@ -24,11 +24,6 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 import combatSystem.ControlRouter;
-import entities.Entity;
-import items.GodWeapon;
-import items.Item;
-import items.Weapon;
-import items.Stick;
 import movement.MoveDown;
 import movement.MoveDownLeft;
 import movement.MoveDownRight;
@@ -43,6 +38,11 @@ import rooms.BattleRoom;
 import rooms.HomeRoom;
 import rooms.StandardRoom;
 import rooms.TreasureRoom;
+import things.entities.Entity;
+import things.items.Item;
+import things.items.Stick;
+import things.items.Weapon;
+import things.items.weapons.GodWeapon;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -114,13 +114,13 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		if (new File("src\\save\\" + CHARACTER_SAVE_TAG).exists()) {
 			character = (Entity) loadObject(CHARACTER_SAVE_TAG);
 		} else {
-			character = new Entity(5, 10, 10, 10, 10, 10, 10, 1, playerSpeed);
+			character = new Entity(5, 10, 10, 10, 1000);
 			character.setType("Friendly");
 			character.addItem(new Stick());
 			character.setSize((int) (90 * SCALE_FACTOR), (int) (90 * SCALE_FACTOR));
 			character.setRoom(roomArray[loc.x][loc.y]);
 			character.setImage(Images.array[Images.battleCharIndex]);
-			character.setWeapon(new GodWeapon());
+			character.equipped.weapon = new GodWeapon();
 		}
 	}
 	

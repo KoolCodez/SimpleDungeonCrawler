@@ -24,7 +24,7 @@ public class BagPanel extends JPanel {
 	public BagPanel(ControlRouter c) {
 		setLayout(null);
 		SDC.frame.add(this);
-		JLabel weaponLabel = new JLabel(SDC.character.getWeapon().getInventoryImage());
+		JLabel weaponLabel = new JLabel(SDC.character.equipped.weapon.getInventoryImage());
 		weaponLabel.setBounds(0, 0, SCALED_100, SCALED_100);
 		add(weaponLabel);
 		control = c;

@@ -18,13 +18,13 @@ import javax.swing.SwingWorker;
 import combatSystem.BattleQueue;
 import combatSystem.ControlRouter;
 import effects.FallingDamageNumber;
-import entities.Entity;
-import items.Weapon;
 import misc.Images;
 import misc.MouseClick;
 import misc.SDC;
 import misc.Utilities;
 import rooms.StandardRoom;
+import things.entities.Entity;
+import things.items.Weapon;
 
 public class BattleTurnPanel extends JPanel {
 	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;

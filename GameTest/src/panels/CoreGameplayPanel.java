@@ -26,13 +26,13 @@ import combatSystem.ControlRouter;
 import combatSystem.EntityShaker;
 import effects.Effect;
 import effects.FallingDamageNumber;
-import entities.Entity;
-import entities.Nothing;
-import entities.Thing;
 import misc.Images;
 import misc.SDC;
 import movement.MovementController;
 import rooms.StandardRoom;
+import things.Nothing;
+import things.Thing;
+import things.entities.Entity;
 
 public class CoreGameplayPanel extends JPanel{
 

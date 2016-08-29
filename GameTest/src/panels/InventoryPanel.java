@@ -16,10 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
-import items.Item;
-import items.Stick;
 import misc.MouseClick;
 import misc.SDC;
+import things.items.Item;
+import things.items.Stick;
 
 public class InventoryPanel extends JPanel {
 	private static final double SCALE_FACTOR = SDC.SCALE_FACTOR;

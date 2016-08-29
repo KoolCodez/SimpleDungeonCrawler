@@ -10,9 +10,9 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
-import items.Item;
 import misc.MouseClick;
 import misc.SDC;
+import things.items.Item;
 
 public class InventoryDisplay {
 	private static final int SCALED_100 = SDC.SCALED_100;

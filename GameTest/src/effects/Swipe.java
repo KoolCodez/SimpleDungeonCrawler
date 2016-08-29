@@ -6,10 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 
-import entities.Entity;
 import misc.Images;
 import misc.SDC;
 import misc.TextureGenerator;
+import things.entities.Entity;
 
 public class Swipe extends Effect {
 	private float opacity;

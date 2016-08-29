@@ -10,10 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import combatSystem.ControlRouter;
-import entities.Entity;
 import misc.Images;
 import misc.SDC;
 import rooms.StandardRoom;
+import things.entities.Entity;
 
 public class BattleAttackPanel extends JPanel {
 	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;

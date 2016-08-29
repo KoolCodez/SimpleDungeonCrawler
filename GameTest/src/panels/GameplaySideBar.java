@@ -8,9 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import entities.Entity;
-import entities.Thing;
 import misc.SDC;
+import things.Thing;
+import things.entities.Entity;
 
 public class GameplaySideBar extends JPanel {
 	private Thing thing;

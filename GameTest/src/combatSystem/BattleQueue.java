@@ -8,14 +8,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
-import entities.Entity;
-import entities.Goblin;
 import misc.SDC;
 import misc.Utilities;
 import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
 import rooms.StandardRoom;
+import things.entities.Entity;
+import things.entities.Goblin;
 
 public class BattleQueue extends Thread {
 	ControlRouter control;

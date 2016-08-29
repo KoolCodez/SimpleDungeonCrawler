@@ -18,12 +18,6 @@ import javax.swing.SwingWorker;
 import effects.FallingDamageNumber;
 import effects.FallingMiss;
 import effects.Swipe;
-import entities.BattleAI;
-import entities.Entity;
-import entities.Goblin;
-import entities.Nothing;
-import entities.Villager;
-import items.Weapon;
 import misc.Images;
 import misc.MouseClick;
 import misc.SDC;
@@ -36,6 +30,12 @@ import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
 import rooms.HomeRoom;
 import rooms.StandardRoom;
+import things.BattleAI;
+import things.Nothing;
+import things.entities.Entity;
+import things.entities.Goblin;
+import things.entities.Villager;
+import things.items.Weapon;
 
 public class ControlRouter {
 	public BattleViewPanel battleView;
@@ -235,8 +235,8 @@ public class ControlRouter {
 				if (target.stats.getDex() - attacker.stats.getDex()
 						+ 10 < utilities.r20()) {
 					double damage = 0.0;
-					damage = (attacker.stats.getStr() / target.stats.getStr() * attacker.getWeapon().damage)
-							/ target.stats.getAC();
+					damage = (attacker.stats.getStr() / target.stats.getStr() * attacker.equipped.weapon.damage)
+							/ target.equipped.combinedAC();
 					target.damageEnt(damage);
 					System.out.println("He Hit For " + damage + "Damage!");
 					displayDamage(damage, attacker, target);
@@ -256,8 +256,8 @@ public class ControlRouter {
 		if (attacker.getType().equals(target.getType())) {
 			return false;
 		}
-		if (attacker.getWeapon().ranged) {
-			return Math.sqrt((xDist * xDist) * (yDist * yDist)) <= attacker.getWeapon().reach;
+		if (attacker.equipped.weapon.ranged) {
+			return Math.sqrt((xDist * xDist) * (yDist * yDist)) <= attacker.equipped.weapon.reach;
 		} else {
 			return xDist + yDist <= 1;
 		}
