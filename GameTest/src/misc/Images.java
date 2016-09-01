@@ -150,6 +150,7 @@ public class Images {
 		Image charRightOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRightLeftArmUp.jpg"));
 		charRightOpArm = charRightOpArm.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
 		array[charRightOpArmIndex] = charRightOpArm;
+		
 		Image battleChar = ImageIO.read(new File("src\\Textures\\Characters\\MainChar.png"));
 		battleChar = battleChar.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
 		BufferedImage bi = new BufferedImage((int) (100 * scale), (int) (100 * scale), BufferedImage.TYPE_INT_ARGB);

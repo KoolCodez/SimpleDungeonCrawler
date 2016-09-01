@@ -12,10 +12,6 @@ public class Chest extends Storage {
 	public Chest(double x, double y, int rarity) {
 		super(loadImage(), x, y, w, l, rarity);
 		setCapacity(12);
-		addItem(new Stick());
-		addItem(new Stick());
-		addItem(new Stick());
-		addItem(new Stick());
 	}
 	
 	private static Image loadImage() {

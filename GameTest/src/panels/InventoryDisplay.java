@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ public class InventoryDisplay {
 	private Rectangle bounds;
 	public Item selectedItem;
 	private Point selectedLoc;
+	public List<Point> secondarySelected;
 	JPanel parent;
 	private static final double SCALE = SDC.SCALE_FACTOR;
 	
@@ -30,11 +32,57 @@ public class InventoryDisplay {
 	public InventoryDisplay() {
 		//startMouseListener();
 		selectedLoc = new Point(0,0);
+		secondarySelected = new ArrayList<Point>();
 	}
 	
 	public InventoryDisplay(List<Item> inv, Rectangle rect) {
 		inventory = inv;
 		bounds = rect;
+		secondarySelected = new ArrayList<Point>();
+	}
+	
+	public void addSecondarySelected(int invIndex) {
+		int itemX = invIndex % perLine;
+		int itemY;
+		if (lines > 0) {
+			itemY = invIndex / lines;
+		} else {
+			itemY = 0;
+		}
+		Point p = new Point ((int) (itemX * SCALED_100) + bounds.x, (int) (itemY * SCALED_100) + bounds.y);
+		secondarySelected.add(p);
+	}
+	
+	public void removeSecondarySelected(int invIndex) {
+		int itemX = invIndex % perLine;
+		int itemY;
+		if (lines > 0) {
+			itemY = invIndex / lines;
+		} else {
+			itemY = 0;
+		}
+		Point point = new Point ((int) (itemX * SCALED_100) + bounds.x, (int) (itemY * SCALED_100) + bounds.y);
+		for (Point p : secondarySelected) {
+			if (point.x == p.x && point.y == p.y) {
+				secondarySelected.remove(p);
+			} else {
+				System.out.println("Item not secondary selected");
+			}
+		}
+	}
+	
+	public void addCurrentToSecondarySelected() {
+		secondarySelected.add(selectedLoc);
+	}
+	
+	public void removeCurrentFromSecondarySelected() {
+		for (Point p : secondarySelected) {
+			if (p.x == selectedLoc.x && p.y == selectedLoc.y) {
+				secondarySelected.remove(p);
+			} else {
+				System.out.println("Item not secondary selected");
+			}
+		}
 	}
 	
 	public void drawInv(Graphics g) {
@@ -57,6 +105,10 @@ public class InventoryDisplay {
 		}
 		for (int i = 0; i < (int) (bounds.height / SCALED_100); i++) {
 			g.drawLine(bounds.x, bounds.y + SCALED_100*i, bounds.x + bounds.width, bounds.y + SCALED_100*i);
+		}
+		g.setColor(Color.red);
+		for (Point p : secondarySelected) {
+			g.fillRect(p.x, p.y, SCALED_100, (int) (10 * SDC.SCALE_FACTOR));
 		}
 		g.setColor(Color.green);
 		g.drawRect(selectedLoc.x, selectedLoc.y, SCALED_100, SCALED_100);
@@ -154,7 +206,10 @@ public class InventoryDisplay {
 			int itemX = (int) (trunkatedX / SCALED_100);
 			int itemY = perLine * (int) (trunkatedY / SCALED_100);
 			int itemNum = itemX + itemY;
-			selectedItem = inventory.get(itemNum);
+			if (itemNum < 0) {
+				itemNum = 0;
+			}
+			selectedItem = inventory.get(inventory.size() - (itemNum+1));
 			selectedLoc = new Point(trunkatedX + bounds.x, trunkatedY + bounds.y);
 		}
 	}

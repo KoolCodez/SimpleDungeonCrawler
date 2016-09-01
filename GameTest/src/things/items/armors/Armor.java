@@ -8,8 +8,11 @@ import things.items.Item;
 
 public class Armor extends Item {
 	public double AC;
-	public Armor(ImageIcon inventoryImage, Image gameplayImage, String name, double AC, int rarity) {
+	public String type;
+	
+	public Armor(ImageIcon inventoryImage, Image gameplayImage, String name, double AC, int rarity, String type) {
 		super(inventoryImage, gameplayImage, name, rarity);
 		this.AC = AC;
+		this.type = type;
 	}
 }

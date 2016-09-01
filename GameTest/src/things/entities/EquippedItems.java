@@ -50,6 +50,39 @@ public class EquippedItems {
 		return list;
 	}
 	
+	public Item equipItem(Item item) {
+		System.out.println(item.getClass().getName());
+		if (item instanceof Armor) {
+			Armor e = (Armor) item;
+			switch (e.type) {
+			case "head": final Item e1 = head;
+				head = (Armor) item;
+				return e1;
+			case "body": final Item e2 = body;
+				body = (Armor) item;
+				return e2;
+			case "legs": final Item e3 = legs;
+				legs = (Armor) item;
+				return e3;
+			case "feet": final Item e4 = feet;
+				feet = (Armor) item;
+				return e4;
+			case "hands": final Item e5 = hands;
+				hands = (Armor) item;
+				return e5;
+			default: System.out.println("Item is not equippable as Armor!");
+				return null;
+			}
+		} else if (item instanceof Weapon) {
+			final Item e = weapon;
+			weapon = (Weapon) item;
+			return e;
+		} else {
+			System.out.println("Item is not equippable!");
+			return null;
+		}
+	}
+	
 	private void setDefaultArmor() {
 		head = new NullArmor();
 		body = new NullArmor();

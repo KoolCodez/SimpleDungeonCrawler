@@ -20,20 +20,23 @@ import misc.MouseClick;
 import misc.SDC;
 import things.items.Item;
 import things.items.Stick;
+import things.items.armors.NullArmor;
 
 public class InventoryPanel extends JPanel {
 	private static final double SCALE_FACTOR = SDC.SCALE_FACTOR;
 	private static final int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
 	private static final int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	private InventoryDisplay display;
+	private List<Item> inventory;
 
 	public InventoryPanel() {
 		setLayout(null);
 		SDC.frame.add(this);
-		
+		inventory = SDC.character.getInventory();
 		createExitButton();
 		createAddStickButton();
 		createDeleteItemButton();
+		createEquipItemButton();
 	}
 	
 	@Override
@@ -46,6 +49,13 @@ public class InventoryPanel extends JPanel {
 		display = new InventoryDisplay();
 		display.setInventory(SDC.character.getInventory());
 		display.setRect((int) (0 * SDC.SCALE_FACTOR), (int) (0 * SDC.SCALE_FACTOR), (int) (700*SCALE_FACTOR), (int) (700*SCALE_FACTOR));
+		List<Item> items = SDC.character.equipped.allEquipped();
+		for (Item i : items) {
+			System.out.println();
+			if (inventory.contains(i)) {
+				display.addSecondarySelected(inventory.indexOf(i));
+			}
+		}
 		display.startMouseListener();
 	}
 	
@@ -61,6 +71,26 @@ public class InventoryPanel extends JPanel {
 		deleteItemButton.setBounds(BUTTON_WIDTH, (int) (900 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
 		deleteItemButton.setFont(SDC.font);
 		add(deleteItemButton);
+	}
+	
+	private void createEquipItemButton() {
+		JButton equipItemButton = new JButton("EQUIP ITEM");
+		equipItemButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Item i = display.selectedItem;
+				Item deEquipped = SDC.character.equipped.equipItem(i);
+				boolean isNullArmor = deEquipped instanceof NullArmor || deEquipped == null;
+				if (!isNullArmor) {
+					display.addCurrentToSecondarySelected();
+					display.removeSecondarySelected(inventory.indexOf(deEquipped));
+				}
+				SDC.character.refreshImage();
+			}
+		});
+		equipItemButton.setBounds((int) (0 * SDC.SCALE_FACTOR), (int) (800 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
+		equipItemButton.setFont(SDC.font);
+		add(equipItemButton);
 	}
 
 	private void createAddStickButton() {

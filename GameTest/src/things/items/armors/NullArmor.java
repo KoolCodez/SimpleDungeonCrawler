@@ -10,6 +10,6 @@ public class NullArmor extends Armor {
 	static Image gameNoImage = Images.array[Images.blankLayerIndex];
 	static ImageIcon invNoImage = new ImageIcon(gameNoImage);
 	public NullArmor() {
-		super(invNoImage, gameNoImage, "nullArmor", 0.0, 0);
+		super(invNoImage, gameNoImage, "nullArmor", 0.0, 0, "");
 	}
 }

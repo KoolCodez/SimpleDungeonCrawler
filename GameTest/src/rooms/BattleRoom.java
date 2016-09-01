@@ -67,7 +67,7 @@ public class BattleRoom extends StandardRoom {
 	}
 	
 	private Weapon[] weaponList = {new Club(), new Fists()};
-	private Armor[] armorList = {new Linens(), new NullArmor()};
+	private Armor[] armorList = {new Linens("body"), new NullArmor()};
 	private void generateEquipment(int rarity, Entity enemy) {
 		double ratio = Math.random();
 		enemy.equipped.weapon = generateWeapon((int) (rarity * ratio));

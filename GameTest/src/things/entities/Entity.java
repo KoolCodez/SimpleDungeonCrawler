@@ -98,17 +98,24 @@ public class Entity extends Thing implements Serializable { // extend this class
 		return finalImage;
 	}
 	
+	private Image nativeImage;
 	public void setImage(Image i) {
 		super.setImage(i);
+		nativeImage = i;
+		refreshImage();
+	}
+	
+	public void refreshImage() {
 		TextureGenerator ig = new TextureGenerator();
 		ArrayList<Image> images = new ArrayList<Image>();
-		images.add(i);
+		images.add(nativeImage);
 		images.add(equipped.body.getImage());
 		images.add(equipped.feet.getImage());
 		images.add(equipped.hands.getImage());
 		images.add(equipped.legs.getImage());
 		images.add(equipped.weapon.getImage());
 		images.add(equipped.head.getImage());
+		rotation = 0;
 		finalImage = ig.compileImage(images);
 	}
 	
