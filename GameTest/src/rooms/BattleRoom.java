@@ -11,12 +11,12 @@ import misc.SDC;
 import things.entities.Entity;
 import things.entities.Goblin;
 import things.items.Item;
-import things.items.Weapon;
 import things.items.armors.Armor;
 import things.items.armors.Linens;
 import things.items.armors.NullArmor;
 import things.items.weapons.Club;
 import things.items.weapons.Fists;
+import things.items.weapons.Weapon;
 
 public class BattleRoom extends StandardRoom {
 	private final double SCALE_FACTOR = SDC.SCALE_FACTOR;

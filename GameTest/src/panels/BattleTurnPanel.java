@@ -24,7 +24,7 @@ import misc.SDC;
 import misc.Utilities;
 import rooms.StandardRoom;
 import things.entities.Entity;
-import things.items.Weapon;
+import things.items.weapons.Weapon;
 
 public class BattleTurnPanel extends JPanel {
 	private static double SCALE_FACTOR = SDC.SCALE_FACTOR;

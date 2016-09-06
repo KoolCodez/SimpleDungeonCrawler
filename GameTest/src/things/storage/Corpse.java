@@ -7,7 +7,7 @@ import things.entities.Entity;
 public class Corpse extends Storage {
 
 	public Corpse(Entity ent) {
-		super(ent.deadImage, ent.location.getX(), ent.location.getY(), ent.outline.width, ent.outline.height, ent.rarity);
+		super(ent.deadImage.getImage(), ent.location.getX(), ent.location.getY(), ent.outline.width, ent.outline.height, ent.rarity);
 		setCapacity(10);
 		addAll(ent.getInventory());
 		addItem(ent.equipped.body);

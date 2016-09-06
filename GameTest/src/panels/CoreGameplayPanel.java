@@ -132,7 +132,7 @@ public class CoreGameplayPanel extends JPanel{
 		for (int i = 0; i < current.things.size(); i++) {
 			Thing t = current.things.get(i);
 			if (t.image != null && t != SDC.character) {
-				g.drawImage(t.image, (int) t.getLocation().getX(), (int) t.getLocation().getY(), null);
+				g.drawImage(t.getImage(), (int) t.getLocation().getX(), (int) t.getLocation().getY(), null);
 			}
 		}
 		g.setColor(Color.red);

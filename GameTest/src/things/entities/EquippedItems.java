@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -12,12 +13,12 @@ import javax.swing.ImageIcon;
 import misc.Images;
 import misc.SDC;
 import things.items.Item;
-import things.items.Weapon;
 import things.items.armors.Armor;
 import things.items.armors.NullArmor;
 import things.items.weapons.Fists;
+import things.items.weapons.Weapon;
 
-public class EquippedItems {
+public class EquippedItems implements Serializable {
 	public Armor head;
 	public Armor body;
 	public Armor legs;
@@ -51,7 +52,6 @@ public class EquippedItems {
 	}
 	
 	public Item equipItem(Item item) {
-		System.out.println(item.getClass().getName());
 		if (item instanceof Armor) {
 			Armor e = (Armor) item;
 			switch (e.type) {
@@ -81,6 +81,44 @@ public class EquippedItems {
 			System.out.println("Item is not equippable!");
 			return null;
 		}
+	}
+	
+	public boolean dequipItem(Item item) {
+		if (item instanceof Armor) {
+			Armor e = (Armor) item;
+			if (e == head) { 
+				head = new NullArmor();
+				return true;
+			}
+			if (e == body) { 
+				body = new NullArmor();
+				return true;
+			}
+			if (e == legs) { 
+				legs = new NullArmor();
+				return true;
+			}
+			if (e == feet) { 
+				feet = new NullArmor();
+				return true;
+			}
+			if (e == hands) { hands = new NullArmor();
+			} else {
+				System.out.println("Item is not dequippable");
+				return false;
+			}
+		} else if (item == weapon) {
+			weapon = new Fists();
+			return true;
+		} else {
+			System.out.println("Item is not dequippable!");
+			return false;
+		}
+		return false;
+	}
+	
+	public boolean isEquipped(Item item) {
+		return item == head || item == body || item == legs || item == feet || item == hands || item == weapon;
 	}
 	
 	private void setDefaultArmor() {

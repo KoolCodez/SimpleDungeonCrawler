@@ -41,8 +41,8 @@ import rooms.TreasureRoom;
 import things.entities.Entity;
 import things.items.Item;
 import things.items.Stick;
-import things.items.Weapon;
 import things.items.weapons.GodWeapon;
+import things.items.weapons.Weapon;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

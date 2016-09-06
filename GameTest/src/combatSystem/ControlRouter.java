@@ -35,7 +35,7 @@ import things.Nothing;
 import things.entities.Entity;
 import things.entities.Goblin;
 import things.entities.Villager;
-import things.items.Weapon;
+import things.items.weapons.Weapon;
 
 public class ControlRouter {
 	public BattleViewPanel battleView;

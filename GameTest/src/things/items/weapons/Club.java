@@ -6,7 +6,6 @@ import javax.swing.ImageIcon;
 
 import misc.Images;
 import misc.SDC;
-import things.items.Weapon;
 
 public class Club extends Weapon{
 	static Image i = Images.loadImage("\\Items\\Club.png", (int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));

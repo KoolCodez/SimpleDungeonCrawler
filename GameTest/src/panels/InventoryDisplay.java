@@ -25,9 +25,9 @@ public class InventoryDisplay {
 	JPanel parent;
 	private static final double SCALE = SDC.SCALE_FACTOR;
 	
-	int perLine;
-	int lines;
-	int lastLineRemainder;
+	private int perLine;
+	private int lines;
+	private int lastLineRemainder;
 
 	public InventoryDisplay() {
 		//startMouseListener();
@@ -54,10 +54,10 @@ public class InventoryDisplay {
 	}
 	
 	public void removeSecondarySelected(int invIndex) {
-		int itemX = invIndex % perLine;
+		int itemX = invIndex % this.perLine;
 		int itemY;
-		if (lines > 0) {
-			itemY = invIndex / lines;
+		if (this.lines > 0) {
+			itemY = invIndex / this.lines;
 		} else {
 			itemY = 0;
 		}
@@ -72,7 +72,7 @@ public class InventoryDisplay {
 	}
 	
 	public void addCurrentToSecondarySelected() {
-		secondarySelected.add(selectedLoc);
+		secondarySelected.add(this.selectedLoc);
 	}
 	
 	public void removeCurrentFromSecondarySelected() {
@@ -106,9 +106,10 @@ public class InventoryDisplay {
 		for (int i = 0; i < (int) (bounds.height / SCALED_100); i++) {
 			g.drawLine(bounds.x, bounds.y + SCALED_100*i, bounds.x + bounds.width, bounds.y + SCALED_100*i);
 		}
-		g.setColor(Color.red);
-		for (Point p : secondarySelected) {
-			g.fillRect(p.x, p.y, SCALED_100, (int) (10 * SDC.SCALE_FACTOR));
+		g.setColor(Color.CYAN);
+		for (int i = 0; i < secondarySelected.size(); i++) {
+			Point p = secondarySelected.get(i);
+			g.fillRect(p.x, p.y, (int) (10 * SDC.SCALE_FACTOR), (int) (10 * SDC.SCALE_FACTOR));
 		}
 		g.setColor(Color.green);
 		g.drawRect(selectedLoc.x, selectedLoc.y, SCALED_100, SCALED_100);

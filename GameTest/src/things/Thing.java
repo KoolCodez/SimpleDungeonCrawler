@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import misc.SDC;
@@ -15,30 +16,35 @@ public class Thing {
 	public Point2D location;
 	public Rectangle outline;
 	public StandardRoom currentRoom;
-	public Image image;
+	public ImageIcon image;
 	public int rarity;
 	
 	public Thing() {
 		location = new Point2D.Double(250 * SDC.SCALE_FACTOR, 250 * SDC.SCALE_FACTOR);
 		outline = new Rectangle();
+		image = new ImageIcon();
 	}
 	
 	public Thing(int rarity) {
 		location = new Point2D.Double(250 * SDC.SCALE_FACTOR, 250 * SDC.SCALE_FACTOR);
 		outline = new Rectangle();
+		image = new ImageIcon();
 		this.rarity = rarity;
 	}
 	
 	public Thing(Image i, int rarity) {
-		image = i;
+		image = new ImageIcon();
+		image.setImage(i);
 	}
 	
 	public Thing(Image i, double x, double y, int rarity) {
-		image = i;
+		image = new ImageIcon();
+		image.setImage(i);
 		setLocation(x, y);
 	}
 	
 	public Thing(double x, double y, int w, int l, int rarity) {
+		image = new ImageIcon();
 		setLocation(x, y);
 		setSize(w, l);
 	}
@@ -54,11 +60,11 @@ public class Thing {
 	}
 	
 	public void setImage(Image i) {
-		image = i;
+		image.setImage(i);
 	}
 	
 	public Image getImage() {
-		return image;
+		return image.getImage();
 	}
 	
 	public void interact(Entity interactor) {

@@ -20,8 +20,8 @@ import misc.Utilities;
 import rooms.StandardRoom;
 import things.Thing;
 import things.items.Item;
-import things.items.Weapon;
 import things.items.weapons.Fists;
+import things.items.weapons.Weapon;
 import things.storage.Corpse;
 
 public class Entity extends Thing implements Serializable { // extend this class with specific entity-classes.
@@ -30,8 +30,8 @@ public class Entity extends Thing implements Serializable { // extend this class
 	private String entityType;
 	private String name;
 	public Point battleLoc;
-	public Image finalImage;
-	public Image deadImage;
+	public ImageIcon finalImage;
+	public ImageIcon deadImage;
 	private int rotation = 0;
 	private List<Item> inventory = new ArrayList<Item>();
 	public int maxItems = 20;
@@ -44,6 +44,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 		entityType = "Generic Entity";
 		location = new Point2D.Double(250, 250);
 		battleLoc = new Point(0,0);
+		finalImage = new ImageIcon();
 		rarity = 0;
 	}
 
@@ -53,6 +54,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 		entityType = "Generic Entity";
 		stats.setStats(health, strength, dexterity, willPower);
 		battleLoc = new Point(0,0);
+		finalImage = new ImageIcon();
 	}
 	
 	public void generateStats(int rarity) {
@@ -95,7 +97,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 	
 	public Image getImage() {
 		//return super.image;
-		return finalImage;
+		return finalImage.getImage();
 	}
 	
 	private Image nativeImage;
@@ -116,14 +118,14 @@ public class Entity extends Thing implements Serializable { // extend this class
 		images.add(equipped.weapon.getImage());
 		images.add(equipped.head.getImage());
 		rotation = 0;
-		finalImage = ig.compileImage(images);
+		finalImage.setImage(ig.compileImage(images));
 	}
 	
 	public void setAngle(int degrees) {
 		int deltaAngle = degrees - rotation;
 		rotation = degrees;
 		TextureGenerator ig = new TextureGenerator();
-		finalImage = ig.rotate(finalImage, deltaAngle);
+		finalImage.setImage(ig.rotate(finalImage.getImage(), deltaAngle));
 	}
 
 	public void setRoom(StandardRoom r) {

@@ -5,7 +5,6 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import misc.Images;
-import things.items.Weapon;
 
 public class Fists extends Weapon {
 	static Image i = Images.array[Images.blankLayerIndex];

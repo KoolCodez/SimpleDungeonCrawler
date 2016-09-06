@@ -79,11 +79,15 @@ public class InventoryPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Item i = display.selectedItem;
-				Item deEquipped = SDC.character.equipped.equipItem(i);
-				boolean isNullArmor = deEquipped instanceof NullArmor || deEquipped == null;
-				if (!isNullArmor) {
+				if (SDC.character.equipped.dequipItem(i)) {
+					display.removeCurrentFromSecondarySelected();
+				} else {
+					Item deEquipped = SDC.character.equipped.equipItem(i);
 					display.addCurrentToSecondarySelected();
-					display.removeSecondarySelected(inventory.indexOf(deEquipped));
+					boolean isNullArmor = deEquipped instanceof NullArmor || deEquipped == null;
+					if (!isNullArmor) {
+						display.removeSecondarySelected(inventory.indexOf(deEquipped));
+					}
 				}
 				SDC.character.refreshImage();
 			}

@@ -5,7 +5,7 @@ import java.awt.Point;
 import combatSystem.ControlRouter;
 import misc.SDC;
 import things.entities.Entity;
-import things.items.Weapon;
+import things.items.weapons.Weapon;
 
 public class BattleAI {
 	private Entity host;
