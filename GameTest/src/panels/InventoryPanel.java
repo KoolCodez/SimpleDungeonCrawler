@@ -53,7 +53,7 @@ public class InventoryPanel extends JPanel {
 		for (Item i : items) {
 			System.out.println();
 			if (inventory.contains(i)) {
-				display.addSecondarySelected(inventory.indexOf(i));
+				display.addSecondarySelected(i);
 			}
 		}
 		display.startMouseListener();
@@ -86,7 +86,7 @@ public class InventoryPanel extends JPanel {
 					display.addCurrentToSecondarySelected();
 					boolean isNullArmor = deEquipped instanceof NullArmor || deEquipped == null;
 					if (!isNullArmor) {
-						display.removeSecondarySelected(inventory.indexOf(deEquipped));
+						display.removeSecondarySelected(deEquipped);
 					}
 				}
 				SDC.character.refreshImage();

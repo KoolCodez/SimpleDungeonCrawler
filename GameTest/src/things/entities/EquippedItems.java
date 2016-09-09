@@ -86,28 +86,29 @@ public class EquippedItems implements Serializable {
 	public boolean dequipItem(Item item) {
 		if (item instanceof Armor) {
 			Armor e = (Armor) item;
-			if (e == head) { 
+			if (e.equals(head)) { 
 				head = new NullArmor();
 				return true;
 			}
-			if (e == body) { 
+			if (e.equals(body)) { 
 				body = new NullArmor();
 				return true;
 			}
-			if (e == legs) { 
+			if (e.equals(legs)) { 
 				legs = new NullArmor();
 				return true;
 			}
-			if (e == feet) { 
+			if (e.equals(feet)) { 
 				feet = new NullArmor();
 				return true;
 			}
-			if (e == hands) { hands = new NullArmor();
+			if (e.equals(hands)) { 
+				hands = new NullArmor();
 			} else {
 				System.out.println("Item is not dequippable");
 				return false;
 			}
-		} else if (item == weapon) {
+		} else if (item.equals(weapon)) {
 			weapon = new Fists();
 			return true;
 		} else {
