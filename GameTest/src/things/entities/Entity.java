@@ -45,6 +45,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 		location = new Point2D.Double(250, 250);
 		battleLoc = new Point(0,0);
 		finalImage = new ImageIcon();
+		deadImage = new ImageIcon();
 		rarity = 0;
 	}
 
@@ -55,6 +56,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 		stats.setStats(health, strength, dexterity, willPower);
 		battleLoc = new Point(0,0);
 		finalImage = new ImageIcon();
+		deadImage = new ImageIcon();
 	}
 	
 	public void generateStats(int rarity) {

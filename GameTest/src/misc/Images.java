@@ -3,10 +3,15 @@ package misc;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class Images {
 	//Arrows\\
@@ -55,18 +60,41 @@ public class Images {
 	public static int leftArrowIndex;
 	public static int bottomArrowIndex;
 	public static int topArrowIndex;
-	
+	private static String currentDir = System.getProperty("user.dir");
 	private static double scale = SDC.SCALE_FACTOR;
 	
-	public static Image loadImage(String pathFromTextures, int width, int height) {
+	public static Image loadImage(String pathFromTextures, double widthUnscaled, double heightUnscaled) {
 		Image i;
 		try {
-			i = ImageIO.read(new File("src\\Textures\\" + pathFromTextures));
+			String name = currentDir + "\\src\\misc\\Textures\\" + pathFromTextures;
+//			System.out.println(name);
+			System.out.println(System.getProperty("java.class.path"));
+		i = ImageIO.read(new File(name));
+		
+//		InputStream is = Image.class.getResourceAsStream("BlankLayer.png");
+//		i = ImageIO.read(is);
+		
+		i = ImageIO.read(Image.class.getClassLoader().getResource("/BlankLayer.png"));
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 			return array[blankLayerIndex];
 		}
-		i = i.getScaledInstance((int) (width), (int) (height), Image.SCALE_SMOOTH);
+		i = i.getScaledInstance((int) (widthUnscaled * SDC.SCALE_FACTOR), (int) (heightUnscaled * SDC.SCALE_FACTOR), Image.SCALE_SMOOTH);
+		return i;
+	}
+	
+	public static Image loadImage(String pathFromTextures, int widthScaled, int heightScaled) {
+		Image i;
+		try {
+			String name = currentDir + "\\src\\Textures\\" + pathFromTextures;
+//			System.out.println(name);
+		i = ImageIO.read(new File(name));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return array[blankLayerIndex];
+		}
+		i = i.getScaledInstance(widthScaled, heightScaled, Image.SCALE_SMOOTH);
 		return i;
 	}
 	
@@ -82,30 +110,25 @@ public class Images {
 	}
 	
 	public static void arrows() throws IOException {
-		Image rightArrowOn = ImageIO.read(new File("src/Textures/Arrows/RightArrowOn.jpg"));
-		rightArrowOn = rightArrowOn.getScaledInstance((int) (50 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		String localDir = "Arrows\\";
+		
+		Image rightArrowOn = loadImage(localDir + "RightArrowOn.jpg", 50.0, 100.0);
 		array[rightArrowOnIndex] = rightArrowOn;
-		Image leftArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\LeftArrowOn.jpg"));
-		leftArrowOn = leftArrowOn.getScaledInstance((int) (50 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image leftArrowOn = loadImage(localDir + "LeftArrowOn.jpg", 50.0, 100.0);
 		array[leftArrowOnIndex] = leftArrowOn;
-		Image bottomArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\BotArrowOn.jpg"));
-		bottomArrowOn = bottomArrowOn.getScaledInstance((int) (100 * scale), (int) (50 * scale), Image.SCALE_SMOOTH);
+		Image bottomArrowOn = loadImage(localDir + "BotArrowOn.jpg", 100.0, 50.0);
 		array[bottomArrowOnIndex] = bottomArrowOn;
-		Image topArrowOn = ImageIO.read(new File("src\\Textures\\Arrows\\TopArrowOn.jpg"));
-		topArrowOn = topArrowOn.getScaledInstance((int) (100 * scale), (int) (50 * scale), Image.SCALE_SMOOTH);
+		Image topArrowOn = loadImage(localDir + "TopArrowOn.jpg", 100.0, 50.0);
 		array[topArrowOnIndex] = topArrowOn;
-		Image rightArrowOff = ImageIO.read(new File("src\\Textures\\Arrows\\RightArrowOff.jpg"));
-		rightArrowOff = rightArrowOff.getScaledInstance((int) (50 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image rightArrowOff = loadImage(localDir + "RightArrowOff.jpg", 50.0, 100.0);
 		array[rightArrowOffIndex] = rightArrowOff;
-		Image leftArrowOff = ImageIO.read(new File("src\\Textures\\Arrows\\LeftArrowOff.jpg"));
-		leftArrowOff = leftArrowOff.getScaledInstance((int) (50 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image leftArrowOff = loadImage(localDir + "LeftArrowOff.jpg", 50.0, 100.0);
 		array[leftArrowOffIndex] = leftArrowOff;
-		Image bottomArrowOff = ImageIO.read(new File("src\\Textures\\Arrows\\BotArrowOff.jpg"));
-		bottomArrowOff = bottomArrowOff.getScaledInstance((int) (100 * scale), (int) (50 * scale), Image.SCALE_SMOOTH);
+		Image bottomArrowOff = loadImage(localDir + "BotArrowOff.jpg", 100.0, 50.0);
 		array[bottomArrowOffIndex] = bottomArrowOff;
-		Image topArrowOff = ImageIO.read(new File("src\\Textures\\Arrows\\TopArrowOff.jpg"));
-		topArrowOff = topArrowOff.getScaledInstance((int) (100 * scale), (int) (50 * scale), Image.SCALE_SMOOTH);
+		Image topArrowOff = loadImage(localDir + "TopArrowOff.jpg", 100.0, 50.0);
 		array[topArrowOffIndex] = topArrowOff;
+		
 		rightArrowIndex = rightArrowOnIndex;
 		
 		leftArrowIndex = leftArrowOffIndex; // starts off
@@ -117,96 +140,72 @@ public class Images {
 	}
 	
 	public static void buttons() throws IOException {
-		Image bagButton = ImageIO.read(new File("src\\Textures\\Buttons\\BagButton2x.jpg"));
-		bagButton = bagButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		String localDir = "Buttons\\";
+		
+		Image bagButton = loadImage(localDir + "BagButton2x.jpg", 300.0, 100.0);
 		array[bagButtonIndex] = bagButton;
-		Image fightButton = ImageIO.read(new File("src\\Textures\\Buttons\\FightButton2x.jpg"));
-		fightButton = fightButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image fightButton = loadImage(localDir + "FightButton2x.jpg", 300.0, 100.0);
 		array[fightButtonIndex] =fightButton;
-		Image fleeButton = ImageIO.read(new File("src\\Textures\\Buttons\\FleeButton2x.jpg"));
-		fleeButton = fleeButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image fleeButton = loadImage(localDir + "FleeButton2x.jpg", 300.0, 100.0);
 		array[fleeButtonIndex] = fleeButton;
-		Image moveButton = ImageIO.read(new File("src\\Textures\\Buttons\\MoveButton2x.jpg"));
-		moveButton = moveButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image moveButton = loadImage(localDir + "MoveButton2x.jpg", 300.0, 100.0);
 		array[moveButtonIndex] = moveButton;
-		Image resumeButton = ImageIO.read(new File("src\\Textures\\Buttons\\ResumeButton2x.jpg"));
-		resumeButton = resumeButton.getScaledInstance((int) (300 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image resumeButton = loadImage(localDir + "ResumeButton2x.jpg", 300.0, 100.0);
 		array[resumeButtonIndex] = resumeButton;
 	}
 	
 	public static void characters() throws IOException {
-		Image charFront = ImageIO.read(new File("src\\Textures\\Characters\\MainCharFront.jpg"));
-		charFront = charFront.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		array[charFrontIndex] = charFront;
-		Image charLeft = ImageIO.read(new File("src\\Textures\\Characters\\MainCharLeft.jpg"));
-		charLeft = charLeft.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		array[charLeftIndex] = charLeft;
-		Image charRight = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRight.jpg"));
-		charRight = charRight.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		array[charRightIndex] = charRight;
-		Image charLeftOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharLeftRightArmUp.jpg"));
-		charLeftOpArm = charLeftOpArm.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		array[charLeftOpArmIndex] = charLeftOpArm;
-		Image charRightOpArm = ImageIO.read(new File("src\\Textures\\Characters\\MainCharRightLeftArmUp.jpg"));
-		charRightOpArm = charRightOpArm.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
-		array[charRightOpArmIndex] = charRightOpArm;
+		String localDir = "Characters\\";
 		
-		Image battleChar = ImageIO.read(new File("src\\Textures\\Characters\\MainChar.png"));
-		battleChar = battleChar.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
-		BufferedImage bi = new BufferedImage((int) (100 * scale), (int) (100 * scale), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = bi.createGraphics();
-        g.drawImage(battleChar, 0, 0, null);
-		array[battleCharIndex] = bi;
+//		Image charFront = ImageIO.read(new File("src\\Textures\\Characters\\MainCharFront.jpg"));
+//		charFront = charFront.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
+//		array[charFrontIndex] = charFront;
+		
+		Image mainChar = loadImage(localDir + "MainChar.png", 100.0, 100.0);
+		array[battleCharIndex] = mainChar;
 	}
 	
 	public static void enemies() throws IOException {
-		Image battleGoblin = ImageIO.read(new File("src\\Textures\\Enemies\\BattleGoblin.jpg"));
-		battleGoblin = battleGoblin.getScaledInstance((int) (72 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		String localDir = "Enemies\\";
+		Image battleGoblin = loadImage(localDir + "BattleGoblin.jpg", 72.0, 100.0);
 		array[battleGoblinIndex] = battleGoblin;
 	}
 	
 	public static void grounds() throws IOException { //I AM THE GROUNDS KEEPER
-		Image backgroundImg = ImageIO.read(new File("src\\Textures\\Grounds\\BasicGround.jpg"));
-		backgroundImg = backgroundImg.getScaledInstance((int) (1000 * scale), (int) (1000 * scale), Image.SCALE_SMOOTH);
+		String localDir = "Grounds\\";
+		
+		Image backgroundImg = loadImage(localDir + "BasicGround.jpg", 1000.0, 1000.0);
 		array[backgroundImgIndex] = backgroundImg;
-		Image battleViewBackground = ImageIO.read(new File("src\\Textures\\Grounds\\BasicGround.jpg"));
-		battleViewBackground = battleViewBackground.getScaledInstance((int) (697 * scale), (int) (710 * scale), Image.SCALE_SMOOTH);
+		Image battleViewBackground = loadImage(localDir + "BasicGround.jpg", 697.0, 710.0);
 		array[battleViewBackgroundIndex] = battleViewBackground;
 	}
 	
 	public static void items() throws IOException {
-		Image stickItem = ImageIO.read(new File("src\\Textures\\Items\\Stick.jpg"));
-		stickItem = stickItem.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		String localDir = "Items\\";
+		
+		Image stickItem = loadImage(localDir + "Stick.jpg", 100.0, 100.0);
 		array[stickItemIndex] = stickItem;
-		Image stickItem2 = ImageIO.read(new File("src\\Textures\\Items\\Stick2.jpg"));
-		stickItem2 = stickItem2.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image stickItem2 = loadImage(localDir + "Stick2.jpg", 100.0, 100.0);
 		array[stickItem2Index] = stickItem2;
-		Image stickItem3 = ImageIO.read(new File("src\\Textures\\Items\\Stick3.jpg"));
-		stickItem3 = stickItem3.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image stickItem3 = loadImage(localDir + "Stick3.jpg", 100.0, 100.0);
 		array[stickItem3Index] = stickItem3;
-		Image stickItem4 = ImageIO.read(new File("src\\Textures\\Items\\Stick4.jpg"));
-		stickItem4 = stickItem4.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image stickItem4 = loadImage(localDir + "Stick4.jpg", 100.0, 100.0);
 		array[stickItem4Index] = stickItem4;
-		Image stickItem5 = ImageIO.read(new File("src\\Textures\\Items\\Stick5.jpg"));
-		stickItem5 = stickItem5.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image stickItem5 = loadImage(localDir + "Stick5.jpg", 100.0, 100.0);
 		array[stickItem5Index] = stickItem5;
-		Image headArmor1 = ImageIO.read(new File("src\\Textures\\Items\\headArmor.png"));
-		headArmor1 = headArmor1.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image headArmor1 = loadImage(localDir + "headArmor.png", 100.0, 100.0);
 		array[headArmor1Index] = headArmor1;
-		Image blankLayer = ImageIO.read(new File("src\\Textures\\Items\\BlankLayer.png"));
-		blankLayer = blankLayer.getScaledInstance((int) (100 * scale), (int) (100 * scale), Image.SCALE_SMOOTH);
+		Image blankLayer = loadImage(localDir + "BlankLayer.png", 100.0, 100.0);
 		array[blankLayerIndex] = blankLayer;
 	}
 	
 	public static void menus() throws IOException {
-		Image battleMenu = ImageIO.read(new File("src\\Textures\\Menus\\BattleMenu2.jpg"));
-		battleMenu = battleMenu.getScaledInstance((int) (1000 * scale), (int) (1000 * scale), Image.SCALE_SMOOTH);
+		String localDir = "Menus\\";
+		Image battleMenu = loadImage(localDir + "BattleMenu2.jpg", 1000.0, 1000.0);
 		array[battleMenuIndex] = battleMenu;
-		Image mainMenu = ImageIO.read(new File("src\\Textures\\Menus\\BrickStone.jpg"));
-		mainMenu = mainMenu.getScaledInstance((int) (1000 * scale), (int) (1000 * scale), Image.SCALE_SMOOTH);
+		Image mainMenu = loadImage(localDir + "BrickStone.jpg", 1000.0, 1000.0);
 		array[mainMenuIndex] = mainMenu;
-		Image pauseMenu = ImageIO.read(new File("src\\Textures\\Menus\\PauseMenu.jpg"));
-		pauseMenu = pauseMenu.getScaledInstance((int) (1000 * scale), (int) (1000 * scale), Image.SCALE_SMOOTH);
+		Image pauseMenu = loadImage(localDir + "PauseMenu.jpg", 1000.0, 1000.0);
 		array[pauseMenuIndex] = pauseMenu;
 	}
 }

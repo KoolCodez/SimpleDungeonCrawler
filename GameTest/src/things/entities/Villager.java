@@ -20,8 +20,8 @@ public class Villager extends Entity {
 		super.setType("Villager");
 		super.setName("Nameless Pawn");
 		location = new Point2D.Double(randomLoc(), randomLoc());
-		setImage(Images.array[18]);
-		this.setSize((int) (72 * SCALE_FACTOR), (int) (92 * SCALE_FACTOR));
+		setImage(Images.loadImage("Characters\\Villager.png", 100.0, 100.0));
+		this.setSize((int) (100 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR));
 		this.setLocation(location.getX(), location.getY());
 	}
 	

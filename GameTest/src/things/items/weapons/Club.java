@@ -8,7 +8,7 @@ import misc.Images;
 import misc.SDC;
 
 public class Club extends Weapon{
-	static Image i = Images.loadImage("\\Items\\Club.png", (int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));
+	static Image i = Images.loadImage("Items\\Club.png", (int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));
 	public Club() {
 		super(new ImageIcon(i), i, "Club", 40);
 		damage = 1.0;

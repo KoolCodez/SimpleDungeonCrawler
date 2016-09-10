@@ -56,7 +56,6 @@ public class ControlRouter {
 		displayBattle(battleTurnPanel);
 		sideBar = new BattleSideBar(this, new Nothing());
 		character = SDC.character;
-		ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>) SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
 		startBattleQueue();
 	}
 
@@ -560,11 +559,9 @@ public class ControlRouter {
 		ArrayBlockingQueue<Entity> q = new ArrayBlockingQueue<Entity>(current.entities.size());
 		List<Entity> eList = new ArrayList<Entity>();
 		eList.addAll(current.entities);
-		System.out.println(current.entities.toString());
 		int size = eList.size();
 		for (int i = 0; i < size; i++) {
 			Entity randomE = eList.get((int) Math.round(Math.random() * (eList.size() - 1)));
-			System.out.println(randomE);
 			eList.remove(randomE);
 			q.add(randomE);
 		}

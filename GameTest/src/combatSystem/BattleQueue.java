@@ -58,7 +58,6 @@ public class BattleQueue extends Thread {
 	
 	private void refreshQueue() {
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		System.out.println(current.entities);
 		for (int i = 0; i < initList.size(); i++) {
 			Entity ent = initList.remove();
 			boolean isAlive = current.entities.contains(ent);
