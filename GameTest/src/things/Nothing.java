@@ -8,7 +8,7 @@ import things.entities.Entity;
 
 public class Nothing extends Thing {
 	public Nothing () {
-		super(0);
+		super();
 		super.setImage(Images.array[Images.blankLayerIndex]);
 		super.setSize((int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));
 	}

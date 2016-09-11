@@ -29,9 +29,8 @@ public class Entity extends Thing implements Serializable { // extend this class
 	
 	private String entityType;
 	private String name;
-	public Point battleLoc;
-	public ImageIcon finalImage;
 	public ImageIcon deadImage;
+	private ImageIcon finalImage;
 	private int rotation = 0;
 	private List<Item> inventory = new ArrayList<Item>();
 	public int maxItems = 20;
@@ -39,24 +38,23 @@ public class Entity extends Thing implements Serializable { // extend this class
 	public EquippedItems equipped;
 	
 	public Entity() {
+		super();
 		name = "Entity";
 		equipped = new EquippedItems();
 		entityType = "Generic Entity";
-		location = new Point2D.Double(250, 250);
-		battleLoc = new Point(0,0);
-		finalImage = new ImageIcon();
+		setLocation(250, 250);
 		deadImage = new ImageIcon();
+		finalImage = new ImageIcon();
 		rarity = 0;
 	}
 
 	public Entity(double health, double strength, double dexterity, double willPower, int rarity) {
-		super(rarity);
+		super();
 		equipped = new EquippedItems();
 		entityType = "Generic Entity";
 		stats.setStats(health, strength, dexterity, willPower);
-		battleLoc = new Point(0,0);
-		finalImage = new ImageIcon();
 		deadImage = new ImageIcon();
+		finalImage = new ImageIcon();
 	}
 	
 	public void generateStats(int rarity) {
@@ -86,6 +84,11 @@ public class Entity extends Thing implements Serializable { // extend this class
 		
 	}
 	
+	public BattleEntity generateBattleEnt() {
+		BattleEntity battleEnt = new BattleEntity(this);
+		return battleEnt;
+	}
+	
 	public void damageEnt(double damage) {
 		stats.setHealth(-damage);
 		if (stats.getHealth() <= 0) {
@@ -97,37 +100,24 @@ public class Entity extends Thing implements Serializable { // extend this class
 		}
 	}
 	
-	public Image getImage() {
-		//return super.image;
-		return finalImage.getImage();
-	}
-	
-	private Image nativeImage;
-	public void setImage(Image i) {
-		super.setImage(i);
-		nativeImage = i;
-		refreshImage();
-	}
-	
-	public void refreshImage() {
+	@Override
+	public void drawEntity(Graphics g) {
 		TextureGenerator ig = new TextureGenerator();
 		ArrayList<Image> images = new ArrayList<Image>();
-		images.add(nativeImage);
+		images.add(getImage());
 		images.add(equipped.body.getImage());
 		images.add(equipped.feet.getImage());
 		images.add(equipped.hands.getImage());
 		images.add(equipped.legs.getImage());
 		images.add(equipped.weapon.getImage());
 		images.add(equipped.head.getImage());
-		rotation = 0;
-		finalImage.setImage(ig.compileImage(images));
+		Image i = ig.compileImage(images);
+		i = ig.rotate(i, rotation);
+		g.drawImage(i, (int) outline.getX(), (int) outline.getY(), null);
 	}
 	
 	public void setAngle(int degrees) {
-		int deltaAngle = degrees - rotation;
 		rotation = degrees;
-		TextureGenerator ig = new TextureGenerator();
-		finalImage.setImage(ig.rotate(finalImage.getImage(), deltaAngle));
 	}
 
 	public void setRoom(StandardRoom r) {

@@ -14,16 +14,17 @@ import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
 import rooms.StandardRoom;
+import things.entities.BattleEntity;
 import things.entities.Entity;
 import things.entities.Goblin;
 
 public class BattleQueue extends Thread {
 	ControlRouter control;
-	ArrayBlockingQueue<Entity> initList;
+	ArrayBlockingQueue<BattleEntity> initList;
 
 	Utilities utilities = new Utilities();
 
-	public BattleQueue(ControlRouter p, ArrayBlockingQueue<Entity> i) {
+	public BattleQueue(ControlRouter p, ArrayBlockingQueue<BattleEntity> i) {
 		control = p;
 		initList = i;
 	}
@@ -33,12 +34,12 @@ public class BattleQueue extends Thread {
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		while (checkLiving(currentRoom) && !control.flee) {
 			for (int i = 0; i < initList.size(); i++) {
-				Entity currentEntity = initList.peek();
+				BattleEntity currentEntity = initList.peek();
 				if (control.flee || !checkLiving(currentRoom)) {
 					return;
 				}
 				if (isEnemy(currentEntity)) {
-					control.enemyTurn((Goblin) currentEntity);
+					control.enemyTurn(currentEntity);
 					//System.out.println("myah!");
 				} else if (isFriendly(currentEntity)) {
 					control.playerTurn();
@@ -46,7 +47,7 @@ public class BattleQueue extends Thread {
 				} else {
 					printEntityError(currentEntity);
 				}
-				Entity e = initList.remove();
+				BattleEntity e = initList.remove();
 				initList.add(e);
 				sleep(1000);
 				// checkHealth(currentRoom);
@@ -59,7 +60,7 @@ public class BattleQueue extends Thread {
 	private void refreshQueue() {
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		for (int i = 0; i < initList.size(); i++) {
-			Entity ent = initList.remove();
+			BattleEntity ent = initList.remove();
 			boolean isAlive = current.entities.contains(ent);
 			if (isAlive || ent.stats.getHealth() > 0) {
 				initList.add(ent);
@@ -72,7 +73,7 @@ public class BattleQueue extends Thread {
 		boolean eAlive = false;
 		Entity[] q = initList.toArray(new Entity[initList.size()]);
 		for (int i = 0; i < initList.size(); i++) {
-			if (q[i].getType().equals("Friendly")) {
+			if (q[i].getType().equals("Friendly") || q[i].getType().equals("Character")) {
 				fAlive = true;
 			} else if(q[i].getType().equals("Enemy")) {
 				eAlive = true;
@@ -96,7 +97,7 @@ public class BattleQueue extends Thread {
 	}
 
 	private boolean isFriendly(Entity ent) {
-		return ent.getType().equals("Friendly");
+		return ent.getType().equals("Friendly") || ent.getType().equals("Character");
 	}
 
 	private void printEntityError(Entity ent) {

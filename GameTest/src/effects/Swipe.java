@@ -9,6 +9,7 @@ import java.awt.Point;
 import misc.Images;
 import misc.SDC;
 import misc.TextureGenerator;
+import things.entities.BattleEntity;
 import things.entities.Entity;
 
 public class Swipe extends Effect {
@@ -50,28 +51,28 @@ public class Swipe extends Effect {
 		} 
 	}
 	
-	public void fixLocation(Entity attacker, Entity target) {
+	public void fixLocation(BattleEntity attacker, BattleEntity target) {
 		TextureGenerator tg = new TextureGenerator();
 		Point aLoc = attacker.battleLoc;
 		Point tLoc = target.battleLoc;
 		if (aLoc.x > tLoc.x) {
 			image = tg.rotate(image, -90);
-			location = new Point((int) (attacker.location.getX() - 40*SDC.SCALE_FACTOR),
-					(int) (attacker.location.getY()));
+			location = new Point((int) (attacker.outline.getX() - 40*SDC.SCALE_FACTOR),
+					(int) (attacker.outline.getY()));
 		} else if(aLoc.x < tLoc.x) {
 			image = tg.rotate(image, 90);
-			location = new Point((int) (attacker.location.getX() + 60*SDC.SCALE_FACTOR),
-					(int) (attacker.location.getY()));
+			location = new Point((int) (attacker.outline.getX() + 60*SDC.SCALE_FACTOR),
+					(int) (attacker.outline.getY()));
 		}
 		
 		if (aLoc.y > tLoc.y) {
 			image = tg.rotate(image, 0);
-			location = new Point((int) (attacker.location.getX()),
-					(int) (attacker.location.getY() - 60*SDC.SCALE_FACTOR));
+			location = new Point((int) (attacker.outline.getX()),
+					(int) (attacker.outline.getY() - 60*SDC.SCALE_FACTOR));
 		} else if(aLoc.y < tLoc.y) {
 			image = tg.rotate(image, 180);
-			location = new Point((int) (attacker.location.getX()),
-					(int) (attacker.location.getY() + 40*SDC.SCALE_FACTOR));
+			location = new Point((int) (attacker.outline.getX()),
+					(int) (attacker.outline.getY() + 40*SDC.SCALE_FACTOR));
 		}
 	}
 }

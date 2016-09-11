@@ -68,13 +68,13 @@ public class Images {
 		try {
 			String name = currentDir + "\\src\\misc\\Textures\\" + pathFromTextures;
 //			System.out.println(name);
-			System.out.println(System.getProperty("java.class.path"));
+			//System.out.println(System.getProperty("java.class.path"));
 		i = ImageIO.read(new File(name));
 		
 //		InputStream is = Image.class.getResourceAsStream("BlankLayer.png");
 //		i = ImageIO.read(is);
 		
-		i = ImageIO.read(Image.class.getClassLoader().getResource("/BlankLayer.png"));
+		//i = ImageIO.read(Image.class.getClassLoader().getResource("/BlankLayer.png"));
 		
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -87,7 +87,7 @@ public class Images {
 	public static Image loadImage(String pathFromTextures, int widthScaled, int heightScaled) {
 		Image i;
 		try {
-			String name = currentDir + "\\src\\Textures\\" + pathFromTextures;
+			String name = currentDir + "\\src\\misc\\Textures\\" + pathFromTextures;
 //			System.out.println(name);
 		i = ImageIO.read(new File(name));
 		} catch (IOException e) {

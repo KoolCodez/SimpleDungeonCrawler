@@ -9,6 +9,7 @@ import things.items.Stick;
 public class Chest extends Storage {
 	static int w = (int) (100*SDC.SCALE_FACTOR);
 	static int l = (int) (70*SDC.SCALE_FACTOR);
+	
 	public Chest(double x, double y, int rarity) {
 		super(loadImage(), x, y, w, l, rarity);
 		setCapacity(12);

@@ -5,7 +5,7 @@ import things.entities.Entity;
 
 public class Wall extends Thing {
 	public Wall() {
-		super(0);
+		super();
 		setImage(Images.array[Images.blankLayerIndex]);
 	}
 	

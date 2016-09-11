@@ -34,7 +34,7 @@ public class GameplaySideBar extends JPanel {
 		//System.out.println("drawing sideBar: " + thing);
 		//g.drawImage(thing.getImage(), 0, 0, null);
 		thing.displayOnSide(g);
-		if (interactor.location.distance(thing.location) >= CoreGameplayPanel.PICKUP_RADIUS) {
+		if (interactor.getLocation().distance(thing.getLocation()) >= CoreGameplayPanel.PICKUP_RADIUS) {
 			SDC.frame.remove(this);
 		}
 	}

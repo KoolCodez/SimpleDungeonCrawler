@@ -1,23 +1,27 @@
 package things;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 import combatSystem.ControlRouter;
 import misc.SDC;
+import things.entities.BattleEntity;
 import things.entities.Entity;
 import things.items.weapons.Weapon;
 
 public class BattleAI {
-	private Entity host;
+	private BattleEntity host;
 	private ControlRouter control;
-	private Entity target;
+	private BattleEntity target;
 	
-	public BattleAI(Entity h) {
+	public BattleAI(BattleEntity h) {
 		host = h;
 	}
-	public int nextMove(int turnPoints, Entity[][] entTable, ControlRouter c) {
+	
+	public int nextMove(int turnPoints, ArrayList<BattleEntity> entList, 
+			BattleEntity[][] entTable, ControlRouter c) {
 		control = c;
-		target = decideTarget(entTable);
+		target = decideTarget(entList);
 		Weapon hostWeapon = host.equipped.weapon;
 		if (host.battleLoc.distance(target.battleLoc) > hostWeapon.reach) {
 			if (turnPoints >= 3) {
@@ -33,8 +37,18 @@ public class BattleAI {
 		return turnPoints;
 	}
 	
-	private Entity decideTarget(Entity[][] entTable) {
-		return SDC.character;
+	private BattleEntity decideTarget(ArrayList<BattleEntity> entList) {
+		for (int i = 0; i < entList.size(); i++) {
+			BattleEntity ent  = entList.get(i);
+			if (ent.getType().equals("Friendly") || ent.getType().equals("Character")) {
+				return ent;
+			}
+		}
+		return null;
+	}
+	
+	public Point getTargetLoc() {
+		return target.battleLoc;
 	}
 	
 	private void moveToward(Entity[][] entTable) {

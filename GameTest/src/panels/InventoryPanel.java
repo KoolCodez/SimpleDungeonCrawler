@@ -89,7 +89,6 @@ public class InventoryPanel extends JPanel {
 						display.removeSecondarySelected(deEquipped);
 					}
 				}
-				SDC.character.refreshImage();
 			}
 		});
 		equipItemButton.setBounds((int) (0 * SDC.SCALE_FACTOR), (int) (800 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);

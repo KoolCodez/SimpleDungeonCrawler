@@ -43,6 +43,7 @@ import things.items.Item;
 import things.items.Stick;
 import things.items.weapons.GodWeapon;
 import things.items.weapons.Weapon;
+import things.entities.Character;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -114,13 +115,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		if (new File("src\\save\\" + CHARACTER_SAVE_TAG).exists()) {
 			character = (Entity) loadObject(CHARACTER_SAVE_TAG);
 		} else {
-			character = new Entity(5, 10, 10, 10, 1000);
-			character.setType("Friendly");
-			character.addItem(new Stick());
-			character.setSize((int) (90 * SCALE_FACTOR), (int) (90 * SCALE_FACTOR));
-			character.setRoom(roomArray[loc.x][loc.y]);
-			character.setImage(Images.array[Images.battleCharIndex]);
-			character.equipped.weapon = new GodWeapon();
+			character = new Character();
 		}
 	}
 	
@@ -209,8 +204,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 			System.out.println("starting battle");
 			stopGameplayPanel();
 			character.setRoom(roomArray[loc.x][loc.y]);
-			ControlRouter control = new ControlRouter();
-			control.setLocationForBattle(door);
+			ControlRouter control = new ControlRouter(door);
 		} else {
 			switch (door) {
 			case "left": character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);

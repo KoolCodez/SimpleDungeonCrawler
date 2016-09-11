@@ -98,7 +98,7 @@ public class BattleAttackPanel extends JPanel {
 	private void shove() {
 		if (control.waitForTurn.getTurnPoints() >= 3) {
 			back();
-			control.shove(SDC.character, control.getSelectedEnt());
+			control.charShove();
 			control.waitForTurn.changeTurnPoints(-3);
 		} else {
 			System.out.println("Not enough turn points");

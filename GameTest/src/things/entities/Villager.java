@@ -15,14 +15,12 @@ import things.items.Item;
 public class Villager extends Entity {
 	double SCALE_FACTOR = SDC.SCALE_FACTOR;
 	public Villager() {
-		stats.setStats(Math.random() * 10, Math.random() * 10, Math.random() * 10, Math.random() * 10);
-		super.rarity = 100;
-		super.setType("Villager");
-		super.setName("Nameless Pawn");
-		location = new Point2D.Double(randomLoc(), randomLoc());
+		super(Math.random() * 10, Math.random() * 10, Math.random() * 10, Math.random() * 10, 100);
+		setType("Villager");
+		setName("Nameless Pawn");
+		setSize((int) (100 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR));
+		setLocation(randomLoc(), randomLoc());
 		setImage(Images.loadImage("Characters\\Villager.png", 100.0, 100.0));
-		this.setSize((int) (100 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR));
-		this.setLocation(location.getX(), location.getY());
 	}
 	
 	@Override

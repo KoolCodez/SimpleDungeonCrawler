@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
@@ -91,21 +92,21 @@ public class CoreGameplayPanel extends JPanel{
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		ArrayList<Thing> things = new ArrayList<Thing>();
 		things.addAll(currentRoom.things);
-		Point2D charLoc = SDC.character.location;
-		Rectangle r = SDC.character.getSize();
-		charLoc = new Point2D.Double(charLoc.getX() + r.width/2, charLoc.getY() + r.height/2);
+		Point2D charLoc = SDC.character.getLocation();
+		Rectangle2D r = SDC.character.getRect();
+		charLoc = new Point2D.Double(charLoc.getX() + r.getWidth()/2.0, charLoc.getY() + r.getHeight()/2.0);
 		Thing nearest = new Nothing();
 		nearest.setLocation(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		for (int i = 0; i < things.size(); i++) {
 			Thing t = things.get(i);
-			Point2D tLoc = t.location;
-			Rectangle tr = t.getSize();
-			tLoc = new Point2D.Double(tLoc.getX() + tr.width/2, tLoc.getY() + tr.height/2);
+			Point2D tLoc = t.getLocation();
+			Rectangle2D tr = t.getRect();
+			tLoc = new Point2D.Double(tLoc.getX() + tr.getWidth()/2.0, tLoc.getY() + tr.getHeight()/2.0);
 			double dist = charLoc.distance(tLoc);
 			
-			Point2D nLoc = nearest.location;
-			Rectangle nr = nearest.getSize();
-			nLoc = new Point2D.Double(nLoc.getX() + nr.width/2, nLoc.getY() + nr.height/2);
+			Point2D nLoc = nearest.getLocation();
+			Rectangle2D nr = nearest.getRect();
+			nLoc = new Point2D.Double(nLoc.getX() + nr.getWidth()/2.0, nLoc.getY() + nr.getHeight()/2.0);
 			if (dist <= PICKUP_RADIUS && dist < charLoc.distance(nLoc) && t != SDC.character) {
 				nearest = t;
 			}
@@ -126,13 +127,12 @@ public class CoreGameplayPanel extends JPanel{
 		g.drawImage(Images.array[Images.leftArrowIndex], (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.bottomArrowIndex], (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR), null);
 		g.drawImage(Images.array[Images.topArrowIndex], (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), null);
-		g.drawImage(SDC.character.getImage(), (int) SDC.character.getLocation().getX(),
-				(int) SDC.character.getLocation().getY(), null);
+		SDC.character.drawEntity(g);
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		for (int i = 0; i < current.things.size(); i++) {
 			Thing t = current.things.get(i);
 			if (t.image != null && t != SDC.character) {
-				g.drawImage(t.getImage(), (int) t.getLocation().getX(), (int) t.getLocation().getY(), null);
+				t.drawEntity(g);
 			}
 		}
 		g.setColor(Color.red);

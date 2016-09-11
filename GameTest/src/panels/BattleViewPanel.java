@@ -17,6 +17,7 @@ import misc.Images;
 import misc.SDC;
 import rooms.StandardRoom;
 import things.Thing;
+import things.entities.BattleEntity;
 import things.entities.Entity;
 
 public class BattleViewPanel extends JPanel {
@@ -46,26 +47,16 @@ public class BattleViewPanel extends JPanel {
 		rectLoc.setLocation(p);
 	}
 	
-	public Point2D getBattleLoc(Entity ent) {
-		double SCALE_FACTOR = SDC.SCALE_FACTOR;
-		double battleRatioX = (696 * SCALE_FACTOR) / (1000 * SCALE_FACTOR); //battle size / normal size
-		double battleRatioY = (703 * SCALE_FACTOR) / (1000 * SCALE_FACTOR);
-		Point2D battleLoc = new Point2D.Double(ent.location.getX() * (battleRatioX),
-				ent.location.getY() * (battleRatioY) + 149); 
-		//(0,149)(696, 149)(0,852)(696,852) 696, 703
-		return battleLoc;
-	}
-	
 	@Override
 	public void paintComponent(Graphics g) {
 		//g.drawImage(Images.array[Images.battleViewBackgroundIndex], 0, 0, (int) (697 * SCALE_FACTOR), (int) (710 * SCALE_FACTOR), null);
 		g.fillRect(0, 0, 1000, 1000);
 		g.setColor(Color.white);
 		drawGrid(g);
-		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		for (int i = 0; i < current.things.size(); i++) {
-			Thing thing = current.things.get(i);
-			g.drawImage(thing.getImage(), (int) thing.location.getX(), (int) thing.location.getY(), null);
+		ArrayList<BattleEntity> entList = control.entList;
+		for (int i = 0; i < entList.size(); i++) { //TODO does this really work with the movement system?
+			Thing thing = entList.get(i);
+			thing.drawEntity(g);
 		}
 		for (int i = 0; i < effects.size(); i++) {
 			Effect e = effects.get(i);

@@ -31,7 +31,7 @@ public class Storage extends Thing {
 	private InventoryDisplay display;
 	private boolean displaying;
 	
-	public Storage(Image i, double x, double y, int w, int l, int rarity) {
+	public Storage(Image i, double x, double y, double w, double l, int rarity) {
 		this.rarity = rarity;
 		super.setSize(w, l);
 		super.setLocation(x, y);
