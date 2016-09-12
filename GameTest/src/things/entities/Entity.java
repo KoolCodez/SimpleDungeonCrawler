@@ -29,7 +29,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 	
 	private String entityType;
 	private String name;
-	public ImageIcon deadImage;
+	public Image deadImage;
 	private ImageIcon finalImage;
 	private int rotation = 0;
 	private List<Item> inventory = new ArrayList<Item>();
@@ -43,7 +43,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 		equipped = new EquippedItems();
 		entityType = "Generic Entity";
 		setLocation(250, 250);
-		deadImage = new ImageIcon();
+		deadImage = Images.array[Images.blankLayerIndex];
 		finalImage = new ImageIcon();
 		rarity = 0;
 	}
@@ -53,7 +53,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 		equipped = new EquippedItems();
 		entityType = "Generic Entity";
 		stats.setStats(health, strength, dexterity, willPower);
-		deadImage = new ImageIcon();
+		deadImage = Images.array[Images.blankLayerIndex];
 		finalImage = new ImageIcon();
 	}
 	
@@ -96,6 +96,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 			System.out.println(this.currentRoom.entities);
 			this.currentRoom.entities.remove(this);
 			this.currentRoom.things.remove(this);
+			System.out.println(deadImage);
 			this.currentRoom.things.add(new Corpse(this));
 		}
 	}
