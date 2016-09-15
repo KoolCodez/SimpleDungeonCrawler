@@ -30,7 +30,6 @@ public class Entity extends Thing implements Serializable { // extend this class
 	private String entityType;
 	private String name;
 	public ImageIcon deadImage;
-	private ImageIcon finalImage;
 	private int rotation = 0;
 	private List<Item> inventory = new ArrayList<Item>();
 	public int maxItems = 20;
@@ -44,7 +43,6 @@ public class Entity extends Thing implements Serializable { // extend this class
 		entityType = "Generic Entity";
 		setLocation(250, 250);
 		deadImage = new ImageIcon();
-		finalImage = new ImageIcon();
 		rarity = 0;
 	}
 
@@ -54,7 +52,6 @@ public class Entity extends Thing implements Serializable { // extend this class
 		entityType = "Generic Entity";
 		stats.setStats(health, strength, dexterity, willPower);
 		deadImage = new ImageIcon();
-		finalImage = new ImageIcon();
 	}
 	
 	public void generateStats(int rarity) {

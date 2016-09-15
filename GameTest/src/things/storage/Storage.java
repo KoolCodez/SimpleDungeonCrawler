@@ -32,6 +32,7 @@ public class Storage extends Thing {
 	private boolean displaying;
 	
 	public Storage(Image i, double x, double y, double w, double l, int rarity) {
+		super();
 		this.rarity = rarity;
 		super.setSize(w, l);
 		super.setLocation(x, y);
