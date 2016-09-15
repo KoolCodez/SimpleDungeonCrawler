@@ -1,6 +1,8 @@
-/panels/
-/rooms/
-/things/
 /combatSystem/
 /effects/
 /misc/
+/movement/
+/panels/
+/rooms/
+/save/
+/things/

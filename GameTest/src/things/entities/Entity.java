@@ -93,6 +93,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 			System.out.println(this.currentRoom.entities);
 			this.currentRoom.entities.remove(this);
 			this.currentRoom.things.remove(this);
+			System.out.println(deadImage);
 			this.currentRoom.things.add(new Corpse(this));
 		}
 	}
