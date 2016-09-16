@@ -16,7 +16,7 @@ public class Character extends Entity {
 		setSize((int) (90 * SDC.SCALE_FACTOR), (int) (90 * SDC.SCALE_FACTOR));
 		setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 		setImage(Images.array[Images.battleCharIndex]);
-		deadImage = new ImageIcon(Images.loadImage("Enemies\\Skull.png", 100.0, 100.0));
+		deadImage = new ImageIcon(Images.loadImage("Enemies/Skull.png", 100.0, 100.0));
 		equipped.weapon = new GodWeapon();
 	}
 }

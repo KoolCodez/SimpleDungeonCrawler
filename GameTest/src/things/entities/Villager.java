@@ -20,7 +20,7 @@ public class Villager extends Entity {
 		setName("Nameless Pawn");
 		setSize((int) (100 * SCALE_FACTOR), (int) (100 * SCALE_FACTOR));
 		setLocation(randomLoc(), randomLoc());
-		setImage(Images.loadImage("Characters\\Villager.png", 100.0, 100.0));
+		setImage(Images.loadImage("Characters/Villager.png", 100.0, 100.0));
 	}
 	
 	@Override

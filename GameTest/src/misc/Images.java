@@ -2,6 +2,7 @@ package misc;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class Images {
-	//Arrows\\
+	//Arrows/
 	public static final int rightArrowOnIndex = 1;
 	public static final int leftArrowOnIndex = 2;
 	public static final int bottomArrowOnIndex = 3;
@@ -23,13 +24,13 @@ public class Images {
 	public static final int leftArrowOffIndex = 6;
 	public static final int bottomArrowOffIndex = 7;
 	public static final int topArrowOffIndex = 8;
-	//Buttons\\
+	//Buttons/
 	public static final int bagButtonIndex = 9;
 	public static final int fightButtonIndex = 10;
 	public static final int fleeButtonIndex = 11;
 	public static final int moveButtonIndex = 12;
 	public static final int resumeButtonIndex = 13;
-	//Characters\\
+	//Characters/
 	
 	public static final int charFrontIndex = 14;
 	public static final int charLeftIndex = 15;
@@ -37,12 +38,12 @@ public class Images {
 	public static final int charLeftOpArmIndex = 17;
 	public static final int charRightOpArmIndex = 18;
 	public static final int battleCharIndex = 19;
-	//Enemies\\
+	//Enemies/
 	public static final int battleGoblinIndex = 20;
-	//Grounds\\
+	//Grounds/
 	public static final int backgroundImgIndex = 21;
 	public static final int battleViewBackgroundIndex = 30;
-	//Items\\
+	//Items/
 	public static final int stickItemIndex = 22;
 	public static final int stickItem2Index = 23;
 	public static final int stickItem3Index = 24;
@@ -50,7 +51,7 @@ public class Images {
 	public static final int stickItem5Index = 26;
 	public static final int headArmor1Index = 31;
 	public static final int blankLayerIndex = 32;
-	//Menus\\
+	//Menus/
 	public static final int battleMenuIndex = 27;
 	public static final int mainMenuIndex = 28;
 	public static final int pauseMenuIndex = 29;
@@ -66,17 +67,9 @@ public class Images {
 	public static Image loadImage(String pathFromTextures, double widthUnscaled, double heightUnscaled) {
 		Image i;
 		try {
-			String name = currentDir + "\\src\\misc\\Textures\\" + pathFromTextures;
-//			System.out.println(name);
-			//System.out.println(System.getProperty("java.class.path"));
-		i = ImageIO.read(new File(name));
-		
-//		InputStream is = Image.class.getResourceAsStream("BlankLayer.png");
-//		i = ImageIO.read(is);
-		
-		//i = ImageIO.read(Image.class.getClassLoader().getResource("/BlankLayer.png"));
-		
-		} catch (IOException e) {
+			String name = "/Textures/" + pathFromTextures;
+			i = Toolkit.getDefaultToolkit().getImage(Images.class.getResource(name));
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 			return array[blankLayerIndex];
 		}
@@ -84,19 +77,6 @@ public class Images {
 		return i;
 	}
 	
-	public static Image loadImage(String pathFromTextures, int widthScaled, int heightScaled) {
-		Image i;
-		try {
-			String name = currentDir + "\\src\\misc\\Textures\\" + pathFromTextures;
-//			System.out.println(name);
-		i = ImageIO.read(new File(name));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return array[blankLayerIndex];
-		}
-		i = i.getScaledInstance(widthScaled, heightScaled, Image.SCALE_SMOOTH);
-		return i;
-	}
 	
 	public static void createImages() throws IOException {
 		array = new Image[33];
@@ -110,7 +90,7 @@ public class Images {
 	}
 	
 	public static void arrows() throws IOException {
-		String localDir = "Arrows\\";
+		String localDir = "Arrows/";
 		
 		Image rightArrowOn = loadImage(localDir + "RightArrowOn.jpg", 50.0, 100.0);
 		array[rightArrowOnIndex] = rightArrowOn;
@@ -140,7 +120,7 @@ public class Images {
 	}
 	
 	public static void buttons() throws IOException {
-		String localDir = "Buttons\\";
+		String localDir = "Buttons/";
 		
 		Image bagButton = loadImage(localDir + "BagButton2x.jpg", 300.0, 100.0);
 		array[bagButtonIndex] = bagButton;
@@ -155,9 +135,9 @@ public class Images {
 	}
 	
 	public static void characters() throws IOException {
-		String localDir = "Characters\\";
+		String localDir = "Characters/";
 		
-//		Image charFront = ImageIO.read(new File("src\\Textures\\Characters\\MainCharFront.jpg"));
+//		Image charFront = ImageIO.read(new File("src/Textures/Characters/MainCharFront.jpg"));
 //		charFront = charFront.getScaledInstance((int) (72 * scale), (int) (92 * scale), Image.SCALE_SMOOTH);
 //		array[charFrontIndex] = charFront;
 		
@@ -166,13 +146,13 @@ public class Images {
 	}
 	
 	public static void enemies() throws IOException {
-		String localDir = "Enemies\\";
+		String localDir = "Enemies/";
 		Image battleGoblin = loadImage(localDir + "BattleGoblin.jpg", 72.0, 100.0);
 		array[battleGoblinIndex] = battleGoblin;
 	}
 	
 	public static void grounds() throws IOException { //I AM THE GROUNDS KEEPER
-		String localDir = "Grounds\\";
+		String localDir = "Grounds/";
 		
 		Image backgroundImg = loadImage(localDir + "BasicGround.jpg", 1000.0, 1000.0);
 		array[backgroundImgIndex] = backgroundImg;
@@ -181,7 +161,7 @@ public class Images {
 	}
 	
 	public static void items() throws IOException {
-		String localDir = "Items\\";
+		String localDir = "Items/";
 		
 		Image stickItem = loadImage(localDir + "Stick.jpg", 100.0, 100.0);
 		array[stickItemIndex] = stickItem;
@@ -200,7 +180,7 @@ public class Images {
 	}
 	
 	public static void menus() throws IOException {
-		String localDir = "Menus\\";
+		String localDir = "Menus/";
 		Image battleMenu = loadImage(localDir + "BattleMenu2.jpg", 1000.0, 1000.0);
 		array[battleMenuIndex] = battleMenu;
 		Image mainMenu = loadImage(localDir + "BrickStone.jpg", 1000.0, 1000.0);

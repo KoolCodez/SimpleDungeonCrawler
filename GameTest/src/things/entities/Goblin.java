@@ -16,8 +16,8 @@ public class Goblin extends Entity {
 		setType("Enemy");
 		equipped.weapon = new Club();
 		setSize((int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));
-		setImage(Images.loadImage("Enemies\\Goblin.png", 100.0, 100.0));
-		Image deadIm = Images.loadImage("Enemies\\Skull.png", 100.0, 100.0);
+		setImage(Images.loadImage("Enemies/Goblin.png", 100.0, 100.0));
+		Image deadIm = Images.loadImage("Enemies/Skull.png", 100.0, 100.0);
 		deadImage = new ImageIcon(deadIm);
 		System.out.println(deadImage);
 	}

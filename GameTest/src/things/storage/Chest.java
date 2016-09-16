@@ -16,7 +16,6 @@ public class Chest extends Storage {
 	}
 	
 	private static Image loadImage() {
-		return Images.loadImage("Items\\Chest.png", w, l);
+		return Images.loadImage("Items/Chest.png", w / SDC.SCALE_FACTOR, l / SDC.SCALE_FACTOR);
 	}
-
 }

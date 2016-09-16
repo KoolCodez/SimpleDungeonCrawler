@@ -15,7 +15,7 @@ public class Linens extends Armor {
 	
 	private static Image getGameImage(String type) {
 		Image image = null;
-		int size = (int) (100 * SDC.SCALE_FACTOR);
+		double size = 100.0;
 		switch (type) {
 		case "head": image = Images.loadImage("Items\\headLinens.png", size, size);
 			break;
