@@ -11,7 +11,11 @@ public class Chest extends Storage {
 	static int l = (int) (70*SDC.SCALE_FACTOR);
 	
 	public Chest(double x, double y, int rarity) {
-		super(loadImage(), x, y, w, l, rarity);
+		super();
+		this.rarity = rarity;
+		super.setSize(w, l);
+		super.setLocation(x, y);
+		super.setImage(loadImage());
 		setCapacity(12);
 	}
 	

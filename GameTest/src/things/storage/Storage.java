@@ -44,6 +44,15 @@ public class Storage extends Thing {
 		displaying = false;
 	}
 	
+	public Storage () {
+		super();
+		inventory = new ArrayList<Item>();
+		display = new InventoryDisplay();
+		display.setInventory(inventory);
+		display.setRect((int) (1000*SDC.SCALE_FACTOR), (int) (600 * SDC.SCALE_FACTOR), (int) (300*SDC.SCALE_FACTOR), (int) (300*SDC.SCALE_FACTOR));
+		displaying = false;
+	}
+	
 	@Override
 	public void addOptions(JPanel panel) {
 		panel.add(createTakeButton());
