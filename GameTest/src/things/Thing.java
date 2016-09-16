@@ -49,7 +49,7 @@ public class Thing {
 	}
 
 	public void drawEntity(Graphics g) {
-		g.drawImage(image.getImage(), (int) outline.getX(), (int) outline.getY(), null);
+		g.drawImage(getImage(), (int) outline.getX(), (int) outline.getY(), null);
 	}
 	
 	public Image getImage() {
