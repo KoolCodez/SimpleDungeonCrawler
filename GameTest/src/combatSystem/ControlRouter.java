@@ -54,7 +54,7 @@ public class ControlRouter {
 	public Point selected;
 
 	public ControlRouter(String door) {
-		battleTurnPanel = new BattleTurnPanel(this);
+		
 		setLocationForBattle(door);
 		startBattleQueue();
 		entList = new ArrayList<BattleEntity>();
@@ -65,10 +65,10 @@ public class ControlRouter {
 				}
 			}
 		}
-		displayBattle(battleTurnPanel);
 		sideBar = new BattleSideBar(this, new Nothing());
 		character = SDC.character;
-		
+		battleTurnPanel = new BattleTurnPanel(this);
+		displayBattle(battleTurnPanel);
 	}
 
 	public void startBattleQueue() {
@@ -86,14 +86,20 @@ public class ControlRouter {
 	public void drawQueue(Graphics g) {
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		Point loc = new Point((int) (800 * SDC.SCALE_FACTOR), (int) (550 * SDC.SCALE_FACTOR));
-		Entity[] q = battleQueue.initList.toArray(new Entity[battleQueue.initList.size()]);
-		for (int i = 0; i < q.length; i++) {
-			Entity e = q[i];
-			Image image = e.getImage();
-			image = image.getScaledInstance((int) (50 * SDC.SCALE_FACTOR), (int) (50 * SDC.SCALE_FACTOR),
-					Image.SCALE_SMOOTH);
-			g.drawImage(image, loc.x, loc.y, null);
-			loc.y += (int) (60 * SDC.SCALE_FACTOR);
+		if (battleQueue != null) {
+			int battleQueueSize = battleQueue.initList.size();
+			Entity[] blankEntList = new Entity[battleQueueSize];
+			Entity[] q = battleQueue.initList.toArray(blankEntList);
+			for (int i = 0; i < q.length; i++) {
+				Entity e = q[i];
+				Image image = e.getImage();
+				image = image.getScaledInstance((int) (50 * SDC.SCALE_FACTOR), (int) (50 * SDC.SCALE_FACTOR),
+						Image.SCALE_SMOOTH);
+				g.drawImage(image, loc.x, loc.y, null);
+				loc.y += (int) (60 * SDC.SCALE_FACTOR);
+			}
+		} else {
+			System.out.println("battle queue null");
 		}
 	}
 	
