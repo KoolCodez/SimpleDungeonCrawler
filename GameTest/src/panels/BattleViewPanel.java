@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -53,9 +54,9 @@ public class BattleViewPanel extends JPanel {
 		g.fillRect(0, 0, 1000, 1000);
 		g.setColor(Color.white);
 		drawGrid(g);
-		ArrayList<BattleEntity> entList = control.entList;
-		for (int i = 0; i < entList.size(); i++) { //TODO does this really work with the movement system?
-			Thing thing = entList.get(i);
+		List<Thing> things = SDC.roomArray[SDC.loc.x][SDC.loc.y].things;
+		for (int i = 0; i < things.size(); i++) { //TODO does this really work with the movement system?
+			Thing thing = things.get(i);
 			thing.drawEntity(g);
 		}
 		for (int i = 0; i < effects.size(); i++) {

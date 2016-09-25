@@ -68,8 +68,9 @@ public class Images {
 		Image i;
 		try {
 			String name = "/Textures/" + pathFromTextures;
-			i = Toolkit.getDefaultToolkit().getImage(Images.class.getResource(name));
-		} catch (NullPointerException e) {
+			URL url = Images.class.getResource(name);
+			i = ImageIO.read(url);
+		} catch (IOException e) {
 			e.printStackTrace();
 			return array[blankLayerIndex];
 		}

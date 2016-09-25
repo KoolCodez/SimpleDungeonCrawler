@@ -17,20 +17,20 @@ import things.entities.Entity;
 public class Thing {
 	public Rectangle2D outline;
 	protected StandardRoom currentRoom;
-	public ImageIcon image;
+	public Image image;
 	public int rarity;
 	
 	public Thing() {
 		outline = new Rectangle2D.Double();
 		outline.setRect(250 * SDC.SCALE_FACTOR, 250 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
-		image = new ImageIcon(Images.array[Images.blankLayerIndex]);
+		image = Images.array[Images.blankLayerIndex];
 		rarity = 0;
 	}
 	
 	public Thing(Image i, double x, double y, double w, double h, int rarity) {
 		outline = new Rectangle2D.Double();
 		outline.setRect(x, y, w, h);
-		image = new ImageIcon(i);
+		image = i;
 		this.rarity = rarity;
 	}
 	
@@ -45,7 +45,7 @@ public class Thing {
 	}
 	
 	public void setImage(Image i) {
-		image.setImage(i);
+		image = i;
 	}
 
 	public void drawEntity(Graphics g) {
@@ -53,7 +53,7 @@ public class Thing {
 	}
 	
 	public Image getImage() {
-		return image.getImage();
+		return image;
 	}
 	
 	public void interact(Entity interactor) {

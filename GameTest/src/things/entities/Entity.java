@@ -90,10 +90,8 @@ public class Entity extends Thing implements Serializable { // extend this class
 		stats.setHealth(-damage);
 		if (stats.getHealth() <= 0) {
 			this.currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-			System.out.println(this.currentRoom.entities);
 			this.currentRoom.entities.remove(this);
 			this.currentRoom.things.remove(this);
-			System.out.println(deadImage);
 			this.currentRoom.things.add(new Corpse(this));
 		}
 	}

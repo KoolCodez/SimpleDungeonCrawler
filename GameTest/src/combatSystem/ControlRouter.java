@@ -57,6 +57,33 @@ public class ControlRouter {
 		
 		setLocationForBattle(door);
 		startBattleQueue();
+		refreshEnts();
+		
+		sideBar = new BattleSideBar(this, new Nothing());
+		character = SDC.character;
+		battleTurnPanel = new BattleTurnPanel(this);
+		displayBattle(battleTurnPanel);
+		battleQueue.start();
+	}
+
+	public void startBattleQueue() {
+		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
+		ArrayBlockingQueue<BattleEntity> queue = setInitiative(currentRoom);
+		battleQueue = new BattleQueue(this, queue);
+		
+	}
+	
+	private void refreshEnts() {
+		for (int i = 0; i < entTable.length; i++) {
+			for (int j = 0; j < entTable[i].length; j++) {
+				if (entTable[i][j] != null) {
+					if (entTable[i][j].stats.getHealth() <= 0) {
+						entTable[i][j] = null;
+					}
+				}
+			}
+		}
+		
 		entList = new ArrayList<BattleEntity>();
 		for (int i = 0; i < entTable.length; i++) {
 			for (int j = 0; j < entTable[i].length; j++) {
@@ -65,17 +92,6 @@ public class ControlRouter {
 				}
 			}
 		}
-		sideBar = new BattleSideBar(this, new Nothing());
-		character = SDC.character;
-		battleTurnPanel = new BattleTurnPanel(this);
-		displayBattle(battleTurnPanel);
-	}
-
-	public void startBattleQueue() {
-		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		ArrayBlockingQueue<BattleEntity> queue = setInitiative(currentRoom);
-		battleQueue = new BattleQueue(this, queue);
-		battleQueue.start();
 	}
 	
 	private void displayBattle(JPanel panel) {
@@ -517,7 +533,6 @@ public class ControlRouter {
 		}
 		
 		entTable = new BattleEntity[5][5];
-
 		for (int i = 0; i < currentRoom.entities.size(); i++) {
 			BattleEntity temp = currentRoom.entities.get(i).generateBattleEnt();
 			if (temp.getType().equals("Enemy")) {
