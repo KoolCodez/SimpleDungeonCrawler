@@ -54,9 +54,9 @@ public class BattleViewPanel extends JPanel {
 		g.fillRect(0, 0, 1000, 1000);
 		g.setColor(Color.white);
 		drawGrid(g);
-		List<Thing> things = SDC.roomArray[SDC.loc.x][SDC.loc.y].things;
-		for (int i = 0; i < things.size(); i++) { //TODO does this really work with the movement system?
-			Thing thing = things.get(i);
+		List<BattleEntity> ents = control.entList;//SDC.roomArray[SDC.loc.x][SDC.loc.y].things;
+		for (int i = 0; i < ents.size(); i++) { //TODO does this really work with the movement system?
+			Thing thing = ents.get(i);
 			thing.drawEntity(g);
 		}
 		for (int i = 0; i < effects.size(); i++) {
