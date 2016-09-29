@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import misc.Images;
 import misc.SDC;
 import things.items.Stick;
+import things.items.weapons.Fists;
 import things.items.weapons.GodWeapon;
 
 public class Character extends Entity {
@@ -17,6 +18,6 @@ public class Character extends Entity {
 		setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 		setImage(Images.array[Images.battleCharIndex]);
 		deadImage = new ImageIcon(Images.loadImage("Enemies/Skull.png", 100.0, 100.0));
-		equipped.weapon = new GodWeapon();
+		equipped.weapon = new Fists();
 	}
 }
