@@ -1,38 +1,18 @@
 package misc;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.MenuItem;
 import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.PopupMenu;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
 import combatSystem.ControlRouter;
 import effects.Effect;
-import movement.MoveDown;
-import movement.MoveDownLeft;
-import movement.MoveDownRight;
-import movement.MoveLeft;
-import movement.MoveRight;
-import movement.MoveUp;
-import movement.MoveUpLeft;
-import movement.MoveUpRight;
 import panels.CoreGameplayPanel;
 import panels.MainMenu;
 import rooms.BattleRoom;
@@ -40,26 +20,7 @@ import rooms.HomeRoom;
 import rooms.StandardRoom;
 import rooms.TreasureRoom;
 import things.entities.Entity;
-import things.items.Item;
-import things.items.Stick;
-import things.items.weapons.GodWeapon;
-import things.items.weapons.Weapon;
 import things.entities.Character;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.*;
 
 public class SDC extends JPanel { //SimpleDungeonCrawler
 	private static final String ROOM_ARRAY_SAVE_TAG = "roomArray";
