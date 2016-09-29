@@ -18,7 +18,6 @@ import misc.Images;
 import misc.SDC;
 import rooms.StandardRoom;
 import things.Thing;
-import things.entities.BattleEntity;
 import things.entities.Entity;
 
 public class BattleViewPanel extends JPanel {
@@ -54,7 +53,7 @@ public class BattleViewPanel extends JPanel {
 		g.fillRect(0, 0, 1000, 1000);
 		g.setColor(Color.white);
 		drawGrid(g);
-		List<BattleEntity> ents = control.entList;//SDC.roomArray[SDC.loc.x][SDC.loc.y].things;
+		List<Entity> ents = control.entList;//SDC.roomArray[SDC.loc.x][SDC.loc.y].things;
 		for (int i = 0; i < ents.size(); i++) { //TODO does this really work with the movement system?
 			Thing thing = ents.get(i);
 			thing.drawEntity(g);

@@ -14,17 +14,16 @@ import panels.BattleTurnPanel;
 import panels.BattleViewPanel;
 import panels.CoreGameplayPanel;
 import rooms.StandardRoom;
-import things.entities.BattleEntity;
 import things.entities.Entity;
 import things.entities.Goblin;
 
 public class BattleQueue extends Thread {
 	ControlRouter control;
-	ArrayBlockingQueue<BattleEntity> initList;
+	ArrayBlockingQueue<Entity> initList;
 
 	Utilities utilities = new Utilities();
 
-	public BattleQueue(ControlRouter p, ArrayBlockingQueue<BattleEntity> i) {
+	public BattleQueue(ControlRouter p, ArrayBlockingQueue<Entity> i) {
 		control = p;
 		initList = i;
 	}
@@ -34,7 +33,7 @@ public class BattleQueue extends Thread {
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		while (checkLiving(currentRoom) && !control.flee) {
 			for (int i = 0; i < initList.size(); i++) {
-				BattleEntity currentEntity = initList.peek();
+				Entity currentEntity = initList.peek();
 				if (control.flee || !checkLiving(currentRoom)) {
 					return;
 				}
@@ -47,7 +46,7 @@ public class BattleQueue extends Thread {
 				} else {
 					printEntityError(currentEntity);
 				}
-				BattleEntity e = initList.remove();
+				Entity e = initList.remove();
 				initList.add(e);
 				sleep(1000);
 				// checkHealth(currentRoom);
@@ -60,7 +59,7 @@ public class BattleQueue extends Thread {
 	private void refreshQueue() {
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		for (int i = 0; i < initList.size(); i++) {
-			BattleEntity ent = initList.remove();
+			Entity ent = initList.remove();
 			boolean isAlive = current.entities.contains(ent);
 			if (isAlive || ent.stats.getHealth() > 0) {
 				initList.add(ent);

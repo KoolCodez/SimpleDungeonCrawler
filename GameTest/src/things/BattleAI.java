@@ -5,21 +5,20 @@ import java.util.ArrayList;
 
 import combatSystem.ControlRouter;
 import misc.SDC;
-import things.entities.BattleEntity;
 import things.entities.Entity;
 import things.items.weapons.Weapon;
 
 public class BattleAI {
-	private BattleEntity host;
+	private Entity host;
 	private ControlRouter control;
-	private BattleEntity target;
+	private Entity target;
 	
-	public BattleAI(BattleEntity h) {
+	public BattleAI(Entity h) {
 		host = h;
 	}
 	
-	public int nextMove(int turnPoints, ArrayList<BattleEntity> entList, 
-			BattleEntity[][] entTable, ControlRouter c) {
+	public int nextMove(int turnPoints, ArrayList<Entity> entList, 
+			Entity[][] entTable, ControlRouter c) {
 		control = c;
 		target = decideTarget(entList);
 		Weapon hostWeapon = host.equipped.weapon;
@@ -37,9 +36,9 @@ public class BattleAI {
 		return turnPoints;
 	}
 	
-	private BattleEntity decideTarget(ArrayList<BattleEntity> entList) {
+	private Entity decideTarget(ArrayList<Entity> entList) {
 		for (int i = 0; i < entList.size(); i++) {
-			BattleEntity ent  = entList.get(i);
+			Entity ent  = entList.get(i);
 			if (ent.getType().equals("Friendly") || ent.getType().equals("Character")) {
 				return ent;
 			}

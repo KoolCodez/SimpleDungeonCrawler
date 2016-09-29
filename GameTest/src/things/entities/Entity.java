@@ -18,6 +18,7 @@ import misc.SDC;
 import misc.TextureGenerator;
 import misc.Utilities;
 import rooms.StandardRoom;
+import things.BattleAI;
 import things.Thing;
 import things.items.Item;
 import things.items.weapons.Fists;
@@ -36,6 +37,10 @@ public class Entity extends Thing implements Serializable { // extend this class
 	public EntityStats stats = new EntityStats();
 	public EquippedItems equipped;
 	
+	public BattleAI battleAI;
+	public Point battleLoc;
+	
+	
 	public Entity() {
 		super();
 		name = "Entity";
@@ -44,6 +49,9 @@ public class Entity extends Thing implements Serializable { // extend this class
 		setLocation(250, 250);
 		deadImage = new ImageIcon();
 		rarity = 0;
+		
+		battleAI = new BattleAI(this);
+		battleLoc = new Point();
 	}
 
 	public Entity(double health, double strength, double dexterity, double willPower, int rarity) {
@@ -52,6 +60,9 @@ public class Entity extends Thing implements Serializable { // extend this class
 		entityType = "Generic Entity";
 		stats.setStats(health, strength, dexterity, willPower);
 		deadImage = new ImageIcon();
+		
+		battleAI = new BattleAI(this);
+		battleLoc = new Point();
 	}
 	
 	public void generateStats(int rarity) {
@@ -67,6 +78,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 		stats.setStats(health, strength, dexterity, willPower);
 	}
 	
+	@Override
 	public void displayOnSide(Graphics g) {
 		double scale = SDC.SCALE_FACTOR;
 		super.displayOnSide(g);
@@ -79,11 +91,6 @@ public class Entity extends Thing implements Serializable { // extend this class
 		g.drawString("Name: " + name, (int) (1000 * scale), (int) (475 * scale));
 		g.drawString("Entity Type: " + entityType, (int) (1000 * scale), (int) (495 * scale));
 		
-	}
-	
-	public BattleEntity generateBattleEnt() {
-		BattleEntity battleEnt = new BattleEntity(this);
-		return battleEnt;
 	}
 	
 	public void damageEnt(double damage) {
@@ -110,6 +117,14 @@ public class Entity extends Thing implements Serializable { // extend this class
 		Image i = ig.compileImage(images);
 		i = ig.rotate(i, rotation);
 		g.drawImage(i, (int) outline.getX(), (int) outline.getY(), null);
+	}
+	
+	public void setBattleLoc(Point loc) {
+		battleLoc = loc;
+		double size = 140 * SDC.SCALE_FACTOR;
+		double xOffset = (size - outline.getWidth()) / 2;
+		double yOffset = (size - outline.getHeight()) / 2;
+		setLocation(battleLoc.getX()*size + xOffset, battleLoc.getY()*size + yOffset);
 	}
 	
 	public void setAngle(int degrees) {

@@ -32,7 +32,6 @@ import rooms.HomeRoom;
 import rooms.StandardRoom;
 import things.BattleAI;
 import things.Nothing;
-import things.entities.BattleEntity;
 import things.entities.Entity;
 import things.entities.Goblin;
 import things.entities.Villager;
@@ -48,16 +47,17 @@ public class ControlRouter {
 	private Utilities utilities = new Utilities();
 	private Entity character;
 	public TurnWait waitForTurn = new TurnWait();
-	private BattleEntity[][] entTable;
-	public ArrayList<BattleEntity> entList;
+	private Entity[][] entTable;
+	public ArrayList<Entity> entList;
 	public boolean flee = false;
 	public Point selected;
 
 	public ControlRouter(String door) {
-		
+		entTable = new Entity[5][5];
 		setLocationForBattle(door);
-		startBattleQueue();
 		refreshEnts();
+		startBattleQueue();
+		
 		
 		sideBar = new BattleSideBar(this, new Nothing());
 		character = SDC.character;
@@ -68,7 +68,7 @@ public class ControlRouter {
 
 	public void startBattleQueue() {
 		StandardRoom currentRoom = SDC.roomArray[SDC.loc.x][SDC.loc.y];
-		ArrayBlockingQueue<BattleEntity> queue = setInitiative(currentRoom);
+		ArrayBlockingQueue<Entity> queue = setInitiative(currentRoom);
 		battleQueue = new BattleQueue(this, queue);
 		
 	}
@@ -84,7 +84,7 @@ public class ControlRouter {
 			}
 		}
 		
-		entList = new ArrayList<BattleEntity>();
+		entList = new ArrayList<Entity>();
 		for (int i = 0; i < entTable.length; i++) {
 			for (int j = 0; j < entTable[i].length; j++) {
 				if (entTable[i][j] != null) {
@@ -119,11 +119,11 @@ public class ControlRouter {
 		}
 	}
 	
-	public BattleEntity getSelectedEnt() {
+	public Entity getSelectedEnt() {
 		return entTable[selected.x][selected.y];
 	}
 
-	public void enemyTurn(BattleEntity currentEntity) {
+	public void enemyTurn(Entity currentEntity) {
 		int turnPoints = 6;
 		while (turnPoints > 0) {
 			turnPoints = currentEntity.battleAI.nextMove(turnPoints, entList, entTable, this);
@@ -182,7 +182,7 @@ public class ControlRouter {
 		if (!door.equals("")) {
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].entities.remove(SDC.character);
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].things.remove(SDC.character);
-			BattleEntity battleChar = getPlayerEnt();
+			Entity battleChar = getPlayerEnt();
 			entTable[battleChar.battleLoc.x][battleChar.battleLoc.y] = null;
 		}
 		// character.setImage(Images.array[Images.battleCharIndex]);
@@ -222,9 +222,9 @@ public class ControlRouter {
 		flee = true;
 	}
 	
-	private BattleEntity getPlayerEnt() {
+	private Entity getPlayerEnt() {
 		for (int i = 0; i < entList.size(); i++) {
-			BattleEntity ent = entList.get(i);
+			Entity ent = entList.get(i);
 			if (ent.getType().equals("Character")) {
 				return ent;
 			}
@@ -265,16 +265,16 @@ public class ControlRouter {
 	}
 
 	public void charAttack() {
-		BattleEntity target = getSelectedEnt();
+		Entity target = getSelectedEnt();
 		attack(getPlayerEnt(), target);
 	}
 	
 	public void charShove() {
-		BattleEntity target = getSelectedEnt();
+		Entity target = getSelectedEnt();
 		shove(getPlayerEnt(), target);
 	}
 
-	public void attack(BattleEntity attacker, BattleEntity target) {
+	public void attack(Entity attacker, Entity target) {
 		
 		if (target != null) {
 			if (legalAttack(attacker, target)) {
@@ -297,7 +297,7 @@ public class ControlRouter {
 		}
 	}
 
-	private boolean legalAttack(BattleEntity attacker, BattleEntity target) {
+	private boolean legalAttack(Entity attacker, Entity target) {
 		int xDist = Math.abs(attacker.battleLoc.x - target.battleLoc.x);
 		int yDist = Math.abs(attacker.battleLoc.y - target.battleLoc.y);
 		if (attacker.getType().equals(target.getType())) {
@@ -310,7 +310,7 @@ public class ControlRouter {
 		}
 	}
 	
-	public void shove(BattleEntity attacker, BattleEntity target) {
+	public void shove(Entity attacker, Entity target) {
 		if (target != null) {
 			if (legalShove(attacker, target)) {
 				System.out.println(attacker.getName() + attacker.getType() + " Shove!");
@@ -343,16 +343,16 @@ public class ControlRouter {
 		
 	}
 	
-	private boolean legalShove(BattleEntity attacker, BattleEntity target) {
+	private boolean legalShove(Entity attacker, Entity target) {
 		int xDist = Math.abs(attacker.battleLoc.x - target.battleLoc.x);
 		int yDist = Math.abs(attacker.battleLoc.y - target.battleLoc.y);
 		return xDist + yDist <= 1;
 	}
 	
-	private void push(BattleEntity attacker, BattleEntity target) {
+	private void push(Entity attacker, Entity target) {
 		int xDist = target.battleLoc.x - attacker.battleLoc.x;
 		int yDist = target.battleLoc.y - attacker.battleLoc.y;
-		BattleEntity target2 = entTable[target.battleLoc.x + xDist][target.battleLoc.y + yDist];
+		Entity target2 = entTable[target.battleLoc.x + xDist][target.battleLoc.y + yDist];
 		if (target2 != null) {
 			push(target, target2);
 		} else {
@@ -360,7 +360,7 @@ public class ControlRouter {
 		}
 	}
 	
-	private void displayDamage(double damage, BattleEntity attacker, BattleEntity target) {
+	private void displayDamage(double damage, Entity attacker, Entity target) {
 		Point2D doublePoint = attacker.getLocation();
 		Point location = new Point((int) doublePoint.getX(), (int) doublePoint.getY() + 10);
 		Swipe s = new Swipe(location);
@@ -412,7 +412,7 @@ public class ControlRouter {
 
 	public void move(String direction) {
 		int newTurnPoints = 0;
-		BattleEntity character = getPlayerEnt();
+		Entity character = getPlayerEnt();
 		switch (direction) {
 		case "left":
 			newTurnPoints = battleMove(-1, 0, character, waitForTurn.getTurnPoints());
@@ -432,7 +432,7 @@ public class ControlRouter {
 		waitForTurn.setTurnPoints(newTurnPoints);
 	}
 
-	public int battleMove(int xChange, int yChange, BattleEntity ent, int turnPoints) {
+	public int battleMove(int xChange, int yChange, Entity ent, int turnPoints) {
 		Point loc = ent.battleLoc;
 		if (turnPoints >= 3) {
 			turnToward(loc.x + xChange, loc.y + yChange, ent);
@@ -450,7 +450,7 @@ public class ControlRouter {
 		return turnPoints;
 	}
 	
-	public void turnToward(int xTarget, int yTarget, BattleEntity ent) {
+	public void turnToward(int xTarget, int yTarget, Entity ent) {
 		int xChange = xTarget - ent.battleLoc.x;
 		int yChange = yTarget - ent.battleLoc.y;
 		if (Math.abs(xChange) > Math.abs(yChange) && xTarget != ent.battleLoc.x) {
@@ -532,9 +532,8 @@ public class ControlRouter {
 			break;
 		}
 		
-		entTable = new BattleEntity[5][5];
 		for (int i = 0; i < currentRoom.entities.size(); i++) {
-			BattleEntity temp = currentRoom.entities.get(i).generateBattleEnt();
+			Entity temp = currentRoom.entities.get(i);
 			if (temp.getType().equals("Enemy")) {
 				temp.setBattleLoc(new Point(enemyPoint.x, enemyPoint.y));
 				enemyPoint = nextPoint(enemyPoint, horizontal);
@@ -597,9 +596,9 @@ public class ControlRouter {
 		}
 	}
 
-	private ArrayBlockingQueue<BattleEntity> setInitiative(StandardRoom current) {
-		ArrayBlockingQueue<BattleEntity> q = new ArrayBlockingQueue<BattleEntity>(current.entities.size());
-		List<BattleEntity> eList = new ArrayList<BattleEntity>();
+	private ArrayBlockingQueue<Entity> setInitiative(StandardRoom current) {
+		ArrayBlockingQueue<Entity> q = new ArrayBlockingQueue<Entity>(current.entities.size());
+		List<Entity> eList = new ArrayList<Entity>();
 		for (int i = 0; i < entTable.length; i++) {
 			for (int j = 0; j < entTable[i].length; j++) {
 				if (entTable[i][j] != null) {
@@ -609,7 +608,7 @@ public class ControlRouter {
 		}
 		int size = eList.size();
 		for (int i = 0; i < size; i++) {
-			BattleEntity randomE = eList.get((int) Math.round(Math.random() * (eList.size() - 1)));
+			Entity randomE = eList.get((int) Math.round(Math.random() * (eList.size() - 1)));
 			eList.remove(randomE);
 			q.add(randomE);
 		}

@@ -2,6 +2,7 @@ package effects;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 import misc.SDC;
@@ -17,14 +18,17 @@ public class FallingMiss extends Effect {
 		velocityY = -8;
 	}
 	
-	public void draw(Graphics g) {
+	@Override
+	protected void drawEffect(Graphics2D g) {
 		g.setFont(SDC.font);
 		g.setColor(Color.orange);
 		g.drawString("Miss!", location.x, location.y);
 		g.setColor(Color.black);
 	}
 	
+	@Override
 	public void run() {
+		super.run();
 		try {
 			for (int i = 0; i < 50; i++) {
 				location.x += velocityX;

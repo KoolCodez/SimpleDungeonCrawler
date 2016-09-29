@@ -9,15 +9,12 @@ import java.awt.Point;
 import misc.Images;
 import misc.SDC;
 import misc.TextureGenerator;
-import things.entities.BattleEntity;
 import things.entities.Entity;
 
 public class Swipe extends Effect {
-	private float opacity;
 	public Swipe(Point l) {
 		image = getImage();
 		location = l;
-		opacity = 1.0f;
 	}
 
 	public void run() {
@@ -32,26 +29,13 @@ public class Swipe extends Effect {
 	}
 
 	private Image getImage() {
-		Image i = Images.loadImage("Characters\\swipe.png", (int) (100*SDC.SCALE_FACTOR), (int) (100*SDC.SCALE_FACTOR));
+		Image i = Images.loadImage("Characters/swipe.png", (int) (100*SDC.SCALE_FACTOR), (int) (100*SDC.SCALE_FACTOR));
 		return i;
 	}
 	
-	public void draw(Graphics g) {
-		if (opacity >= 0) {
-			opacity = opacity - .02f;
-		} else {
-			opacity = 0;
-		}
-		if (opacity > 0) {
-			Graphics2D g2d = (Graphics2D) g;
-			//System.out.println(opacity);
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-			g2d.drawImage(image, location.x, location.y, null);
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-		} 
-	}
 	
-	public void fixLocation(BattleEntity attacker, BattleEntity target) {
+	
+	public void fixLocation(Entity attacker, Entity target) {
 		TextureGenerator tg = new TextureGenerator();
 		Point aLoc = attacker.battleLoc;
 		Point tLoc = target.battleLoc;

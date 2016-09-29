@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 import combatSystem.ControlRouter;
+import effects.Effect;
 import movement.MoveDown;
 import movement.MoveDownLeft;
 import movement.MoveDownRight;
@@ -72,6 +73,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 	public static StandardRoom[][] roomArray;
 	public static Point loc = new Point(0,0);
 	public static Entity character;
+	public static ArrayList<Effect> effects;
 	public static double playerSpeed = 8 * SCALE_FACTOR;
 	public static double diagSpeed = playerSpeed / Math.sqrt(2);
 	public static Graphics g;

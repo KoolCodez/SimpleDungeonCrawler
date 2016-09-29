@@ -42,7 +42,7 @@ public class CoreGameplayPanel extends JPanel{
 	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	private static int SCALED_100 = SDC.SCALED_100;
 	public static final double PICKUP_RADIUS = 200 * SDC.SCALE_FACTOR;
-	private ArrayList<Effect> effects;
+	
 	public MovementController movementController;
 	private GameplaySideBar sideBar;
 
@@ -50,7 +50,7 @@ public class CoreGameplayPanel extends JPanel{
 		movementController = new MovementController(this);
 		createKeybinds();
 		setLayout(null);
-		effects = new ArrayList<Effect>();
+		SDC.effects = new ArrayList<Effect>();
 		this.setOpaque(false);
 		createMenuButton();
 		sideBar = new GameplaySideBar(new Nothing(), null);
@@ -136,8 +136,8 @@ public class CoreGameplayPanel extends JPanel{
 			}
 		}
 		g.setColor(Color.red);
-		for (int i = 0; i < effects.size(); i++) {
-			effects.get(i).draw(g);
+		for (int i = 0; i < SDC.effects.size(); i++) {
+			SDC.effects.get(i).draw(g);
 		}
 		g.setColor(Color.black);
 	}

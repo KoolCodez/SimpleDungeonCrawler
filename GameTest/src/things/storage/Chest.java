@@ -4,7 +4,6 @@ import java.awt.Image;
 
 import misc.Images;
 import misc.SDC;
-import things.items.Stick;
 
 public class Chest extends Storage {
 	static int w = (int) (100*SDC.SCALE_FACTOR);
@@ -15,11 +14,8 @@ public class Chest extends Storage {
 		this.rarity = rarity;
 		super.setSize(w, l);
 		super.setLocation(x, y);
-		setImage(loadImage());
+		setImage(Images.loadImage("Storage/chest.png", 100, 70));
+		//Images.loadImage("Storage/Chest.png", w / SDC.SCALE_FACTOR, l / SDC.SCALE_FACTOR)
 		setCapacity(12);
-	}
-	
-	private static Image loadImage() {
-		return Images.loadImage("Items/Chest.png", w / SDC.SCALE_FACTOR, l / SDC.SCALE_FACTOR);
 	}
 }

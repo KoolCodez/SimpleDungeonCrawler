@@ -27,7 +27,9 @@ public class FallingDamageNumber extends Effect {
 		g.setColor(Color.black);
 	}
 	
+	@Override
 	public void run() {
+		super.run();
 		try {
 			for (int i = 0; i < 50; i++) {
 				location.x += velocityX;
