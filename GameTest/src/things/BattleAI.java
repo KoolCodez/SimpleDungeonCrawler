@@ -1,6 +1,7 @@
 package things;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import combatSystem.ControlRouter;
@@ -8,7 +9,7 @@ import misc.SDC;
 import things.entities.Entity;
 import things.items.weapons.Weapon;
 
-public class BattleAI {
+public class BattleAI implements Serializable {
 	private Entity host;
 	private ControlRouter control;
 	private Entity target;

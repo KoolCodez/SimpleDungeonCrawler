@@ -14,7 +14,7 @@ public class FallingDamageNumber extends Effect {
 	private final double acceleration = 1;
 	
 	public FallingDamageNumber(double damage, Point startLoc) {
-		this.damage = damage;
+		this.damage = Math.round(damage * 100) / 100;
 		location = startLoc;
 		velocityX = (Math.random() - .5) * 12;
 		velocityY = -8;

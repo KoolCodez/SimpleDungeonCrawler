@@ -68,12 +68,12 @@ public class MainMenu extends JPanel{
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					SDC.loadAllImportantStuff();
-				} catch (ClassNotFoundException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+					try {
+						SDC.loadAllImportantStuff();
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 			}
 		});
 		loadButton.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);

@@ -579,16 +579,16 @@ public class ControlRouter {
 	private void setLocationFromBattle(Entity ent, String door) {
 		switch (door) {
 		case "left":
-			character.getLocation().setLocation(100 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
-			break;
-		case "right":
 			character.getLocation().setLocation(800 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
 			break;
+		case "right":
+			character.getLocation().setLocation(100 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+			break;
 		case "top":
-			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
+			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 800 * SDC.SCALE_FACTOR);
 			break;
 		case "bottom":
-			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 800 * SDC.SCALE_FACTOR);
+			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
 			break;
 		default:
 			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);

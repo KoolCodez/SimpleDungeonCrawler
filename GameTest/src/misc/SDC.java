@@ -48,9 +48,9 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		// System.out.println("Current working directory in Java : " + current);
 		frameSetup();
 		Images.createImages();
-		createRoomArray();
-		createLoc();
-		createCharacter();
+		createOrLoadRoomArray();
+		createOrLoadLoc();
+		createOrLoadCharacter();
 		Refresh r1 = new Refresh();
 		r1.start();
 		refreshArrows();
@@ -66,26 +66,26 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		g.setColor(Color.white);
 	}
 	
-	private static void createLoc() throws ClassNotFoundException, IOException {
+	private static void createOrLoadLoc() throws ClassNotFoundException {
 		if (new File("src\\save\\" + LOC_SAVE_TAG).exists()) {
 			loc = (Point) loadObject(LOC_SAVE_TAG);
-		} else {
+		} else if (loc == null) {
 			loc = new Point(0, 0);
 		}
 	}
 	
-	private static void createCharacter() throws ClassNotFoundException, IOException {
+	private static void createOrLoadCharacter() throws ClassNotFoundException {
 		if (new File("src\\save\\" + CHARACTER_SAVE_TAG).exists()) {
 			character = (Entity) loadObject(CHARACTER_SAVE_TAG);
-		} else {
+		} else if (character == null) {
 			character = new Character();
 		}
 	}
 	
-	private static void createRoomArray() throws ClassNotFoundException, IOException {
+	private static void createOrLoadRoomArray() throws ClassNotFoundException{
 		if (new File("src\\save\\" + ROOM_ARRAY_SAVE_TAG).exists()) {
 			roomArray = (StandardRoom[][]) loadObject(ROOM_ARRAY_SAVE_TAG);
-		} else {
+		} else if (roomArray == null) {
 			roomArray = new StandardRoom[10][10];
 			StandardRoom current = new HomeRoom();
 			current.typeOfRoom = "Standard";
@@ -99,14 +99,15 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		saveObject(loc, LOC_SAVE_TAG);
 	}
 	
-	public static void loadAllImportantStuff() throws ClassNotFoundException, IOException {
-		character = (Entity) loadObject(CHARACTER_SAVE_TAG);
-		roomArray = (StandardRoom[][]) loadObject(ROOM_ARRAY_SAVE_TAG);
-		loc = (Point) loadObject(LOC_SAVE_TAG);
+	public static void loadAllImportantStuff() throws ClassNotFoundException {
+		createOrLoadCharacter();
+		createOrLoadRoomArray();
+		createOrLoadLoc();
 	}
 	
 	public static void saveObject(Object object, String name) throws IOException {
-		FileOutputStream fileOutput = new FileOutputStream("src\\save\\" + name);
+		
+		FileOutputStream fileOutput = new FileOutputStream("./save/" + name);
 		ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
 		objectOutput.writeObject(object);
 		objectOutput.close();
@@ -114,14 +115,18 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		System.out.println("Object " + name + " saved.");
 	}
 	
-	public static Object loadObject(String name) throws ClassNotFoundException, IOException {
-			FileInputStream fileInput = new FileInputStream("src\\save\\" + name);
+	public static Object loadObject(String name) throws ClassNotFoundException {
+		try {
+			FileInputStream fileInput = new FileInputStream("./save/" + name);
 			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 			Object object = objectInput.readObject();
 			objectInput.close();
 			fileInput.close();
 			System.out.println("Object " + name + " loaded.");
 			return object;
+		} catch(IOException e) {
+			return null;
+		}
 	}
 
 	public static void checkIfLeavingRoom() {
