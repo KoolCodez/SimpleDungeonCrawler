@@ -205,16 +205,16 @@ public class ControlRouter {
 			SDC.loc.y++;
 			door = "top";
 			break;
-		default:
-			break;
 		}
 		battleView.setVisible(false);
 		sideBar.setVisible(false);
 		battleTurnPanel.setVisible(false);
 		SDC.frame.add(new CoreGameplayPanel());
-		setLocationFromBattle(character, door);
 		if (!door.equals("")) {
 			SDC.eventChangeRooms(door);
+			setLocationFromFlee(character, door);
+		} else {
+			setLocationsFromBattle();
 		}
 		// ArrayList<Entity> currentRoomEnts = (ArrayList<Entity>)
 		// SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
@@ -277,7 +277,6 @@ public class ControlRouter {
 	}
 
 	public void attack(Entity attacker, Entity target) {
-		
 		if (target != null) {
 			if (legalAttack(attacker, target)) {
 				//System.out.println(attacker.getName() + attacker.getType() + " Attack!");
@@ -579,7 +578,7 @@ public class ControlRouter {
 		return point;
 	}
 
-	private void setLocationFromBattle(Entity ent, String door) {
+	private void setLocationFromFlee(Entity ent, String door) {
 		switch (door) {
 		case "left":
 			character.setLocation(100 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
@@ -598,6 +597,16 @@ public class ControlRouter {
 			break;
 		}
 		System.out.println(character.getLocation().toString() + door);
+	}
+	
+	private void setLocationsFromBattle() {
+		List<Entity> list = SDC.roomArray[SDC.loc.x][SDC.loc.y].entities;
+		for (Entity ent : list) {
+			double x = ent.battleLoc.x * 190 * SDC.SCALE_FACTOR + 50;
+			double y = ent.battleLoc.y * 190 * SDC.SCALE_FACTOR + 50;
+			System.out.println(x + ", " + y);
+			ent.setLocation(x, y);
+		}
 	}
 
 	private ArrayBlockingQueue<Entity> setInitiative(StandardRoom current) {

@@ -79,7 +79,11 @@ public class BattleAI implements Serializable {
 					control.battleMove(0, yAdj*-1, host, 3);
 					return;
 				} else {
-					yAdj = 1;
+					if (destination.y + 1 >= entTable[0].length) {
+						yAdj = -1;
+					} else {
+						yAdj = 1;
+					}
 					if (entTable[destination.x][destination.y + yAdj] == null) {
 						control.battleMove(0, yAdj, host, 3);
 						return;
@@ -96,7 +100,7 @@ public class BattleAI implements Serializable {
 		} else {
 			int yAdj = 0;
 			if (yDist != 0) {
-			yAdj = 1* yDist / Math.abs(yDist);
+				yAdj = 1* yDist / Math.abs(yDist);
 			}
 			
 			if (entTable[destination.x][destination.y + yAdj] == null) {
@@ -116,7 +120,11 @@ public class BattleAI implements Serializable {
 					control.battleMove(xAdj*-1, 0, host, 3);
 					return;
 				} else {
-					xAdj = 1;
+					if (destination.x + 1 >= entTable.length) {
+						xAdj = -1;
+					} else {
+						xAdj = 1;
+					}
 					if (entTable[destination.x + xAdj][destination.y] == null) {
 						control.battleMove(xAdj, 0, host, 3);
 						return;

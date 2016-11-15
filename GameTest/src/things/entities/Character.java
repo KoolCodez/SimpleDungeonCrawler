@@ -18,6 +18,7 @@ public class Character extends Entity {
 		setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
 		setImage("Characters/MainChar.png");
 		deadImage = "Enemies/Skull.png";
+		//equipped.weapon = new GodWeapon();
 		equipped.weapon = new Fists();
 	}
 }
