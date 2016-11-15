@@ -106,7 +106,9 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 	
 	public static void saveObject(Object object, String name) throws IOException {
 		String location = System.getProperty("user.dir");
-		FileOutputStream fileOutput = new FileOutputStream(location + "/save/" + name);
+		File f = new File(location + "/save/" + name);
+		f.getParentFile().mkdirs();
+		FileOutputStream fileOutput = new FileOutputStream(f);
 		ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
 		objectOutput.writeObject(object);
 		objectOutput.close();
