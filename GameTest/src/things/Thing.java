@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -14,23 +15,23 @@ import misc.SDC;
 import rooms.StandardRoom;
 import things.entities.Entity;
 
-public class Thing {
+public class Thing implements Serializable {
 	public Rectangle2D outline;
 	protected StandardRoom currentRoom;
-	public Image image;
+	public String image;
 	public int rarity;
 	
 	public Thing() {
 		outline = new Rectangle2D.Double();
 		outline.setRect(250 * SDC.SCALE_FACTOR, 250 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
-		image = Images.array[Images.blankLayerIndex];
+		image = "blankLayer.png";
 		rarity = 0;
 	}
 	
-	public Thing(Image i, double x, double y, double w, double h, int rarity) {
+	public Thing(String image, double x, double y, double w, double h, int rarity) {
 		outline = new Rectangle2D.Double();
 		outline.setRect(x, y, w, h);
-		image = i;
+		this.image = image;
 		this.rarity = rarity;
 	}
 	
@@ -44,8 +45,8 @@ public class Thing {
 		
 	}
 	
-	public void setImage(Image i) {
-		image = i;
+	public void setImage(String name) {
+		image = name;
 	}
 
 	public void drawEntity(Graphics g) {
@@ -53,6 +54,12 @@ public class Thing {
 	}
 	
 	public Image getImage() {
+		Image i = Images.loadImage(image, outline.getWidth(), outline.getHeight());
+		i = i.getScaledInstance((int) outline.getWidth(), (int) outline.getHeight(), Image.SCALE_SMOOTH);
+		return i;
+	}
+	
+	public String getImageName() {
 		return image;
 	}
 	

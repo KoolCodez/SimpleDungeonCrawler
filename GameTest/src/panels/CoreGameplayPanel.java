@@ -3,6 +3,7 @@ package panels;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,7 @@ import rooms.StandardRoom;
 import things.Nothing;
 import things.Thing;
 import things.entities.Entity;
+import things.entities.Character;
 
 public class CoreGameplayPanel extends JPanel{
 
@@ -41,6 +43,7 @@ public class CoreGameplayPanel extends JPanel{
 	private static int BUTTON_WIDTH = SDC.BUTTON_WIDTH;
 	private static int BUTTON_HEIGHT = SDC.BUTTON_HEIGHT;
 	private static int SCALED_100 = SDC.SCALED_100;
+	private static int SCALED_50 = (int) (50 * SDC.SCALE_FACTOR);
 	public static final double PICKUP_RADIUS = 200 * SDC.SCALE_FACTOR;
 	
 	public MovementController movementController;
@@ -120,19 +123,32 @@ public class CoreGameplayPanel extends JPanel{
 		this.setBackground(Color.white);
 		drawPanel(g);
 	}
-	
+	private Image left;
+	private Image right;
+	private Image up;
+	private Image down;
 	private void drawPanel(Graphics g) {
-		g.drawImage(Images.array[Images.backgroundImgIndex], 0, 0, null);
-		g.drawImage(Images.array[Images.rightArrowIndex], (int) (948 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
-		g.drawImage(Images.array[Images.leftArrowIndex], (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), null);
-		g.drawImage(Images.array[Images.bottomArrowIndex], (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR), null);
-		g.drawImage(Images.array[Images.topArrowIndex], (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), null);
+		g.drawImage(Images.loadImage("Grounds/BasicGround.jpg", 1000, 1000), 0, 0, 
+				(int) (1000*SDC.SCALE_FACTOR), (int) (1000*SDC.SCALE_FACTOR), null);
+		refreshArrows();
+		g.drawImage(right, (int) (948 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), 
+				SCALED_50, SCALED_100, null);
+		g.drawImage(left, (int) (0 * SCALE_FACTOR), (int) (450 * SCALE_FACTOR), 
+				SCALED_50, SCALED_100, null);
+		g.drawImage(down, (int) (450 * SCALE_FACTOR), (int) (948 * SCALE_FACTOR),
+				SCALED_100, SCALED_50, null);
+		g.drawImage(up, (int) (450 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR),
+				SCALED_100, SCALED_50, null);
 		SDC.character.drawEntity(g);
 		StandardRoom current = SDC.roomArray[SDC.loc.x][SDC.loc.y];
 		for (int i = 0; i < current.things.size(); i++) {
 			Thing t = current.things.get(i);
 			if (t.image != null && t != SDC.character) {
 				t.drawEntity(g);
+				if (t instanceof Character) {
+					System.err.println("how");
+					current.things.remove(t);
+				}
 			}
 		}
 		g.setColor(Color.red);
@@ -140,6 +156,29 @@ public class CoreGameplayPanel extends JPanel{
 			SDC.effects.get(i).draw(g);
 		}
 		g.setColor(Color.black);
+	}
+	
+	private void refreshArrows() {
+		if (SDC.loc.x == 0) {
+			left = Images.loadImage("Arrows/LeftArrowOff.jpg", 100, 50);
+		}  else {
+			left = Images.loadImage("Arrows/LeftArrowOn.jpg", 100, 50);
+		}
+		if (SDC.loc.x == 9) {
+			right = Images.loadImage("Arrows/RightArrowOff.jpg", 100, 50);
+		} else {
+			right = Images.loadImage("Arrows/RightArrowOn.jpg", 100, 50);
+		}
+		if (SDC.loc.y == 0) {
+			up = Images.loadImage("Arrows/TopArrowOff.jpg", 50, 100);
+		} else {
+			up = Images.loadImage("Arrows/TopArrowOn.jpg", 50, 100);
+		}
+		if (SDC.loc.y == 9) {
+			down = Images.loadImage("Arrows/BotArrowOff.jpg", 50, 100);
+		} else {
+			down = Images.loadImage("Arrows/BotArrowOn.jpg", 50, 100);
+		}
 	}
 	
 	private void createMenuButton() {

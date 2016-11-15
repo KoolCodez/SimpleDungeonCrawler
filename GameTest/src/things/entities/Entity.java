@@ -25,12 +25,12 @@ import things.items.weapons.Fists;
 import things.items.weapons.Weapon;
 import things.storage.Corpse;
 
-public class Entity extends Thing implements Serializable { // extend this class with specific entity-classes.
+public class Entity extends Thing { // extend this class with specific entity-classes.
 	private Utilities utilities = new Utilities();
 	
 	private String entityType;
 	private String name;
-	public ImageIcon deadImage;
+	public String deadImage;
 	private int rotation = 0;
 	private List<Item> inventory = new ArrayList<Item>();
 	public int maxItems = 20;
@@ -47,7 +47,7 @@ public class Entity extends Thing implements Serializable { // extend this class
 		equipped = new EquippedItems();
 		entityType = "Generic Entity";
 		setLocation(250, 250);
-		deadImage = new ImageIcon();
+		deadImage = "";
 		rarity = 0;
 		
 		battleAI = new BattleAI(this);
@@ -59,10 +59,14 @@ public class Entity extends Thing implements Serializable { // extend this class
 		equipped = new EquippedItems();
 		entityType = "Generic Entity";
 		stats.setStats(health, strength, dexterity, willPower);
-		deadImage = new ImageIcon();
+		deadImage = "";
 		
 		battleAI = new BattleAI(this);
 		battleLoc = new Point();
+	}
+	
+	public Image getDeadImage() {
+		return Images.loadImage(deadImage, outline.getWidth(), outline.getHeight());
 	}
 	
 	public void generateStats(int rarity) {
@@ -116,7 +120,10 @@ public class Entity extends Thing implements Serializable { // extend this class
 		images.add(equipped.head.getImage());
 		Image i = ig.compileImage(images);
 		i = ig.rotate(i, rotation);
-		g.drawImage(i, (int) outline.getX(), (int) outline.getY(), null);
+		g.drawImage(i, (int) outline.getX(), (int) outline.getY(), 
+				(int) outline.getWidth(), (int) outline.getHeight(), null);
+		//g.drawRect((int) outline.getX(), (int) outline.getY(), 
+			//	(int) outline.getWidth(), (int) outline.getHeight());
 	}
 	
 	public void setBattleLoc(Point loc) {

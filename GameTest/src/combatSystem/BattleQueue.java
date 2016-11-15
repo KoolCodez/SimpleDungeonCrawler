@@ -65,6 +65,7 @@ public class BattleQueue extends Thread {
 				initList.add(ent);
 			}
 		}
+		control.refreshEnts();
 	}
 
 	private boolean checkLiving(StandardRoom current) {

@@ -29,8 +29,8 @@ public class MainMenu extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.drawImage(Images.array[Images.mainMenuIndex], (int) (0 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), SDC.MENU_SIZE,
-				SDC.MENU_SIZE, null);
+		g.drawImage(Images.loadImage("Menus/BrickStone.jpg", SDC.MENU_SIZE, SDC.MENU_SIZE), 
+				(int) (0 * SCALE_FACTOR), (int) (0 * SCALE_FACTOR), SDC.MENU_SIZE, SDC.MENU_SIZE, null);
 
 	}
 	

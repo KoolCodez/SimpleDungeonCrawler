@@ -6,30 +6,32 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import misc.Images;
+import misc.SDC;
 import things.Thing;
 import things.entities.Entity;
 
-public class Item extends Thing implements Serializable {
+public class Item extends Thing {
 	public String itemName;
-	public ImageIcon inventoryImage;
-	public Image gameplayImage;
+	public String inventoryImage;
+	public String gameplayImage;
 	public int rarity;
 	
-	public Item(ImageIcon inventoryImage, Image gameplayImage, String name, int rarity) {
+	public Item(String inventoryImage, String gameplayImage, String name, int rarity) {
 		this.inventoryImage = inventoryImage;
-		this.gameplayImage = gameplayImage;
+		setImage(gameplayImage);
 		itemName = name;
 		this.rarity = rarity;
 	}
 	
 	public ImageIcon getInventoryImage() {
-		return inventoryImage;
+		Image i = Images.loadImage(inventoryImage, outline.getWidth(), outline.getHeight());
+		i = i.getScaledInstance((int) outline.getWidth(), (int) outline.getHeight(), Image.SCALE_SMOOTH);
+		return new ImageIcon(i);
 	}
-	public Image getImage() {
-		return inventoryImage.getImage();
-	}
-	public void setImage(Image i) {
-		inventoryImage.setImage(i);
+	
+	public void setInventoryImage(String i) {
+		inventoryImage = i;
 	}
 	
 	@Override

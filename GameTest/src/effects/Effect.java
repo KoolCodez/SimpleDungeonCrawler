@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Point;
 
 import misc.Images;
+import misc.SDC;
 
 public class Effect extends Thread {
 	public Image image;
@@ -14,7 +15,8 @@ public class Effect extends Thread {
 	protected float opacity;
 	
 	public Effect() {
-		image = Images.array[Images.blankLayerIndex];
+		image = Images.loadImage("Items/BlankLayer.png", 100.0, 100.0);
+		image = image.getScaledInstance(SDC.SCALED_100, SDC.SCALED_100, Image.SCALE_SMOOTH);
 		location = new Point(0, 0);
 		opacity = 1.0f;
 	}

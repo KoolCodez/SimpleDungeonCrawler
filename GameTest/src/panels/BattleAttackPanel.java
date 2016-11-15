@@ -37,7 +37,7 @@ public class BattleAttackPanel extends JPanel {
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.drawImage(Images.array[Images.battleMenuIndex], 0, 0, MENU_SIZE, MENU_SIZE, null);
+		g.drawImage(Images.loadImage("Menus/BattleMenu2.jpg", MENU_SIZE, MENU_SIZE), 0, 0, MENU_SIZE, MENU_SIZE, null);
 		g.setColor(Color.red);
 		g.fillRect((int) (214 * SCALE_FACTOR), (int) (932 * SCALE_FACTOR),
 				(int) (440 * SCALE_FACTOR * SDC.character.stats.getHealth()

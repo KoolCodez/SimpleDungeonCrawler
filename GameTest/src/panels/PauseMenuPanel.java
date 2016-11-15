@@ -35,7 +35,8 @@ public class PauseMenuPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(Images.array[Images.pauseMenuIndex], 0, 0, null);
+		g.drawImage(Images.loadImage("Menus/PauseMenu2x.jpg", 1000, 1000),
+				0, 0, SDC.MENU_SIZE, SDC.MENU_SIZE, null);
 	}
 	
 	private void createExitButton() {
@@ -118,7 +119,7 @@ public class PauseMenuPanel extends JPanel {
 			}
 		});
 		resume.setBounds(menuCoord.x, menuCoord.y, BUTTON_WIDTH, BUTTON_HEIGHT);
-		resume.setIcon(new ImageIcon(Images.array[Images.resumeButtonIndex]));
+		resume.setIcon(new ImageIcon(Images.loadImage("Buttons/ResumeButton2x.jpg", 300, 150)));
 		menuCoord.y += BUTTON_HEIGHT;
 		resume.setFont(font);
 		add(resume);

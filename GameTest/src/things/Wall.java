@@ -6,7 +6,7 @@ import things.entities.Entity;
 public class Wall extends Thing {
 	public Wall() {
 		super();
-		setImage(Images.array[Images.blankLayerIndex]);
+		setImage("Items/BlankLayer.png");
 	}
 	
 	@Override

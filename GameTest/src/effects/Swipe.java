@@ -29,7 +29,8 @@ public class Swipe extends Effect {
 	}
 
 	private Image getImage() {
-		Image i = Images.loadImage("Characters/swipe.png", (int) (100*SDC.SCALE_FACTOR), (int) (100*SDC.SCALE_FACTOR));
+		Image i = Images.loadImage("Characters/swipe.png", 100, 100);
+		i = i.getScaledInstance(SDC.SCALED_100, SDC.SCALED_100, Image.SCALE_SMOOTH);
 		return i;
 	}
 	

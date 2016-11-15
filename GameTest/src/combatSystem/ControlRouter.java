@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import effects.DeathMarker;
 import effects.FallingDamageNumber;
 import effects.FallingMiss;
 import effects.Swipe;
@@ -73,12 +74,13 @@ public class ControlRouter {
 		
 	}
 	
-	private void refreshEnts() {
+	public void refreshEnts() {
 		for (int i = 0; i < entTable.length; i++) {
 			for (int j = 0; j < entTable[i].length; j++) {
 				if (entTable[i][j] != null) {
 					if (entTable[i][j].stats.getHealth() <= 0) {
 						entTable[i][j] = null;
+						battleView.addEffect(new DeathMarker(new Point(i * 140, j * 140)));
 					}
 				}
 			}
@@ -156,6 +158,7 @@ public class ControlRouter {
 
 	public void victory() {
 		System.out.println("Victory!");
+		SDC.roomArray[SDC.loc.x][SDC.loc.y].typeOfRoom = StandardRoom.TREASURE_TAG;
 		exitBattle("");
 	}
 
@@ -177,7 +180,6 @@ public class ControlRouter {
 	}
 
 	private void exitBattle(String door) {
-		System.out.println("exitBattle: " + door);
 		waitForTurn.endTurn();
 		if (!door.equals("")) {
 			SDC.roomArray[SDC.loc.x][SDC.loc.y].entities.remove(SDC.character);
@@ -278,17 +280,18 @@ public class ControlRouter {
 		
 		if (target != null) {
 			if (legalAttack(attacker, target)) {
-				System.out.println(attacker.getName() + attacker.getType() + " Attack!");
+				//System.out.println(attacker.getName() + attacker.getType() + " Attack!");
 				if (target.stats.getDex() - attacker.stats.getDex()
 						+ 10 < utilities.r20()) {
 					double damage = 0.0;
 					damage = (attacker.stats.getStr() / target.stats.getStr() * attacker.equipped.weapon.damage)
 							/ target.equipped.combinedAC();
 					target.damageEnt(damage);
-					System.out.println("He Hit For " + damage + "Damage!");
+					System.out.println(attacker.getName() + " Hit " + target.getName() + 
+							"For " + damage + "Damage!");
 					displayDamage(damage, attacker, target);
 				} else {
-					System.out.println("He Missed!");
+					System.out.println(attacker.getName() + " Missed!");
 					displayMiss(attacker);
 				}
 			} else {
@@ -313,7 +316,7 @@ public class ControlRouter {
 	public void shove(Entity attacker, Entity target) {
 		if (target != null) {
 			if (legalShove(attacker, target)) {
-				System.out.println(attacker.getName() + attacker.getType() + " Shove!");
+				//System.out.println(attacker.getName() + attacker.getType() + " Shove!");
 				if (target.stats.getDex() - attacker.stats.getDex()
 						+ 8 < utilities.r20()) {
 					push(attacker, target);
@@ -579,21 +582,22 @@ public class ControlRouter {
 	private void setLocationFromBattle(Entity ent, String door) {
 		switch (door) {
 		case "left":
-			character.getLocation().setLocation(800 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+			character.setLocation(100 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
 			break;
 		case "right":
-			character.getLocation().setLocation(100 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+			character.setLocation(800 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
 			break;
 		case "top":
-			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 800 * SDC.SCALE_FACTOR);
+			character.setLocation(500 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
 			break;
 		case "bottom":
-			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 100 * SDC.SCALE_FACTOR);
+			character.setLocation(500 * SDC.SCALE_FACTOR, 800 * SDC.SCALE_FACTOR);
 			break;
 		default:
-			character.getLocation().setLocation(500 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
+			character.setLocation(500 * SDC.SCALE_FACTOR, 500 * SDC.SCALE_FACTOR);
 			break;
 		}
+		System.out.println(character.getLocation().toString() + door);
 	}
 
 	private ArrayBlockingQueue<Entity> setInitiative(StandardRoom current) {

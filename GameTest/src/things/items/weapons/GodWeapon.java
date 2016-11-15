@@ -7,11 +7,8 @@ import javax.swing.ImageIcon;
 import misc.Images;
 
 public class GodWeapon extends Weapon {
-	static Image i = Images.array[Images.blankLayerIndex];
-	static ImageIcon invI = new ImageIcon(i);
-	
 	public GodWeapon() {
-		super(invI, i, "GodWeapon", 1005);
+		super("Items/BlankLayer.png",  "Items/BlankLayer.png", "GodWeapon", 1005);
 		ranged = false;
 		damage = 100;
 		speed = 1;

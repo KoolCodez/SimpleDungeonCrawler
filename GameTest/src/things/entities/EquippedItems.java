@@ -31,7 +31,7 @@ public class EquippedItems implements Serializable {
 	}
 	
 	public double combinedAC() {
-		double AC = 10;
+		double AC = 1;
 		AC += head.AC;
 		AC += body.AC;
 		AC += legs.AC;

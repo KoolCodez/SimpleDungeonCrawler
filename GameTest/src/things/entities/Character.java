@@ -14,10 +14,10 @@ public class Character extends Entity {
 		super(5, 10, 10, 10, 1000);
 		setType("Character");
 		addItem(new Stick());
-		setSize((int) (90 * SDC.SCALE_FACTOR), (int) (90 * SDC.SCALE_FACTOR));
+		setSize((int) (100 * SDC.SCALE_FACTOR), (int) (100 * SDC.SCALE_FACTOR));
 		setRoom(SDC.roomArray[SDC.loc.x][SDC.loc.y]);
-		setImage(Images.array[Images.battleCharIndex]);
-		deadImage = new ImageIcon(Images.loadImage("Enemies/Skull.png", 100.0, 100.0));
+		setImage("Characters/MainChar.png");
+		deadImage = "Enemies/Skull.png";
 		equipped.weapon = new Fists();
 	}
 }

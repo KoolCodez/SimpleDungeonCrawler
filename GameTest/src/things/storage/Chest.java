@@ -14,7 +14,7 @@ public class Chest extends Storage {
 		this.rarity = rarity;
 		super.setSize(w, l);
 		super.setLocation(x, y);
-		setImage(Images.loadImage("Storage/chest.png", 100, 70));
+		setImage("Storage/chest.png");
 		//Images.loadImage("Storage/Chest.png", w / SDC.SCALE_FACTOR, l / SDC.SCALE_FACTOR)
 		setCapacity(12);
 	}

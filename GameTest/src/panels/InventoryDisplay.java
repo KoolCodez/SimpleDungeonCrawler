@@ -5,17 +5,19 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
+import misc.Images;
 import misc.MouseClick;
 import misc.SDC;
 import things.items.Item;
 
-public class InventoryDisplay {
+public class InventoryDisplay implements Serializable {
 	private static final int SCALED_100 = SDC.SCALED_100;
 	private List<Item> inventory;
 	private Rectangle bounds;
@@ -62,7 +64,7 @@ public class InventoryDisplay {
 		g.setColor(Color.cyan);
 		for (int i = inventory.size() - 1; i >= 0; i--) {
 			Item item = inventory.get(i);
-			g.drawImage(item.inventoryImage.getImage(), image.x, image.y, null);
+			g.drawImage(item.getInventoryImage().getImage(), image.x, image.y, null);
 			g.setFont(new Font("Harrington", Font.BOLD, 18));
 			g.drawString(item.itemName, image.x, image.y + SCALED_100);
 			if (secondarySelected.contains(item)) {

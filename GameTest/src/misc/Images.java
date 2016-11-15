@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -56,7 +57,7 @@ public class Images {
 	public static final int mainMenuIndex = 28;
 	public static final int pauseMenuIndex = 29;
 	
-	public static Image[] array;
+	public static HashMap<String, Image> map = new HashMap<String, Image>();
 	public static int rightArrowIndex;
 	public static int leftArrowIndex;
 	public static int bottomArrowIndex;
@@ -64,22 +65,26 @@ public class Images {
 	private static String currentDir = System.getProperty("user.dir");
 	private static double scale = SDC.SCALE_FACTOR;
 	
-	public static Image loadImage(String pathFromTextures, double widthUnscaled, double heightUnscaled) {
+	public static Image loadImage(String name, double widthUnscaled, double heightUnscaled) {
 		Image i;
+		if (map.containsKey(name)) {
+			return map.get(name);
+		}
 		try {
-			String name = "/Textures/" + pathFromTextures;
-			URL url = Images.class.getResource(name);
+			String path = "/Textures/" + name;
+			URL url = Images.class.getResource(path);
 			i = ImageIO.read(url);
+			map.put(name, i);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return array[blankLayerIndex];
+			return loadImage("Items/BlankLayer.png", 100, 100);
 		}
 		i = i.getScaledInstance((int) (widthUnscaled * SDC.SCALE_FACTOR), (int) (heightUnscaled * SDC.SCALE_FACTOR), Image.SCALE_SMOOTH);
 		return i;
 	}
 	
 	
-	public static void createImages() throws IOException {
+	/*public static void createImages() throws IOException {
 		array = new Image[33];
 		arrows();
 		buttons();
@@ -188,5 +193,5 @@ public class Images {
 		array[mainMenuIndex] = mainMenu;
 		Image pauseMenu = loadImage(localDir + "PauseMenu.jpg", 1000.0, 1000.0);
 		array[pauseMenuIndex] = pauseMenu;
-	}
+	}*/
 }

@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import things.items.Item;
 
 public class Weapon extends Item{
-	public Weapon(ImageIcon inventoryImage, Image gameplayImage, String name, int rarity) {
+	public Weapon(String inventoryImage, String gameplayImage, String name, int rarity) {
 		super(inventoryImage, gameplayImage, name, rarity);
 	}
 	public boolean ranged;

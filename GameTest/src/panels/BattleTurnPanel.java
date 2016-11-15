@@ -73,7 +73,7 @@ public class BattleTurnPanel extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		g.drawImage(Images.array[Images.battleMenuIndex], 0, 0, MENU_SIZE, MENU_SIZE, null);
+		g.drawImage(Images.loadImage("Menus/BattleMenu2.jpg", MENU_SIZE, MENU_SIZE), 0, 0, MENU_SIZE, MENU_SIZE, null);
 		g.setColor(Color.red);
 		g.fillRect((int) (214 * SCALE_FACTOR), (int) (932 * SCALE_FACTOR),
 				(int) (440 * SCALE_FACTOR * SDC.character.stats.getHealth() / SDC.character.stats.getMaxHealth()),
@@ -100,7 +100,7 @@ public class BattleTurnPanel extends JPanel {
 			}
 		});
 		bagButton.setBounds((int) (698 * SCALE_FACTOR), (int) (248 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		bagButton.setIcon(new ImageIcon(Images.array[Images.bagButtonIndex]));
+		bagButton.setIcon(new ImageIcon(Images.loadImage("Buttons/BagButton2x.jpg", 300, 100)));
 		add(bagButton);
 	}
 
@@ -113,7 +113,7 @@ public class BattleTurnPanel extends JPanel {
 			}
 		});
 		fightButton.setBounds((int) (698 * SCALE_FACTOR), (int) (148 * SCALE_FACTOR), BUTTON_WIDTH, BUTTON_HEIGHT);
-		fightButton.setIcon(new ImageIcon(Images.array[Images.fightButtonIndex]));
+		fightButton.setIcon(new ImageIcon(Images.loadImage("Buttons/FightButton2x.jpg", 300, 100)));
 		add(fightButton);
 	}
 

@@ -26,7 +26,7 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 	private static final String ROOM_ARRAY_SAVE_TAG = "roomArray";
 	private static final String CHARACTER_SAVE_TAG = "character";
 	private static final String LOC_SAVE_TAG = "loc";
-	public static final double SCALE_FACTOR = .75;
+	public static final double SCALE_FACTOR = .5;
 	public static final int SCALED_100 = (int) (100 * SCALE_FACTOR);
 	public static final int MENU_SIZE = (int) (1000 * SCALE_FACTOR);
 	public static final int BUTTON_HEIGHT = (int) (100 * SCALE_FACTOR);
@@ -47,13 +47,12 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		//String current = System.getProperty("user.dir");
 		// System.out.println("Current working directory in Java : " + current);
 		frameSetup();
-		Images.createImages();
+		//Images.createImages();
 		createOrLoadRoomArray();
 		createOrLoadLoc();
 		createOrLoadCharacter();
 		Refresh r1 = new Refresh();
 		r1.start();
-		refreshArrows();
 	}
 	
 	private static void frameSetup() {
@@ -67,25 +66,25 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 	}
 	
 	private static void createOrLoadLoc() throws ClassNotFoundException {
-		if (new File("src\\save\\" + LOC_SAVE_TAG).exists()) {
-			loc = (Point) loadObject(LOC_SAVE_TAG);
-		} else if (loc == null) {
+		loc = (Point) loadObject(LOC_SAVE_TAG);
+		if (loc == null) {
 			loc = new Point(0, 0);
 		}
 	}
 	
 	private static void createOrLoadCharacter() throws ClassNotFoundException {
-		if (new File("src\\save\\" + CHARACTER_SAVE_TAG).exists()) {
-			character = (Entity) loadObject(CHARACTER_SAVE_TAG);
-		} else if (character == null) {
+		if (roomArray[loc.x][loc.y].things.contains(character)) {
+			roomArray[loc.x][loc.y].things.remove(character);
+		}
+		character = (Entity) loadObject(CHARACTER_SAVE_TAG);
+		if (character == null) {
 			character = new Character();
 		}
 	}
 	
 	private static void createOrLoadRoomArray() throws ClassNotFoundException{
-		if (new File("src\\save\\" + ROOM_ARRAY_SAVE_TAG).exists()) {
-			roomArray = (StandardRoom[][]) loadObject(ROOM_ARRAY_SAVE_TAG);
-		} else if (roomArray == null) {
+		roomArray = (StandardRoom[][]) loadObject(ROOM_ARRAY_SAVE_TAG);
+		if (roomArray == null) {
 			roomArray = new StandardRoom[10][10];
 			StandardRoom current = new HomeRoom();
 			current.typeOfRoom = "Standard";
@@ -106,8 +105,8 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 	}
 	
 	public static void saveObject(Object object, String name) throws IOException {
-		
-		FileOutputStream fileOutput = new FileOutputStream("./save/" + name);
+		String location = System.getProperty("user.dir");
+		FileOutputStream fileOutput = new FileOutputStream(location + "/save/" + name);
 		ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
 		objectOutput.writeObject(object);
 		objectOutput.close();
@@ -117,7 +116,8 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 	
 	public static Object loadObject(String name) throws ClassNotFoundException {
 		try {
-			FileInputStream fileInput = new FileInputStream("./save/" + name);
+			String location = System.getProperty("user.dir");
+			FileInputStream fileInput = new FileInputStream(location + "/save/" + name);
 			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 			Object object = objectInput.readObject();
 			objectInput.close();
@@ -167,23 +167,21 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 			g.drawString(("[" + loc.x + "][" + loc.y + "]"), 0, 20);
 			// System.out.println("[" + loc.x + "][" + loc.y + "]");
 		}
-		refreshArrows();
 		if (roomArray[loc.x][loc.y].typeOfRoom.equals("battle")) {
-			System.out.println("starting battle");
 			stopGameplayPanel();
 			character.setRoom(roomArray[loc.x][loc.y]);
 			ControlRouter control = new ControlRouter(door);
 		} else {
 			switch (door) {
-			case "left": character.getLocation().setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+			case "left": character.setLocation(100 * SCALE_FACTOR, 500 * SCALE_FACTOR);
 				break;
-			case "right": character.getLocation().setLocation(800 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+			case "right": character.setLocation(800 * SCALE_FACTOR, 500 * SCALE_FACTOR);
 				break;
-			case "top": character.getLocation().setLocation(500 * SCALE_FACTOR, 100 * SCALE_FACTOR);
+			case "top": character.setLocation(500 * SCALE_FACTOR, 100 * SCALE_FACTOR);
 				break;
-			case "bottom": character.getLocation().setLocation(500 * SCALE_FACTOR, 800 * SCALE_FACTOR);
+			case "bottom": character.setLocation(500 * SCALE_FACTOR, 800 * SCALE_FACTOR);
 				break;
-			default: character.getLocation().setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
+			default: character.setLocation(500 * SCALE_FACTOR, 500 * SCALE_FACTOR);
 				break;
 			}
 			character.setRoom(roomArray[loc.x][loc.y]);
@@ -211,33 +209,11 @@ public class SDC extends JPanel { //SimpleDungeonCrawler
 		} else if(typeNum >= 3 && typeNum <= 7) {
 			int randomness = rand.nextInt(3);
 			current = new BattleRoom(randomness);
-			System.out.println(randomness);
 		} else if(typeNum >= 8 || typeNum <= 9) {
 			current = new PuzzleRoom();
 		} else {
 			current = new StandardRoom();
 		}
 		roomArray[loc.x][loc.y] = current;
-		System.out.println(current.entities.size());
-		System.out.println(current.typeOfRoom);
-	}
-
-	private static void refreshArrows() {
-		if (loc.x == 0) {
-			Images.leftArrowIndex = Images.leftArrowOffIndex;
-		} else if (loc.x == 9) {
-			Images.rightArrowIndex = Images.rightArrowOffIndex;
-		} else {
-			Images.rightArrowIndex = Images.rightArrowOnIndex;
-			Images.leftArrowIndex = Images.leftArrowOnIndex;
-		}
-		if (loc.y == 0) {
-			Images.topArrowIndex = Images.topArrowOffIndex;
-		} else if (loc.y == 9) {
-			Images.bottomArrowIndex = Images.bottomArrowOffIndex;
-		} else {
-			Images.topArrowIndex = Images.topArrowOnIndex;
-			Images.bottomArrowIndex = Images.bottomArrowOnIndex;
-		}
 	}
 }

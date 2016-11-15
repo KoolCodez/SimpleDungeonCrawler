@@ -8,34 +8,34 @@ import misc.Images;
 import misc.SDC;
 
 public class Linens extends Armor {
-	private static Image gameImage;
+	private static String gameImage;
 	public Linens(String type) {
 		super(getInvImage(type), gameImage, "Linens", 1, 10, type);
 	}
 	
-	private static Image getGameImage(String type) {
-		Image image = null;
+	private static String getGameImage(String type) {
+		String image = "";
 		double size = 100.0;
 		switch (type) {
-		case "head": image = Images.loadImage("Items/headLinens.png", size, size);
+		case "head": image = "Items/headLinens.png";
 			break;
-		case "body": image = Images.loadImage("Items/bodyLinens.png", size, size);
+		case "body": image = "Items/bodyLinens.png";
 			break;
-		case "legs": image = Images.array[Images.blankLayerIndex];;
+		case "legs": image =  "Items/BlankLayer.png";
 			break;
-		case "feet": image = Images.array[Images.blankLayerIndex];
+		case "feet": image =  "Items/BlankLayer.png";
 			break;
-		case "hands": image = Images.loadImage("Items/handsLinens.png", size, size);
+		case "hands": image = "Items/handsLinens.png";
 			break;
-		default: image = Images.loadImage("Items/bodyLinens.png", size, size);
+		default: image = "Items/bodyLinens.png";
 			break;
 		}
 		gameImage = image;
 		return image;
 	}
 	
-	private static ImageIcon getInvImage(String type) {
-		return new ImageIcon(getGameImage(type));
+	private static String getInvImage(String type) {
+		return getGameImage(type);
 		
 	}
 

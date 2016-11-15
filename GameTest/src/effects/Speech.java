@@ -11,7 +11,7 @@ public class Speech extends Effect {
 	String statement;
 	
 	public Speech() {
-		image = Images.array[Images.blankLayerIndex];
+		image = Images.loadImage("Items/BlankLayer.png", 100.0, 100.0);
 		location = new Point(0, 0);
 		statement = "my programmer is stupid";
 		

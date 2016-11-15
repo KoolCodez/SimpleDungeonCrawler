@@ -84,9 +84,8 @@ public class InventoryPanel extends JPanel {
 				} else {
 					Item deEquipped = SDC.character.equipped.equipItem(i);
 					display.addCurrentToSecondarySelected();
-					boolean isNullArmor = deEquipped instanceof NullArmor || deEquipped == null;
-					if (!isNullArmor) {
-						display.removeSecondarySelected(deEquipped);
+					if (deEquipped == null) {
+						display.removeSecondarySelected(i);
 					}
 				}
 			}
